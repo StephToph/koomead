@@ -85,6 +85,27 @@ class Auth extends BaseController {
         // $data['title'] = 'Register | '.app_name;
         // return view('auth/register', $data);
     }
+
+    public function account($param1='', $param2=''){
+        if($param1 == 'get_state'){
+            if(empty($param2)){
+                $st =  '<option value="">Select Country First</option>';
+            } else {
+                $state = $this->Crud->read_single_order('country_id', $param2, 'state', 'name', 'asc');
+                if(!empty($state)){
+                    $st =  '<option value="">Select State</option>';
+                    foreach ($state as $s) {
+                        $st .= '<option value="'.$s->id.'">'.$s->name.'</option>';
+                    }
+                }
+            }
+            echo '
+                <select data-placeholder="Select" name="state_id" id="state_id" required onchange="get_city();" class="mb-2 chosen-select search-select" >
+                    '.$st.'
+                </select>
+            ';
+        }
+    }
     ///// LOGOUT
     public function logout() {
         if (!empty($this->session->get('km_id'))) {

@@ -507,7 +507,7 @@
                                                     </select>
                                                 </div>
                                                 <label>City</label>
-                                                <div class="listsearch-input-item mb-2">
+                                                <div class="listsearch-input-item mb-2" id="citys_id">
                                                     <select data-placeholder="Select" name="city_id" id="city_id" required class="mb-2 chosen-select search-select" >
                                                         <option value="">Select State First</option>
                                                        
@@ -592,6 +592,17 @@
                 type: 'post',
                 success: function (data) {
                     $('#states_id').html(data);
+                }
+            });
+        }
+
+        function get_city(){
+            var state_id = $('#state_id').val();
+            $.ajax({
+                url: site_url + 'auth/account/get_city/' + state_id,
+                type: 'post',
+                success: function (data) {
+                    $('#citys_id').html(data);
                 }
             });
         }

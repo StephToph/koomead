@@ -99,10 +99,29 @@ class Auth extends BaseController {
                     }
                 }
             }
-            echo '
+            echo '<div class="listsearch-input-item mb-2">
                 <select data-placeholder="Select" name="state_id" id="state_id" required onchange="get_city();" class="mb-2 chosen-select search-select" >
                     '.$st.'
-                </select>
+                </select></div><script>$("#state_id").niceSelect();</script>
+            ';
+        }
+
+        if($param1 == 'get_city'){
+            if(empty($param2)){
+                $st =  '<option value="">Select State First</option>';
+            } else {
+                $state = $this->Crud->read_single_order('state_id', $param2, 'city', 'name', 'asc');
+                if(!empty($state)){
+                    $st =  '<option value="">Select City</option>';
+                    foreach ($state as $s) {
+                        $st .= '<option value="'.$s->id.'">'.$s->name.'</option>';
+                    }
+                }
+            }
+            echo '<div class="listsearch-input-item mb-2">
+                <select data-placeholder="Select" name="city_id" id="city_id" required class="mb-2 chosen-select search-select" >
+                    '.$st.'
+                </select></div><script>$("#city_id").niceSelect();</script>
             ';
         }
     }

@@ -1,0 +1,37 @@
+ERROR - 2023-08-28 17:36:27 --> Column 'fullname' cannot be null
+CRITICAL - 2023-08-28 17:36:27 --> Column 'fullname' cannot be null
+#0 C:\xampp\htdocs\koomead\system\Database\MySQLi\Connection.php(292): mysqli->query('INSERT INTO `km...', 0)
+#1 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `km...')
+#2 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `km...')
+#3 C:\xampp\htdocs\koomead\system\Database\BaseBuilder.php(1771): CodeIgniter\Database\BaseConnection->query('INSERT INTO `km...', Array, false)
+#4 C:\xampp\htdocs\koomead\app\Models\Crud.php(21): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 C:\xampp\htdocs\koomead\app\Controllers\Auth.php(71): App\Models\Crud->create('user', Array)
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Auth->register()
+#7 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#10 {main}
+ERROR - 2023-08-28 17:43:59 --> Column 'fullname' cannot be null
+CRITICAL - 2023-08-28 17:43:59 --> Column 'fullname' cannot be null
+#0 C:\xampp\htdocs\koomead\system\Database\MySQLi\Connection.php(292): mysqli->query('INSERT INTO `km...', 0)
+#1 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `km...')
+#2 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `km...')
+#3 C:\xampp\htdocs\koomead\system\Database\BaseBuilder.php(1771): CodeIgniter\Database\BaseConnection->query('INSERT INTO `km...', Array, false)
+#4 C:\xampp\htdocs\koomead\app\Models\Crud.php(21): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 C:\xampp\htdocs\koomead\app\Controllers\Auth.php(71): App\Models\Crud->create('user', Array)
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Auth->register()
+#7 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#8 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2023-08-28 20:13:53 --> Undefined variable: log_name
+#0 C:\xampp\htdocs\koomead\app\Views\dashboard.php(22): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', 'C:\\xampp\\htdocs...', 22, Array)
+#1 C:\xampp\htdocs\koomead\system\View\View.php(210): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\koomead\system\View\View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 C:\xampp\htdocs\koomead\system\Common.php(1089): CodeIgniter\View\View->render('dashboard', Array, true)
+#4 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(36): view('dashboard', Array)
+#5 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->index()
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#7 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}

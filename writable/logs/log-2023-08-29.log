@@ -1,0 +1,122 @@
+ERROR - 2023-08-29 18:46:37 --> Column 'parent' cannot be null
+CRITICAL - 2023-08-29 18:46:37 --> Column 'parent' cannot be null
+#0 C:\xampp\htdocs\koomead\system\Database\MySQLi\Connection.php(292): mysqli->query('INSERT INTO `km...', 0)
+#1 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `km...')
+#2 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `km...')
+#3 C:\xampp\htdocs\koomead\system\Database\BaseBuilder.php(1771): CodeIgniter\Database\BaseConnection->query('INSERT INTO `km...', Array, false)
+#4 C:\xampp\htdocs\koomead\app\Models\Crud.php(21): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 C:\xampp\htdocs\koomead\app\Controllers\Settings.php(108): App\Models\Crud->create('access_module', Array)
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Settings->modules('manage')
+#7 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Settings))
+#8 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2023-08-29 22:37:40 --> Undefined variable: page
+#0 C:\xampp\htdocs\koomead\app\Views\setting\role.php(18): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', 'C:\\xampp\\htdocs...', 18, Array)
+#1 C:\xampp\htdocs\koomead\system\View\View.php(210): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\koomead\system\View\View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 C:\xampp\htdocs\koomead\system\Common.php(1089): CodeIgniter\View\View->render('setting/role', Array, true)
+#4 C:\xampp\htdocs\koomead\app\Controllers\Settings.php(377): view('setting/role', Array)
+#5 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Settings->roles()
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Settings))
+#7 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}
+ERROR - 2023-08-29 23:26:13 --> Table 'koomead_db.km_setting' doesn't exist
+CRITICAL - 2023-08-29 23:26:13 --> Table 'koomead_db.km_setting' doesn't exist
+#0 C:\xampp\htdocs\koomead\system\Database\MySQLi\Connection.php(292): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\xampp\htdocs\koomead\system\Database\BaseBuilder.php(1455): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\koomead\app\Models\Crud.php(81): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\koomead\app\Controllers\Settings.php(425): App\Models\Crud->read_order('setting', 'name', 'asc')
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Settings->app()
+#7 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Settings))
+#8 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#10 {main}
+ERROR - 2023-08-29 23:40:47 --> Table 'koomead_db.km_subscription' doesn't exist
+CRITICAL - 2023-08-29 23:40:47 --> Table 'koomead_db.km_subscription' doesn't exist
+#0 C:\xampp\htdocs\koomead\system\Database\MySQLi\Connection.php(292): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\xampp\htdocs\koomead\system\Database\BaseBuilder.php(1455): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\koomead\app\Models\Crud.php(40): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\koomead\app\Views\dashboard\category.php(44): App\Models\Crud->read('subscription')
+#6 C:\xampp\htdocs\koomead\system\View\View.php(210): include('C:\\xampp\\htdocs...')
+#7 C:\xampp\htdocs\koomead\system\View\View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#8 C:\xampp\htdocs\koomead\system\Common.php(1089): CodeIgniter\View\View->render('dashboard/categ...', Array, true)
+#9 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(300): view('dashboard/categ...', Array)
+#10 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category()
+#11 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#12 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#13 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#14 {main}
+ERROR - 2023-08-29 23:46:45 --> Table 'koomead_db.km_subscription' doesn't exist
+CRITICAL - 2023-08-29 23:46:45 --> Table 'koomead_db.km_subscription' doesn't exist
+#0 C:\xampp\htdocs\koomead\system\Database\MySQLi\Connection.php(292): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\xampp\htdocs\koomead\system\Database\BaseBuilder.php(1455): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\koomead\app\Models\Crud.php(40): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\koomead\app\Views\dashboard\category.php(44): App\Models\Crud->read('subscription')
+#6 C:\xampp\htdocs\koomead\system\View\View.php(210): include('C:\\xampp\\htdocs...')
+#7 C:\xampp\htdocs\koomead\system\View\View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#8 C:\xampp\htdocs\koomead\system\Common.php(1089): CodeIgniter\View\View->render('dashboard/categ...', Array, true)
+#9 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(298): view('dashboard/categ...', Array)
+#10 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category()
+#11 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#12 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#13 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#14 {main}
+ERROR - 2023-08-29 23:47:15 --> Table 'koomead_db.km_subscription' doesn't exist
+CRITICAL - 2023-08-29 23:47:15 --> Table 'koomead_db.km_subscription' doesn't exist
+#0 C:\xampp\htdocs\koomead\system\Database\MySQLi\Connection.php(292): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\xampp\htdocs\koomead\system\Database\BaseBuilder.php(1455): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\koomead\app\Models\Crud.php(40): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\koomead\app\Views\dashboard\category.php(44): App\Models\Crud->read('subscription')
+#6 C:\xampp\htdocs\koomead\system\View\View.php(210): include('C:\\xampp\\htdocs...')
+#7 C:\xampp\htdocs\koomead\system\View\View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#8 C:\xampp\htdocs\koomead\system\Common.php(1089): CodeIgniter\View\View->render('dashboard/categ...', Array, true)
+#9 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(298): view('dashboard/categ...', Array)
+#10 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category()
+#11 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#12 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#13 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#14 {main}
+CRITICAL - 2023-08-29 23:50:56 --> Undefined property: stdClass::$user_id
+#0 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(203): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', 'C:\\xampp\\htdocs...', 203, Array)
+#1 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category('load')
+#2 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2023-08-29 23:54:15 --> Argument 1 passed to _get_uri() must be of the type string, null given, called in C:\xampp\htdocs\koomead\system\Helpers\url_helper.php on line 87
+#0 C:\xampp\htdocs\koomead\system\Helpers\url_helper.php(87): _get_uri(NULL, Object(Config\App))
+#1 C:\xampp\htdocs\koomead\system\Helpers\url_helper.php(106): site_url(NULL, NULL, Object(Config\App))
+#2 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(215): base_url(NULL)
+#3 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category('load')
+#4 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#5 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2023-08-29 23:56:45 --> Argument 1 passed to _get_uri() must be of the type string, null given, called in C:\xampp\htdocs\koomead\system\Helpers\url_helper.php on line 87
+#0 C:\xampp\htdocs\koomead\system\Helpers\url_helper.php(87): _get_uri(NULL, Object(Config\App))
+#1 C:\xampp\htdocs\koomead\system\Helpers\url_helper.php(106): site_url(NULL, NULL, Object(Config\App))
+#2 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(215): base_url(NULL)
+#3 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category('load')
+#4 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#5 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2023-08-29 23:58:12 --> Argument 1 passed to _get_uri() must be of the type string, null given, called in C:\xampp\htdocs\koomead\system\Helpers\url_helper.php on line 87
+#0 C:\xampp\htdocs\koomead\system\Helpers\url_helper.php(87): _get_uri(NULL, Object(Config\App))
+#1 C:\xampp\htdocs\koomead\system\Helpers\url_helper.php(106): site_url(NULL, NULL, Object(Config\App))
+#2 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(215): base_url(NULL)
+#3 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category('load')
+#4 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#5 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#7 {main}

@@ -1,0 +1,48 @@
+CRITICAL - 2023-08-30 01:01:12 --> Undefined property: stdClass::$type
+#0 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(119): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', 'C:\\xampp\\htdocs...', 119, Array)
+#1 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category('manage', 'edit', '2')
+#2 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2023-08-30 01:01:19 --> Undefined property: stdClass::$type
+#0 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(119): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', 'C:\\xampp\\htdocs...', 119, Array)
+#1 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category('manage', 'edit', '2')
+#2 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2023-08-30 01:09:46 --> Undefined property: CodeIgniter\View\View::$Crud
+#0 C:\xampp\htdocs\koomead\app\Views\dashboard\category_form.php(31): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', 'C:\\xampp\\htdocs...', 31, Array)
+#1 C:\xampp\htdocs\koomead\system\View\View.php(210): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\koomead\system\View\View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 C:\xampp\htdocs\koomead\system\Common.php(1089): CodeIgniter\View\View->render('dashboard/categ...', Array, true)
+#4 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(295): view('dashboard/categ...', Array)
+#5 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category('manage', 'edit', '1')
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#7 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-08-30 01:10:17 --> Argument 1 passed to CodeIgniter\Database\BaseBuilder::get() must be of the type int or null, string given, called in C:\xampp\htdocs\koomead\app\Models\Crud.php on line 346
+#0 C:\xampp\htdocs\koomead\app\Models\Crud.php(346): CodeIgniter\Database\BaseBuilder->get('asc')
+#1 C:\xampp\htdocs\koomead\app\Views\dashboard\category_form.php(35): App\Models\Crud->read_single_group('category_id', 0, 'category', 'name', 'asc')
+#2 C:\xampp\htdocs\koomead\system\View\View.php(210): include('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\koomead\system\View\View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#4 C:\xampp\htdocs\koomead\system\Common.php(1089): CodeIgniter\View\View->render('dashboard/categ...', Array, true)
+#5 C:\xampp\htdocs\koomead\app\Controllers\Dashboard.php(295): view('dashboard/categ...', Array)
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Dashboard->category('manage', 'edit', '2')
+#7 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#8 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2023-08-30 15:45:32 --> Undefined variable: page
+#0 C:\xampp\htdocs\koomead\app\Views\activity\manage.php(18): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', 'C:\\xampp\\htdocs...', 18, Array)
+#1 C:\xampp\htdocs\koomead\system\View\View.php(210): include('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\koomead\system\View\View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 C:\xampp\htdocs\koomead\system\Common.php(1089): CodeIgniter\View\View->render('activity/manage', Array, true)
+#4 C:\xampp\htdocs\koomead\app\Controllers\Activity.php(142): view('activity/manage', Array)
+#5 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Activity->index()
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Activity))
+#7 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}

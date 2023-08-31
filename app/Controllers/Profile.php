@@ -31,35 +31,67 @@ class Profile extends BaseController {
 		$data['param3'] = $param3;
 		$data['form_link'] = rtrim($form_link, '/');
 
-        if($this->request->getMethod() == 'post') {
-			$email = $this->request->getVar('email');
-			$fullname = $this->request->getVar('fullname');
-            $phone = $this->request->getVar('phone');
+		if($param1 == 'update'){
+			if($this->request->getMethod() == 'post') {
+				$email = $this->request->getVar('email');
+				$fullname = $this->request->getVar('fullname');
+				$phone = $this->request->getVar('phone');
+				$dob = $this->request->getVar('date');
+				$address = $this->request->getVar('address');
+				$website = $this->request->getVar('website');
+				$facebook = $this->request->getVar('facebook');
+				$instagram = $this->request->getVar('instagram');
+				$twitter = $this->request->getVar('twitter');
+				$tiktok = $this->request->getVar('tiktok');
+				$img = $this->request->getVar('img');
+	
+				if(!$email || !$fullname) {
+					echo $this->Crud->msg('danger', 'Email, Fullname field(s) missing');
+					die;
+				}
+	
+				if($email != $main_email) {
+					if($this->Crud->check('email', $email, 'user') > 0) {
+						echo $this->Crud->msg('danger', 'Email already taken, try another');
+						die;
+					}
+				}
+				
+				 /// upload image
+				 if(file_exists($this->request->getFile('pics'))) {
+					$path = 'assets/images/user/';
+					$file = $this->request->getFile('pics');
+					$getImg = $this->Crud->img_upload($path, $file);
+					$img = $getImg->path;
+				}
 
-			if(!$email || !$fullname) {
-				echo $this->Crud->msg('danger', 'Email, Fullname field(s) missing');
+				$social = [];
+				$social['website'] = $website;
+				$social['facebook'] = $facebook;
+				$social['instagram'] = $instagram;
+				$social['twitter'] = $twitter;
+				$social['tiktok'] = $tiktok;
+				
+				// update profile
+				$upd_data['email'] = $email;
+				$upd_data['fullname'] = $fullname;
+				$upd_data['phone'] = $phone;
+				$upd_data['dob'] = $dob;
+				$upd_data['address'] = $address;
+				$upd_data['img_id'] = $img;
+				$upd_data['social'] = json_encode($social);
+
+				if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
+					echo $this->Crud->msg('success', 'Record Updated');
+				} else {
+					echo $this->Crud->msg('info', 'No Changes');
+				}
+	
 				die;
 			}
 
-			if($email != $main_email) {
-				if($this->Crud->check('email', $email, 'user') > 0) {
-					echo $this->Crud->msg('danger', 'Email already taken, try another');
-					die;
-				}
-			}
-
-			// update profile
-			$upd_data['email'] = $email;
-			$upd_data['fullname'] = $fullname;
-            $upd_data['phone'] = $phone;
-			if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
-				echo $this->Crud->msg('success', 'Record Updated');
-			} else {
-				echo $this->Crud->msg('info', 'No Changes');
-			}
-
-			die;
 		}
+        
 
 		$data['email'] = $this->Crud->read_field('id', $log_id, 'user', 'email');
 		$data['fullname'] = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
@@ -69,8 +101,10 @@ class Profile extends BaseController {
         $data['country_id'] = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
 		$data['state_id'] = $this->Crud->read_field('id', $log_id, 'user', 'state_id');
 		$data['city_id'] = $this->Crud->read_field('id', $log_id, 'user', 'city_id');
-        $data['img_id'] = $this->Crud->read_field('id', $log_id, 'user', 'img_id');
-        $data['social'] = $this->Crud->read_field('id', $log_id, 'user', 'social');
+		$img = $this->Crud->read_field('id', $log_id, 'user', 'img_id');
+		if(empty($img)) $img = 'assets/images/avatar.png';
+        $data['img'] = $img;
+        $data['social'] = json_decode($this->Crud->read_field('id', $log_id, 'user', 'social'));
 		$data['bank_details'] = $this->Crud->read_field('id', $log_id, 'user', 'bank_details');
        
         $data['title'] = 'Profile | '.app_name;

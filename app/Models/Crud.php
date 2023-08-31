@@ -912,6 +912,35 @@ class Crud extends Model {
 
 		return $result;
 	}
+
+	public function get_bank($country) {
+		// create a new cURL resource
+		$curl = curl_init();
+
+		// parameters
+		$api_link = 'https://api.kevin.eu/platform/v0.3/auth/countries';
+		// $curl_data = json_encode($curl_data);
+		
+		$chead = array();
+		$chead[] = 'Content-Type: application/json';
+		$chead[] = 'Authorization: Bearer FLWSECK-d4fe580c24ad58ccfd5354f3edab9250-X';
+
+		// set URL and other appropriate options
+		curl_setopt($curl, CURLOPT_URL, $api_link);
+		curl_setopt($curl, CURLOPT_HEADER, 0);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $chead);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+
+		// grab URL and pass it to the browser
+		$result = curl_exec($curl);
+
+		// close cURL resource, and free up system resources
+		curl_close($curl);
+
+		return $result;
+	}
 	//////////////////// END FLUTTERWAVE //////////////////
 
 	///////// TERMII API //////////////////

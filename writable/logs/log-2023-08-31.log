@@ -1,0 +1,23 @@
+ERROR - 2023-08-31 03:11:56 --> Operand should contain 1 column(s)
+CRITICAL - 2023-08-31 03:11:56 --> Operand should contain 1 column(s)
+#0 C:\xampp\htdocs\koomead\system\Database\MySQLi\Connection.php(292): mysqli->query('UPDATE `km_user...', 0)
+#1 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `km_user...')
+#2 C:\xampp\htdocs\koomead\system\Database\BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `km_user...')
+#3 C:\xampp\htdocs\koomead\system\Database\BaseBuilder.php(1913): CodeIgniter\Database\BaseConnection->query('UPDATE `km_user...', Array, false)
+#4 C:\xampp\htdocs\koomead\app\Models\Crud.php(417): CodeIgniter\Database\BaseBuilder->update(Array)
+#5 C:\xampp\htdocs\koomead\app\Controllers\Profile.php(83): App\Models\Crud->updates('id', '1', 'user', Array)
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Profile->index('update')
+#7 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Profile))
+#8 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2023-08-31 03:21:22 --> Cannot use object of type stdClass as array
+#0 C:\xampp\htdocs\koomead\system\View\View.php(210): include()
+#1 C:\xampp\htdocs\koomead\system\View\View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#2 C:\xampp\htdocs\koomead\system\Common.php(1089): CodeIgniter\View\View->render('profile/profile', Array, true)
+#3 C:\xampp\htdocs\koomead\app\Controllers\Profile.php(112): view('profile/profile', Array)
+#4 C:\xampp\htdocs\koomead\system\CodeIgniter.php(825): App\Controllers\Profile->index()
+#5 C:\xampp\htdocs\koomead\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Profile))
+#6 C:\xampp\htdocs\koomead\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\xampp\htdocs\koomead\index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}

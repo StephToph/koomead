@@ -487,7 +487,7 @@
                                                 <input name="email" type="email"  placeholder="Your Mail"   required onClick="this.select()" value="">
                                                 <label>Country</label>
                                                 <div class="listsearch-input-item mb-2">
-                                                    <select data-placeholder="Select" name="country_id" id="country_id" required class="chosen-select no-search-select" >
+                                                    <select data-placeholder="Select" name="country_id" id="country_id" required class="mb-2 chosen-select search-select" onchange="get_state();">
                                                         <option value="">Select</option>
                                                         <?php
                                                             $country = $this->Crud->read_order('country', 'name', 'asc');
@@ -500,25 +500,17 @@
                                                     </select>
                                                 </div>
                                                 <label>State</label>
-                                                <div class="listsearch-input-item mb-2">
-                                                    <select data-placeholder="Apartments" class="chosen-select no-search-select" >
-                                                        <option>All Categories</option>
-                                                        <option>House</option>
-                                                        <option>Apartment</option>
-                                                        <option>Hotel</option>
-                                                        <option>Villa</option>
-                                                        <option>Office</option>
+                                                <div class="listsearch-input-item mb-2" id="states_id">
+                                                    <select data-placeholder="Select" name="state_id" id="state_id" required onchange="get_city();" class="mb-2 chosen-select search-select" >
+                                                        <option value="">Select Country First</option>
+                                                       
                                                     </select>
                                                 </div>
                                                 <label>City</label>
-                                                <div class="listsearch-input-item mb-2">
-                                                    <select data-placeholder="Apartments" class="chosen-select no-search-select" >
-                                                        <option>All Categories</option>
-                                                        <option>House</option>
-                                                        <option>Apartment</option>
-                                                        <option>Hotel</option>
-                                                        <option>Villa</option>
-                                                        <option>Office</option>
+                                                <div class="listsearch-input-item mb-2" id="citys_id">
+                                                    <select data-placeholder="Select" name="city_id" id="city_id" required class="mb-2 chosen-select search-select" >
+                                                        <option value="">Select State First</option>
+                                                       
                                                     </select>
                                                 </div>
                                                 <label>Phone Number  * <span class="dec-icon"><i class="fal fa-phone"></i></span></label>
@@ -584,6 +576,7 @@
         <!--map-modal end --> 			
     </div>
     <!-- Main end -->
+
     <!--=============== scripts  ===============-->
     <script src="<?=site_url();?>assets/js/jquery.min.js"></script>
     <script src="<?=site_url();?>assets/js/plugins.js"></script>
@@ -591,6 +584,29 @@
     <script src="<?=site_url();?>assets/js/jsform.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwJSRi0zFjDemECmFl9JtRj1FY7TiTRRo&amp;libraries=places"></script>
     <script src="<?=site_url();?>assets/js/map-single.js"></script>
+    <script>var site_url = '<?php echo site_url(); ?>';
+        function get_state(){
+            var country_id = $('#country_id').val();
+            $.ajax({
+                url: site_url + 'auth/account/get_state/' + country_id,
+                type: 'post',
+                success: function (data) {
+                    $('#states_id').html(data);
+                }
+            });
+        }
+
+        function get_city(){
+            var state_id = $('#state_id').val();
+            $.ajax({
+                url: site_url + 'auth/account/get_city/' + state_id,
+                type: 'post',
+                success: function (data) {
+                    $('#citys_id').html(data);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

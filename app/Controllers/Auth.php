@@ -51,6 +51,9 @@ class Auth extends BaseController {
             $password = $this->request->getPost('password');
             $phone = $this->request->getPost('phone');
             $agree = $this->request->getPost('agree');
+            $country_id = $this->request->getPost('country_id');
+            $state_id = $this->request->getPost('state_id');
+            $city_id = $this->request->getPost('city_id');
 
             $Error = '';
 			if($this->Crud->check('email', $email, 'user') > 0) {$Error .= 'Email Taken <br/>';}
@@ -66,7 +69,10 @@ class Auth extends BaseController {
 			$ins_data['email'] = $email;
 			$ins_data['role_id'] = $user_role;
 			$ins_data['phone'] = $phone;
-			$ins_data['actiate'] = 1;
+			$ins_data['country_id'] = $country_id;
+			$ins_data['state_id'] = $state_id;
+			$ins_data['city_id'] = $city_id;
+			$ins_data['activate'] = 1;
 			$ins_data['password'] = md5($password);
 			$ins_data['reg_date'] = date(fdate);
 
@@ -84,6 +90,46 @@ class Auth extends BaseController {
         
         // $data['title'] = 'Register | '.app_name;
         // return view('auth/register', $data);
+    }
+
+    public function account($param1='', $param2=''){
+        if($param1 == 'get_state'){
+            if(empty($param2)){
+                $st =  '<option value="">Select Country First</option>';
+            } else {
+                $state = $this->Crud->read_single_order('country_id', $param2, 'state', 'name', 'asc');
+                if(!empty($state)){
+                    $st =  '<option value="">Select State</option>';
+                    foreach ($state as $s) {
+                        $st .= '<option value="'.$s->id.'">'.$s->name.'</option>';
+                    }
+                }
+            }
+            echo '<div class="listsearch-input-item mb-2">
+                <select data-placeholder="Select" name="state_id" id="state_id" required onchange="get_city();" class="mb-2 chosen-select search-select" >
+                    '.$st.'
+                </select></div><script>$("#state_id").niceSelect();</script>
+            ';
+        }
+
+        if($param1 == 'get_city'){
+            if(empty($param2)){
+                $st =  '<option value="">Select State First</option>';
+            } else {
+                $state = $this->Crud->read_single_order('state_id', $param2, 'city', 'name', 'asc');
+                if(!empty($state)){
+                    $st =  '<option value="">Select City</option>';
+                    foreach ($state as $s) {
+                        $st .= '<option value="'.$s->id.'">'.$s->name.'</option>';
+                    }
+                }
+            }
+            echo '<div class="listsearch-input-item mb-2">
+                <select data-placeholder="Select" name="city_id" id="city_id" required class="mb-2 chosen-select search-select" >
+                    '.$st.'
+                </select></div><script>$("#city_id").niceSelect();</script>
+            ';
+        }
     }
     ///// LOGOUT
     public function logout() {

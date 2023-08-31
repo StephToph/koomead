@@ -51,6 +51,9 @@ class Auth extends BaseController {
             $password = $this->request->getPost('password');
             $phone = $this->request->getPost('phone');
             $agree = $this->request->getPost('agree');
+            $country_id = $this->request->getPost('country_id');
+            $state_id = $this->request->getPost('state_id');
+            $city_id = $this->request->getPost('city_id');
 
             $Error = '';
 			if($this->Crud->check('email', $email, 'user') > 0) {$Error .= 'Email Taken <br/>';}
@@ -66,7 +69,10 @@ class Auth extends BaseController {
 			$ins_data['email'] = $email;
 			$ins_data['role_id'] = $user_role;
 			$ins_data['phone'] = $phone;
-			$ins_data['actiate'] = 1;
+			$ins_data['country_id'] = $country_id;
+			$ins_data['state_id'] = $state_id;
+			$ins_data['city_id'] = $city_id;
+			$ins_data['activate'] = 1;
 			$ins_data['password'] = md5($password);
 			$ins_data['reg_date'] = date(fdate);
 

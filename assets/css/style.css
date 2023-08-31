@@ -791,7 +791,7 @@ blockquote p {
   	background:#fff;  
 }
 .header-search-wrapper .nice-select {
-	z-index: 20;
+	/* z-index: 20; */
 }
 .nice-select{
 	background: #F5F7FB;

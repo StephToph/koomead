@@ -64,7 +64,15 @@
             <!-- header-search button end  -->
             <!--  add new  btn -->
             <div class="add-list_wrap">
-                <a href="dashboard-add-listing.html" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>
+                <?php
+
+                if(empty($log_id)){
+                    echo '<div class="show-reg-form modal-open"><a href="javascript:;" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a></div>';
+                } else {
+                    echo '<a href="'.site_url('dashboard/category').'" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>';
+                }
+                ?>
+                
             </div>
             <!--  add new  btn end -->
             <!--  header-opt_btn -->
@@ -75,7 +83,7 @@
             <!--  cart-btn   -->
             <div class="cart-btn  tolt show-header-modal" data-microtip-position="bottom"  data-tooltip="Your Wishlist / Compare">
                 <i class="fal fa-bell"></i>
-                <span class="cart-btn_counter color-bg">5</span>
+                <span class="cart-btn_counter color-bg">0</span>
             </div>
             <!--  cart-btn end -->
             <!--  login btn -->
@@ -89,110 +97,35 @@
             ?>
             
             <!--  login btn  end -->
-            <!--  navigation --> 
-            <div class="nav-holder main-menu">
-                <nav>
-                    <ul class="no-list-style">
-                        <li>
-                            <a href="#" class="act-link">Home <i class="fa fa-caret-down"></i></a>
-                            <!--second level -->   
-                            <ul>
-                                <li><a href="<?=site_url(); ?>">Parallax Image</a></li>
-                                <li><a href="index2.html">Slider</a></li>
-                                <li><a href="index3.html">Video</a></li>
-                                <li><a href="index4.html">Slideshow</a></li>
-                                <li><a href="dark/<?=site_url(); ?>" target="_blank">Dark Demo</a></li>
-                            </ul>
-                            <!--second level end-->
-                        </li>
-                        <li>
-                            <a href="#">Listings <i class="fa fa-caret-down"></i></a>
-                            <!--second level -->
-                            <ul>
-                                <li><a href="listing.html">Column map</a></li>
-                                <li><a href="listing2.html">Column map 2</a></li>
-                                <li><a href="listing3.html">Fullwidth Map</a></li>
-                                <li><a href="listing4.html">Fullwidth Map 2</a></li>
-                                <li><a href="listing5.html">Without Map</a></li>
-                                <li><a href="listing6.html">Without Map 2</a></li>
-                                <li>
-                                    <a href="#">Single <i class="fa fa-caret-down"></i></a>
-                                    <!--third  level  -->
-                                    <ul>
-                                        <li><a href="listing-single.html">Style 1</a></li>
-                                        <li><a href="listing-single2.html">Style 2</a></li>
-                                        <li><a href="listing-single3.html">Style 3</a></li>
-                                    </ul>
-                                    <!--third  level end-->
-                                </li>
-                            </ul>
-                            <!--second level end-->
-                        </li>
-                        <li>
-                            <a href="#">Agents<i class="fa fa-caret-down"></i></a>
-                            <!--second level -->   
-                            <ul>
-                                <li><a href="agent-list.html">Agent List</a></li>
-                                <li><a href="agency-list.html">Agency List</a></li>
-                                <li><a href="agent-single.html">Agent Single</a></li>
-                                <li><a href="agency-single.html">Agency Single</a></li>
-                            </ul>
-                            <!--second level end-->
-                        </li>
-                        <li>
-                            <a href="blog.html">News</a>
-                        </li>
-                        <li>
-                            <a href="#">Pages <i class="fa fa-caret-down"></i></a>
-                            <!--second level -->   
-                            <ul>
-                                <li><a href="about.html">About</a></li>
-                                <li><a href="contacts.html">Contacts</a></li>
-                                <li><a href="help.html">Help FAQ</a></li>
-                                <li><a href="pricing.html">Pricing </a></li>
-                                <li><a href="dashboard.html">User Dashboard</a></li>
-                                <li><a href="blog-single.html">Blog Single</a></li>
-                                <li><a href="compare.html">Compare</a></li>
-                                <li><a href="coming-soon.html">Coming Soon</a></li>
-                                <li><a href="404.html">404</a></li>
-                            </ul>
-                            <!--second level end-->                                
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <!-- navigation  end -->
+            
             <!-- header-search-wrapper -->
             <div class="header-search-wrapper novis_search">
-                <div class="header-serach-menu">
-                    <div class="custom-switcher fl-wrap">
-                        <div class="fieldset fl-wrap">
-                            <input type="radio" name="duration-1"  id="buy_sw" class="tariff-toggle" checked>
-                            <label for="buy_sw">Buy</label>
-                            <input type="radio" name="duration-1" class="tariff-toggle"  id="rent_sw">
-                            <label for="rent_sw" class="lss_lb">Rent</label>
-                            <span class="switch color-bg"></span>
-                        </div>
-                    </div>
-                </div>
                 <div class="custom-form">
                     <form method="post"  name="registerform">
                         <label>Keywords </label>
                         <input type="text" placeholder="Address , Street , State..." value=""/>
-                        <label >Categories</label>
-                        <select data-placeholder="Categories" class="chosen-select on-radius no-search-select" >
-                            <option>All Categories</option>
-                            <option>House</option>
-                            <option>Apartment</option>
-                            <option>Hotel</option>
-                            <option>Villa</option>
-                            <option>Office</option>
-                        </select>
-                        <label style="margin-top:10px;" >Price Range</label>
-                        <div class="price-rage-item fl-wrap">
-                            <input type="text" class="price-range" data-min="100" data-max="100000"  name="price-range1"  data-step="1" value="1" data-prefix="$">
+                        <label>Catgeory</label>
+                        <div class="listsearch-input-item mb-4">
+                            <select data-placeholder="Select" name="category_id" id="category_id" required class="mb-2 chosen-select" onchange="get_category();">
+                                <option value="">Select</option>
+                                <?php
+                                    $country = $this->Crud->read_single_order('category_id', 0, 'category', 'name', 'asc');
+                                    if(!empty($country)){
+                                        foreach($country as $c){
+                                            echo '<option value="'.$c->id.'">'.$c->name.'</option>';
+                                        }
+                                    }
+                                ?>
+                            </select>
                         </div>
-                        <button onclick="location.href='listing.html'" type="button"  class="btn float-btn color-bg"><i class="fal fa-search"></i> Search</button>
+                        <label>Sub Category</label>
+                        <div class="listsearch-input-item mb-2" id="subs_id">
+                            <select data-placeholder="Select" name="sub_id" id="sub_id" required class="mb-2 chosen-select " >
+                                <option value="">Select Category First</option>
+                                
+                            </select>
+                        </div>
+                        <button onclick="location.href='<?=site_url(); ?>'" type="button"  class="btn float-btn color-bg"><i class="fal fa-search"></i> Search</button>
                     </form>
                 </div>
             </div>
@@ -301,24 +234,11 @@
             <div class="header-opt-modal novis_header-mod">
                 <div class="header-opt-modal-container hopmc_init">
                     <div class="header-opt-modal-item lang-item fl-wrap">
-                        <h4>Language: <span>EN</span></h4>
+                        <h4>Country: <span>NGN</span></h4>
                         <div class="header-opt-modal-list fl-wrap">
                             <ul>
-                                <li><a href="#" class="current-lan" data-lantext="EN">English</a></li>
-                                <li><a href="#" data-lantext="FR">Franais</a></li>
-                                <li><a href="#" data-lantext="ES">Espaol</a></li>
-                                <li><a href="#" data-lantext="DE">Deutsch</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="header-opt-modal-item currency-item fl-wrap">
-                        <h4>Currency: <span>USD</span></h4>
-                        <div class="header-opt-modal-list fl-wrap">
-                            <ul>
-                                <li><a href="#" class="current-lan" data-lantext="USD">USD</a></li>
-                                <li><a href="#" data-lantext="EUR">EUR</a></li>
-                                <li><a href="#" data-lantext="GBP">GBP</a></li>
-                                <li><a href="#" data-lantext="RUR">RUR</a></li>
+                                <li><a href="#" class="current-lan" data-lantext="NGN">Nigeria</a></li>
+                                <li><a href="#" data-lantext="UK">United Kingdom</a></li>
                             </ul>
                         </div>
                     </div>
@@ -344,10 +264,7 @@
                                         <img src="<?=site_url();?>assets/images/logo.png" alt="">
                                     </div>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar.</p>
-                                    <div class="fw_hours fl-wrap">
-                                        <span>Monday - Friday:<strong> 8am - 6pm</strong></span>
-                                        <span>Saturday - Sunday:<strong> 9am - 3pm</strong></span>
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <!-- footer widget end-->
@@ -358,11 +275,11 @@
                                         <h4>Helpful links</h4>
                                     </div>
                                     <ul class="footer-list fl-wrap">
-                                        <li><a href="about.html">About Our Company</a></li>
-                                        <li><a href="blog.html">Our last News</a></li>
-                                        <li><a href="pricing.html">Pricing Plans</a></li>
-                                        <li><a href="contacts.html">Contacts</a></li>
-                                        <li><a href="help.html">Help Center</a></li>
+                                        <li><a href="javascript:;">About Our Company</a></li>
+                                        <li><a href="javascript:;">Our last News</a></li>
+                                        <li><a href="javascript:;">Pricing Plans</a></li>
+                                        <li><a href="javascript:;">Contacts</a></li>
+                                        <li><a href="javascript:;">Help Center</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -374,16 +291,16 @@
                                         <h4>Contacts Info</h4>
                                     </div>
                                     <ul  class="footer-contacts fl-wrap">
-                                        <li><span><i class="fal fa-envelope"></i> Mail :</span><a href="#" target="_blank">yourmail@domain.com</a></li>
-                                        <li> <span><i class="fal fa-map-marker"></i> Adress :</span><a href="#" target="_blank">USA 27TH Brooklyn NY</a></li>
-                                        <li><span><i class="fal fa-phone"></i> Phone :</span><a href="#">+7(111)123456789</a></li>
+                                        <li><span><i class="fal fa-envelope"></i> Mail :</span><a href="javascript:;">admin@koomeli.com</a></li>
+                                        <li> <span><i class="fal fa-map-marker"></i> Adress :</span><a href="javascript:;">USA 27TH Brooklyn NY</a></li>
+                                        <li><span><i class="fal fa-phone"></i> Phone :</span><a href="javascript:;">+7(111)123456789</a></li>
                                     </ul>
                                     <div class="footer-social fl-wrap">
                                         <ul>
-                                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-vk"></i></a></li>
+                                            <li><a href="javascript:;" ><i class="fab fa-facebook-f"></i></a></li>
+                                            <li><a href="javascript:;" ><i class="fab fa-twitter"></i></a></li>
+                                            <li><a href="javascript:;" ><i class="fab fa-instagram"></i></a></li>
+                                            <li><a href="javascript:;" ><i class="fab fa-vk"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -395,10 +312,10 @@
                                     <div class="footer-widget-title fl-wrap">
                                         <h4>Download our API</h4>
                                     </div>
-                                    <p>Start working with Homeradar that can provide everything you need </p>
+                                    <p>Start working with <?=app_name; ?> that can provide everything you need </p>
                                     <div class="api-links fl-wrap">
-                                        <a href="#" class="api-btn color-bg"><i class="fab fa-apple"></i> App Store</a>  
-                                        <a href="#" class="api-btn color-bg"><i class="fab fa-google-play"></i> Play Market</a>
+                                        <a href="javascript:;" class="api-btn color-bg"><i class="fab fa-apple"></i> App Store</a>  
+                                        <a href="javascript:;" class="api-btn color-bg"><i class="fab fa-google-play"></i> Play Market</a>
                                     </div>
                                 </div>
                             </div>
@@ -409,12 +326,12 @@
                 <!--sub-footer-->
                 <div class="sub-footer gray-bg fl-wrap">
                     <div class="container">
-                        <div class="copyright"> &#169; Homeradar 2022 .  All rights reserved.</div>
+                        <div class="copyright"> &#169; <?=app_name; ?> <?=date('Y'); ?> .  All rights reserved.</div>
                         <div class="subfooter-nav">
                             <ul class="no-list-style">
-                                <li><a href="#">Terms of use</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Blog</a></li>
+                                <li><a href="javascript:;">Terms of use</a></li>
+                                <li><a href="javascript:;">Privacy Policy</a></li>
+                                <li><a href="javascript:;">Blog</a></li>
                             </ul>
                         </div>
                     </div>
@@ -542,9 +459,8 @@
         <!--secondary-nav -->
         <div class="secondary-nav">
             <ul>
-                <li><a href="dashboard-add-listing.html" class="tolt" data-microtip-position="left"  data-tooltip="Sell Property"><i class="fal fa-truck-couch"></i> </a></li>
-                <li><a href="listing.html" class="tolt" data-microtip-position="left"  data-tooltip="Buy Property"> <i class="fal fa-shopping-bag"></i></a></li>
-                <li><a href="compare.html" class="tolt" data-microtip-position="left"  data-tooltip="Your Compare"><i class="fal fa-exchange"></i></a></li>
+                <li><a href="javascript:;" class="tolt show-reg-form modal-open" data-microtip-position="left"  data-tooltip="Register"><i class="fal fa-truck-couch"></i> </a></li>
+                <li><a href="javascript:;" class="tolt show-reg-form modal-open" data-microtip-position="left"  data-tooltip="Login"> <i class="fal fa-shopping-bag"></i></a></li>
             </ul>
             <div class="progress-indicator">
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -603,6 +519,17 @@
                 type: 'post',
                 success: function (data) {
                     $('#citys_id').html(data);
+                }
+            });
+        }
+        
+        function get_category(){
+            var category_id = $('#category_id').val();
+            $.ajax({
+                url: site_url + 'auth/account/get_category/' + category_id,
+                type: 'post',
+                success: function (data) {
+                    $('#subs_id').html(data);
                 }
             });
         }

@@ -130,6 +130,25 @@ class Auth extends BaseController {
                 </select></div><script>$("#city_id").niceSelect();</script>
             ';
         }
+
+        if($param1 == 'get_category'){
+            if(empty($param2)){
+                $st =  '<option value="">Select Category First</option>';
+            } else {
+                $state = $this->Crud->read_single_order('category_id', $param2, 'category', 'name', 'asc');
+                if(!empty($state)){
+                    $st =  '<option value="">Select Sub Category</option>';
+                    foreach ($state as $s) {
+                        $st .= '<option value="'.$s->id.'">'.$s->name.'</option>';
+                    }
+                }
+            }
+            echo '<div class="listsearch-input-item mb-2">
+                <select data-placeholder="Select" name="sub_id" id="sub_id" required class="mb-2 chosen-select" >
+                    '.$st.'
+                </select></div><script>$("#sub_id").niceSelect();</script>
+            ';
+        }
     }
     ///// LOGOUT
     public function logout() {

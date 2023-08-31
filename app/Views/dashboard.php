@@ -18,7 +18,7 @@
                 <div class="dashboard-title-item"><span><?=$page; ?></span></div>
                 <div class="dashbard-menu-header">
                     <div class="dashbard-menu-avatar fl-wrap">
-                        <img src="<?=site_url(); ?>assets/images/avatar/5.jpg" alt="">
+                        <img src="<?=site_url(); ?>assets/images/avatar.png" alt="">
                         <h4>Welcome, <span><?=$log_name;?></span></h4>
                     </div>
                     <a href="<?=site_url('auth/logout');?>" class="log-out-btn   tolt" data-microtip-position="bottom"  data-tooltip="Log Out"><i class="far fa-power-off"></i></a>

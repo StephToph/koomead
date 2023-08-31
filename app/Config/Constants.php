@@ -53,7 +53,7 @@ defined('DECADE') || define('DECADE', 315360000);
 defined('app_name') || define('app_name', 'Koomeli');
 defined('app_meta_desc') || define('app_meta_desc', '');
 defined('app_email') || define('app_email', '');
-defined('app_website') || define('app_website', 'https://pcdl4kids.com');
+defined('app_website') || define('app_website', 'https://koomeli.com');
 defined('push_email') || define('push_email', md5(time().rand()).'@pcdl4kids.com');
 defined('fdate') || define('fdate', 'Y-m-d H:i:s');
 defined('curr') || define('curr', '&#8358;');

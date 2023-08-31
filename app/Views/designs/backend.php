@@ -76,11 +76,11 @@
                 <!-- header-search button end  -->
                 <!--  add new  btn -->
                 <div class="add-list_wrap">
-                    <a href="dashboard-add-listing.html" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>
+                    <a href="<?=site_url('listing'); ?>" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>
                 </div>
                 <!--  add new  btn end -->
                 <!--  header-opt_btn -->
-                <div class="header-opt_btn tolt" data-microtip-position="bottom"  data-tooltip="Language / Currency">
+                <div class="header-opt_btn tolt" data-microtip-position="bottom"  data-tooltip="Country">
                     <span><i class="fal fa-globe"></i></span>
                 </div>
                 <!--  header-opt_btn end -->
@@ -104,79 +104,7 @@
                     <a href="<?=site_url('auth/logout'); ?>" class="color-bg db_log-out"><i class="far fa-power-off"></i> Log Out</a>
                 </div>
                 <!--  dashboard-submenu  end -->
-                <!--  navigation --> 
-                <div class="nav-holder main-menu">
-                    <nav>
-                        <ul class="no-list-style">
-                            <li>
-                                <a href="#">Home <i class="fa fa-caret-down"></i></a>
-                                <!--second level -->   
-                                <ul>
-                                    <li><a href="<?=site_url(); ?>">Parallax Image</a></li>
-                                    <li><a href="index2.html">Slider</a></li>
-                                    <li><a href="index3.html">Video</a></li>
-                                    <li><a href="index4.html">Slideshow</a></li>
-									<li><a href="dark/<?=site_url(); ?>" target="_blank">Dark Demo</a></li>
-                                </ul>
-                                <!--second level end-->
-                            </li>
-                            <li>
-                                <a href="#">Listings <i class="fa fa-caret-down"></i></a>
-                                <!--second level -->
-                                <ul>
-                                    <li><a href="listing.html">Column map</a></li>
-                                    <li><a href="listing2.html">Column map 2</a></li>
-                                    <li><a href="listing3.html">Fullwidth Map</a></li>
-                                    <li><a href="listing4.html">Fullwidth Map 2</a></li>
-                                    <li><a href="listing5.html">Without Map</a></li>
-                                    <li><a href="listing6.html">Without Map 2</a></li>
-                                    <li>
-                                        <a href="#">Single <i class="fa fa-caret-down"></i></a>
-                                        <!--third  level  -->
-                                        <ul>
-                                            <li><a href="listing-single.html">Style 1</a></li>
-                                            <li><a href="listing-single2.html">Style 2</a></li>
-                                            <li><a href="listing-single3.html">Style 3</a></li>
-                                        </ul>
-                                        <!--third  level end-->
-                                    </li>
-                                </ul>
-                                <!--second level end-->
-                            </li>
-                            <li>
-                                <a href="#">Agents<i class="fa fa-caret-down"></i></a>
-                                <!--second level -->   
-                                <ul>
-                                    <li><a href="agent-list.html">Agent List</a></li>
-                                    <li><a href="agency-list.html">Agency List</a></li>
-                                    <li><a href="agent-single.html">Agent Single</a></li>
-                                    <li><a href="agency-single.html">Agency Single</a></li>
-                                </ul>
-                                <!--second level end-->
-                            </li>
-                            <li>
-                                <a href="blog.html">News</a>
-                            </li>
-                            <li>
-                                <a href="#" class="act-link">Pages <i class="fa fa-caret-down"></i></a>
-                                <!--second level -->   
-                                <ul>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="contacts.html">Contacts</a></li>
-                                    <li><a href="help.html">Help FAQ</a></li>
-                                    <li><a href="pricing.html">Pricing </a></li>
-                                    <li><a href="dashboard.html">User Dashboard</a></li>
-                                    <li><a href="blog-single.html">Blog Single</a></li>
-                                    <li><a href="compare.html">Compare</a></li>
-                                    <li><a href="coming-soon.html">Coming Soon</a></li>
-                                    <li><a href="404.html">404</a></li>
-                                </ul>
-                                <!--second level end-->                                
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-                <!-- navigation  end -->
+                
                 <!-- header-search-wrapper -->
                 <div class="header-search-wrapper novis_search">
                     <div class="header-serach-menu">
@@ -316,24 +244,11 @@
                 <div class="header-opt-modal novis_header-mod">
                     <div class="header-opt-modal-container hopmc_init">
                         <div class="header-opt-modal-item lang-item fl-wrap">
-                            <h4>Language: <span>EN</span></h4>
+                            <h4>Country: <span>NGN</span></h4>
                             <div class="header-opt-modal-list fl-wrap">
                                 <ul>
-                                    <li><a href="#" class="current-lan" data-lantext="EN">English</a></li>
-                                    <li><a href="#" data-lantext="FR">Franais</a></li>
-                                    <li><a href="#" data-lantext="ES">Espaol</a></li>
-                                    <li><a href="#" data-lantext="DE">Deutsch</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="header-opt-modal-item currency-item fl-wrap">
-                            <h4>Currency: <span>USD</span></h4>
-                            <div class="header-opt-modal-list fl-wrap">
-                                <ul>
-                                    <li><a href="#" class="current-lan" data-lantext="USD">USD</a></li>
-                                    <li><a href="#" data-lantext="EUR">EUR</a></li>
-                                    <li><a href="#" data-lantext="GBP">GBP</a></li>
-                                    <li><a href="#" data-lantext="RUR">RUR</a></li>
+                                    <li><a href="#" class="current-lan" data-lantext="NGN">Nigeria</a></li>
+                                    <li><a href="#" data-lantext="UK">United Kingdom</a></li>
                                 </ul>
                             </div>
                         </div>

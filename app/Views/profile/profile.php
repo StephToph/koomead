@@ -68,15 +68,30 @@
                             <label>Adress <span class="dec-icon"><i class="fas fa-map-marker"></i> </span></label>
                             <input type="text" name="address" placeholder="USA 27TH Brooklyn NY" value="<?=$address;?>"/>										
                             <label>Website <span class="dec-icon"><i class="far fa-globe"></i> </span></label>
-                            <input type="text" name="website" placeholder="koomeli.com" value="<?=$social->website; ?>"/>										
+                            <?php
+                                $website = '';
+                                $facebook = '';
+                                $twitter = '';
+                                $instagram = '';
+                                $tiktook = '';
+                                if(!empty($social)){
+                                    $website = $social->website;
+                                    $facebook = $social->facebook;
+                                    $twitter = $social->twitter;
+                                    $instagram = $social->instagram;
+                                    $tiktok = $social->tiktok;
+                                    
+                                }
+                            ?>
+                            <input type="text" name="website" placeholder="koomeli.com" value="<?=$website; ?>"/>										
                             <label>Facebook  <span class="dec-icon"><i class="fab fa-facebook"></i></span></label>
-                            <input type="text" name="facebook" placeholder="https://www.facebook.com/" value="<?=$social->facebook; ?>"/>
+                            <input type="text" name="facebook" placeholder="https://www.facebook.com/" value="<?=$facebook; ?>"/>
                             <label>Twitter <span class="dec-icon"><i class="fab fa-twitter"></i></span></label>
-                            <input type="text" name="twitter" placeholder="https://twitter.com/" value="<?=$social->twitter; ?>"/>
+                            <input type="text" name="twitter" placeholder="https://twitter.com/" value="<?=$twitter; ?>"/>
                             <label>Instagram<span class="dec-icon"><i class="fab fa-instagram"></i>  </span></label>
-                            <input type="text" name="instagram" placeholder="https://www.instagram.com/" value="<?=$social->instagram; ?>"/>	
+                            <input type="text" name="instagram" placeholder="https://www.instagram.com/" value="<?=$instagram; ?>"/>	
                             <label>Tiktok<span class="dec-icon"><i class="fab fa-tiktok"></i>  </span></label>
-                            <input type="text" name="tiktok" placeholder="https://tiktok.com/" value="<?=$social->tiktok; ?>"/>										
+                            <input type="text" name="tiktok" placeholder="https://tiktok.com/" value="<?=$tiktok; ?>"/>										
                             <button class="btn btn-primary d-block mb-5">Save Changes</button>
                         </div>
                         <div class="row">

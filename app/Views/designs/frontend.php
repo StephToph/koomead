@@ -56,11 +56,7 @@
                 </div>
             </div>
             <!-- nav-button-wrap end-->	
-            <!-- header-search button  -->
-            <div class="header-search-button">
-                <i class="fal fa-search"></i>
-                <span>Search...</span>
-            </div>
+            
             <!-- header-search button end  -->
             <!--  add new  btn -->
             <div class="add-list_wrap">
@@ -459,7 +455,7 @@
         <!--secondary-nav -->
         <div class="secondary-nav">
             <ul>
-                <li><a href="javascript:;" class="tolt show-reg-form modal-open" data-microtip-position="left"  data-tooltip="Register"><i class="fal fa-truck-couch"></i> </a></li>
+                <li><a href="javascript:;" class="tolt show-reg-form modal-open" data-microtip-position="left"  data-tooltip="Register"><i class="fal fa-sign-in-alt"></i></a></li>
                 <li><a href="javascript:;" class="tolt show-reg-form modal-open" data-microtip-position="left"  data-tooltip="Login"> <i class="fal fa-shopping-bag"></i></a></li>
             </ul>
             <div class="progress-indicator">

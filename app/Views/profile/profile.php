@@ -73,7 +73,7 @@
                                 $facebook = '';
                                 $twitter = '';
                                 $instagram = '';
-                                $tiktook = '';
+                                $tiktok = '';
                                 if(!empty($social)){
                                     $website = $social->website;
                                     $facebook = $social->facebook;

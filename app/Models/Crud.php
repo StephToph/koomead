@@ -1455,21 +1455,24 @@ class Crud extends Model {
 	}
 
     /// filter user
-    public function filter_user($limit='', $offset='', $log_id, $state_id='', $status='', $search='') {
+    public function filter_user($limit='', $offset='', $log_id, $search='', $status='', $start_date='', $end_date='') {
         $db = db_connect();
         $builder = $db->table('user');
 
         // build query
 		$builder->orderBy('id', 'DESC');
-		if(!empty($state_id)) $builder->where('state_id', $state_id);
+		if($status != 'all') $builder->where('activate', $status);
 		
         if(!empty($search)) {
             $builder->like('fullname', $search);
-			$builder->orLike('email', $search);
-			$builder->orLike('phone', $search);
         }
 
+		if(!empty($start_date) && !empty($end_date)){
+			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') >= '".$start_date."'",NULL,FALSE);
+			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') <= '".$end_date."'",NULL,FALSE); 
+		}
 		
+		$builder->where('role_id', '3');
         // limit query
         if($limit && $offset) {
 			$query = $builder->get($limit, $offset);

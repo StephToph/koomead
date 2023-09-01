@@ -147,33 +147,13 @@
                                     <div class="widget-posts  fl-wrap">
                                         <ul class="no-list-style">
                                             <li>
-                                                <div class="widget-posts-img"><a href="listing-single.html"><img src="<?=site_url(); ?>assets/images/all/small/1.jpg" alt=""></a>  
-                                                </div>
+                                                <!-- <div class="widget-posts-img"><a href="listing-single.html"><img src="<?=site_url(); ?>assets/images/all/small/1.jpg" alt=""></a>  
+                                                </div> -->
                                                 <div class="widget-posts-descr">
-                                                    <h4><a href="listing-single.html">Affordable Urban Room</a></h4>
-                                                    <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i> 40 Journal Square  , NJ, USA</a></div>
+                                                    <h4>No Notification</h4>
+                                                    <!-- <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i> 40 Journal Square  , NJ, USA</a></div>
                                                     <div class="widget-posts-descr-price"><span>Price: </span> $ 1500 / per month</div>
-                                                    <div class="clear-wishlist"><i class="fal fa-trash-alt"></i></div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="widget-posts-img"><a href="listing-single.html"><img src="<?=site_url(); ?>assets/images/all/small/2.jpg" alt=""></a>
-                                                </div>
-                                                <div class="widget-posts-descr">
-                                                    <h4><a href="listing-single.html">Family House</a></h4>
-                                                    <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i> 34-42 Montgomery St , NY, USA</a></div>
-                                                    <div class="widget-posts-descr-price"><span>Price: </span> $ 50.000</div>
-                                                    <div class="clear-wishlist"><i class="fal fa-trash-alt"></i></div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="widget-posts-img"><a href="listing-single.html"><img src="<?=site_url(); ?>assets/images/all/small/3.jpg" alt=""></a>
-                                                </div>
-                                                <div class="widget-posts-descr">
-                                                    <h4><a href="listing-single.html">Apartment to Rent</a></h4>
-                                                    <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i>75 Prince St, NY, USA</a></div>
-                                                    <div class="widget-posts-descr-price"><span>Price: </span> $100 / per night</div>
-                                                    <div class="clear-wishlist"><i class="fal fa-trash-alt"></i></div>
+                                                    <div class="clear-wishlist"><i class="fal fa-trash-alt"></i></div> -->
                                                 </div>
                                             </li>
                                         </ul>

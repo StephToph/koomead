@@ -104,45 +104,13 @@
                                 <div class="widget-posts  fl-wrap">
                                     <ul class="no-list-style">
                                         <li>
-                                            <div class="widget-posts-img"><a href="listing-single.html"><img
-                                                        src="<?=site_url();?>assets/images/all/small/1.jpg" alt=""></a>
-                                            </div>
+                                            <!-- <div class="widget-posts-img"><a href="listing-single.html"><img src="<?=site_url(); ?>assets/images/all/small/1.jpg" alt=""></a>  
+                                            </div> -->
                                             <div class="widget-posts-descr">
-                                                <h4><a href="listing-single.html">Affordable Urban Room</a></h4>
-                                                <div class="geodir-category-location fl-wrap"><a href="#"><i
-                                                            class="fas fa-map-marker-alt"></i> 40 Journal Square , NJ,
-                                                        USA</a></div>
-                                                <div class="widget-posts-descr-price"><span>Price: </span> $ 1500 / per
-                                                    month</div>
-                                                <div class="clear-wishlist"><i class="fal fa-trash-alt"></i></div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="widget-posts-img"><a href="listing-single.html"><img
-                                                        src="<?=site_url();?>assets/images/all/small/2.jpg" alt=""></a>
-                                            </div>
-                                            <div class="widget-posts-descr">
-                                                <h4><a href="listing-single.html">Family House</a></h4>
-                                                <div class="geodir-category-location fl-wrap"><a href="#"><i
-                                                            class="fas fa-map-marker-alt"></i> 34-42 Montgomery St , NY,
-                                                        USA</a></div>
-                                                <div class="widget-posts-descr-price"><span>Price: </span> $ 50.000
-                                                </div>
-                                                <div class="clear-wishlist"><i class="fal fa-trash-alt"></i></div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="widget-posts-img"><a href="listing-single.html"><img
-                                                        src="<?=site_url();?>assets/images/all/small/3.jpg" alt=""></a>
-                                            </div>
-                                            <div class="widget-posts-descr">
-                                                <h4><a href="listing-single.html">Apartment to Rent</a></h4>
-                                                <div class="geodir-category-location fl-wrap"><a href="#"><i
-                                                            class="fas fa-map-marker-alt"></i>75 Prince St, NY, USA</a>
-                                                </div>
-                                                <div class="widget-posts-descr-price"><span>Price: </span> $100 / per
-                                                    night</div>
-                                                <div class="clear-wishlist"><i class="fal fa-trash-alt"></i></div>
+                                                <h4>No Notification</h4>
+                                                <!-- <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i> 40 Journal Square  , NJ, USA</a></div>
+                                                <div class="widget-posts-descr-price"><span>Price: </span> $ 1500 / per month</div>
+                                                <div class="clear-wishlist"><i class="fal fa-trash-alt"></i></div> -->
                                             </div>
                                         </li>
                                     </ul>
@@ -418,7 +386,7 @@
 
                         <div id="forgot_tab" style="display:none;">
                             <!--tabs -->
-                            <div class="container">
+                            <div class="container" style="padding:35px;">
                                 <div class="row py-1">
                                     <div class="col-sm-12">
                                         <div id="bb_ajax_msg3"></div>
@@ -426,18 +394,28 @@
                                 </div>
                                 <div class="custom-form">
 
-                                    <?php echo form_open_multipart('auth/forgot', array('id'=>'bb_ajax_form3', 'class'=>'')); ?>
-                                    <label>Email Address * <span class="dec-icon"><i
-                                                class="fal fa-user"></i></span></label>
-                                    <input name="email" type="text" placeholder="Your Name or Mail"
-                                        onClick="this.select()" value="">
+                                    <?php echo form_open_multipart('auth/password/forgot', array('id'=>'bb_ajax_form3', 'class'=>'')); ?>
+                                    <label>Email Address * <span class="dec-icon"><i class="fal fa-envelope"></i></span></label>
+                                    <input name="email" id="email" type="email" placeholder="Your Mail"  autocomplete="off" onClick="this.select()" required value="">
+                                    <div id="code_resp" style="display:none">
+                                        <label>Reset Code * <span class="dec-icon"><i class="fal fa-envelope"></i></span></label>
+                                        <input name="code" id="code" type="text" placeholder="Reset Code" onClick="this.select()"  value="">
                                     
+                                    </div>
+                                     <div id="password_resp" style="display:none">
+                                        <div class="pass-input-wrap fl-wrap">
+                                            <label>New Password * <span class="dec-icon"><i class="fal fa-key"></i></span></label>
+                                            <input name="pwd" id="pwd" type="password" placeholder="New Password" autocomplete="off"  onClick="this.select()" value="">
+                                            <span class="eye"><i class="fal fa-eye"></i> </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="clearfix"></div>
+                                    <button type="submit" class="log_btn color-bg bb_orm_btn"> Reset </button>
+                                    </form>
                                     <div class="lost_password">
                                         <a href="javascript:;" onclick="register()">Return to Login</a>
                                     </div>
-                                    <div class="clearfix"></div>
-                                    <button type="submit" class="log_btn color-bg bb_form_btn"> Reset </button>
-                                    </form>
                                 </div>
                                 <!--tab end -->
                             </div>

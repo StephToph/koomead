@@ -9,22 +9,19 @@ class Accounts extends BaseController {
 		$this->db = \Config\Database::connect();
 	}
 
-    public function index() {
-        return $this->parents();
-    }
 
     //// PARENTS
-    public function parents($param1='', $param2='', $param3='') {
+    public function user($param1='', $param2='', $param3='') {
         // check login
-        $log_id = $this->session->get('plx_id');
-        if(empty($log_id)) return redirect()->to(site_url('auth'));
+        $log_id = $this->session->get('km_id');
+        if(empty($log_id)) return redirect()->to(site_url(''));
 
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
         $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
-        $role_c = $this->Crud->module($role_id, 'accounts/parents', 'create');
-        $role_r = $this->Crud->module($role_id, 'accounts/parents', 'read');
-        $role_u = $this->Crud->module($role_id, 'accounts/parents', 'update');
-        $role_d = $this->Crud->module($role_id, 'accounts/parents', 'delete');
+        $role_c = $this->Crud->module($role_id, 'accounts/user', 'create');
+        $role_r = $this->Crud->module($role_id, 'accounts/user', 'read');
+        $role_u = $this->Crud->module($role_id, 'accounts/user', 'update');
+        $role_d = $this->Crud->module($role_id, 'accounts/user', 'delete');
         if($role_r == 0){
             return redirect()->to(site_url('profile'));	
         }
@@ -35,7 +32,7 @@ class Accounts extends BaseController {
 
         $table = 'user';
 
-		$form_link = site_url('accounts/parents/');
+		$form_link = site_url('accounts/user/');
 		if($param1){$form_link .= $param1.'/';}
 		if($param2){$form_link .= $param2.'/';}
 		if($param3){$form_link .= $param3.'/';}
@@ -46,6 +43,10 @@ class Accounts extends BaseController {
 		$data['param3'] = $param3;
 		$data['form_link'] = rtrim($form_link, '/');
 		
+		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+        $data['log_name'] = $log_name;
+        $data['page'] = 'Users';
+       
 		// manage record
 		if($param1 == 'manage') {
 			// prepare for delete
@@ -167,17 +168,17 @@ class Accounts extends BaseController {
 			if(empty($limit)) {$limit = $rec_limit;}
 			if(empty($offset)) {$offset = 0;}
 			
-			if(!empty($this->request->getPost('ban'))) { $ban = $this->request->getPost('ban'); } else { $ban = ''; }
+			if(!empty($this->request->getPost('ban'))) { $ban = $this->request->getPost('ban'); } else { $ban = '0'; }
 			$search = $this->request->getPost('search');
 			if (!empty($this->request->getPost('start_date'))) {$start_date = $this->request->getPost('start_date');} else {$start_date = '';}
 			if (!empty($this->request->getPost('end_date'))) {$end_date = $this->request->getPost('end_date');} else {$end_date = '';}
-			$log_id = $this->session->get('plx_id');
+			$log_id = $this->session->get('km_id');
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {
-				$all_rec = $this->Crud->filter_parent('', '', $log_id, $search, $ban, $start_date, $end_date);
+				$all_rec = $this->Crud->filter_user('', '', $log_id, $search, $ban, $start_date, $end_date);
 				if(!empty($all_rec)) { $counts = count($all_rec); } else { $counts = 0; }
-				$query = $this->Crud->filter_parent($limit, $offset, $log_id, $search, $ban, $start_date, $end_date);
+				$query = $this->Crud->filter_user($limit, $offset, $log_id, $search, $ban, $start_date, $end_date);
 
 				if(!empty($query)) {
 					foreach($query as $q) {
@@ -185,26 +186,33 @@ class Accounts extends BaseController {
 						$fullname = $q->fullname;
 						$email = $q->email;
 						$phone = $q->phone;
-						$ban = $q->ban;
-						$sub_id = $this->Crud->read_field('user_id', $id, 'sub', 'sub_id');
-						$subscription = $this->Crud->read_field('id', $sub_id, 'subscription', 'name');
+						$role_id = $q->role_id;
+						$country_id = $q->country_id;
+						$state_id = $q->state_id;
+						$city_id = $q->city_id;
+						$ban = $q->activate;
 						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
-
-						$s_date =  $this->Crud->read_field('user_id', $id, 'sub', 'start_date');
-						$e_date =  $this->Crud->read_field('user_id', $id, 'sub', 'end_date');
-						
-						
-						$start_date = date('M d, Y', strtotime($s_date));
-						$end_date = date('M d, Y', strtotime($e_date));
-
-						// count children
-						$children = $this->db->table('child')->where('parent_id', $q->id)->countAllResults();
-
-						if(empty($ban) && $ban == 0){
-							$b = '<span class="text-success font-size-12">ACCOUNT ACTIVE</span>';
-						} else {
-							$b = '<span class="text-danger font-size-12">ACCOUNT BANNED</span>';
+						$avatar = $q->img_id;
+						if(empty($avatar)){
+							$avatar = 'assets/images/avatar.png';
 						}
+						
+						if(empty($ban) && $ban == 0){
+							$b = '<span class="text-success small font-weight-bold font-size-12">ACCOUNT ACTIVE</span>';
+						} else {
+							$b = '<span class="text-danger small font-weight-bold font-size-12">ACCOUNT BANNED</span>';
+						}
+
+						$country = $this->Crud->read_field('id', $country_id, 'country', 'name');
+						$state = $this->Crud->read_field('id', $state_id, 'state', 'name');
+						$city = $this->Crud->read_field('id', $city_id, 'city', 'name');
+						$role = $this->Crud->read_field('id', $role_id, 'access_role', 'name');
+						$list = $this->Crud->check('user_id', $id, 'listing');
+						
+						$loca = '';
+						if(!empty($country_id)) $loca .= $country;
+						if(!empty($country_id)) $loca .= '&#8594; '.$state;
+						if(!empty($country_id)) $loca .= '<br>&#8594; '.$city;
 						
 						// add manage buttons
 						if($role_u != 1) {
@@ -212,14 +220,14 @@ class Accounts extends BaseController {
 						} else {
 							$all_btn = '
 								<div class="textright">
-									<a href="javascript:;" class="text-info pop m-b-5 m-r-5" pageTitle="Reset '.$fullname.' Details" pageName="'.base_url('accounts/parents/manage/edit/'.$id).'" pageSize="modal-lg">
-										<i class="anticon anticon-rollback"></i> EDIT
+									<a href="javascript:;" class="text-info pop mb-5 mr-1" pageTitle="Edit '.$fullname.' Details" pageName="'.site_url('accounts/user/manage/edit/'.$id).'" pageSize="modal-lg">
+										<i class="fal fa-pen-alt"></i> EDIT
 									</a>
-									<a href="javascript:;" class="text-danger pop m-b-5 m-l-5  m-r-5" pageTitle="Delete '.$fullname.' Record" pageName="'.base_url('accounts/parents/manage/delete/'.$id).'" pageSize="modal-sm">
-										<i class="anticon anticon-delete"></i> DELETE
+									<a href="javascript:;" class="text-danger pop mb-5 ml-1  mr-1" pageTitle="Delete '.$fullname.' Record" pageName="'.site_url('accounts/user/manage/delete/'.$id).'" pageSize="modal-sm">
+										<i class="fal fa-trash"></i> DELETE
 									</a>
-									<a href="javascript:;" class="text-success pop m-b-5 m-l-5" pageTitle="View '.$fullname.' Children" pageName="'.base_url('accounts/parents/manage/view/'.$id).'" pageSize="modal-lg">
-										<i class="anticon anticon-eye"></i> VIEW
+									<a href="javascript:;" class="text-success pop mb-5 ml-1" pageTitle="View '.$fullname.' User" pageName="'.site_url('accounts/user/manage/view/'.$id).'" pageSize="modal-lg">
+										<i class="fal fa-eye"></i> VIEW
 									</a>
 									
 								</div>
@@ -227,34 +235,28 @@ class Accounts extends BaseController {
 						}
 						
 						$sub = '';
-						if(!empty($sub_id)){
-							$sub = '
-							<div class="text-muted font-size-12">'.strtoupper($subscription).'</div>
-								<div class="font-size-14">
-									<span class="text-success font-size-12">'.$start_date.'</span> 
-									<i class="anticon anticon-arrow-right"></i> 
-									<span class="text-danger font-size-12">'.$end_date.'</span>
-								</div>
-							';
-						}
-
 						$item .= '
 							<li class="list-group-item">
-								<div class="row p-t-10">
-									<div class="col-12 col-md-6 m-b-10">
+								<div class="row p-2">
+									<div class="col-3 col-md-1">
+										<img alt="" src="'.site_url($avatar).'"  class="p-1 rounded-circle" height="70" width="70"/>
+									</div>
+							
+									<div class="col-9 col-md-4 mb-4">
 										<div class="single">
 											<div class="text-muted font-size-12">'.$reg_date.'</div>
-											<b class="font-size-16 text-primary">'.ucwords($fullname).'</b>
-											<div class="small text-muted">'.number_format($children).' Children</div>
+											<b class="font-size-16 text-primary">'.strtoupper($fullname).'</b>
 											<div class="small text-muted">'.$phone.'</div>
 											<div class="small text-email">'.$email.'</div>
 											'.$b.'
 										</div>
 									</div>
-									<div class="col-12 col-md-4 m-b-5">
-										'.$sub.'
+									<div class="col-12 col-md-4 mb-4">
+										<b class="font-size-16 text-primary">'.ucwords($role).'</b>
+										<div class="font-size-14 text-danger ">'.$list.' Listing(s)</div>
+										<div class="font-size-14 text-dark ">'.$loca.'</div>
 									</div>
-									<div class="col-12 col-md-2">
+									<div class="col-12 col-md-3">
 										<b class="font-size-12">'.$all_btn.'</b>
 									</div>
 								</div>
@@ -268,7 +270,7 @@ class Accounts extends BaseController {
 				$resp['item'] = '
 					<div class="text-center text-muted">
 						<br/><br/><br/><br/>
-						<i class="anticon anticon-team" style="font-size:150px;"></i><br/><br/>No Parents Returned
+						<i class="fal fa-users" style="font-size:150px;"></i><br/><br/>No User Returned
 					</div>
 				';
 			} else {
@@ -293,18 +295,18 @@ class Accounts extends BaseController {
 		}
 
         if($param1 == 'manage') { // view for form data posting
-			return view('account/parents_form', $data);
+			return view('account/user_form', $data);
 		} else { // view for main page
-            $data['title'] = 'Parents | '.app_name;
-            $data['page_active'] = 'accounts/parents';
-            return view('account/parents', $data);
+            $data['title'] = 'User | '.app_name;
+            $data['page_active'] = 'accounts/user';
+            return view('account/user', $data);
         }
     }
 
 	//// CHILDREN
     public function children($param1='', $param2='', $param3='') {
         // check login
-        $log_id = $this->session->get('plx_id');
+        $log_id = $this->session->get('km_id');
         if(empty($log_id)) return redirect()->to(site_url('auth'));
 
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
@@ -458,7 +460,7 @@ class Accounts extends BaseController {
 			
 			$search = $this->request->getPost('search');
 
-			$log_id = $this->session->get('plx_id');
+			$log_id = $this->session->get('km_id');
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {

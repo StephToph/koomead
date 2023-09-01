@@ -163,4 +163,71 @@ class Auth extends BaseController {
         }
         return redirect()->to(site_url());
     }
+
+    public function password($param1='', $param2=''){
+        if($param1 == 'forgot'){
+            if($this->request->getMethod() == 'post'){
+                $email = $this->request->getVar('email');
+                $codes = $this->request->getVar('code');
+                $password = $this->request->getVar('pwd');
+
+                if(!empty($email) && empty($codes)){
+                    if($this->Crud->check('email', $email, 'user') == 0){
+                        echo $this->Crud->msg('danger', 'Invalid Email');
+                        die;
+                    } else {
+                        $code = substr(md5(time().rand()), 0, 6);
+                        if($this->Crud->updates('email', $email, 'user', array('reset'=>$code)) > 0) {
+                            $fullname = $this->Crud->read_field('email', $email, 'user', 'fullname');
+
+                            // email content
+                            $bcc = '';
+                            $subject = 'Reset Code';
+                            $body = '<span style="font-size:18px">You requested to reset your account password. Your secret code is <b>'.$code.'.</b> If you do not request this action, please ignore. Your account will be protected. Thank you.</span>';
+                            $em = $this->Crud->send_email($email, $subject, $body);
+                            if($em){
+                                echo $this->Crud->msg('success', 'Reset Code Sent to your Email!');
+                                echo '<script>$("#code_resp").show(500);$("#password_resp").hide();$("#pwd").val("");</script>';
+                            } else {
+                                echo $this->Crud->msg('danger', 'Please Try again Later!');
+                            }
+                            
+                        }
+                    }die;
+                }
+
+                if(!empty($email) && !empty($codes) && empty($password)){
+                    if($this->Crud->check('email', $email, 'user') == 0){
+                        echo $this->Crud->msg('danger', 'Invalid Email');
+                        die;
+                    } else {
+                        $cod = $this->Crud->read_field('email', $email, 'user', 'reset');
+                        if($cod != $codes){
+                            echo $this->Crud->msg('danger', 'Invalid Reset Code<br>Try Again');
+                        } else{
+                            echo $this->Crud->msg('success', 'Reset Code Accepted<br>Enter New Password');
+                            echo '<script>$("#password_resp").show(500);$("#code_resp").hide(500);$("#pwd").val("");</script>';
+                        }
+                    }die;
+                }
+
+                if(!empty($email) && !empty($codes) && !empty($password)){
+                    if($this->Crud->check('email', $email, 'user') == 0){
+                        echo $this->Crud->msg('danger', 'Invalid Email');
+                        die;
+                    } else {
+                        $id = $this->Crud->read_field2('email',$email, 'reset', $codes, 'user', 'id');
+                        if($this->Crud->updates('id', $id, 'user', array('password'=>md5($password),'reset'=>'')) > 0){
+                            echo $this->Crud->msg('success', 'Password reset Successfully.<br>Please Login now');
+                            echo '<script>$("#password_resp").hide(500);$("#code_resp").hide(500);$("#forgot_tab").hide(5000);
+                            $("#register_tab").show(5000);$("#email").val("");$("#code").val("");$("#pwd").val("");$("#bb_ajax_msg3").html("");</script> ';
+                        } else {
+                            echo $this->Crud->msg('danger', 'Error. Try Again');
+                        }
+                        
+                    } die;
+                }
+            }
+        }
+    }
 }

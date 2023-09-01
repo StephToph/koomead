@@ -68,12 +68,7 @@
                     </div>
                 </div>
                 <!-- nav-button-wrap end-->	
-                <!-- header-search button  -->
-                <div class="header-search-button">
-                    <i class="fal fa-search"></i>
-                    <span>Search...</span>
-                </div>
-                <!-- header-search button end  -->
+                
                 <!--  add new  btn -->
                 <div class="add-list_wrap">
                     <a href="<?=site_url('listing'); ?>" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>

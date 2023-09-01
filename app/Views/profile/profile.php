@@ -111,18 +111,7 @@
                                     <option value="">Select Bank</option>
                                     
                                 </select>
-                                <?php
-                                        $country_id  = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
-                                        $code  = $this->Crud->read_field('id', $country_id, 'country', 'currency');
-                                        echo $code.' ';
-                                        $bank = $this->Crud->get_bank('uk');
-                                        print_r($bank);
-                                        // if(!empty($country)){
-                                        //     foreach($country as $c){
-                                        //         echo '<option value="'.$c->id.'">'.$c->name.'</option>';
-                                        //     }
-                                        // }
-                                    ?>
+                                
                             </div>
                             <div class="pass-input-wrap fl-wrap">
                                 <label>New Password<span class="dec-icon"><i class="far fa-lock-alt"></i></span></label>

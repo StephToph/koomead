@@ -245,6 +245,9 @@ class Dashboard extends BaseController {
 							
                             
                         }
+						$c = '';
+						if($category_id == 0)$c = '<span class="text-dark">'.$this->Crud->check('category_id', $id, 'category').' Sub Categories</span>';
+
 						$item .= '
 							<li class="list-group-item">
 								<div class="row pt-3">
@@ -256,7 +259,7 @@ class Dashboard extends BaseController {
 										<div class="single">
                                             <div class="text-muted">'.$st.'</div>
 											<b class="font-size-16 text-primary">'.strtoupper($name).'</b>
-                                            <div class="font-size-12 small text-dark">'.strtoupper($cate).'</div>
+                                            <div class="font-size-12 small text-dark">'.strtoupper($cate).'</div>'.$c.'
 										</div>
 									</div>
                                     <div class="col-12 col-md-3 mb-2">
@@ -316,7 +319,7 @@ class Dashboard extends BaseController {
         // $body['subject'] = 'Test Email';
         // $body['text'] = 'Sending test email via mailgun API';
         // echo $this->Crud->mailgun($body);
-        $to = 'kennethjames23@yahoo.com, iyinusa@yahoo.co.uk';
+        $to = 'tofunmi015@gmail.com';
         $subject = 'Test Email';
         $body = 'Sending test email from local email server';
         echo $this->Crud->send_email($to, $subject, $body);

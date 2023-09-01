@@ -1006,7 +1006,7 @@ nav li ul a:before , nav li ul a:after {
     right: 0;
     top: 0;
     bottom: 50%;
-    background: #F5F7FB;
+    background: #fff;
     z-index: 1;
 }
 #subscribe .enteremail {

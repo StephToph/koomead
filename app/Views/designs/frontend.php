@@ -49,12 +49,7 @@
             <!--  logo  -->
             <div class="logo-holder"><a href="<?=site_url(); ?>"><img src="<?=site_url();?>assets/images/logo.png" alt=""></a></div>
             <!-- logo end  -->
-            <!-- nav-button-wrap--> 
-            <div class="nav-button-wrap color-bg nvminit">
-                <div class="nav-button">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
+           
             <!-- nav-button-wrap end-->	
             
             <!-- header-search button end  -->

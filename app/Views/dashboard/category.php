@@ -28,7 +28,7 @@
                 <div class="dasboard-listing-box fl-wrap">
                     
                     <div class="dasboard-opt sl-opt fl-wrap float-end">
-                        <span class="font-weight-bold float-start p-3 font-size-14">You have <span id="listCount"> 0</span> Catgory</span>
+                        <span class="font-weight-bold float-start p-3 font-size-14">You have <span id="listCount"> 0</span> Category</span>
                         
                         <a href="javascript:;" pageTitle="Add New" pageName="<?=site_url('dashboard/category/manage');?>" pageSize="modal-md" class="gradient-bg pop dashboard-addnew_btn show-popup-form">Add New <i class="fal fa-plus"></i></a>	
                         

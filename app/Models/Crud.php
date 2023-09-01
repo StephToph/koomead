@@ -1640,7 +1640,9 @@ class Crud extends Model {
         // build query
 		$builder->orderBy('id', 'desc');
 
-		if(!empty($category_id) && $category_id!= 'all')$builder->where('category_id', $category_id);
+		if(!empty($category_id) && $category_id!= 'all'){
+			$builder->where('category_id', $category_id);
+		}else{$builder->where('category_id', 0);}
 		if($status != 'all')$builder->where('status', $status);
 		
         if(!empty($search)) {

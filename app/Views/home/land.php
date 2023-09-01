@@ -14,7 +14,7 @@
     <!--  section  -->
     <section class="hero-section hero-section_dec" data-scrollax-parent="true">
         <div class="bg-wrap">
-            <div class="bg par-elem "  data-bg="<?=site_url();?>assets/images/bg1.jpg" data-scrollax="properties: { translateY: '30%' }"></div>
+            <div class="bg par-elem "  data-bg="<?=site_url();?>assets/images/bg1.jpg" data-scrollax="Businesses: { translateY: '30%' }"></div>
         </div>
         <div class="overlay"></div>
         <div class="container">
@@ -67,17 +67,7 @@
     </section>
     <!--  section  end-->
     <!-- breadcrumbs-->
-    <div class="breadcrumbs fw-breadcrumbs sp-brd fl-wrap">
-        <div class="container">
-            <div class="breadcrumbs-list">
-                <a href="<?=site_url(); ?>">Home</a>  <span>Home Image</span>
-            </div>
-            <!-- <div class="share-holder hid-share">
-                <a href="#" class="share-btn showshare sfcs">  <i class="fas fa-share-alt"></i>  Share   </a>
-                <div class="share-container  isShare"></div>
-            </div> -->
-        </div>
-    </div>
+    
     <!-- breadcrumbs end -->
     <!-- section -->
     <!-- <section class="gray-bg small-padding">
@@ -86,7 +76,7 @@
                 <div class="col-md-4">
                     <div class="section-title fl-wrap">
                         <h4>Browse Hot Offers</h4>
-                        <h2>Latest Properties</h2>
+                        <h2>Latest Businesses</h2>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -367,7 +357,7 @@
                 gallery-item end																
             </div>
             grid-item-holder	
-            <a href="listing.html" class="btn float-btn small-btn color-bg">View All Properties</a>
+            <a href="listing.html" class="btn float-btn small-btn color-bg">View All Businesses</a>
         </div>
     </section> -->
     <!-- section end-->	
@@ -379,7 +369,7 @@
                 <div class="row">
                     <div class="col-md-5">
                         <div class="about-title ab-hero fl-wrap">
-                            <h2>Why Choose Our Properties </h2>
+                            <h2>Why Choose Our Businesses </h2>
                             <h4>Check video presentation to find   out more about us .</h4>
                         </div>
                         <div class="services-opions fl-wrap">
@@ -438,7 +428,7 @@
                                 <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/1.jpg"></div>
                             </div>
                             <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">26 Properties</div>
+                                <div class="hc-counter color-bg">26 Businesses</div>
                                 <h3><a href="listing.html">Explore NewYork</a></h3>
                                 <p>Constant care and attention to the patients makes good record</p>
                             </div>
@@ -452,7 +442,7 @@
                                 <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/2.jpg"></div>
                             </div>
                             <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">89 Properties</div>
+                                <div class="hc-counter color-bg">89 Businesses</div>
                                 <h3><a href="listing.html">Awesome London</a></h3>
                                 <p>Constant care and attention to the patients makes good record</p>
                             </div>
@@ -466,7 +456,7 @@
                                 <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/3.jpg"></div>
                             </div>
                             <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">102 Properties</div>
+                                <div class="hc-counter color-bg">102 Businesses</div>
                                 <h3><a href="listing.html">Find Dream in Paris</a></h3>
                                 <p>Constant care and attention to the patients makes good record</p>
                             </div>
@@ -480,7 +470,7 @@
                                 <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/4.jpg"></div>
                             </div>
                             <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">51 Properties</div>
+                                <div class="hc-counter color-bg">51 Businesses</div>
                                 <h3><a href="listing.html">Elite Houses in Dubai</a></h3>
                                 <p>Constant care and attention to the patients makes good record</p>
                             </div>
@@ -671,13 +661,10 @@
         </div>
     </section> -->
     <!-- section end-->					
-    <!-- section -->
     
-    <!-- section end-->	 
-    <!-- section -->
-    <section class="gray-bg ">
+    <section  class="subscribe-wrap padding-section" style="padding:10px">
        
-    </section>
+    </sec>
     <!-- section end-->
 </div>
 <!-- content end -->	

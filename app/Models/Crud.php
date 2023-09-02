@@ -1455,13 +1455,16 @@ class Crud extends Model {
 	}
 
     /// filter user
-    public function filter_user($limit='', $offset='', $log_id, $search='', $status='', $start_date='', $end_date='') {
+    public function filter_user($limit='', $offset='', $log_id, $search='', $status='', $start_date='', $end_date='', $country_id='', $state_id='', $city_id='') {
         $db = db_connect();
         $builder = $db->table('user');
 
         // build query
 		$builder->orderBy('id', 'DESC');
 		if($status != 'all') $builder->where('activate', $status);
+		if($country_id != 'all') $builder->where('country_id', $country_id);
+		if($state_id != 'all') $builder->where('state_id', $state_id);
+		if($city_id != 'all') $builder->where('city_id', $city_id);
 		
         if(!empty($search)) {
             $builder->like('fullname', $search);

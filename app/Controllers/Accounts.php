@@ -84,6 +84,31 @@ class Accounts extends BaseController {
 							}
 						}
 					}
+				}// prepare for edit
+				if($param2 == 'view') {
+					if($param3) {
+						$edit = $this->Crud->read_single('id', $param3, $table);
+						if(!empty($edit)) {
+							foreach($edit as $e) {
+								$data['id'] = $e->id;
+								$data['activate'] = $e->activate;
+								$data['email'] = $e->email;
+								$data['fullname'] = $e->fullname;
+								$data['phone'] = $e->phone;
+								$data['address'] = $e->address;
+								$data['dob'] = $e->dob;
+								$data['country_id'] = $e->country_id;
+								$data['state_id'] = $e->state_id;
+								$data['city_id'] = $e->city_id;
+								$data['role_id'] = $e->role_id;
+								if(!empty($e->img_id)){$img = $e->img_id;} else{$img ='assets/images/avatar.png';}
+								$data['img_id'] = $img;
+								$data['social'] = json_decode($e->social);
+								$data['bank_details'] = $e->bank_details;
+								$data['reg_date'] = $e->reg_date;
+							}
+						}
+					}
 				}
 
 				if($this->request->getMethod() == 'post'){

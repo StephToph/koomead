@@ -47,47 +47,104 @@
                                                 <!-- listing-item -->
                                                 <div class="listing-item">
                                                     <article class="geodir-category-listing fl-wrap">
-                                                    <div class="row" style="padding:10px;">
-                                                        <?php
-                                                            $items = '';
-                                                        
-                                                            $query = $this->Crud->read_order('user', 'id', 'asc');
-                                                            if(!empty($query)) {
-                                                                foreach($query as $q) {
-                                                                    $date = date('M d, Y h:i:sA', strtotime($q->reg_date));
-                                                                    $user = $q->fullname;
-                                                                    
-                                                                    $items .= '
-                                                                        <tr>
-                                                                            <td>'.$date.'</td>
-                                                                            <td align="right">'.strtoupper($user).'</td>
-                                                                            <td align="right">'.strtoupper($date).'</td>
-                                                                        </tr>
-                                                                    ';
-                                                                }
-                                                            } else {
-                                                                $items .= '
-                                                                        <tr>
-                                                                            <td colspan="3" class="text-center">No Child</td>
+                                                        <div class="row" style="padding:10px;">
+                                                            <section class="gray-bg small-padding ">
+                                                                <div class="container">
+                                                                    <div class="row">
+                                                                        <div class="col-md-7">
+                                                                            <div class="card-info smpar fl-wrap">
+                                                                                <div class="bg-wrap bg-parallax-wrap-gradien">
+                                                                                    <div class="bg"  data-bg="<?=site_url(); ?>assets/images/bg/8.jpg"></div>
+                                                                                </div>
+                                                                                <div class="card-info-media">
+                                                                                    <div class="bg"  data-bg="<?=site_url($img_id); ?>"></div>
+                                                                                </div>
+                                                                                <div class="card-info-content">
+                                                                                    <div class="agent_card-title fl-wrap">
+                                                                                        <h4> <?=strtoupper($fullname); ?> </h4>
+                                                                                        <div class="geodir-category-location fl-wrap">
+                                                                                            <h5><a href="javascript:;"><?=$this->Crud->read_field('id', $role_id, 'access_role', 'name'); ?></a></h5>
+                                                                                           
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="list-single-stats">
+                                                                                        <ul class="no-list-style">
+                                                                                            <li><span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  0 </span></li>
+                                                                                            <li><span class="bookmark-counter"><i class="fas fa-comment-alt"></i> Reviews -  0 </span></li>
+                                                                                            <li><span class="bookmark-counter"><i class="fas fa-sitemap"></i> Listings -  0 </span></li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <div class="card-verified tolt" data-microtip-position="left" data-tooltip="Verified"><i class="fal fa-user-check"></i></div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="list-single-main-container fl-wrap">
+                                                                                <!-- list-single-main-item -->
+                                                                                <div class="list-single-main-item fl-wrap">
+                                                                                    <div class="list-single-main-item-title">
+                                                                                        <h3>About This Agent</h3>
+                                                                                    </div>
+                                                                                    <div class="list-single-main-item_content fl-wrap">
+                                                                                        
+                                                                                        <div class="list-single-tags fl-wrap tags-stylwrap" style="margin-top: 20px;">
+                                                                                            <span>Service Areas:</span>
+                                                                                            <a href="#">London</a>
+                                                                                            <a href="#">NewYork</a>
+                                                                                            <a href="#">Rome</a>
+                                                                                            <a href="#">Dubai</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!-- list-single-main-item end -->             						
+                                                                            </div>
                                                                             
-                                                                        </tr>
-                                                                    ';
-                                                            }
-
-                                                            echo '
-                                                                <table class="table table-striped">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <td><b>DATE</b></td>
-                                                                            <td width="200px" align="right"><b>CHILD</b></td>
-                                                                            <td width="200px" align="right"><b>AGE</b></td>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>'.$items.'</tbody>
-                                                                </table>
-                                                            ';
-                                                        ?>
-                                                    </div>
+                                                                            
+                                                                            <!-- content-tabs-wrap end -->
+                                                                        </div>
+                                                                        <!-- col-md 8 end -->
+                                                                        <!--  sidebar-->
+                                                                        <div class="col-md-5">
+                                                                            <!--box-widget-->
+                                                                            <div class="box-widget bwt-first fl-wrap">
+                                                                                <div class="box-widget-title fl-wrap box-widget-title-color color-bg no-top-margin">User Details</div>
+                                                                                <div class="box-widget-content fl-wrap">
+                                                                                    <div class="contats-list clm fl-wrap">
+                                                                                        <ul class="no-list-style">
+                                                                                            <li><span><i class="fal fa-envelope"></i> Mail :</span> <a href="javascript:;"><?=$email; ?></a></li>
+                                                                                            <li><span><i class="fal fa-phone"></i> Phone :</span> <a href="javascript:;"><?=$phone; ?></a></li>
+                                                                                            <li><span><i class="fal fa-map-marker"></i> Adress :</span> <a href="javascript:;"> <?=$address; ?></a></li>
+                                                                                            
+                                                                                            <li><span><i class="fal fa-phone"></i> Date of Birth :</span> <a href="javascript:;"><?php if(!empty($dob))echo date('d F, Y', strtotime($dob)); ?></a></li>
+                                                                                            <li><span><i class="fal fa-envelope"></i> Reg Date :</span> <a href="javascript:;"><?=date('d F, Y H:ia', strtotime($reg_date)) ?></a></li>
+                                                                                            <li><span><i class="fal fa-browser"></i> Website :</span> <a href="javascript:;"><?php if(!empty($social) && !empty($social->website)) echo $social->website; ?></a></li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <div class="profile-widget-footer fl-wrap">
+                                                                                        <div class="card-info-content_social ">
+                                                                                            <ul>
+                                                                                                <?php 
+                                                                                                    if(!empty($social)){
+                                                                                                ?>
+                                                                                                <?php  if(!empty($social->facebook)){?><li><a href="<?=$social->facebook; ?>" ><i class="fab fa-facebook-f"></i></a></li><?php } ?>
+                                                                                                <?php  if(!empty($social->twitter)){?><li><a href="<?=$social->twitter; ?>" ><i class="fab fa-twitter"></i></a></li><?php } ?>
+                                                                                                <?php  if(!empty($social->twitter)){?><li><a href="<?=$social->instagram; ?>" ><i class="fab fa-instagram"></i></a></li><?php } ?>
+                                                                                                <?php  if(!empty($social->tiktok)){?><li><a href="<?=$social->tiktok; ?>" ><i class="fab fa-vk"></i></a></li><?php } ?>
+                                                                                                
+                                                                                                <?php } ?>
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                        <!-- <a href="#sec-contact" class="custom-scroll-link tolt csls" data-microtip-position="left" data-tooltip="Write Message"><i class="fal fa-paper-plane"></i></a> -->
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <!--box-widget end --> 									
+                                                                            <!--box-widget-->         									
+                                                                        </div>
+                                                                        <!--   sidebar end-->								
+                                                                    </div>
+                                                                </div>
+                                                                <div class="limit-box fl-wrap"></div>
+                                                            </section>
+                                                        </div>
                                                     </article>
                                                 </div>								
                                             </div>
@@ -117,11 +174,7 @@
                                                                     <img src="<?=site_url(); ?>assets/images/avatar/1.jpg" alt=""> 
                                                                 </div>
                                                                 <div class="reviews-comments-item-text smpar">
-                                                                    <div class="box-widget-menu-btn smact"><i class="far fa-ellipsis-h"></i></div>
-                                                                    <div class="show-more-snopt-tooltip bxwt">
-                                                                        <a href="#"> <i class="fas fa-reply"></i> Reply</a>
-                                                                        <a href="#"> <i class="fas fa-exclamation-triangle"></i> Report </a>
-                                                                    </div>
+                                                                    
                                                                     <h4><a href="#">Liza Rose</a></h4>
                                                                     <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
                                                                     <div class="clearfix"></div>

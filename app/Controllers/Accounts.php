@@ -60,16 +60,9 @@ class Accounts extends BaseController {
 					}
 
 					if($this->request->getMethod() == 'post'){
-						$del_id = $this->request->getVar('d_parent_id');
+						$del_id = $this->request->getVar('d_user_id');
 						if($this->Crud->deletes('id', $del_id, $table) > 0) {
-							if($this->Crud->check('parent_id', $del_id,  'child') > 0){
-								$child = $this->Crud->read_single('parent_id',$del_id,  'child');
-								if(!empty($child)){
-									foreach($child as $c){
-										 $this->Crud->deletes('id', $c->id, 'child');
-									}
-								}
-							}
+							
 							echo $this->Crud->msg('success', 'Record Deleted');
 							echo '<script>location.reload(false);</script>';
 						} else {
@@ -86,11 +79,8 @@ class Accounts extends BaseController {
 						if(!empty($edit)) {
 							foreach($edit as $e) {
 								$data['e_id'] = $e->id;
-								$data['e_fullname'] = $e->fullname;
-								$data['e_phone'] = $e->phone;
+								$data['e_activate'] = $e->activate;
 								$data['e_email'] = $e->email;
-								$data['e_pin'] = $e->pin;
-								$data['e_ban'] = $e->ban;
 							}
 						}
 					}
@@ -98,19 +88,10 @@ class Accounts extends BaseController {
 
 				if($this->request->getMethod() == 'post'){
 					$user_id = $this->request->getVar('user_id');
-					$fullname = $this->request->getVar('fullname');
-					$email = $this->request->getVar('email');
-					$phone = $this->request->getVar('phone');
-					$pin = $this->request->getVar('pin');
 					$ban = $this->request->getVar('ban');
 					$password = $this->request->getVar('password');
 
-					// echo $pin;die;
-					$ins_data['fullname'] = $fullname;
-					$ins_data['email'] = $email;
-					$ins_data['phone'] = $phone;
-					$ins_data['pin'] = $pin;
-					$ins_data['ban'] = $ban;
+					$ins_data['activate'] = $ban;
 					if(!empty($password))$ins_data['password'] = md5($password);
 					$role_id = $this->Crud->read_field('name', 'User', 'access_role', 'id');
 				
@@ -121,34 +102,13 @@ class Accounts extends BaseController {
 							///// store activities
 							$code = $this->Crud->read_field('id', $user_id, $table, 'fullname');
 							$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-							$action = $by.' updated Parent '.$code.' Record';
+							$action = $by.' updated User '.$code.' Record';
 							$this->Crud->activity('account', $user_id, $action);
 
 							echo $this->Crud->msg('success', 'Record Updated');
 							echo '<script>location.reload(false);</script>';
 						} else {
 							echo $this->Crud->msg('info', 'No Changes');
-						}
-					} else {
-						if($this->Crud->check('email', $email, 'user') > 0){
-							echo $this->Crud->msg('danger', 'Email Already Taken');
-						} elseif($this->Crud->check('phone', $phone, 'user') > 0){
-							echo $this->Crud->msg('danger', 'Phone Number Already Taken');
-						} else{
-							$ins_data['reg_date'] = date(fdate);
-							$ins_data['role_id'] = $role_id;
-
-							$user_id = $this->Crud->create('user', $ins_data);
-							if($user_id > 0) {
-								///// store activities
-								$action = $fullname.' created an Account';
-								$this->Crud->activity('account', $user_id, $action);
-
-								echo $this->Crud->msg('success', 'Record Created');
-								echo '<script>location.reload(false);</script>';
-							} else {
-								echo $this->Crud->msg('info', 'No Changes');
-							}
 						}
 					}
 					die;	
@@ -222,14 +182,14 @@ class Accounts extends BaseController {
 							$all_btn = '';
 						} else {
 							$all_btn = '
-								<div class="textright">
-									<a href="javascript:;" class="text-info pop mb-5 mr-1" pageTitle="Edit '.$fullname.' Details" pageName="'.site_url('accounts/user/manage/edit/'.$id).'" pageSize="modal-lg">
+								<div class="text-right">
+									<a href="javascript:;" class="text-info pop mb-5 mr-1" pageTitle="Edit '.$fullname.' Details" pageName="'.site_url('accounts/user/manage/edit/'.$id).'" pageSize="modal-md">
 										<i class="fal fa-pen-alt"></i> EDIT
 									</a>
 									<a href="javascript:;" class="text-danger pop mb-5 ml-1  mr-1" pageTitle="Delete '.$fullname.' Record" pageName="'.site_url('accounts/user/manage/delete/'.$id).'" pageSize="modal-sm">
 										<i class="fal fa-trash"></i> DELETE
 									</a>
-									<a href="javascript:;" class="text-success pop mb-5 ml-1" pageTitle="View '.$fullname.' User" pageName="'.site_url('accounts/user/manage/view/'.$id).'" pageSize="modal-lg">
+									<a href="'.site_url('accounts/user/manage/view/'.$id).'" class="text-success mb-5 ml-1" pageTitle="View '.$fullname.' User" pageName="" pageSize="modal-lg">
 										<i class="fal fa-eye"></i> VIEW
 									</a>
 									
@@ -296,9 +256,18 @@ class Accounts extends BaseController {
 			echo json_encode($resp);
 			die;
 		}
-
+		
         if($param1 == 'manage') { // view for form data posting
+			if($param2 == 'view'){ 
+				$data['page'] = 'User View';
+       
+				$data['title'] = 'User View | '.app_name;
+            	$data['page_active'] = 'accounts/user';
+				return view('account/user_view', $data);
+			} else{
 			return view('account/user_form', $data);
+
+			}
 		} else { // view for main page
             $data['title'] = 'User | '.app_name;
             $data['page_active'] = 'accounts/user';

@@ -11,7 +11,7 @@
 <?php echo $this->section('content'); ?>
 <div class="dashboard-content">
     <div class="dashboard-menu-btn color-bg"><span><i class="fas fa-bars"></i></span>Dasboard Menu</div>
-    <div class="container dasboard-container">
+    <div class="container dasboard-container  mb-5">
         <!-- dashboard-title -->	
         <div class="dashboard-title fl-wrap">
             <div class="dashboard-title-item"><span><?=$page; ?></span></div>
@@ -101,7 +101,7 @@
                 </div>
                 
                 <!-- dashboard-listings-wrap-->
-                    <div class="row ">
+                    <div class="row  mb-5">
                         <div class="geodir-category-content fl-wrap">
                             <div class="col-12 text-start ">
                                 <ul class="list-group">
@@ -119,7 +119,7 @@
     </div>
 
         
-    <script src="<?php echo site_url(); ?>/assets/js/jquery.min.js"></script>
+    <!-- <script src="<?php echo site_url(); ?>/assets/js/jquery.min.js"></script> -->
     <script>var site_url = '<?php echo site_url(); ?>';</script>
    
     <script>

@@ -168,6 +168,9 @@ class Accounts extends BaseController {
 			if(empty($limit)) {$limit = $rec_limit;}
 			if(empty($offset)) {$offset = 0;}
 			
+			if(!empty($this->request->getPost('state_id'))) { $state_id = $this->request->getPost('state_id'); } else { $state_id = '0'; }
+			if(!empty($this->request->getPost('country_id'))) { $country_id = $this->request->getPost('country_id'); } else { $country_id = '0'; }
+			if(!empty($this->request->getPost('city_id'))) { $city_id = $this->request->getPost('city_id'); } else { $city_id = '0'; }
 			if(!empty($this->request->getPost('ban'))) { $ban = $this->request->getPost('ban'); } else { $ban = '0'; }
 			$search = $this->request->getPost('search');
 			if (!empty($this->request->getPost('start_date'))) {$start_date = $this->request->getPost('start_date');} else {$start_date = '';}
@@ -176,9 +179,9 @@ class Accounts extends BaseController {
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {
-				$all_rec = $this->Crud->filter_user('', '', $log_id, $search, $ban, $start_date, $end_date);
+				$all_rec = $this->Crud->filter_user('', '', $log_id, $search, $ban, $start_date, $end_date, $country_id, $state_id, $city_id);
 				if(!empty($all_rec)) { $counts = count($all_rec); } else { $counts = 0; }
-				$query = $this->Crud->filter_user($limit, $offset, $log_id, $search, $ban, $start_date, $end_date);
+				$query = $this->Crud->filter_user($limit, $offset, $log_id, $search, $ban, $start_date, $end_date, $country_id, $state_id, $city_id);
 
 				if(!empty($query)) {
 					foreach($query as $q) {
@@ -303,269 +306,62 @@ class Accounts extends BaseController {
         }
     }
 
-	//// CHILDREN
-    public function children($param1='', $param2='', $param3='') {
-        // check login
-        $log_id = $this->session->get('km_id');
-        if(empty($log_id)) return redirect()->to(site_url('auth'));
-
-        $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
-        $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
-        $role_c = $this->Crud->module($role_id, 'accounts/children', 'create');
-        $role_r = $this->Crud->module($role_id, 'accounts/children', 'read');
-        $role_u = $this->Crud->module($role_id, 'accounts/children', 'update');
-        $role_d = $this->Crud->module($role_id, 'accounts/children', 'delete');
-        if($role_r == 0){
-            return redirect()->to(site_url('profile'));	
+    public function account($param1='', $param2=''){
+        if($param1 == 'get_state'){
+            if(empty($param2)){
+                $st =  '<option value="">Select Country First</option>';
+            } else {
+                $state = $this->Crud->read_single_order('country_id', $param2, 'state', 'name', 'asc');
+                if(!empty($state)){
+                    $st =  '<option value="">Select State</option>';
+                    foreach ($state as $s) {
+                        $st .= '<option value="'.$s->id.'">'.$s->name.'</option>';
+                    }
+                }
+            }
+            echo '<div class="listsearch-input-item mb-2">
+                <select data-placeholder="Select" name="state_id" id="state_id"  required onchange="get_city();" class="mb-2 chosen-select search-select" >
+                    '.$st.'
+                </select></div><script>$("#state_id").niceSelect();</script>
+            ';
         }
 
-        $data['log_id'] = $log_id;
-        $data['role'] = $role;
-        $data['role_c'] = $role_c;
+        if($param1 == 'get_city'){
+            if(empty($param2)){
+                $st =  '<option value="">Select State First</option>';
+            } else {
+                $state = $this->Crud->read_single_order('state_id', $param2, 'city', 'name', 'asc');
+                if(!empty($state)){
+                    $st =  '<option value="">Select City</option>';
+                    foreach ($state as $s) {
+                        $st .= '<option value="'.$s->id.'">'.$s->name.'</option>';
+                    }
+                }
+            }
+            echo '<div class="listsearch-input-item mb-2">
+                <select data-placeholder="Select" name="city_id" id="city_id" onchange="load()" required class="mb-2 chosen-select search-select" >
+                    '.$st.'
+                </select></div><script>$("#city_id").niceSelect();</script>
+            ';
+        }
 
-        $table = 'child';
-
-		$form_link = site_url('accounts/children/');
-		if($param1){$form_link .= $param1.'/';}
-		if($param2){$form_link .= $param2.'/';}
-		if($param3){$form_link .= $param3.'/';}
-		
-		// pass parameters to view
-		$data['param1'] = $param1;
-		$data['param2'] = $param2;
-		$data['param3'] = $param3;
-		$data['form_link'] = rtrim($form_link, '/');
-		
-		// manage record
-		if($param1 == 'manage') {
-			// prepare for delete
-			if($param2 == 'delete') {
-				if($param3) {
-					$edit = $this->Crud->read_single('id', $param3, $table);
-					if(!empty($edit)) {
-						foreach($edit as $e) {
-							$data['d_id'] = $e->id;
-						}
-					}
-
-					if($this->request->getMethod() == 'post'){
-						$del_id = $this->request->getVar('d_child_id');
-						///// store activities
-						$code = $this->Crud->read_field('id', $del_id, $table, 'name');
-						$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-						$action = $by.' deleted Child '.$code.' Record';
-
-						if($this->Crud->deletes('id', $del_id, $table) > 0) {
-							
-							$this->Crud->activity('account', $del_id, $action);
-							echo $this->Crud->msg('success', 'Record Deleted');
-							echo '<script>location.reload(false);</script>';
-						} else {
-							echo $this->Crud->msg('danger', 'Please try later');
-						}
-						exit;	
-					}
-				}
-			} else {
-				// prepare for edit
-				if($param2 == 'edit') {
-					if($param3) {
-						$edit = $this->Crud->read_single('id', $param3, $table);
-						if(!empty($edit)) {
-							foreach($edit as $e) {
-								$data['e_id'] = $e->id;
-								$data['e_name'] = $e->name;
-								$data['e_parent_id'] = $e->parent_id;
-								$data['e_age_id'] = $e->age_id;
-							}
-						}
-					}
-				}
-
-				if($this->request->getMethod() == 'post'){
-					$child_id = $this->request->getVar('child_id');
-					$name = $this->request->getVar('name');
-					$parent_id = $this->request->getVar('parent_id');
-					$age_id = $this->request->getVar('age_id');
-					
-
-					$ins_data['name'] = $name;
-					$ins_data['parent_id'] = $parent_id;
-					$ins_data['age_id'] = $age_id;
-					
-					
-					// do create or update
-					if($child_id) {
-						$upd_rec = $this->Crud->updates('id', $child_id, $table, $ins_data);
-						if($upd_rec > 0) {
-							///// store activities
-							$code = $this->Crud->read_field('id', $child_id, $table, 'name');
-							$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-							$action = $by.' updated Child '.$code.' Record';
-							$this->Crud->activity('account', $child_id, $action);
-
-							echo $this->Crud->msg('success', 'Record Updated');
-							echo '<script>location.reload(false);</script>';
-						} else {
-							echo $this->Crud->msg('info', 'No Changes');	
-						}
-						
-					} else {
-						if($this->Crud->check2('name', $name, 'parent_id', $parent_id, $table) > 0) {
-							echo $this->Crud->msg('warning', 'Child`s name already exist for this Parent');
-						} else {
-							if($this->Crud->check('parent_id', $parent_id, $table) > 3){
-								echo $this->Crud->msg('danger', 'Maximum number of Children per Parent is 3');
-							} else {
-								$ins_data['reg_date'] = date(fdate);
-								$ins_rec = $this->Crud->create($table, $ins_data);
-								if($ins_rec > 0) {
-									///// store activities
-									$code = $this->Crud->read_field('id', $ins_rec, $table, 'name');
-									$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-									$action = $by.' created Child '.$code.' Record';
-									$this->Crud->activity('account', $ins_rec, $action);
-
-									echo $this->Crud->msg('success', 'Record Created');
-									echo '<script>location.reload(false);</script>';
-								} else {
-									echo $this->Crud->msg('danger', 'Please try later');	
-								}	
-							}
-							
-						}
-					}
-
-					die;	
-				}
-			}
-		}
-
-        // record listing
-		if($param1 == 'load') {
-			$limit = $param2;
-			$offset = $param3;
-
-			$rec_limit = 25;
-			$item = '';
-			$counts = 0;
-
-			if(empty($limit)) {$limit = $rec_limit;}
-			if(empty($offset)) {$offset = 0;}
-			
-			if(!empty($this->request->getPost('age_id'))) { $ageID = $this->request->getPost('age_id'); } else { $ageID = ''; }
-			if(!empty($this->request->getPost('parent_id'))) { $parentID = $this->request->getPost('parent_id'); } else { $parentID = ''; }
-			if (!empty($this->request->getPost('start_date'))) {$start_date = $this->request->getPost('start_date');} else {$start_date = '';}
-			if (!empty($this->request->getPost('end_date'))) {$end_date = $this->request->getPost('end_date');} else {$end_date = '';}
-			
-			$search = $this->request->getPost('search');
-
-			$log_id = $this->session->get('km_id');
-			if(!$log_id) {
-				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
-			} else {
-				$all_rec = $this->Crud->filter_children('', '', $log_id, $ageID, $parentID, $search, $start_date, $end_date);
-				if(!empty($all_rec)) { $counts = count($all_rec); }
-				$query = $this->Crud->filter_children($limit, $offset, $log_id, $ageID, $parentID, $search, $start_date, $end_date);
-
-				if(!empty($query)) {
-					foreach($query as $q) {
-						$id = $q->id;
-						$name = $q->name;
-						$avatar = $q->avatar;
-						$age = $this->Crud->read_field('id', $q->age_id, 'age', 'name');
-						$parent = $this->Crud->read_field('id', $q->parent_id, 'user', 'fullname');
-						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
-
-						// count children
-						// $children = $this->db->table('child')->where('parent_id', $q->id)->countAllResults();
-						
-						if(empty($avatar)){
-							$avatar = 'assets/images/avatar.png';
-						}
-						// add manage buttons
-						$all_btn = '';
-						if($role_u != 1) {
-							$all_btn = '';
-						} else {
-							$all_btn = '
-								<div class="text-right">
-									<a href="javascript:;" class="text-danger pop" pageTitle="Delete '.$name.' Details" pageName="'.base_url('accounts/children/manage/delete/'.$id).'" pageSize="modal-sm">
-										<i class="anticon anticon-delete"></i> DELETE
-									</a>
-									<a href="javascript:;" class="text-primary pop" pageTitle="Edit '.$name.' Details" pageName="'.base_url('accounts/children/manage/edit/'.$id).'" pageSize="modal-md">
-										<i class="anticon anticon-edit"></i> EDIT
-									</a>
-								</div>
-							';
-						}
-
-						$item .= '
-							<li class="list-group-item">
-								<div class="row p-t-10">
-									<div class="col-2 col-md-1">
-										<img alt="" src="'.site_url($avatar).'" class="p-1 avatar" />
-									</div>
-									<div class="col-10 col-md-5 m-b-10">
-										<div class="single">
-											<div class="text-muted font-size-12">'.$reg_date.'</div>
-											<b class="font-size-16 text-primary">'.$name.'</b>
-											<div class="small text-muted">'.$parent.'</div>
-										</div>
-									</div>
-									<div class="col-7 col-md-4 m-b-5">
-										<div class="text-muted font-size-12">AGE</div>
-										<div class="font-size-14">
-											'.$age.'
-										</div>
-									</div>
-									<div class="col-5 col-md-2">
-										<b class="font-size-14">'.$all_btn.'</b>
-									</div>
-								</div>
-							</li>
-						';
-					}
-				}
-			}
-			
-			if(empty($item)) {
-				$resp['item'] = '
-					<div class="text-center text-muted">
-						<br/><br/><br/><br/>
-						<i class="anticon anticon-team" style="font-size:150px;"></i><br/><br/>No Children Returned
-					</div>
-				';
-			} else {
-				$resp['item'] = $item;
-			}
-
-			$resp['count'] = $counts;
-
-			$more_record = $counts - ($offset + $rec_limit);
-			$resp['left'] = $more_record;
-
-			if($counts > ($offset + $rec_limit)) { // for load more records
-				$resp['limit'] = $rec_limit;
-				$resp['offset'] = $offset + $limit;
-			} else {
-				$resp['limit'] = 0;
-				$resp['offset'] = 0;
-			}
-
-			echo json_encode($resp);
-			die;
-		}
-
-		$data['parents'] = $this->Crud->read_single_order('role_id', 3, 'user', 'fullname', 'ASC');
-		$data['ages'] = $this->Crud->read_order('age', 'id', 'ASC');
-
-        if($param1 == 'manage') { // view for form data posting
-			return view('account/children_form', $data);
-		} else { // view for main page
-            $data['title'] = 'Children | '.app_name;
-            $data['page_active'] = 'accounts/children';
-            return view('account/children', $data);
+        if($param1 == 'get_category'){
+            if(empty($param2)){
+                $st =  '<option value="">Select Category First</option>';
+            } else {
+                $state = $this->Crud->read_single_order('category_id', $param2, 'category', 'name', 'asc');
+                if(!empty($state)){
+                    $st =  '<option value="">Select Sub Category</option>';
+                    foreach ($state as $s) {
+                        $st .= '<option value="'.$s->id.'">'.$s->name.'</option>';
+                    }
+                }
+            }
+            echo '<div class="listsearch-input-item mb-2">
+                <select data-placeholder="Select" name="sub_id" id="sub_id" required class="mb-2 chosen-select" >
+                    '.$st.'
+                </select></div><script>$("#sub_id").niceSelect();</script>
+            ';
         }
     }
 

@@ -48,11 +48,11 @@
                                                 <div class="listing-item">
                                                     <article class="geodir-category-listing fl-wrap">
                                                         <div class="row" style="padding:10px;">
-                                                            <section class="gray-bg small-padding ">
+                                                            <section class="graybg small-padding ">
                                                                 <div class="container">
                                                                     <div class="row">
                                                                         <div class="col-md-7">
-                                                                            <div class="card-info smpar fl-wrap">
+                                                                            <div class="card-info smpar fl-wrap ">
                                                                                 <div class="bg-wrap bg-parallax-wrap-gradien">
                                                                                     <div class="bg"  data-bg="<?=site_url(); ?>assets/images/bg/8.jpg"></div>
                                                                                 </div>
@@ -74,24 +74,44 @@
                                                                                             <li><span class="bookmark-counter"><i class="fas fa-sitemap"></i> Listings -  0 </span></li>
                                                                                         </ul>
                                                                                     </div>
-                                                                                    <div class="card-verified tolt" data-microtip-position="left" data-tooltip="Verified"><i class="fal fa-user-check"></i></div>
+                                                                                    <!-- <div class="card-verified tolt" data-microtip-position="left" data-tooltip="Verified"><i class="fal fa-user-check"></i></div> -->
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="list-single-main-container fl-wrap">
+                                                                            <div class="list-single-main-container fl-wrap mb-3">
                                                                                 <!-- list-single-main-item -->
                                                                                 <div class="list-single-main-item fl-wrap">
                                                                                     <div class="list-single-main-item-title">
                                                                                         <h3>About This Agent</h3>
                                                                                     </div>
                                                                                     <div class="list-single-main-item_content fl-wrap">
-                                                                                        
-                                                                                        <div class="list-single-tags fl-wrap tags-stylwrap" style="margin-top: 20px;">
-                                                                                            <span>Service Areas:</span>
-                                                                                            <a href="#">London</a>
-                                                                                            <a href="#">NewYork</a>
-                                                                                            <a href="#">Rome</a>
-                                                                                            <a href="#">Dubai</a>
+                                                                                        <?php if(!empty($country_id)){
+                                                                                            $country = $this->Crud->read_field('id', $country_id, 'country', 'name');
+                                                                                        ?>
+                                                                                        <div class="list-single-tags fl-wrap tags-stylwrap" style="margin-top: 10px;">
+                                                                                            <span>Country:</span>
+                                                                                            <a href="javascript:;"><?=$country; ?></a>
                                                                                         </div>
+                                                                                        <?php } ?>
+                                                                                        
+                                                                                        <?php if(!empty($state_id)){
+                                                                                            $state = $this->Crud->read_field('id', $state_id, 'state', 'name');
+                                                                                        ?>
+                                                                                        <div class="list-single-tags fl-wrap tags-stylwrap" style="margin-top: 10px;">
+                                                                                            <span>State:</span>
+                                                                                            <a href="javascript:;"><?=$state; ?></a>
+                                                                                        </div>
+                                                                                        <?php } ?>
+                                                                                        
+                                                                                        <?php if(!empty($city_id)){
+                                                                                            $city = $this->Crud->read_field('id', $city_id, 'city', 'name');
+                                                                                        ?>
+                                                                                        <div class="list-single-tags fl-wrap tags-stylwrap" style="margin-top: 10px;">
+                                                                                            <span>City:</span>
+                                                                                            <a href="javascript:;"><?=$city; ?></a>
+                                                                                        </div>
+                                                                                        <?php } ?>
+                                                                                        
+                                                                                        
                                                                                     </div>
                                                                                 </div>
                                                                                 <!-- list-single-main-item end -->             						
@@ -113,8 +133,8 @@
                                                                                             <li><span><i class="fal fa-phone"></i> Phone :</span> <a href="javascript:;"><?=$phone; ?></a></li>
                                                                                             <li><span><i class="fal fa-map-marker"></i> Adress :</span> <a href="javascript:;"> <?=$address; ?></a></li>
                                                                                             
-                                                                                            <li><span><i class="fal fa-phone"></i> Date of Birth :</span> <a href="javascript:;"><?php if(!empty($dob))echo date('d F, Y', strtotime($dob)); ?></a></li>
-                                                                                            <li><span><i class="fal fa-envelope"></i> Reg Date :</span> <a href="javascript:;"><?=date('d F, Y H:ia', strtotime($reg_date)) ?></a></li>
+                                                                                            <li><span><i class="fal fa-calendar-alt"></i> Date of Birth :</span> <a href="javascript:;"><?php if(!empty($dob))echo date('d F, Y', strtotime($dob)); ?></a></li>
+                                                                                            <li><span><i class="fal fa-calendar-plus"></i> Reg Date :</span> <a href="javascript:;"><?=date('d F, Y H:ia', strtotime($reg_date)) ?></a></li>
                                                                                             <li><span><i class="fal fa-browser"></i> Website :</span> <a href="javascript:;"><?php if(!empty($social) && !empty($social->website)) echo $social->website; ?></a></li>
                                                                                         </ul>
                                                                                     </div>
@@ -158,100 +178,10 @@
                                         <div id="tab-listing" class="tab-content">
                                             <div class="list-single-main-container fl-wrap" style="margin-top: 30px;">
                                                 <!-- list-single-main-item -->
-                                                <div class="list-single-main-item fl-wrap" id="sec6">
-                                                    <div class="list-single-main-item-title">
-                                                        <h3>Reviews <span>2</span></h3>
-                                                    </div>
-                                                    <div class="list-single-main-item_content fl-wrap">
-                                                        <div class="reviews-comments-wrap fl-wrap">
-                                                            <div class="review-total">
-                                                                <span class="review-number blue-bg">5.0</span>
-                                                                <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
-                                                            </div>
-                                                            <!-- reviews-comments-item -->  
-                                                            <div class="reviews-comments-item">
-                                                                <div class="review-comments-avatar">
-                                                                    <img src="<?=site_url(); ?>assets/images/avatar/1.jpg" alt=""> 
-                                                                </div>
-                                                                <div class="reviews-comments-item-text smpar">
-                                                                    
-                                                                    <h4><a href="#">Liza Rose</a></h4>
-                                                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
-                                                                    <div class="clearfix"></div>
-                                                                    <p>" Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. "</p>
-                                                                    <div class="reviews-comments-item-date"><span class="reviews-comments-item-date-item"><i class="far fa-calendar-check"></i>12 April 2018</span><a href="#" class="rate-review"><i class="fal fa-thumbs-up"></i>  Helpful Review  <span>6</span> </a></div>
-                                                                </div>
-                                                            </div>
-                                                            <!--reviews-comments-item end--> 
-                                                            <!-- reviews-comments-item -->  
-                                                            <div class="reviews-comments-item">
-                                                                <div class="review-comments-avatar">
-                                                                    <img src="<?=site_url(); ?>assets/images/avatar/4.jpg" alt=""> 
-                                                                </div>
-                                                                <div class="reviews-comments-item-text smpar">
-                                                                    <div class="box-widget-menu-btn smact"><i class="far fa-ellipsis-h"></i></div>
-                                                                    <div class="show-more-snopt-tooltip bxwt">
-                                                                        <a href="#"> <i class="fas fa-reply"></i> Reply</a>
-                                                                        <a href="#"> <i class="fas fa-exclamation-triangle"></i> Report </a>
-                                                                    </div>
-                                                                    <h4><a href="#">Adam Koncy</a></h4>
-                                                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
-                                                                    <div class="clearfix"></div>
-                                                                    <p>" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc posuere convallis purus non cursus. Cras metus neque, gravida sodales massa ut. "</p>
-                                                                    <div class="reviews-comments-item-date"><span class="reviews-comments-item-date-item"><i class="far fa-calendar-check"></i>03 December 2017</span><a href="#" class="rate-review"><i class="fal fa-thumbs-up"></i>  Helpful Review  <span>2</span> </a></div>
-                                                                </div>
-                                                            </div>
-                                                            <!--reviews-comments-item end-->                                                                  
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- list-single-main-item end -->                                             
-                                                <!-- list-single-main-item -->
-                                                <div class="list-single-main-item fl-wrap" id="sec5">
-                                                    <div class="list-single-main-item-title fl-wrap">
-                                                        <h3>Add Your Review</h3>
-                                                    </div>
-                                                    <!-- Add Review Box -->
-                                                    <div id="add-review" class="add-review-box">
-                                                        <div class="leave-rating-wrap">
-                                                            <span class="leave-rating-title">Your rating  for this listing : </span>
-                                                            <div class="leave-rating">
-                                                                <input type="radio"    data-ratingtext="Excellent"   name="rating" id="rating-1" value="1"/>
-                                                                <label for="rating-1" class="fal fa-star"></label>
-                                                                <input type="radio" data-ratingtext="Good" name="rating" id="rating-2" value="2"/>
-                                                                <label for="rating-2" class="fal fa-star"></label>
-                                                                <input type="radio" name="rating"  data-ratingtext="Average" id="rating-3" value="3"/>
-                                                                <label for="rating-3" class="fal fa-star"></label>
-                                                                <input type="radio" data-ratingtext="Fair" name="rating" id="rating-4" value="4"/>
-                                                                <label for="rating-4" class="fal fa-star"></label>
-                                                                <input type="radio" data-ratingtext="Very Bad "   name="rating" id="rating-5" value="5"/>
-                                                                <label for="rating-5"    class="fal fa-star"></label>
-                                                            </div>
-                                                            <div class="count-radio-wrapper">
-                                                                <span id="count-checked-radio">Your Rating</span>  
-                                                            </div>
-                                                        </div>
-                                                        <!-- Review Comment -->
-                                                        <form   class="add-comment custom-form">
-                                                            <fieldset>
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <label>Your name* <span class="dec-icon"><i class="fas fa-user"></i></span></label>
-                                                                        <input   name="phone" type="text"    onClick="this.select()" value="">
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <label>Yourmail* <span class="dec-icon"><i class="fas fa-envelope"></i></span></label>
-                                                                        <input   name="reviewwname" type="text"    onClick="this.select()" value="">
-                                                                    </div>
-                                                                </div>
-                                                                <textarea cols="40" rows="3" placeholder="Your Review:"></textarea>
-                                                            </fieldset>
-                                                            <button class="btn big-btn color-bg float-btn">Submit Review <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-                                                        </form>
-                                                    </div>
-                                                    <!-- Add Review Box / End -->
-                                                </div>
-                                                <!-- list-single-main-item end -->             										
+                                                <div class="text-center text-muted mb-3">
+                                                    <br/><br/><br/><br/>
+                                                    <i class="fal fa-user-tie" style="font-size:150px;"></i><br/><br/>No Listing Returned
+                                                </div>										
                                             </div>
                                         </div>
                                     </div>
@@ -259,105 +189,10 @@
                                     <div class="tab">
                                         <div id="tab-p_listing" class="tab-content">
                                             <div class="list-single-main-container fl-wrap" style="margin-top: 30px;">
-                                                <!-- list-single-main-item -->
-                                                <div class="list-single-main-item fl-wrap" id="sec6">
-                                                    <div class="list-single-main-item-title">
-                                                        <h3>Reviews <span>2</span></h3>
-                                                    </div>
-                                                    <div class="list-single-main-item_content fl-wrap">
-                                                        <div class="reviews-comments-wrap fl-wrap">
-                                                            <div class="review-total">
-                                                                <span class="review-number blue-bg">5.0</span>
-                                                                <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
-                                                            </div>
-                                                            <!-- reviews-comments-item -->  
-                                                            <div class="reviews-comments-item">
-                                                                <div class="review-comments-avatar">
-                                                                    <img src="<?=site_url(); ?>assets/images/avatar/1.jpg" alt=""> 
-                                                                </div>
-                                                                <div class="reviews-comments-item-text smpar">
-                                                                    <div class="box-widget-menu-btn smact"><i class="far fa-ellipsis-h"></i></div>
-                                                                    <div class="show-more-snopt-tooltip bxwt">
-                                                                        <a href="#"> <i class="fas fa-reply"></i> Reply</a>
-                                                                        <a href="#"> <i class="fas fa-exclamation-triangle"></i> Report </a>
-                                                                    </div>
-                                                                    <h4><a href="#">Liza Rose</a></h4>
-                                                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
-                                                                    <div class="clearfix"></div>
-                                                                    <p>" Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. "</p>
-                                                                    <div class="reviews-comments-item-date"><span class="reviews-comments-item-date-item"><i class="far fa-calendar-check"></i>12 April 2018</span><a href="#" class="rate-review"><i class="fal fa-thumbs-up"></i>  Helpful Review  <span>6</span> </a></div>
-                                                                </div>
-                                                            </div>
-                                                            <!--reviews-comments-item end--> 
-                                                            <!-- reviews-comments-item -->  
-                                                            <div class="reviews-comments-item">
-                                                                <div class="review-comments-avatar">
-                                                                    <img src="<?=site_url(); ?>assets/images/avatar/4.jpg" alt=""> 
-                                                                </div>
-                                                                <div class="reviews-comments-item-text smpar">
-                                                                    <div class="box-widget-menu-btn smact"><i class="far fa-ellipsis-h"></i></div>
-                                                                    <div class="show-more-snopt-tooltip bxwt">
-                                                                        <a href="#"> <i class="fas fa-reply"></i> Reply</a>
-                                                                        <a href="#"> <i class="fas fa-exclamation-triangle"></i> Report </a>
-                                                                    </div>
-                                                                    <h4><a href="#">Adam Koncy</a></h4>
-                                                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
-                                                                    <div class="clearfix"></div>
-                                                                    <p>" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc posuere convallis purus non cursus. Cras metus neque, gravida sodales massa ut. "</p>
-                                                                    <div class="reviews-comments-item-date"><span class="reviews-comments-item-date-item"><i class="far fa-calendar-check"></i>03 December 2017</span><a href="#" class="rate-review"><i class="fal fa-thumbs-up"></i>  Helpful Review  <span>2</span> </a></div>
-                                                                </div>
-                                                            </div>
-                                                            <!--reviews-comments-item end-->                                                                  
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- list-single-main-item end -->                                             
-                                                <!-- list-single-main-item -->
-                                                <div class="list-single-main-item fl-wrap" id="sec5">
-                                                    <div class="list-single-main-item-title fl-wrap">
-                                                        <h3>Add Your Review</h3>
-                                                    </div>
-                                                    <!-- Add Review Box -->
-                                                    <div id="add-review" class="add-review-box">
-                                                        <div class="leave-rating-wrap">
-                                                            <span class="leave-rating-title">Your rating  for this listing : </span>
-                                                            <div class="leave-rating">
-                                                                <input type="radio"    data-ratingtext="Excellent"   name="rating" id="rating-1" value="1"/>
-                                                                <label for="rating-1" class="fal fa-star"></label>
-                                                                <input type="radio" data-ratingtext="Good" name="rating" id="rating-2" value="2"/>
-                                                                <label for="rating-2" class="fal fa-star"></label>
-                                                                <input type="radio" name="rating"  data-ratingtext="Average" id="rating-3" value="3"/>
-                                                                <label for="rating-3" class="fal fa-star"></label>
-                                                                <input type="radio" data-ratingtext="Fair" name="rating" id="rating-4" value="4"/>
-                                                                <label for="rating-4" class="fal fa-star"></label>
-                                                                <input type="radio" data-ratingtext="Very Bad "   name="rating" id="rating-5" value="5"/>
-                                                                <label for="rating-5"    class="fal fa-star"></label>
-                                                            </div>
-                                                            <div class="count-radio-wrapper">
-                                                                <span id="count-checked-radio">Your Rating</span>  
-                                                            </div>
-                                                        </div>
-                                                        <!-- Review Comment -->
-                                                        <form   class="add-comment custom-form">
-                                                            <fieldset>
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <label>Your name* <span class="dec-icon"><i class="fas fa-user"></i></span></label>
-                                                                        <input   name="phone" type="text"    onClick="this.select()" value="">
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <label>Yourmail* <span class="dec-icon"><i class="fas fa-envelope"></i></span></label>
-                                                                        <input   name="reviewwname" type="text"    onClick="this.select()" value="">
-                                                                    </div>
-                                                                </div>
-                                                                <textarea cols="40" rows="3" placeholder="Your Review:"></textarea>
-                                                            </fieldset>
-                                                            <button class="btn big-btn color-bg float-btn">Submit Review <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-                                                        </form>
-                                                    </div>
-                                                    <!-- Add Review Box / End -->
-                                                </div>
-                                                <!-- list-single-main-item end -->             										
+                                                <div class="text-center text-muted mb-3">
+                                                    <br/><br/><br/><br/>
+                                                    <i class="fal fa-business-time" style="font-size:150px;"></i><br/><br/>No Listing Promoted
+                                                </div>        										
                                             </div>
                                         </div>
                                     </div>
@@ -365,105 +200,10 @@
                                     <div class="tab">
                                         <div id="tab-message" class="tab-content">
                                             <div class="list-single-main-container fl-wrap" style="margin-top: 30px;">
-                                                <!-- list-single-main-item -->
-                                                <div class="list-single-main-item fl-wrap" id="sec6">
-                                                    <div class="list-single-main-item-title">
-                                                        <h3>Reviews <span>2</span></h3>
-                                                    </div>
-                                                    <div class="list-single-main-item_content fl-wrap">
-                                                        <div class="reviews-comments-wrap fl-wrap">
-                                                            <div class="review-total">
-                                                                <span class="review-number blue-bg">5.0</span>
-                                                                <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
-                                                            </div>
-                                                            <!-- reviews-comments-item -->  
-                                                            <div class="reviews-comments-item">
-                                                                <div class="review-comments-avatar">
-                                                                    <img src="<?=site_url(); ?>assets/images/avatar/1.jpg" alt=""> 
-                                                                </div>
-                                                                <div class="reviews-comments-item-text smpar">
-                                                                    <div class="box-widget-menu-btn smact"><i class="far fa-ellipsis-h"></i></div>
-                                                                    <div class="show-more-snopt-tooltip bxwt">
-                                                                        <a href="#"> <i class="fas fa-reply"></i> Reply</a>
-                                                                        <a href="#"> <i class="fas fa-exclamation-triangle"></i> Report </a>
-                                                                    </div>
-                                                                    <h4><a href="#">Liza Rose</a></h4>
-                                                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
-                                                                    <div class="clearfix"></div>
-                                                                    <p>" Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. "</p>
-                                                                    <div class="reviews-comments-item-date"><span class="reviews-comments-item-date-item"><i class="far fa-calendar-check"></i>12 April 2018</span><a href="#" class="rate-review"><i class="fal fa-thumbs-up"></i>  Helpful Review  <span>6</span> </a></div>
-                                                                </div>
-                                                            </div>
-                                                            <!--reviews-comments-item end--> 
-                                                            <!-- reviews-comments-item -->  
-                                                            <div class="reviews-comments-item">
-                                                                <div class="review-comments-avatar">
-                                                                    <img src="<?=site_url(); ?>assets/images/avatar/4.jpg" alt=""> 
-                                                                </div>
-                                                                <div class="reviews-comments-item-text smpar">
-                                                                    <div class="box-widget-menu-btn smact"><i class="far fa-ellipsis-h"></i></div>
-                                                                    <div class="show-more-snopt-tooltip bxwt">
-                                                                        <a href="#"> <i class="fas fa-reply"></i> Reply</a>
-                                                                        <a href="#"> <i class="fas fa-exclamation-triangle"></i> Report </a>
-                                                                    </div>
-                                                                    <h4><a href="#">Adam Koncy</a></h4>
-                                                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
-                                                                    <div class="clearfix"></div>
-                                                                    <p>" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc posuere convallis purus non cursus. Cras metus neque, gravida sodales massa ut. "</p>
-                                                                    <div class="reviews-comments-item-date"><span class="reviews-comments-item-date-item"><i class="far fa-calendar-check"></i>03 December 2017</span><a href="#" class="rate-review"><i class="fal fa-thumbs-up"></i>  Helpful Review  <span>2</span> </a></div>
-                                                                </div>
-                                                            </div>
-                                                            <!--reviews-comments-item end-->                                                                  
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- list-single-main-item end -->                                             
-                                                <!-- list-single-main-item -->
-                                                <div class="list-single-main-item fl-wrap" id="sec5">
-                                                    <div class="list-single-main-item-title fl-wrap">
-                                                        <h3>Add Your Review</h3>
-                                                    </div>
-                                                    <!-- Add Review Box -->
-                                                    <div id="add-review" class="add-review-box">
-                                                        <div class="leave-rating-wrap">
-                                                            <span class="leave-rating-title">Your rating  for this listing : </span>
-                                                            <div class="leave-rating">
-                                                                <input type="radio"    data-ratingtext="Excellent"   name="rating" id="rating-1" value="1"/>
-                                                                <label for="rating-1" class="fal fa-star"></label>
-                                                                <input type="radio" data-ratingtext="Good" name="rating" id="rating-2" value="2"/>
-                                                                <label for="rating-2" class="fal fa-star"></label>
-                                                                <input type="radio" name="rating"  data-ratingtext="Average" id="rating-3" value="3"/>
-                                                                <label for="rating-3" class="fal fa-star"></label>
-                                                                <input type="radio" data-ratingtext="Fair" name="rating" id="rating-4" value="4"/>
-                                                                <label for="rating-4" class="fal fa-star"></label>
-                                                                <input type="radio" data-ratingtext="Very Bad "   name="rating" id="rating-5" value="5"/>
-                                                                <label for="rating-5"    class="fal fa-star"></label>
-                                                            </div>
-                                                            <div class="count-radio-wrapper">
-                                                                <span id="count-checked-radio">Your Rating</span>  
-                                                            </div>
-                                                        </div>
-                                                        <!-- Review Comment -->
-                                                        <form   class="add-comment custom-form">
-                                                            <fieldset>
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <label>Your name* <span class="dec-icon"><i class="fas fa-user"></i></span></label>
-                                                                        <input   name="phone" type="text"    onClick="this.select()" value="">
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <label>Yourmail* <span class="dec-icon"><i class="fas fa-envelope"></i></span></label>
-                                                                        <input   name="reviewwname" type="text"    onClick="this.select()" value="">
-                                                                    </div>
-                                                                </div>
-                                                                <textarea cols="40" rows="3" placeholder="Your Review:"></textarea>
-                                                            </fieldset>
-                                                            <button class="btn big-btn color-bg float-btn">Submit Review <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-                                                        </form>
-                                                    </div>
-                                                    <!-- Add Review Box / End -->
-                                                </div>
-                                                <!-- list-single-main-item end -->             										
+                                                <div class="text-center text-muted mb-3">
+                                                    <br/><br/><br/><br/>
+                                                    <i class="fal fa-envelope-open-text" style="font-size:150px;"></i><br/><br/>No Message
+                                                </div>            										
                                             </div>
                                         </div>
                                     </div>

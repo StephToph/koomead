@@ -729,6 +729,34 @@ class Crud extends Model {
 
 		return $result;
 	}
+
+	public function rave_banks($data='NG') {
+		// create a new cURL resource
+		$curl = curl_init();
+
+		// parameters
+		$key = $this->rave_key('skey');
+		$api_link = 'https://api.flutterwave.com/v3/banks/'.$data;
+		
+		$chead = array();
+		$chead[] = 'Content-Type: application/json';
+		$chead[] = 'Authorization: Bearer '.$key;
+
+		// set URL and other appropriate options
+		curl_setopt($curl, CURLOPT_URL, $api_link);
+		curl_setopt($curl, CURLOPT_HEADER, 0);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $chead);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+		// grab URL and pass it to the browser
+		$result = curl_exec($curl);
+
+		// close cURL resource, and free up system resources
+		curl_close($curl);
+
+		return $result;
+	}
 	
 	public function rave_bvn($bvn) {
 		// create a new cURL resource

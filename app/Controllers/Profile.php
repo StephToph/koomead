@@ -91,6 +91,73 @@ class Profile extends BaseController {
 			}
 
 		}
+
+		if($param1 == 'password'){
+			if($this->request->getMethod() == 'post') {
+				$cur_password = $this->request->getVar('cur_password');
+				$password = $this->request->getVar('password');
+				$confirm = $this->request->getVar('confirm');
+				
+				if(!$cur_password || !$password) {
+					echo $this->Crud->msg('danger', 'Current/New Password field(s) missing');
+					die;
+				}
+	
+				if($this->Crud->check2('id', $log_id,'password', md5($cur_password), 'user') == 0) {
+					echo $this->Crud->msg('warning', 'Incorrect Password');
+					die;
+				}
+	
+				if($password != $confirm) {
+					echo $this->Crud->msg('danger', 'Password does not match, Try Again');
+					die;
+				}
+				
+				
+				// update profile
+				$upd_data['password'] = md5($password);
+				
+				if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
+					echo $this->Crud->msg('success', 'Password Updated and will take Effect on Next Login');
+					echo '<script>$("#cur_password").val("");$("#password").val("");$("#confirm").val("");</script>';
+				} else {
+					echo $this->Crud->msg('info', 'No Changes');
+				}
+	
+				die;
+			}
+
+		}
+        
+		if($param1 == 'bank'){
+			if($this->request->getMethod() == 'post') {
+				$bank_code = $this->request->getVar('bank_code');
+				$account_number = $this->request->getVar('account_number');
+				
+				if(!$bank_code || !$account_number) {
+					echo $this->Crud->msg('danger', 'Bank, Account Number field(s) missing');
+					die;
+				}
+				
+
+				$valid = $this->Crud->validate_account($account_number, $bank_code);
+				echo $valid;
+				
+				
+				// update profile
+				// $upd_data['password'] = md5($password);
+				
+				// if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
+				// 	echo $this->Crud->msg('success', 'Password Updated and will take Effect on Next Login');
+				// 	echo '<script>$("#cur_password").val("");$("#password").val("");$("#confirm").val("");</script>';
+				// } else {
+				// 	echo $this->Crud->msg('info', 'No Changes');
+				// }
+	
+				die;
+			}
+
+		}
         
 
 		$data['email'] = $this->Crud->read_field('id', $log_id, 'user', 'email');
@@ -145,5 +212,21 @@ class Profile extends BaseController {
 		$data['page_active'] = 'profile';
 
 		return view('profile/password', $data);
+	}
+
+	public function get_bank(){
+		$bank = $this->Crud->rave_banks();
+		$banks = json_decode($bank);
+		if(!empty($banks->data)){
+			foreach ($banks->data as $b) {
+				$in['bank_id'] = $b->id;
+				$in['code'] = $b->code;
+				$in['name'] = $b->name;
+				
+				if($this->Crud->check2('bank_id', $b->id, 'code', $b->code, 'bank') > 0){continue;}else{
+					$this->Crud->create('bank', $in);
+				}
+			}
+		}
 	}
 }

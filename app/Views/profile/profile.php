@@ -98,56 +98,66 @@
                             <div class="col-sm-12"><div id="bb_ajax_msg"></div></div>
                         </div>
                     </div>
+                    </form>
                 </div>
                 <div class="col-md-5">
                     <div class="dasboard-widget-title dbt-mm fl-wrap">
                         <h5><i class="fal fa-money-check"></i> Bank Information</h5>
                     </div>
-                    <div class="dasboard-widget-box fl-wrap">
+                    <div class="dasboard-widget-box fl-wrap mb-5">
+                        <?php echo form_open_multipart('profile/index/bank', array('id'=>'bb_ajax_form2', 'class'=>'', 'clear'=>'true')); ?>
+                        <div class="row">
+                            <div class="col-sm-12"><div id="bb_ajax_msg2"></div></div>
+                        </div>
                         <div class="custom-form">
                             <label>Bank</label>
                             <div class="listsearch-input-item mb-2">
                                 <select data-placeholder="Select" name="bank_code" id="bank_code" required class="mb-2 chosen-select search-select">
                                     <option value="">Select Bank</option>
-                                    
+                                    <?php
+                                        $bank = $this->Crud->read_order('bank', 'name', 'asc');
+                                       if(!empty($bank)){
+                                            foreach($bank as $b){
+                                                echo '<option value="'.$b->code.'">'.$b->name.'</option>';
+                                            }
+                                       }
+                                    ?>
                                 </select>
                                 
                             </div>
-                            <div class="pass-input-wrap fl-wrap">
-                                <label>New Password<span class="dec-icon"><i class="far fa-lock-alt"></i></span></label>
-                                <input type="password" class="pass-input" placeholder="" value=""/>
-                                <span class="eye"><i class="far fa-eye" aria-hidden="true"></i> </span>
-                            </div>
-                            <div class="pass-input-wrap fl-wrap">
-                                <label>Confirm New Password<span class="dec-icon"><i class="far fa-shield-check"></i> </span></label>
-                                <input type="password" class="pass-input" placeholder="" value=""/>
-                                <span class="eye"><i class="far fa-eye" aria-hidden="true"></i> </span>
-                            </div>
+                            <label>Account Number <span class="dec-icon"><i class="fas fa-user-circle"></i> </span></label>
+                            <input type="text" name="account_number" placeholder="0000000000" required minlength="10" value=""/>
                             <button class="btn    color-bg  float-btn">Save Changes</button>
                         </div>
+                        </form>
                     </div>
                     <div class="dasboard-widget-title dbt-mm fl-wrap">
                         <h5><i class="fas fa-key"></i>Change Password</h5>
                     </div>
                     <div class="dasboard-widget-box fl-wrap">
+                        <?php echo form_open_multipart('profile/index/password', array('id'=>'bb_ajax_form3', 'class'=>'', 'clear'=>'true')); ?>
+                        <div class="row">
+                            <div class="col-sm-12"><div id="bb_ajax_msg3"></div></div>
+                        </div>
                         <div class="custom-form">
                             <div class="pass-input-wrap fl-wrap">
                                 <label>Current Password<span class="dec-icon"><i class="far fa-lock-open-alt"></i></span></label>
-                                <input type="password" class="pass-input" placeholder="" value=""/>
+                                <input type="password" name="cur_password" class="pass-input" placeholder="" required/>
                                 <span class="eye"><i class="far fa-eye" aria-hidden="true"></i> </span>
                             </div>
                             <div class="pass-input-wrap fl-wrap">
                                 <label>New Password<span class="dec-icon"><i class="far fa-lock-alt"></i></span></label>
-                                <input type="password" class="pass-input" placeholder="" value=""/>
+                                <input type="password" name="password" class="pass-input" placeholder="" required/>
                                 <span class="eye"><i class="far fa-eye" aria-hidden="true"></i> </span>
                             </div>
                             <div class="pass-input-wrap fl-wrap">
                                 <label>Confirm New Password<span class="dec-icon"><i class="far fa-shield-check"></i> </span></label>
-                                <input type="password" class="pass-input" placeholder="" value=""/>
+                                <input type="password" name="confirm" class="pass-input" placeholder="" required/>
                                 <span class="eye"><i class="far fa-eye" aria-hidden="true"></i> </span>
                             </div>
                             <button class="btn    color-bg  float-btn">Save Changes</button>
                         </div>
+                        </form>
                     </div>
                     
                 </div>

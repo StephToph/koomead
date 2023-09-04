@@ -118,15 +118,29 @@
                                         $bank = $this->Crud->read_order('bank', 'name', 'asc');
                                        if(!empty($bank)){
                                             foreach($bank as $b){
-                                                echo '<option value="'.$b->code.'">'.$b->name.'</option>';
+                                                $sel = '';
+                                                if(!empty($bank_details)){
+                                                    if(!empty($bank_details->bank_code)){
+                                                        if($bank_details->bank_code == $b->code)$sel = 'selected';
+                                                    }
+                                                }
+                                                echo '<option value="'.$b->code.'" '.$sel.'>'.$b->name.'</option>';
                                             }
                                        }
+                                       $acc_no = '';$acc_name = '';
+                                       if(!empty($bank_details)){
+                                            if(!empty($bank_details->account_number)){
+                                                $acc_no = $bank_details->account_number;
+                                                $acc_name = $bank_details->account_name;
+                                            }
+                                        }
                                     ?>
                                 </select>
                                 
                             </div>
                             <label>Account Number <span class="dec-icon"><i class="fas fa-user-circle"></i> </span></label>
-                            <input type="text" name="account_number" placeholder="0000000000" required minlength="10" value=""/>
+                            <input type="text" name="account_number" placeholder="0000000000" required minlength="10" value="<?=$acc_no; ?>"/>
+                            <label class="text-star text-danger font-weight-bold" style="font-size:14px;"><?=strtoupper($acc_name); ?></label>
                             <button class="btn    color-bg  float-btn">Save Changes</button>
                         </div>
                         </form>

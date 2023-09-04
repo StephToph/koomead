@@ -913,17 +913,18 @@ class Crud extends Model {
 	public function validate_account($acc_no, $bank_code) {
 		// create a new cURL resource
 		$curl = curl_init();
-
 		// parameters
+		$key = $this->rave_key('skey');
 		$api_link = 'https://api.flutterwave.com/v3/accounts/resolve';
-		$curl_data = array('account_number'=>$acc_no, 'account_bank'=>$bank_code);
-		$curl_data = json_encode($curl_data);
 		
 		$chead = array();
 		$chead[] = 'Content-Type: application/json';
-		$chead[] = 'Authorization: Bearer FLWSECK-d4fe580c24ad58ccfd5354f3edab9250-X';
+		$chead[] = 'Authorization: Bearer '.$key;
+		// parameters
+		$curl_data = array('account_number'=>$acc_no, 'account_bank'=>$bank_code);
+		$curl_data = json_encode($curl_data);
+		
 		$chead[] = 'Content-Length: '.strlen($curl_data);
-
 		// set URL and other appropriate options
 		curl_setopt($curl, CURLOPT_URL, $api_link);
 		curl_setopt($curl, CURLOPT_HEADER, 0);

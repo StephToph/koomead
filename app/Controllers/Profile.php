@@ -141,19 +141,28 @@ class Profile extends BaseController {
 				
 
 				$valid = $this->Crud->validate_account($account_number, $bank_code);
-				echo $valid;
-				
-				
-				// update profile
-				// $upd_data['password'] = md5($password);
-				
-				// if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
-				// 	echo $this->Crud->msg('success', 'Password Updated and will take Effect on Next Login');
-				// 	echo '<script>$("#cur_password").val("");$("#password").val("");$("#confirm").val("");</script>';
-				// } else {
-				// 	echo $this->Crud->msg('info', 'No Changes');
-				// }
-	
+				$valids = json_decode($valid);
+				if($valids->status == 'success'){
+					$acc_name = $valids->data->account_name;
+					if(!empty($acc_name)){
+						$banks = [];
+						$banks['bank_code'] = $bank_code;
+						$banks['account_number'] = $account_number;
+						$banks['account_name'] = $acc_name;
+
+						$upd_data['bank_details'] = json_encode($banks);
+						$msg = 'Bank Account Validated.<br> <b>'.$acc_name.'</b><br>Bank Details Updated';
+						if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
+							echo $this->Crud->msg('success', $msg);
+						} else {
+							echo $this->Crud->msg('info', 'No Changes');
+						}
+					} else {
+						echo $this->Crud->msg('danger', 'Account not Found');
+					}
+				} else {
+					echo $this->Crud->msg('danger', 'Invalid Account Details');
+				}
 				die;
 			}
 
@@ -172,7 +181,7 @@ class Profile extends BaseController {
 		if(empty($img)) $img = 'assets/images/avatar.png';
         $data['img'] = $img;
         $data['social'] = json_decode($this->Crud->read_field('id', $log_id, 'user', 'social'));
-		$data['bank_details'] = $this->Crud->read_field('id', $log_id, 'user', 'bank_details');
+		$data['bank_details'] = json_decode($this->Crud->read_field('id', $log_id, 'user', 'bank_details'));
        
         $data['title'] = 'Profile | '.app_name;
         $data['page_active'] = 'profile';

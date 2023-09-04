@@ -60,16 +60,7 @@
         <header class="main-header">
                 <!--  logo  -->
                 <div class="logo-holder"><a href="<?=site_url(); ?>"><img src="<?=site_url(); ?>assets/images/logo.png" alt=""></a></div>
-                <!-- logo end  -->
-                <!-- nav-button-wrap--> 
-                <div class="nav-button-wrap color-bg nvminit">
-                    <div class="nav-button">
-                        <span></span><span></span><span></span>
-                    </div>
-                </div>
-                <!-- nav-button-wrap end-->	
                 
-                <!--  add new  btn -->
                 <div class="add-list_wrap">
                     <a href="<?=site_url('listing'); ?>" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>
                 </div>

@@ -1757,14 +1757,15 @@ class Crud extends Model {
         $db->close();
 	}
 
-	public function filter_environment($limit='', $offset='', $user_id, $search='', $start_date='', $end_date='') {
+	public function filter_listing($limit='', $offset='', $user_id, $search='', $category_id='', $start_date='', $end_date='') {
 		$db = db_connect();
 		 
-        $builder = $db->table('environment');
+        $builder = $db->table('listing');
 		
 		// build query
 		$builder->orderBy('id', 'DESC');
 		
+		if($category_id != 'all')$builder->where('category_id', $category_id);
 		
 		if(!empty($start_date) && !empty($end_date)){
 			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') >= '".$start_date."'",NULL,FALSE);

@@ -27,8 +27,8 @@
             <div class="dasboard-listing-box fl-wrap">
                 
                 <div class="dasboard-opt sl-opt fl-wrap float-end">
-                    <span class="font-weight-bold float-start p-3 font-size-14">You have <span id="listCount"> 0</span> Users</span>
-                    
+                    <span class="font-weight-bold float-start p-3 font-size-14">You have <span id="listCount"> 0</span> listing(s)</span>
+                    <a href="<?=site_url('listing/index/add');?>" class="btn btn-primary float-end">Add New <i class="fal fa-plus"></i></a>	
                 </div>
                 <div class="dasboard-opt sl-opt fl-wrap">
                     <div class="dashboard-search-listing">
@@ -36,7 +36,7 @@
                         <button type="submit"><i class="far fa-search"></i></button>
                     </div>
 
-                    <a href="javascript:;" pageTitle="Add New" onclick="$('#filter_box').toggle();" class="gradient-bg dashboard-addnew_btn show-popup-form">Filter<i class="fal fa-filter"></i></a>	
+                    <a href="javascript:;" pageTitle="Add New" onclick="$('#filter_box').toggle();" class="btn btn-info float-end">Filter<i class="fal fa-filter"></i></a>	
                     
                 </div>
 
@@ -191,7 +191,7 @@
             var end_date = $('#end_date').val();
 
             $.ajax({
-                url: site_url + 'accounts/user/load' + methods,
+                url: site_url + 'listing/index/load' + methods,
                 type: 'post',
                 data: { ban: ban,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id },
                 success: function (data) {

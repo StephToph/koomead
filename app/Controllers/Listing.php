@@ -147,13 +147,14 @@ class Listing extends BaseController {
 			
 			$search = $this->request->getVar('search');
 			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
+			if(!empty($this->request->getPost('category_id'))) { $category_id = $this->request->getPost('category_id'); } else { $category_id = ''; }
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
 			
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {
-				$query = $this->Crud->filter_activity($limit, $offset, $log_id, $search, $start_date, $end_date);
-				$all_rec = $this->Crud->filter_activity('', '', $log_id, $search, $start_date, $end_date);
+				$query = $this->Crud->filter_listing($limit, $offset, $log_id, $search,$category_id,  $start_date, $end_date);
+				$all_rec = $this->Crud->filter_listing('', '', $log_id, $search, $category_id, $start_date, $end_date);
 				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
 
 				if(!empty($query)) {
@@ -193,7 +194,7 @@ class Listing extends BaseController {
 				$resp['item'] = '
 					<div class="text-center text-muted">
 						<br/><br/><br/><br/>
-						<i class="fal fa-chart-network" style="font-size:150px;"></i><br/><br/>No Activities Returned
+						<i class="fal fa-clipboard-list-check" style="font-size:150px;"></i><br/><br/>No Listing Returned
 					</div>
 				';
 			} else {
@@ -218,6 +219,11 @@ class Listing extends BaseController {
 		
         if($param1 == 'manage') { // view for form data posting
 			return view('listing/manage_form', $data);
+		} elseif($param1 == 'add'){
+			$data['title'] = 'New Listing | '.app_name;
+            $data['page_active'] = 'listing';
+           
+			return view('listing/add', $data);
 		} else { // view for main page
             
 			$data['title'] = 'My Listing | '.app_name;

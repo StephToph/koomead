@@ -140,7 +140,7 @@
                             </div>
                             <label>Account Number <span class="dec-icon"><i class="fas fa-user-circle"></i> </span></label>
                             <input type="text" name="account_number" placeholder="0000000000" required minlength="10" value="<?=$acc_no; ?>"/>
-                            <label class="text-star text-danger font-weight-bold" style="font-size:14px;"><?=strtoupper($acc_name); ?></label>
+                            <label class="text-center text-danger font-weight-bold" style="font-size:14px;"><?=strtoupper($acc_name); ?></label>
                             <button class="btn    color-bg  float-btn">Save Changes</button>
                         </div>
                         </form>

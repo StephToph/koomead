@@ -26,7 +26,7 @@
                 <div class="col-sm-12"><div id="bb_ajax_msg"></div></div>
             </div>
         <div class="custom-form">
-            <div class="row">
+            <div class="row text-start">
                 <input type="hidden" name="module_id" value="<?php if(!empty($e_id)){echo $e_id;} ?>" />
 
                 <div class="col-sm-6 mb-3">
@@ -51,10 +51,8 @@
                 </div>
 
                 <div class="col-sm-4 mb-3">
-                    <div class="form-group">
                         <label for="icon">Icon</label>
                         <input class="form-control" type="text" id="icon" name="icon" value="<?php if(!empty($e_icon)){echo $e_icon;} ?>">
-                    </div>
                 </div>
 
                 <div class="col-sm-2 mb-3">

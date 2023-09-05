@@ -130,7 +130,7 @@ class Listing extends BaseController {
 
 					$uploadedImagePaths = [];
 					/// upload image
-                    if(!empty($_FILES['pics']['name'][0])) {
+                    if(!empty($_FILES['pics']['name'])) {
                         $path = 'assets/images/listings/'.$log_id.'/';
 						
         				if (!is_dir($path)) mkdir($path, 0755);
@@ -155,7 +155,7 @@ class Listing extends BaseController {
 
 					if(!empty($img)){
 						foreach ($img as $key => $value) {
-							$uploadedImagePaths[] = $value;
+							if(!empty($value))$uploadedImagePaths[] = $value;
 						}
 					}
 
@@ -163,7 +163,7 @@ class Listing extends BaseController {
 						echo $this->Crud->msg('danger', 'At least one image must be uploaded');
 						die;
 					}
-					echo json_encode($uploadedImagePaths);
+					// echo json_encode($uploadedImagePaths);
 					// die;
 					
 					// echo $negotiable.' '.$price_status;

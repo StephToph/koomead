@@ -209,7 +209,7 @@
                                 <div class="text-muted text-center"><b>MAIN PHOTO</b></div>
                                 <label for="img-upload" class="pointer text-center" style="cursor:pointer; float: none !important;">
                                         
-                                    <input type="hidden" name="img[]" value="<?php if(!empty($e_images)){echo $e_images[0];} ?>" />
+                                    <input type="hidden" id="hiddens" name="img[]" value="<?php if(!empty($e_images)){echo $e_images[0];} ?>" />
                                     <img id="img0" src="<?php  if(!empty($e_images)){echo site_url($e_images[0]);} else {echo site_url('assets/images/file.png');} ?>" style="max-width:80%;" />
                                     <span class="btn btn-warning d-block"><i class="fal fa-images"></i> Choose Image</span>
                                     <input class="d-none img-upload" type="file" name="pics[]"  id="img-upload">
@@ -230,10 +230,10 @@
                                                     <div class="text-muted text-center"><b id="counter"> PHOTO <?=$i; ?></b></div>
                                                     <label for="img-upload<?=$i; ?>" class="pointer text-center" style="cursor:pointer; float: none !important;">
                                                             
-                                                        <input type="hidden" name="img[]" value="<?php if(!empty($e_images)){echo $e_images[$i];} ?>" />
+                                                        <input type="hidden" id="hidden<?=$i; ?>" name="img[]" value="<?php if(!empty($e_images)){echo $e_images[$i];} ?>" />
                                                         <img id="img<?=$i;?>" src="<?php  if(!empty($e_images)){echo site_url($e_images[$i]);} else {echo site_url('assets/images/file.png');} ?>" style="max-width:80%;" />
                                                         <span class="btn btn-warning d-block"><i class="fal fa-images"></i> Choose Image</span>
-                                                        <input class="d-none img-upload" type="file" name="pics[]"  id="img-upload<?=$i;?>" onchange="addChangeFunctionality(<?=$i; ?>)">
+                                                        <input class="d-none img-upload" type="file" name="pics[]"  id="img-upload<?=$i;?>" >
                                                         
                                                     </label>
                                                     
@@ -327,12 +327,14 @@
 
 
         // Function to update the clone counters
-        function addChangeFunctionality(i) {
+        for (let i = 1; i < 50; i++) {
             $("#img-upload"+i).change(function(){
-                alert('dfdf');
                 readURL(this, 'img'+i);
+                $('#hidden'+i).val('');
             });
+            
         }
+        
 
 
         function deleteButtonAction(button) {
@@ -403,6 +405,7 @@
         
         $("#img-upload").change(function(){
             readURL(this, 'img0');
+            $('#hiddens').val('');
         });
 
 

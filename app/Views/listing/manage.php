@@ -53,7 +53,26 @@
                                     <input type="date" class="form-control" name="end_date" id="end_date" oninput="loads()" style="border:1px solid #ddd;">
                                 </div> 
                                 <div class="col-sm-12" style="color: transparent;"><span id="date_resul"></span></div>
+                                    <div class="col-12 col-sm-6 mb-2 mt-2">
+                                    <div class="listsearch-input-item">
+                                        <select data-placeholder="All Status" id="category_id" onchange="load('', '')" class="chosen-select search-select" >
+                                            <option value="all">All Category</option>
+                                            <?php
+                                                $cate = $this->Crud->read_single_order('category_id >', 0, 'category', 'name', 'asc');
+                                                if(!empty($cate)){
+                                                    foreach($cate as $c){
+                                                        $sel = '';
+                                                       
+                                                        echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
+                                                    }
+                                                }
+                                            ?>
+                                    
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
+                            
                         </div>
                         <div class="col-12 col-sm-3 mb-2 mt-2">
                             <div class="listsearch-input-item">
@@ -90,13 +109,14 @@
                         </div>
                         <div class="col-12 col-sm-3 mb-2 mt-2">
                             <div class="listsearch-input-item">
-                                <select data-placeholder="All Status" id="ban" onchange="load('', '')" class="chosen-select no-search-select" >
+                                <select data-placeholder="All Status" id="active" onchange="load('', '')" class="chosen-select no-search-select" >
                                     <option value="all">All Status</option>
-                                    <option value="0">Active</option>
-                                    <option value="1">Disabled</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Disabled</option>
                                 </select>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
                 
@@ -185,6 +205,7 @@
             var country_id = $('#country_id').val();
             var state_id = $('#state_id').val();
             var city_id = $('#city_id').val();
+            var active = $('#active').val();
             var category_id = $('#category_id').val();
             var search = $('#search').val();
             var start_date = $('#start_date').val();
@@ -193,7 +214,7 @@
             $.ajax({
                 url: site_url + 'listing/index/load' + methods,
                 type: 'post',
-                data: { category_id: category_id,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id },
+                data: { category_id: category_id,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id,active: active },
                 success: function (data) {
                     var dt = JSON.parse(data);
                     if (more == 'no') {

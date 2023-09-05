@@ -142,14 +142,14 @@
                                     </div>     
                                     <div class="inline-facts-wrap">
                                         <div class="inline-facts">
-                                            <i class="fal fa-users"></i>
+                                            <i class="fal fa-vote-nay"></i>
                                             <h6>Negotiable</h6>
                                             <span><?=$negotiate; ?></span>
                                         </div>
                                     </div>     
                                     <div class="inline-facts-wrap">
                                         <div class="inline-facts">
-                                            <i class="fal fa-users"></i>
+                                            <i class="fal fa-user-cowboy"></i>
                                             <h6>Active</h6>
                                             <span><?=$active; ?></span>
                                         </div>

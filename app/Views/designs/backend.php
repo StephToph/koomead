@@ -62,7 +62,7 @@
                 <div class="logo-holder"><a href="<?=site_url(); ?>"><img src="<?=site_url(); ?>assets/images/logo.png" alt=""></a></div>
                 
                 <div class="add-list_wrap">
-                    <a href="<?=site_url('listing'); ?>" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>
+                    <a href="<?=site_url('listing/index/add'); ?>" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>
                 </div>
                 <!--  add new  btn end -->
                 <!--  header-opt_btn -->
@@ -83,9 +83,9 @@
                 <div class="dashboard-submenu">
                     <div class="dashboard-submenu-title fl-wrap">Welcome , <span><?=$log_name; ?></span></div>
                     <ul>
-                        <li><a href="dashboard.html"><i class="fal fa-chart-line"></i>Dashboard</a></li>
-                        <li><a href="dashboard-add-listing.html"> <i class="fal fa-file-plus"></i>Add Listing</a></li>
-                        <li><a href="dashboard-myprofile.html"><i class="fal fa-user-edit"></i>Settings</a></li>
+                        <li><a href="<?=site_url('dashboard'); ?>"><i class="fal fa-chart-line"></i>Dashboard</a></li>
+                        <li><a href="<?=site_url('listing/index/add'); ?>"> <i class="fal fa-file-plus"></i>Add Listing</a></li>
+                        <li><a href="<?=site_url('profile'); ?>"><i class="fal fa-user-edit"></i>Settings</a></li>
                     </ul>
                     <a href="<?=site_url('auth/logout'); ?>" class="color-bg db_log-out"><i class="far fa-power-off"></i> Log Out</a>
                 </div>

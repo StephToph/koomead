@@ -1757,21 +1757,33 @@ class Crud extends Model {
         $db->close();
 	}
 
-	public function filter_listing($limit='', $offset='', $user_id, $search='', $category_id='', $start_date='', $end_date='') {
+	public function filter_listing($limit='', $offset='', $user_id, $search='', $category_id='', $active='', $country_id='', $state_id='', $city_id='', $start_date='', $end_date='') {
 		$db = db_connect();
 		 
         $builder = $db->table('listing');
 		
 		// build query
 		$builder->orderBy('id', 'DESC');
-		
-		// if($category_id != 'all')$builder->where('category_id', $category_id);
+		// build query
+		$role_id = $this->read_field('id', $user_id, 'user', 'role_id');
+		$role = strtolower($this->read_field('id', $role_id, 'access_role', 'name'));
+		if($role != 'developer' && $role != 'administrator'){
+			$builder->where('user_id', $user_id);
+		} 
+		if($active != 'all')$builder->where('active', $active);
+		if(!empty($category_id) && $category_id != 'all')$builder->where('category_id', $category_id);
+		if(!empty($country_id) && $country_id != 'all')$builder->where('country_id', $country_id);
+		if(!empty($state_id) && $state_id != 'all')$builder->where('state_id', $state_id);
+		if(!empty($city_id) && $city_id != 'all')$builder->where('city_id', $city_id);
 		
 		if(!empty($start_date) && !empty($end_date)){
 			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') >= '".$start_date."'",NULL,FALSE);
 			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') <= '".$end_date."'",NULL,FALSE); 
 		}
-
+		if(!empty($search)) {
+            $builder->like('name', $search);
+			
+        }
         // limit query
         if($limit && $offset) {
 			$query = $builder->get($limit, $offset);

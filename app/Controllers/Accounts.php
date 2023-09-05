@@ -199,8 +199,8 @@ class Accounts extends BaseController {
 						
 						$loca = '';
 						if(!empty($country_id)) $loca .= $country;
-						if(!empty($country_id)) $loca .= '&#8594; '.$state;
-						if(!empty($country_id)) $loca .= '<br>&#8594; '.$city;
+						if(!empty($state_id)) $loca .= '&#8594; '.$state;
+						if(!empty($city_id)) $loca .= '<br>&#8594; '.$city;
 						
 						// add manage buttons
 						if($role_u != 1) {

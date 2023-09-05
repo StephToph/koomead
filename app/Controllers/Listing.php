@@ -77,6 +77,36 @@ class Listing extends BaseController {
 						exit;	
 					}
 				}
+			} elseif($param2 == 'disable'){
+				if($param3) {
+					$edit = $this->Crud->read_single('id', $param3, $table);
+					if(!empty($edit)) {
+						foreach($edit as $e) {
+							$data['d_id'] = $e->id;
+							$data['d_active'] = $e->active;
+						}
+					}
+
+					if($this->request->getMethod() == 'post'){
+						$del_id = $this->request->getVar('d_listing_id');
+						$active = $this->request->getVar('active');
+						
+						///// store activities
+						$code = $this->Crud->read_field('id', $del_id, 'listing', 'name');
+						$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+						$action = $by.' deleted Age '.$code.' Record';
+						
+						if($this->Crud->updates('id', $del_id, $table, array('active'=>$active)) > 0) {
+							$this->Crud->activity('listing', $del_id, $action);
+
+							echo $this->Crud->msg('success', 'Listing Status Deleted');
+							echo '<script>location.reload(false);</script>';
+						} else {
+							echo $this->Crud->msg('danger', 'Please try later');
+						}
+						exit;	
+					}
+				}
 			} else {
 				// prepare for edit
 				if($param2 == 'edit') {
@@ -92,37 +122,93 @@ class Listing extends BaseController {
 				}
 
 				if($this->request->getMethod() == 'post'){
-					$age_id = $this->request->getVar('age_id');
-					$name = $this->request->getVar('name');
+					$listing_id = $this->request->getVar('listing_id');
+					$title = $this->request->getVar('title');
+					$sub_id = $this->request->getVar('sub_id');
+					$state_id = $this->request->getVar('state_id');
+					$city_id = $this->request->getVar('city_id');
+					$price = $this->request->getVar('price');
+					$description = $this->request->getVar('description');
+					$price_status = $this->request->getVar('price_status');
+					$negotiable = $this->request->getVar('negotiable');
 
-					$p_data['name'] = $name;
+					if($negotiable == 'on')$negotiable = 1; else $negotiable = 0;
+
+					if($price_status == 'on')$price_status = 1; else $price_status = 0;
+
+
+					$uploadedImagePaths = [];
+					/// upload image
+                    if(!empty($_FILES['pics']['name'][0])) {
+                        $path = 'assets/images/listings/'.$log_id.'/';
+						
+        				if (!is_dir($path)) mkdir($path, 0755);
+
+						
+						for ($i = 0; $i < count($_FILES['pics']['name']); $i++) {
+							$filename = $_FILES['pics']['name'][$i];
+							$tmp_name = $_FILES['pics']['tmp_name'][$i];
+							$uniqueName = uniqid() . '_' . $filename;
+
+							$target_path = $path . $uniqueName;
+					
+							 // Move the uploaded file to the desired directory
+							if (move_uploaded_file($tmp_name, $target_path)) {
+								$uploadedImagePaths[] = $target_path;
+							} else {
+								// Handle the case where the file couldn't be moved
+								// echo "Error uploading file '$filename'.<br>";
+							}
+						}
+                    }
+
+					if(empty($uploadedImagePaths)){
+						echo $this->Crud->msg('danger', 'At least one image must be uploaded');
+						die;
+					}
+					
+					// echo $negotiable.' '.$price_status;
+					$p_data['name'] = $title;
+					$p_data['state_id'] = $state_id;
+					$p_data['country_id'] = $this->Crud->read_field('id', $state_id, 'state', 'country_id');
+					$p_data['city_id'] = $city_id;
+					$p_data['price'] = $price;
+					$p_data['images'] = json_encode($uploadedImagePaths);
+					$p_data['description'] = $description;
+					$p_data['price_status'] = $price_status;
+					$p_data['negotiable'] = $negotiable;
+					$p_data['category_id'] = $sub_id;
 
 					// check if already exist
-					if(!empty($age_id)) {
-						$upd_rec = $this->Crud->updates('id', $age_id, $table, $p_data);
+					if(!empty($listing_id)) {
+						$upd_rec = $this->Crud->updates('id', $listing_id, $table, $p_data);
 						if($upd_rec > 0) {
 							///// store activities
-							$code = $this->Crud->read_field('id', $age_id, 'age', 'name');
+							$code = $this->Crud->read_field('id', $listing_id, 'listing', 'name');
 							$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-							$action = $by.' updated Age '.$code.' Record';
-							$this->Crud->activity('setup', $age_id, $action);
+							$action = $by.' updated Listing '.$code.' Record';
+							$this->Crud->activity('listing', $listing_id, $action);
 
-							echo $this->Crud->msg('success', 'Record Updated');
+							echo $this->Crud->msg('success', 'Listing Updated');
 							echo '<script>location.reload(false);</script>';
 						} else {
 							echo $this->Crud->msg('info', 'No Changes');	
 						}
 					} else {
-						$ins_rec = $this->Crud->create('age', $p_data);
+						$p_data['reg_date'] = date(fdate);
+						$p_data['user_id'] = $log_id;
+
+
+						$ins_rec = $this->Crud->create('listing', $p_data);
 						if($ins_rec > 0) {
 							///// store activities
-							$code = $this->Crud->read_field('id', $ins_rec, 'age', 'name');
+							$code = $this->Crud->read_field('id', $ins_rec, 'listing', 'name');
 							$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-							$action = $by.' created Age '.$code.' Record';
-							$this->Crud->activity('setup', $ins_rec, $action);
+							$action = $by.' created Listing '.$code.' Record';
+							$this->Crud->activity('listing', $ins_rec, $action);
 
-							echo $this->Crud->msg('success', 'Record Created');
-							echo '<script>location.reload(false);</script>';
+							echo $this->Crud->msg('success', 'Listing Created');
+							echo '<script>window.location.replace("'.site_url('listing').'");</script>';
 						} else {
 							echo $this->Crud->msg('danger', 'Please try later');	
 						}
@@ -156,33 +242,85 @@ class Listing extends BaseController {
 				$query = $this->Crud->filter_listing($limit, $offset, $log_id, $search,$category_id,  $start_date, $end_date);
 				$all_rec = $this->Crud->filter_listing('', '', $log_id, $search, $category_id, $start_date, $end_date);
 				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
-
+				$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+				$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+				
 				if(!empty($query)) {
 					foreach($query as $q) {
 						$id = $q->id;
-						$type = $q->item;
-						$type_id = $q->item_id;
-						$action = $q->action;
+						$name = $q->name;
+						$category_id = $q->category_id;
+						$state_id = $q->state_id;
+						$country_id = $q->country_id;
+						$city_id = $q->city_id;
+						$price = $q->price;
+						$description = $q->description;
+						$price_status = $q->price_status;
+						$negotiable = $q->negotiable;
+						$user_id = $q->user_id;
+						$images = $q->images;
 						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
 
-						$timespan = $this->Crud->timespan(strtotime($q->reg_date));
+						$images = json_decode($images);
+						$main = 'assets/images/file.png';
+						if(!empty($images)){
+							$main = $images[0];
+						}
 
-						$icon = 'vote-yea';
-						if($type == 'authentication') $icon = 'lock-alt';
-						if($type == 'setup') $icon = 'tools';
-						if($type == 'account') $icon = 'users';
-						if($type == 'tools') $icon = 'toolbox';
-						if($type == 'coupon') $icon = 'reconciliation';
+						$users = 'a';
+						if($role == 'developer' || $role == 'administrator'){
+							$users = '<br><div class="geodir-category-location mb-2">
+								<a href="javascript:;"><i class="fal fa-user-secret"></i> <span>'.ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname')).'</b></span></a>
+							</div>';
+						}
+						
+						$category = $this->Crud->read_field('id', $category_id, 'category', 'name');
+						$main_id = $this->Crud->read_field('id', $category_id, 'category', 'category_id');
+						$mains = $this->Crud->read_field('id', $main_id, 'category', 'name');
+						
+						$country = $this->Crud->read_field('id', $country_id, 'country', 'name');
+						$state = $this->Crud->read_field('id', $state_id, 'state', 'name');
+						$city = $this->Crud->read_field('id', $city_id, 'city', 'name');
+						
+						$loca = '';
+						
+						if(!empty($city_id)) $loca .= $city;
+						if(!empty($state_id)) $loca .= ', '.$state;
+						if(!empty($country_id)) $loca .= ', '.$country;
 
 						$item .= '
-							<li class="list-group-item">
-								<div class="row pt-4 align-items-center">
-									<div class="col-1 text-center">
-										<i class="fal fa-'.$icon.' text-muted" style="font-size:50px;"></i>
-									</div>
-									<div class="col-11">
-										'.$action.' <small>on '.$reg_date.'</small>
-										<div class="text-muted small text-right">'.$timespan.'</div>
+							<li class="list-group-item ">
+								<div class="row pt-4 align-items-center ">
+									<div class="col-md-12">
+										<div class="dashboard-listings-item fl-wrap">
+											<div class="dashboard-listings-item_img text-center">
+												<div class="bg-wrap">
+													<div class="bg  "  data-bg="'.site_url($main).'" style="background-image: url('.$main.');"></div>
+												</div>
+												<div class="overlay"></div>
+												<a href="listing-single.html" class="color-bg">View</a>
+											</div>
+											<div class="dashboard-listings-item_content">
+												<h4><a href="listing-single.html">'.$name.'</a></h4>
+												<div class="geodir-category-location mb-3">
+													<a href="javascript:;"><i class="fal fa-list-alt"></i> <span>'.$category.'&#8594; <b>'.$mains.'</b></span></a>
+												</div><br>
+												<div class="geodir-category-location mb-2">
+													<a href="javascript:;"><i class="fas fa-map-marker-alt"></i> <span> '.$loca.'</span></a>
+												</div>
+												
+												'.$users.'
+												<div class="clearfix"></div>
+												<div class="dashboard-listings-item_opt text-center">
+													<span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  0 </span>
+													<ul>
+														<li><a href="'.site_url('listing/index/manage/edit/'.$id).'" class="tolt" data-microtip-position="top-left"  data-tooltip="Edit"><i class="far fa-edit"></i></a></li>
+														<li><a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Disable"><i class="far fa-signal-alt-slash"></i></a></li>
+														<li><a href="javascript:;" class="pop tolt"  pageTitle="Delete '.$name.' Record" pageName="'.site_url('listing/index/manage/delete/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Delete"><i class="far fa-trash-alt"></i></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</li>

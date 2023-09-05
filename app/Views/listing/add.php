@@ -31,17 +31,20 @@
             <!-- dasboard-widget-title end -->
             <!-- dasboard-widget-box  -->
             <div class="dasboard-widget-box fl-wrap">
+                
+                <?php echo form_open_multipart('listing/index/manage', array('id'=>'bb_ajax_form', 'class'=>'text-start customform')); ?>
+    
                 <div class="custom-form">
                     <div class="row">
                         <div class="col-sm-4 mb-3">		 
                             <label>Listing Title  <span class="dec-icon"><i class="far fa-briefcase"></i></span></label>
-                            <input type="text" name="title" placeholder="Name of your business" value=""/>
+                            <input type="text" name="title" placeholder="Name of your business" required value=""/>
                         </div>
                         <div class="col-sm-4 mb-3">
                             <label>Category</label>
                             <div class="listsearch-input-item">
                                 <select data-placeholder="Main Category" id="main_id" onchange="get_category()" class="chosen-select search-select" required >
-                                    <option value="0">Main Category</option>
+                                    <option value="">Main Category</option>
                                     <?php
                                         $cate = $this->Crud->read_single_order('category_id', 0, 'category', 'name', 'asc');
                                         if(!empty($cate)){
@@ -58,7 +61,7 @@
                             <label>Sub-Category</label><div id="category_ids">
                             <div class="listsearch-input-item">
                                 <select data-placeholder="All Category" name="category_id" id="category_id" class="chosen-select search-select" required >
-                                    <option value="0">Select Category First</option>
+                                    <option value="">Select Category First</option>
                                     
                                 </select>
                             </div></div>
@@ -67,7 +70,7 @@
                             <div id="states_id">
                                 <div class="listsearch-input-item mb-2">
                                     <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 chosen-select search-select" onchange="get_city();">
-                                        <option value="0">All State</option>
+                                        <option value="">All State</option>
                                         <?php
                                             $country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
                                             $country = $this->Crud->read_single_order('country_id', $country_id, 'state', 'name', 'asc');
@@ -86,23 +89,23 @@
                             <div class="listsearch-input-item mb-2" id="citys_id">
                                 <select data-placeholder="Select"  name="city_id" id="city_id"
                                     required class="mb-2 chosen-select search-select">
-                                    <option value="all">Select State First</option>
+                                    <option value="">Select State First</option>
 
                                 </select>
                             </div></div>
                         </div>
                         <div class="col-sm-4  mb-3">		 
                             <label>Listing Price  <span class="dec-icon"><i class="far fa-money-bill-wave"></i></span></label>
-                            <input type="text" name="price" placeholder="Listing Price" value=""/>
+                            <input type="text" name="price" placeholder="Listing Price" required value=""/>
                         </div>
                                         
-                        <div class="col-sm-7  mb-3">
+                        <div class="col-sm-5  mb-3">
                             <label>Description</label>
                             <div class="listsearch-input-item">
-                                <textarea cols="40" rows="3" style="height: 135px" name="description" placeholder="Details" spellcheck="true"></textarea>
+                                <textarea cols="40" rows="3" style="height: 250px" name="description" required placeholder="Details" spellcheck="true"></textarea>
                             </div>
                         </div>
-                        <div class="col-md-3  mb-3">
+                        <div class="col-md-4  mb-3">
                             <div class="content-widget-switcher fl-wrap mt-4">
                                 <span class="content-widget-switcher-title">Contact for Price</span>
                                 <div class="onoffswitch">
@@ -125,29 +128,41 @@
                             </div>
                         </div>
 
-                        <div class="upload-item col-sm-4 text-center mb-5">
+                        <div class="col-sm-3 text-center mb-5" id="original-div">
                             <div style="background-color:#f6f6f6; margin:2px; padding: 15px;" >
-                                <div class="text-muted text-center"><b>PHOTOS</b></div>
-                                <div for="img-upload" class="pointer text-center" style="cursor:pointer;">
+                                <div class="text-muted text-center"><b>MAIN PHOTO</b></div>
+                                <label for="img-upload" class="pointer text-center" style="cursor:pointer; float: none !important;">
                                     <img id="img0" src="<?php echo site_url('assets/images/file.png');?>" style="max-width:80%;" />
-                                    <span class="btn btn-warning d-block"><i class="fal fa-images"></i> Choose Cover</span>
-                                    <!-- <span class="btn btn-warning dblock"><i class="fal fa-images"></i> Choose Cover</span> -->
-                                    <input class="d-none" type="file" name="pics[]" accept="image/*" id="img-upload">
+                                    <span class="btn btn-warning d-block"><i class="fal fa-images"></i> Choose Image</span>
+                                    <input class="d-none img-upload" type="file" name="pics[]"  id="img-upload">
                                     
-                                </div><span type="button" class="btn btn-danger d-block remove-upload"  class="">Delete</span>
+                                </label>
+                                <!-- <span type="button" class="btn btn-danger d-block remove-upload"  class="">Delete</span> -->
                             </div>
-                            <span type="button" class="btn btn-primary -block"  id="add-upload">Add More</span>
+                            
                         </div>
-                        <div class="row col-sm-12" id="image-uploads">
+                        <div class="row" id="cloned-divs-container">
 
                         </div>
+                        <span type="button" class="btn btn-secondary -block" id="add-button"><i class="fal fa-plus"></i> Add More Images</span>
+                        
                     </div>
+                    <div class="row mb-5 mt-5">
+                        <div class="col-sm-12"><div id="bb_ajax_msg"></div></div>
+                    </div>
+
+                </div> 
+                <div class="col-sm-12 text-center">
+                    <button class="btn btn-primary text-uppercase" type="submit">
+                        <i class="fal fa-save"></i> Save Changes
+                    </button>
                 </div>
+                </form>
             </div>
             <!-- dasboard-widget-box  end-->
            
            										
-            <button type="submit" class="btn btn-primary d-block float-btn">Save Changes </button>
+           
         </div>
     </div>
 
@@ -157,19 +172,53 @@
    
     <script>
         $(document).ready(function () {
-        // Clone an existing image upload input and add it with a delete button
-            $("#add-upload").click(function () {
-                var clone = $(".upload-item:first").clone(); // Clone the first upload-item
-                clone.find('input[type="file"]').val(''); // Clear the file input
-                clone.find('.remove-upload').click(function () {
-                $(this).parent().remove(); // Remove the cloned input and delete button
-                });
-                $("#image-uploads").append(clone); // Append the cloned input to the container
-            });
+            let cloneCounter = 1;
 
-            // Delete a clone when the delete button is clicked
-            $(document).on('click', '.remove-upload', function () {
-                $(this).parent().remove(); // Remove the cloned input and delete button
+            // Function to update the clone counters
+            function addChangeFunctionality(element) {
+                element.change(function () {
+                readURL(this, $(this).siblings('img').attr('id'));
+                });
+            }
+            function updateCloneCounters() {
+                $("#cloned-divs-container .cloned-div").each(function (index) {
+                    $(this).find("b").text("PHOTOS " + (index + 1));
+                    $(this).find("img").attr("id","img" + (index + 1));
+                    $(this).find("input").attr("id","img-upload" + (index + 1));
+                    $(this).find("label").attr("for","img-upload" + (index + 1));
+                });
+            }
+            // Function to clone a div, edit its content, and add a delete button
+            function cloneAndEditDiv() {
+                var clone = $("#original-div").clone();
+                clone.attr("id", ""); // Remove the ID attribute to avoid duplication
+                clone.addClass("cloned-div"); 
+                cloneCounter++; 
+                clone.find('input[type="file"]').val(''); // Clear the file input
+                clone.find('img').attr('src', '<?php echo site_url('assets/images/file.png');?>'); // Clear the file input
+       
+                clone.find("b").text("PHOTOS "+ cloneCounter);
+                clone.find("img").attr("id", "img"+cloneCounter);
+                clone.find("input").attr("id", "img-upload"+cloneCounter);
+                clone.find("label").attr("for", "img-upload"+cloneCounter);
+                addChangeFunctionality(clone.find('.img-upload'));
+                
+
+                // Add "Delete" button for cloned div
+                var deleteButton = $('<button class="delete-button btn btn-danger"><i class="fal fa-trash"></i> Delete</button>');
+                deleteButton.click(function () {
+                    clone.remove();
+                    updateCloneCounters(); 
+                });
+                clone.append(deleteButton);
+
+                $("#cloned-divs-container").append(clone);
+                updateCloneCounters();
+            }
+
+            // Clone and edit when the "Add" button is clicked
+            $("#add-button").click(function () {
+                cloneAndEditDiv();
             });
         });
 
@@ -207,6 +256,25 @@
                 }
             });
         }
+
+        function readURL(input, id) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    if(id != 'vid') {
+                        $('#' + id).attr('src', e.target.result);
+                    } else {
+                        $('#' + id).show(500);
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        $("#img-upload").change(function(){
+            readURL(this, 'img0');
+        });
+
 
         function load(x, y) {
 

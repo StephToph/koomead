@@ -253,6 +253,10 @@ class Listing extends BaseController {
 			if($offset == '') {$offset = 0;}
 			
 			$search = $this->request->getVar('search');
+			$active = $this->request->getVar('active');
+			if(!empty($this->request->getPost('country_id'))) { $country_id = $this->request->getPost('country_id'); } else { $country_id = ''; }
+			if(!empty($this->request->getPost('state_id'))) { $state_id = $this->request->getPost('start_date'); } else { $state_id = ''; }
+			if(!empty($this->request->getPost('city_id'))) { $city_id = $this->request->getPost('city_id'); } else { $city_id = ''; }
 			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
 			if(!empty($this->request->getPost('category_id'))) { $category_id = $this->request->getPost('category_id'); } else { $category_id = ''; }
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
@@ -260,8 +264,8 @@ class Listing extends BaseController {
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {
-				$query = $this->Crud->filter_listing($limit, $offset, $log_id, $search,$category_id,  $start_date, $end_date);
-				$all_rec = $this->Crud->filter_listing('', '', $log_id, $search, $category_id, $start_date, $end_date);
+				$query = $this->Crud->filter_listing($limit, $offset, $log_id, $search,$category_id, $active,  $country_id,$state_id,$city_id, $start_date, $end_date);
+				$all_rec = $this->Crud->filter_listing('', '', $log_id, $search, $category_id, $active, $country_id,$state_id,$city_id, $start_date, $end_date);
 				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
 				$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
 				$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
@@ -362,6 +366,7 @@ class Listing extends BaseController {
 			} else {
 				$resp['item'] = $item;
 			}
+			$resp['count'] = $count;
 
 			$more_record = $count - ($offset + $rec_limit);
 			$resp['left'] = $more_record;

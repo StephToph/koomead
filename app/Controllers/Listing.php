@@ -94,12 +94,13 @@ class Listing extends BaseController {
 						///// store activities
 						$code = $this->Crud->read_field('id', $del_id, 'listing', 'name');
 						$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-						$action = $by.' deleted Age '.$code.' Record';
-						
+						$action = $by.' enabled Listing '.$code.'';
+						if($active  == 0)$action = $by.' disabled Listing '.$code.'';
+
 						if($this->Crud->updates('id', $del_id, $table, array('active'=>$active)) > 0) {
 							$this->Crud->activity('listing', $del_id, $action);
 
-							echo $this->Crud->msg('success', 'Listing Status Deleted');
+							echo $this->Crud->msg('success', 'Listing Status Updated');
 							echo '<script>location.reload(false);</script>';
 						} else {
 							echo $this->Crud->msg('danger', 'Please try later');

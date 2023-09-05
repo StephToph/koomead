@@ -36,7 +36,7 @@ class Listing extends BaseController {
        
         $table = 'listing';
 
-		$form_link = site_url('listing/index');
+		$form_link = site_url('listing/index/');
 		if($param1){$form_link .= $param1.'/';}
 		if($param2){$form_link .= $param2.'/';}
 		if($param3){$form_link .= $param3.'/';}
@@ -60,14 +60,14 @@ class Listing extends BaseController {
 					}
 
 					if($this->request->getMethod() == 'post'){
-						$del_id = $this->request->getVar('d_age_id');
+						$del_id = $this->request->getVar('d_listing_id');
 						///// store activities
-						$code = $this->Crud->read_field('id', $del_id, 'age', 'name');
+						$code = $this->Crud->read_field('id', $del_id, 'listing', 'name');
 						$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-						$action = $by.' deleted Age '.$code.' Record';
+						$action = $by.' deleted Listing '.$code.' Record';
 						
 						if($this->Crud->deletes('id', $del_id, $table) > 0) {
-							$this->Crud->activity('setup', $del_id, $action);
+							$this->Crud->activity('listing', $del_id, $action);
 
 							echo $this->Crud->msg('success', 'Record Deleted');
 							echo '<script>location.reload(false);</script>';
@@ -82,8 +82,8 @@ class Listing extends BaseController {
 					$edit = $this->Crud->read_single('id', $param3, $table);
 					if(!empty($edit)) {
 						foreach($edit as $e) {
-							$data['d_id'] = $e->id;
-							$data['d_active'] = $e->active;
+							$data['e_id'] = $e->id;
+							$data['e_active'] = $e->active;
 						}
 					}
 
@@ -110,18 +110,7 @@ class Listing extends BaseController {
 				}
 			} else {
 				// prepare for edit
-				if($param2 == 'edit') {
-					if($param3) {
-						$edit = $this->Crud->read_single('id', $param3, $table);
-						if(!empty($edit)) {
-							foreach($edit as $e) {
-								$data['e_id'] = $e->id;
-                                $data['e_name'] = $e->name;
-							}
-						}
-					}
-				}
-
+				
 				if($this->request->getMethod() == 'post'){
 					$listing_id = $this->request->getVar('listing_id');
 					$title = $this->request->getVar('title');
@@ -132,6 +121,7 @@ class Listing extends BaseController {
 					$description = $this->request->getVar('description');
 					$price_status = $this->request->getVar('price_status');
 					$negotiable = $this->request->getVar('negotiable');
+					$img = $this->request->getVar('img');
 
 					if($negotiable == 'on')$negotiable = 1; else $negotiable = 0;
 
@@ -163,10 +153,18 @@ class Listing extends BaseController {
 						}
                     }
 
+					if(!empty($img)){
+						foreach ($img as $key => $value) {
+							$uploadedImagePaths[] = $value;
+						}
+					}
+
 					if(empty($uploadedImagePaths)){
 						echo $this->Crud->msg('danger', 'At least one image must be uploaded');
 						die;
 					}
+					echo json_encode($uploadedImagePaths);
+					// die;
 					
 					// echo $negotiable.' '.$price_status;
 					$p_data['name'] = $title;
@@ -220,6 +218,28 @@ class Listing extends BaseController {
 			}
 		}
 
+		if($param1 == 'edit') {
+			if($param2) {
+				$edit = $this->Crud->read_single('id', $param2, $table);
+				if(!empty($edit)) {
+					foreach($edit as $e) {
+						$data['e_id'] = $e->id;
+						$data['e_name'] = $e->name;
+						$data['e_category_id'] = $e->category_id;
+						$data['e_state_id'] = $e->state_id;
+						$data['e_city_id'] = $e->city_id;
+						$data['e_description'] = $e->description;
+						$data['e_price'] = $e->price;
+						$data['e_price_status'] = $e->price_status;
+						$data['e_negotiable'] = $e->negotiable;
+						$data['e_images'] = json_decode($e->images);
+						$data['e_main'] = $this->Crud->read_field('id', $e->category_id, 'category', 'category_id');
+						
+					}
+				}
+			}
+		}
+
 		// record listing
 		if($param1 == 'load') {
 			$limit = $param2;
@@ -259,6 +279,7 @@ class Listing extends BaseController {
 						$price_status = $q->price_status;
 						$negotiable = $q->negotiable;
 						$user_id = $q->user_id;
+						$active = $q->active;
 						$images = $q->images;
 						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
 
@@ -289,6 +310,8 @@ class Listing extends BaseController {
 						if(!empty($state_id)) $loca .= ', '.$state;
 						if(!empty($country_id)) $loca .= ', '.$country;
 
+						$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Enable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-signal"></i></a>';
+						if($active > 0)$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Disable"><i class="far fa-signal-alt-slash"></i></a>';
 						$item .= '
 							<li class="list-group-item ">
 								<div class="row pt-4 align-items-center ">
@@ -299,10 +322,10 @@ class Listing extends BaseController {
 													<div class="bg  "  data-bg="'.site_url($main).'" style="background-image: url('.$main.');"></div>
 												</div>
 												<div class="overlay"></div>
-												<a href="listing-single.html" class="color-bg">View</a>
+												<a href="'.site_url('listing/index/view/'.$id).'" class="color-bg">View</a>
 											</div>
 											<div class="dashboard-listings-item_content">
-												<h4><a href="listing-single.html">'.$name.'</a></h4>
+												<h4><a href="'.site_url('listing/index/view/'.$id).'">'.$name.'</a></h4>
 												<div class="geodir-category-location mb-3">
 													<a href="javascript:;"><i class="fal fa-list-alt"></i> <span>'.$category.'&#8594; <b>'.$mains.'</b></span></a>
 												</div><br>
@@ -315,8 +338,8 @@ class Listing extends BaseController {
 												<div class="dashboard-listings-item_opt text-center">
 													<span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  0 </span>
 													<ul>
-														<li><a href="'.site_url('listing/index/manage/edit/'.$id).'" class="tolt" data-microtip-position="top-left"  data-tooltip="Edit"><i class="far fa-edit"></i></a></li>
-														<li><a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Disable"><i class="far fa-signal-alt-slash"></i></a></li>
+														<li><a href="'.site_url('listing/index/edit/'.$id).'" class="tolt" data-microtip-position="top-left"  data-tooltip="Edit"><i class="far fa-edit"></i></a></li>
+														<li>'.$act.'</li>
 														<li><a href="javascript:;" class="pop tolt"  pageTitle="Delete '.$name.' Record" pageName="'.site_url('listing/index/manage/delete/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Delete"><i class="far fa-trash-alt"></i></a></li>
 													</ul>
 												</div>
@@ -358,8 +381,22 @@ class Listing extends BaseController {
 		
         if($param1 == 'manage') { // view for form data posting
 			return view('listing/manage_form', $data);
-		} elseif($param1 == 'add'){
-			$data['title'] = 'New Listing | '.app_name;
+		} elseif($param1 == 'view'){
+			$data['title'] = 'View Listing | '.app_name;
+            $data['page_active'] = 'listing';
+			if(empty($param2)){
+				return redirect()->to(site_url('listing'));	
+			}
+			return view('listing/view', $data);
+		} elseif($param1 == 'add' || $param1=='edit'){
+			if($param1 == 'edit'){
+				 $data['page'] = 'Edit Listing';
+				$data['title'] = 'Edit Listing | '.app_name;
+			} else {
+				$data['page'] = 'New Listing';
+             
+				$data['title'] = 'New Listing | '.app_name;
+			}
             $data['page_active'] = 'listing';
            
 			return view('listing/add', $data);

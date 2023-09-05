@@ -36,9 +36,10 @@
     
                 <div class="custom-form">
                     <div class="row">
+                        <input type="hidden" name="listing_id" value="<?php if(!empty($e_id)){echo $e_id;} ?>" />
                         <div class="col-sm-4 mb-3">		 
                             <label>Listing Title  <span class="dec-icon"><i class="far fa-briefcase"></i></span></label>
-                            <input type="text" name="title" placeholder="Name of your business" required value=""/>
+                            <input type="text" name="title" placeholder="Name of your business" required value="<?php if(!empty($e_name)){echo $e_name;} ?>"/>
                         </div>
                         <div class="col-sm-4 mb-3">
                             <label>Category</label>
@@ -49,7 +50,11 @@
                                         $cate = $this->Crud->read_single_order('category_id', 0, 'category', 'name', 'asc');
                                         if(!empty($cate)){
                                             foreach($cate as $c){
-                                                echo '<option value="'.$c->id.'">'.$c->name.'</option>';
+                                                $sel = '';
+                                                if(!empty($e_main)){
+                                                    if($e_main == $c->id)$sel ='selected';
+                                                }
+                                                echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
                                             }
                                         }
                                     ?>
@@ -57,15 +62,41 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-4 mb-3">
-                            <label>Sub-Category</label><div id="category_ids">
-                            <div class="listsearch-input-item">
-                                <select data-placeholder="All Category" name="category_id" id="category_id" class="chosen-select search-select" required >
-                                    <option value="">Select Category First</option>
+                        <?php
+                            if(!empty($e_category_id)){?>
+                                <div class="col-sm-4 mb-3">
+                                    <label>Sub-Category</label><div id="category_ids">
+                                    <div class="listsearch-input-item">
+                                        <select data-placeholder="All Category" name="sub_id" id="category_id" class="chosen-select search-select" required >
+                                            <option value="">Select Category</option>
+                                            <?php
+                                                $cate = $this->Crud->read_single_order('category_id', $e_main, 'category', 'name', 'asc');
+                                                if(!empty($cate)){
+                                                    foreach($cate as $c){
+                                                        $sel = '';
+                                                        if(!empty($e_category_id)){
+                                                            if($e_category_id == $c->id)$sel ='selected';
+                                                        }
+                                                        echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
+                                                    }
+                                                }
+                                            ?>
                                     
-                                </select>
-                            </div></div>
-                        </div>
+                                        </select>
+                                    </div></div>
+                                </div>
+                          <?php  } else {
+                        ?>
+                            <div class="col-sm-4 mb-3">
+                                <label>Sub-Category</label><div id="category_ids">
+                                <div class="listsearch-input-item">
+                                    <select data-placeholder="All Category" name="category_id" id="category_id" class="chosen-select search-select" required >
+                                        <option value="">Select Category First</option>
+                                        
+                                    </select>
+                                </div></div>
+                            </div>
+                        <?php } ?>
                         <div class=" col-sm-4 mb-3"><label>State</label>
                             <div id="states_id">
                                 <div class="listsearch-input-item mb-2">
@@ -76,8 +107,12 @@
                                             $country = $this->Crud->read_single_order('country_id', $country_id, 'state', 'name', 'asc');
                                             if(!empty($country)){
                                                 foreach($country as $c){
+                                                    $sel ='';
+                                                    if(!empty($e_state_id)){
+                                                        if($e_state_id == $c->id)$sel='selected';
+                                                    }
                                                     // if($c->name != 'Nigeria' && $c->name != 'United Kingdom')continue;
-                                                    echo '<option value="'.$c->id.'">'.$c->name.'</option>';
+                                                    echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
                                                 }
                                             }
                                         ?>
@@ -85,31 +120,67 @@
                                 </div>  
                             </div>
                         </div>
-                        <div class=" col-sm-4 mb-3"><label>City</label><div id="citys_id">
-                            <div class="listsearch-input-item mb-2" id="citys_id">
-                                <select data-placeholder="Select"  name="city_id" id="city_id"
-                                    required class="mb-2 chosen-select search-select">
-                                    <option value="">Select State First</option>
+                        <?php 
+                            if(!empty($e_city_id)){
+                        ?>
+                            <div class=" col-sm-4 mb-3"><label>City</label><div id="citys_id">
+                                <div class="listsearch-input-item mb-2" id="citys_id">
+                                    <select data-placeholder="Select"  name="city_id" id="city_id"
+                                        required class="mb-2 chosen-select search-select">
+                                        <option value="">Select City</option>
+                                        <?php
+                                            $country = $this->Crud->read_single_order('state_id', $e_state_id, 'city', 'name', 'asc');
+                                            if(!empty($country)){
+                                                foreach($country as $c){
+                                                    $sel ='';
+                                                    if(!empty($e_city_id)){
+                                                        if($e_city_id == $c->id)$sel='selected';
+                                                    }
+                                                    // if($c->name != 'Nigeria' && $c->name != 'United Kingdom')continue;
+                                                    echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                </div></div>
+                            </div>
+                        <?php 
+                            } else {
+                        ?>
+                            <div class=" col-sm-4 mb-3"><label>City</label><div id="citys_id">
+                                <div class="listsearch-input-item mb-2" id="citys_id">
+                                    <select data-placeholder="Select"  name="city_id" id="city_id"
+                                        required class="mb-2 chosen-select search-select">
+                                        <option value="">Select State First</option>
 
-                                </select>
-                            </div></div>
-                        </div>
+                                    </select>
+                                </div></div>
+                            </div>
+                        <?php 
+                            }
+                        ?>
+                        
                         <div class="col-sm-4  mb-3">		 
                             <label>Listing Price  <span class="dec-icon"><i class="far fa-money-bill-wave"></i></span></label>
-                            <input type="text" name="price" placeholder="Listing Price" required value=""/>
+                            <input type="text" name="price" placeholder="Listing Price" required value="<?php if(!empty($e_price)){echo $e_price;} ?>"/>
                         </div>
                                         
                         <div class="col-sm-5  mb-3">
                             <label>Description</label>
                             <div class="listsearch-input-item">
-                                <textarea cols="40" rows="3" style="height: 250px" name="description" required placeholder="Details" spellcheck="true"></textarea>
+                                <textarea cols="40" rows="3" style="height: 250px" name="description" required placeholder="Details" spellcheck="true"><?php if(!empty($e_description)){echo $e_description;} ?></textarea>
                             </div>
                         </div>
                         <div class="col-md-4  mb-3">
                             <div class="content-widget-switcher fl-wrap mt-4">
                                 <span class="content-widget-switcher-title">Contact for Price</span>
                                 <div class="onoffswitch">
-                                    <input type="checkbox" name="price_status" class="onoffswitch-checkbox" id="myonoffswitchmc423">
+                                    <?php $ch ='';
+                                        if(!empty($e_price_status)){
+                                           if($e_price_status == 1)$ch ='checked';
+                                        }
+                                    ?>
+                                    <input type="checkbox" name="price_status" class="onoffswitch-checkbox" <?=$ch; ?> id="myonoffswitchmc423">
                                     <label class="onoffswitch-label" for="myonoffswitchmc423">
                                     <span class="onoffswitch-inner"></span>
                                     <span class="onoffswitch-switch"></span>
@@ -119,7 +190,12 @@
                             <div class="content-widget-switcher fl-wrap" style="margin-top: 20px">
                                 <span class="content-widget-switcher-title">Negotiable</span>
                                 <div class="onoffswitch">
-                                    <input type="checkbox" name="negotiable" class="onoffswitch-checkbox" id="myonoffswitchmc923">
+                                    <?php $ch ='';
+                                        if(!empty($e_negotiable)){
+                                            if($e_negotiable == 1)$ch ='checked';
+                                        }
+                                    ?>
+                                    <input type="checkbox" name="negotiable" class="onoffswitch-checkbox" <?=$ch; ?> id="myonoffswitchmc923">
                                     <label class="onoffswitch-label" for="myonoffswitchmc923">
                                     <span class="onoffswitch-inner"></span>
                                     <span class="onoffswitch-switch"></span>
@@ -132,7 +208,9 @@
                             <div style="background-color:#f6f6f6; margin:2px; padding: 15px;" >
                                 <div class="text-muted text-center"><b>MAIN PHOTO</b></div>
                                 <label for="img-upload" class="pointer text-center" style="cursor:pointer; float: none !important;">
-                                    <img id="img0" src="<?php echo site_url('assets/images/file.png');?>" style="max-width:80%;" />
+                                        
+                                    <input type="hidden" name="img[]" value="<?php if(!empty($e_images)){echo $e_images[0];} ?>" />
+                                    <img id="img0" src="<?php  if(!empty($e_images)){echo site_url($e_images[0]);} else {echo site_url('assets/images/file.png');} ?>" style="max-width:80%;" />
                                     <span class="btn btn-warning d-block"><i class="fal fa-images"></i> Choose Image</span>
                                     <input class="d-none img-upload" type="file" name="pics[]"  id="img-upload">
                                     
@@ -142,9 +220,33 @@
                             
                         </div>
                         <div class="row" id="cloned-divs-container">
+                            <?php
+                                if(!empty($e_images)){
+                                    if(count($e_images) > 1){
+                                        for ($i=1; $i < count($e_images); $i++) { ?>
 
+                                            <div class="col-sm-3 cloned-div text-center mb-5">
+                                                <div style="background-color:#f6f6f6; margin:2px; padding: 15px;" >
+                                                    <div class="text-muted text-center"><b id="counter"> PHOTO <?=$i; ?></b></div>
+                                                    <label for="img-upload<?=$i; ?>" class="pointer text-center" style="cursor:pointer; float: none !important;">
+                                                            
+                                                        <input type="hidden" name="img[]" value="<?php if(!empty($e_images)){echo $e_images[$i];} ?>" />
+                                                        <img id="img<?=$i;?>" src="<?php  if(!empty($e_images)){echo site_url($e_images[$i]);} else {echo site_url('assets/images/file.png');} ?>" style="max-width:80%;" />
+                                                        <span class="btn btn-warning d-block"><i class="fal fa-images"></i> Choose Image</span>
+                                                        <input class="d-none img-upload" type="file" name="pics[]"  id="img-upload<?=$i;?>" onchange="addChangeFunctionality(<?=$i; ?>)">
+                                                        
+                                                    </label>
+                                                    
+                                                </div>
+                                                <button type="button" class="delete-button btn btn-danger" onclick="deleteButtonAction(this)"><i class="fal fa-trash"></i> Delete</button>
+                                            </div>
+                                       <?php }
+                                    }
+                                }
+
+                            ?>
                         </div>
-                        <span type="button" class="btn btn-secondary -block" id="add-button"><i class="fal fa-plus"></i> Add More Images</span>
+                        <span type="button" class="btn btn-secondary -block mt-3" id="add-button"><i class="fal fa-plus"></i> Add More Images</span>
                         
                     </div>
                     <div class="row mb-5 mt-5">
@@ -215,6 +317,7 @@
                 $("#cloned-divs-container").append(clone);
                 updateCloneCounters();
             }
+            
 
             // Clone and edit when the "Add" button is clicked
             $("#add-button").click(function () {
@@ -222,6 +325,32 @@
             });
         });
 
+
+        // Function to update the clone counters
+        function addChangeFunctionality(i) {
+            $("#img-upload"+i).change(function(){
+                alert('dfdf');
+                readURL(this, 'img'+i);
+            });
+        }
+
+
+        function deleteButtonAction(button) {
+            // Find the parent <div> and remove it
+            var parentDiv = button.closest('.cloned-div');
+            if (parentDiv) {
+                parentDiv.remove(); updateCloneCounterss();
+            }
+        }
+
+        function updateCloneCounterss() {
+            // Calculate the number of remaining cloned divs and update the counter
+            var clonedDivs = document.querySelectorAll('.cloned-div');
+            var counter = document.getElementById('counter');
+            if (counter) {
+                counter.textContent = ' PHOTO ' + clonedDivs.length;
+            }
+        }
         function get_category() {
             var main_id = $('#main_id').val();
             $.ajax({
@@ -268,6 +397,7 @@
                     }
                 }
                 reader.readAsDataURL(input.files[0]);
+            
             }
         }
         

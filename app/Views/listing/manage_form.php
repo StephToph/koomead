@@ -13,9 +13,39 @@
         <div class="row">
             <div class="col-sm-12 text-center">
                 <h3><b>Are you sure?</b></h3>
-                <input type="hidden" name="d_user_id" value="<?php if(!empty($d_id)){echo $d_id;} ?>" />
+                <input type="hidden" name="d_listing_id" value="<?php if(!empty($d_id)){echo $d_id;} ?>" />
             </div>
             
+            <div class="col-sm-12 text-center">
+                <button class="btn btn-danger text-uppercase" type="submit">
+                    <i class="fal fa-trash"></i> Yes - Delete
+                </button>
+            </div>
+        </div>
+    <?php } ?>
+
+    <?php if($param2 == 'disable') { ?>
+        <div class="row">
+            <div class="col-sm-12"><div id="bb_ajax_msg"></div></div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h3><b>Are you sure?</b></h3>
+                <input type="hidden" name="d_listing_id" value="<?php if(!empty($e_id)){echo $e_id;} ?>" />
+            </div>
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="listsearch-input-item mb-2">
+                        <select data-placeholder="Select" id="active" name="active" required class="mb-2 select22 form-select">
+                            <option value="0" <?php if(empty($e_active)){if($e_active == 0){echo 'selected';}} ?>>Yes</option>
+                            <option value="1" <?php if(!empty($e_active)){if($e_active == 1){echo 'selected';}} ?>>No</option>
+                        </select>
+                        
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-12 text-center">
                 <button class="btn btn-danger text-uppercase" type="submit">
                     <i class="fal fa-trash"></i> Yes - Delete

@@ -189,7 +189,7 @@ class Listing extends BaseController {
 							$this->Crud->activity('listing', $listing_id, $action);
 
 							echo $this->Crud->msg('success', 'Listing Updated');
-							echo '<script>location.reload(false);</script>';
+							echo '<script>window.location.replace("'.site_url('listing').'");</script>';
 						} else {
 							echo $this->Crud->msg('info', 'No Changes');	
 						}
@@ -310,7 +310,7 @@ class Listing extends BaseController {
 						if(!empty($state_id)) $loca .= ', '.$state;
 						if(!empty($country_id)) $loca .= ', '.$country;
 
-						$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Enable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-signal"></i></a>';
+						$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-signal"></i></a>';
 						if($active > 0)$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Disable"><i class="far fa-signal-alt-slash"></i></a>';
 						$item .= '
 							<li class="list-group-item ">

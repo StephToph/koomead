@@ -62,7 +62,7 @@
                 if(empty($log_id)){
                     echo '<div class="show-reg-form modal-open"><a href="javascript:;" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a></div>';
                 } else {
-                    echo '<a href="'.site_url('dashboard/category').'" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>';
+                    echo '<a href="'.site_url('listing/index/add').'" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>';
                 }
                 ?>
 

@@ -1765,7 +1765,7 @@ class Crud extends Model {
 		// build query
 		$builder->orderBy('id', 'DESC');
 		
-		if($category_id != 'all')$builder->where('category_id', $category_id);
+		// if($category_id != 'all')$builder->where('category_id', $category_id);
 		
 		if(!empty($start_date) && !empty($end_date)){
 			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') >= '".$start_date."'",NULL,FALSE);

@@ -185,7 +185,7 @@
             var country_id = $('#country_id').val();
             var state_id = $('#state_id').val();
             var city_id = $('#city_id').val();
-            var ban = $('#ban').val();
+            var category_id = $('#category_id').val();
             var search = $('#search').val();
             var start_date = $('#start_date').val();
             var end_date = $('#end_date').val();
@@ -193,7 +193,7 @@
             $.ajax({
                 url: site_url + 'listing/index/load' + methods,
                 type: 'post',
-                data: { ban: ban,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id },
+                data: { category_id: category_id,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id },
                 success: function (data) {
                     var dt = JSON.parse(data);
                     if (more == 'no') {

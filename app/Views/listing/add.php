@@ -286,7 +286,7 @@
                 $("#cloned-divs-container .cloned-div").each(function (index) {
                     $(this).find("b").text("PHOTOS " + (index + 1));
                     $(this).find("img").attr("id","img" + (index + 1));
-                    $(this).find("input").attr("id","img-upload" + (index + 1));
+                    $(this).find('input[type="file"]').attr("id","img-upload" + (index + 1));
                     $(this).find("label").attr("for","img-upload" + (index + 1));
                 });
             }
@@ -301,7 +301,7 @@
        
                 clone.find("b").text("PHOTOS "+ cloneCounter);
                 clone.find("img").attr("id", "img"+cloneCounter);
-                clone.find("input").attr("id", "img-upload"+cloneCounter);
+                clone.find('input[type="file"]').attr("id", "img-upload"+cloneCounter);
                 clone.find("label").attr("for", "img-upload"+cloneCounter);
                 addChangeFunctionality(clone.find('.img-upload'));
                 

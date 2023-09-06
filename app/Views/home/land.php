@@ -460,7 +460,7 @@
        
 
         $.ajax({
-            url: site_url + 'home/listing/load' + methods,
+            url: site_url + 'home/list_load/load' + methods,
             type: 'post',
             data: {state_id: state_id,country_id: country_id },
             success: function (data) {

@@ -65,12 +65,10 @@
             </div>
         </div>
     </section>
-    <!--  section  end-->
-    <!-- breadcrumbs-->
     
     <!-- breadcrumbs end -->
     <!-- section -->
-    <!-- <section class="gray-bg small-padding">
+    <section class="gray-bg small-padding">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
@@ -80,286 +78,65 @@
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <div class="listing-filters gallery-filters">
-                        <a href="#" class="gallery-filter  gallery-filter-active" data-filter="*"> <span>All Categories</span></a>
-                        <a href="#" class="gallery-filter" data-filter=".for_sale"> <span>For Sale</span></a>
-                        <a href="#" class="gallery-filter" data-filter=".for_rent"> <span>For Rent</span></a>
-                    </div>
+                    
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="grid-item-holder gallery-items gisp fl-wrap">
-                gallery-item
-                <div class="gallery-item for_sale">
-                    listing-item
-                    <div class="listing-item">
-                        <article class="geodir-category-listing fl-wrap">
-                            <div class="geodir-category-img fl-wrap">
-                                <a href="listing-single.html" class="geodir-category-img_item">
-                                    <img src="<?=site_url();?>assets/images/all/3.jpg" alt="">
-                                    <div class="overlay"></div>
-                                </a>
-                                <div class="geodir-category-location">
-                                    <a href="#" class="single-map-item tolt" data-newlatitude="40.72956781" data-newlongitude="-73.99726866"   data-microtip-position="top-left" data-tooltip="On the map"><i class="fas fa-map-marker-alt"></i> <span>  70 Bright St New York, USA</span></a>
-                                </div>
-                                <ul class="list-single-opt_header_cat">
-                                    <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
-                                    <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
-                                </ul>
-                                <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                <div class="geodir-category-listing_media-list">
-                                    <span><i class="fas fa-camera"></i> 8</span>
-                                </div>
-                            </div>
-                            <div class="geodir-category-content fl-wrap">
-                                <h3 class="title-sin_item"><a href="listing-single.html">Gorgeous House For Sale</a></h3>
-                                <div class="geodir-category-content_price">$ 600,000</div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                <div class="geodir-category-content-details">
-                                    <ul>
-                                        <li><i class="fal fa-bed"></i><span>3</span></li>
-                                        <li><i class="fal fa-bath"></i><span>2</span></li>
-                                        <li><i class="fal fa-cube"></i><span>450 ft2</span></li>
+            <div id="load_data">
+                <div class="grid-item-holder gallery-ite fl-wrap" >
+                    <?php
+                        $listing = '';
+                    ?>
+                    <div class="gallery-item for_sale">
+                        <div class="listing-item">
+                            <article class="geodir-category-listing fl-wrap">
+                                <div class="geodir-category-img fl-wrap">
+                                    <a href="listing-single.html" class="geodir-category-img_item">
+                                        <img src="<?=site_url();?>assets/images/all/3.jpg" alt="">
+                                        <div class="overlay"></div>
+                                    </a>
+                                    <div class="geodir-category-location">
+                                        <a href="#" class="single-map-item tolt" data-newlatitude="40.72956781" data-newlongitude="-73.99726866"   data-microtip-position="top-left" data-tooltip="On the map"><i class="fas fa-map-marker-alt"></i> <span>  70 Bright St New York, USA</span></a>
+                                    </div>
+                                    <ul class="list-single-opt_header_cat">
+                                        <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
+                                        <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
                                     </ul>
+                                    <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
+                                    <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
+                                    <div class="geodir-category-listing_media-list">
+                                        <span><i class="fas fa-camera"></i> 8</span>
+                                    </div>
                                 </div>
-                                <div class="geodir-category-footer fl-wrap">
-                                    <a href="agent-single.html" class="gcf-company"><img src="<?=site_url();?>assets/images/avatar/2.jpg" alt=""><span>By Liza Rose</span></a>
-                                    <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="4"></div>
+                                <div class="geodir-category-content fl-wrap">
+                                    <h3 class="title-sin_item"><a href="listing-single.html">Gorgeous House For Sale</a></h3>
+                                    <div class="geodir-category-content_price">$ 600,000</div>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
+                                    <div class="geodir-category-content-details">
+                                        <ul>
+                                            <li><i class="fal fa-bed"></i><span>3</span></li>
+                                            <li><i class="fal fa-bath"></i><span>2</span></li>
+                                            <li><i class="fal fa-cube"></i><span>450 ft2</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="geodir-category-footer fl-wrap">
+                                        <a href="agent-single.html" class="gcf-company"><img src="<?=site_url();?>assets/images/avatar/2.jpg" alt=""><span>By Liza Rose</span></a>
+                                        <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="4"></div>
+                                    </div>
                                 </div>
-                            </div>
-                        </article>
+                            </article>
+                        </div>															
                     </div>
-                    listing-item end															
+                    
+                                                                                    
                 </div>
-                gallery-item end-->
-                <!-- gallery-item
-                <div class="gallery-item for_sale">
-                    listing-item
-                    <div class="listing-item">
-                        <article class="geodir-category-listing fl-wrap">
-                            <div class="geodir-category-img fl-wrap">
-                                <a href="listing-single.html" class="geodir-category-img_item">
-                                    <img src="<?=site_url();?>assets/images/all/1.jpg" alt="">
-                                    <div class="overlay"></div>
-                                </a>
-                                <div class="geodir-category-location">
-                                    <a href="#" class="single-map-item tolt" data-newlatitude="40.88496706" data-newlongitude="-73.88191222" data-microtip-position="top-left" data-tooltip="On the map"><i class="fas fa-map-marker-alt"></i> <span>  40 Journal Square  , NJ, USA</span></a>												
-                                </div>
-                                <ul class="list-single-opt_header_cat">
-                                    <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
-                                    <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
-                                </ul>
-                                <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                <div class="geodir-category-listing_media-list">
-                                    <span><i class="fas fa-camera"></i> 47</span>
-                                </div>
-                            </div>
-                            <div class="geodir-category-content fl-wrap">
-                                <h3 class="title-sin_item"><a href="listing-single.html">Luxury Family Home</a></h3>
-                                <div class="geodir-category-content_price">$ 320,000</div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                <div class="geodir-category-content-details">
-                                    <ul>
-                                        <li><i class="fal fa-bed"></i><span>4</span></li>
-                                        <li><i class="fal fa-bath"></i><span>2</span></li>
-                                        <li><i class="fal fa-cube"></i><span>460 ft2</span></li>
-                                    </ul>
-                                </div>
-                                <div class="geodir-category-footer fl-wrap">
-                                    <a href="agent-single.html" class="gcf-company"><img src="<?=site_url();?>assets/images/avatar/1.jpg" alt=""><span>By Anna Lips</span></a>
-                                    <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Excellent" data-starrating2="5"></div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    listing-item end															
-                </div>
-                gallery-item end																
-                gallery-item
-                <div class="gallery-item for_rent">
-                    listing-item
-                    <div class="listing-item">
-                        <article class="geodir-category-listing fl-wrap">
-                            <div class="geodir-category-img fl-wrap">
-                                <a href="listing-single.html" class="geodir-category-img_item">
-                                    <img src="<?=site_url();?>assets/images/all/9.jpg" alt="">
-                                    <div class="overlay"></div>
-                                </a>
-                                <div class="geodir-category-location">
-                                    <a href="#" class="single-map-item tolt" data-newlatitude="40.94982541" data-newlongitude="-73.84357452" data-microtip-position="top-left" data-tooltip="On the map"><i class="fas fa-map-marker-alt"></i> <span> 34-42 Montgomery St , NY, USA</span></a>													
-                                </div>
-                                <ul class="list-single-opt_header_cat">
-                                    <li><a href="#" class="cat-opt blue-bg">Rent</a></li>
-                                    <li><a href="#" class="cat-opt color-bg">House</a></li>
-                                </ul>
-                                <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                <div class="geodir-category-listing_media-list">
-                                    <span><i class="fas fa-camera"></i> 4</span>
-                                </div>
-                            </div>
-                            <div class="geodir-category-content fl-wrap">
-                                <h3 class="title-sin_item"><a href="listing-single.html">Family House for Rent</a></h3>
-                                <div class="geodir-category-content_price">$ 700 / per month</div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                <div class="geodir-category-content-details">
-                                    <ul>
-                                        <li><i class="fal fa-bed"></i><span>2</span></li>
-                                        <li><i class="fal fa-bath"></i><span>1</span></li>
-                                        <li><i class="fal fa-cube"></i><span>220 ft2</span></li>
-                                    </ul>
-                                </div>
-                                <div class="geodir-category-footer fl-wrap">
-                                    <a href="agent-single.html" class="gcf-company"><img src="<?=site_url();?>assets/images/avatar/3.jpg" alt=""><span>By Mark Frosty</span></a>
-                                    <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="4"></div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    listing-item end																			
-                </div>
-                gallery-item end															
-                gallery-item
-                <div class="gallery-item for_sale">
-                    listing-item
-                    <div class="listing-item">
-                        <article class="geodir-category-listing fl-wrap">
-                            <div class="geodir-category-img fl-wrap">
-                                <a href="listing-single.html" class="geodir-category-img_item">
-                                    <img src="<?=site_url();?>assets/images/all/6.jpg" alt="">
-                                    <div class="overlay"></div>
-                                </a>
-                                <div class="geodir-category-location">
-                                    <a href="#" class="single-map-item tolt" data-newlatitude="40.72228267" data-newlongitude="-73.99246214" data-microtip-position="top-left" data-tooltip="On the map"><i class="fas fa-map-marker-alt"></i> <span> W 85th St, New York, USA</span></a>												
-                                </div>
-                                <ul class="list-single-opt_header_cat">
-                                    <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
-                                    <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
-                                </ul>
-                                <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                <div class="geodir-category-listing_media-list">
-                                    <span><i class="fas fa-camera"></i> 13</span>
-                                </div>
-                            </div>
-                            <div class="geodir-category-content fl-wrap">
-                                <h3 class="title-sin_item"><a href="listing-single.html">Contemporary Apartment</a></h3>
-                                <div class="geodir-category-content_price">$ 1,600,000</div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                <div class="geodir-category-content-details">
-                                    <ul>
-                                        <li><i class="fal fa-bed"></i><span>4</span></li>
-                                        <li><i class="fal fa-bath"></i><span>1</span></li>
-                                        <li><i class="fal fa-cube"></i><span>550 ft2</span></li>
-                                    </ul>
-                                </div>
-                                <div class="geodir-category-footer fl-wrap">
-                                    <a href="agent-single.html" class="gcf-company"><img src="<?=site_url();?>assets/images/avatar/4.jpg" alt=""><span>By Bill Trust</span></a>
-                                    <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Excellent
-                                        " data-starrating2="5"></div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    listing-item end																			
-                </div>
-                gallery-item end															
-                gallery-item
-                <div class="gallery-item for_sale for_rent">
-                    listing-item
-                    <div class="listing-item">
-                        <article class="geodir-category-listing fl-wrap">
-                            <div class="geodir-category-img fl-wrap">
-                                <a href="listing-single.html" class="geodir-category-img_item">
-                                    <img src="<?=site_url();?>assets/images/all/5.jpg" alt="">
-                                    <div class="overlay"></div>
-                                </a>
-                                <div class="geodir-category-location">
-                                    <a href="#" class="single-map-item tolt" data-newlatitude="40.88496706" data-newlongitude="-73.88191222" data-microtip-position="top-left" data-tooltip="On the map"><i class="fas fa-map-marker-alt"></i> <span> 75 Prince St, NY, USA</span></a>												
-                                </div>
-                                <ul class="list-single-opt_header_cat">
-                                    <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
-                                    <li><a href="#" class="cat-opt color-bg">Villa</a></li>
-                                </ul>
-                                <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                <div class="geodir-category-listing_media-list">
-                                    <span><i class="fas fa-camera"></i> 12</span>
-                                </div>
-                            </div>
-                            <div class="geodir-category-content fl-wrap">
-                                <h3 class="title-sin_item"><a href="listing-single.html">Kayak Point House</a></h3>
-                                <div class="geodir-category-content_price">$ 500.000</div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                <div class="geodir-category-content-details">
-                                    <ul>
-                                        <li><i class="fal fa-bed"></i><span>5</span></li>
-                                        <li><i class="fal fa-bath"></i><span>1</span></li>
-                                        <li><i class="fal fa-cube"></i><span>510 ft2</span></li>
-                                    </ul>
-                                </div>
-                                <div class="geodir-category-footer fl-wrap">
-                                    <a href="agent-single.html" class="gcf-company"><img src="<?=site_url();?>assets/images/avatar/6.jpg" alt=""><span>By Andy Sposty</span></a>
-                                    <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Average" data-starrating2="3"></div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    listing-item end																		
-                </div>
-                gallery-item end															
-                gallery-item
-                <div class="gallery-item for_rent">
-                    listing-item
-                    <div class="listing-item">
-                        <article class="geodir-category-listing fl-wrap">
-                            <div class="geodir-category-img fl-wrap">
-                                <a href="listing-single.html" class="geodir-category-img_item">
-                                    <img src="<?=site_url();?>assets/images/all/8.jpg" alt="">
-                                    <div class="overlay"></div>
-                                </a>
-                                <div class="geodir-category-location">
-                                    <a href="#" class="single-map-item tolt" data-newlatitude="40.76221766" data-newlongitude="-73.96511769" data-microtip-position="top-left" data-tooltip="On the map"><i class="fas fa-map-marker-alt"></i> <span> 70 Bright St, Jersey City, NJ USA</span></a>													
-                                </div>
-                                <ul class="list-single-opt_header_cat">
-                                    <li><a href="#" class="cat-opt blue-bg">Rent</a></li>
-                                    <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
-                                </ul>
-                                <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                <div class="geodir-category-listing_media-list">
-                                    <span><i class="fas fa-camera"></i> 21</span>
-                                </div>
-                            </div>
-                            <div class="geodir-category-content fl-wrap">
-                                <h3 class="title-sin_item"><a href="listing-single.html">Urban House</a></h3>
-                                <div class="geodir-category-content_price">1500 / per month</div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                <div class="geodir-category-content-details">
-                                    <ul>
-                                        <li><i class="fal fa-bed"></i><span>5</span></li>
-                                        <li><i class="fal fa-bath"></i><span>3</span></li>
-                                        <li><i class="fal fa-cube"></i><span>1210 ft2</span></li>
-                                    </ul>
-                                </div>
-                                <div class="geodir-category-footer fl-wrap">
-                                    <a href="agent-single.html" class="gcf-company"><img src="<?=site_url();?>assets/images/avatar/5.jpg" alt=""><span>By Liza Kobart</span></a>
-                                    <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Excellent
-                                        " data-starrating2="5"></div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    listing-item end															
-                </div>
-                gallery-item end																
+            
             </div>
-            grid-item-holder	
+            
+            	
             <a href="listing.html" class="btn float-btn small-btn color-bg">View All Businesses</a>
-        </div>
-    </section> -->
+        </div><div class="clearfix"></div>
+    </section>
     <!-- section end-->	
     <!-- section -->
     <!-- <section>
@@ -700,4 +477,73 @@
     </div>
 </div>
 <!-- subscribe-wrap end -->	 
+<script src="<?php echo site_url(); ?>/assets/js/jquery.min.js"></script>
+<script>var site_url = '<?php echo site_url(); ?>';</script>
+   
+<script>
+    $(function() {
+        load('', '');
+    });
+
+    
+
+    function load(x, y) {
+        var more = 'no';
+        var methods = '';
+        if (parseInt(x) > 0 && parseInt(y) > 0) {
+            more = 'yes';
+            methods = '/' +x + '/' + y;
+        }
+
+        if (more == 'no') {
+            $('#load_data').html('<div class="col-sm-12 text-center"><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i><br/><br/><br/></div>');
+        } else {
+            $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
+        }
+
+        var country_id = $('#country_id').val();
+        var state_id = $('#state_id').val();
+        var city_id = $('#city_id').val();
+        var ban = $('#ban').val();
+        var search = $('#search').val();
+        var start_date = $('#start_date').val();
+        var end_date = $('#end_date').val();
+
+        $.ajax({
+            url: site_url + 'home/listing/load' + methods,
+            type: 'post',
+            data: { ban: ban,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id },
+            success: function (data) {
+                var dt = JSON.parse(data);
+                if (more == 'no') {
+                    $('#load_data').html(dt.item);
+                } else {
+                    $('#load_data').append(dt.item);
+                }
+
+                if (dt.offset > 0) {
+                    $('#loadmore').html('<a href="javascript:;" class="btn btn-secondary b-block p-30" onclick="load(' + dt.limit + ', ' + dt.offset + ');"><i class="fal fa-repeat"></i> Load ' + dt.left + ' More</a>');
+                } else {
+                    $('#loadmore').html('');
+                }
+
+                $('#listCount').html(dt.count);
+            },
+            complete: function () {
+                $.getScript(site_url + 'assets/js/jsmodal.js');
+            }
+        });
+    }
+
+    fetch("http://ip-api.com/json/")
+    .then(response => response.json())
+    .then(data => {
+        const country = data.country;
+        console.log(country);
+        // Use the country information as needed.
+    })
+    .catch(error => {
+        console.error("Error fetching IP information:", error);
+    });
+</script>
 <?php echo $this->endSection(); ?>

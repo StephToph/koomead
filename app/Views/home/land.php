@@ -488,12 +488,16 @@
     function get_country(country){
         if(country !== ''){
             $.ajax({
-                url: site_url + 'home/listing/get_country/',
+                url: site_url + 'home/listing/get_country',
                 type: 'post',
                 data: {country: country },
                 success: function (data) {
                     $('#country_id').val(data);
+                    console.log(data);
                     load();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX Error:", textStatus, errorThrown);
                 }
             });
         }

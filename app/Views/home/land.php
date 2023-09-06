@@ -494,7 +494,7 @@
                 success: function (data) {
                     $('#country_id').val(data);
                     console.log(data);
-                    load();
+                    load('','');
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error("AJAX Error:", textStatus, errorThrown);

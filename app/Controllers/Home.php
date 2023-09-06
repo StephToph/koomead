@@ -396,21 +396,15 @@ class Home extends BaseController {
 		}
 
 		
-        if($param1 == 'manage') { // view for form data posting
-			return view('listing/manage_form', $data);
-		} elseif($param1 == 'view'){
-			$data['title'] = 'View Listing | '.app_name;
-            $data['page_active'] = 'listing';
-			if(empty($param2)){
-				return redirect()->to(site_url(''));	
-			}
-			return view('home/list_view', $data);
-		} else { // view for main page
+        
             
-			$data['title'] = 'My Listing | '.app_name;
-            $data['page_active'] = 'listing';
-            return view('listing/manage', $data);
+        $data['title'] = 'View Listing | '.app_name;
+        $data['page_active'] = 'listing';
+        if(empty($param2)){
+            return redirect()->to(site_url(''));	
         }
+        return view('home/list_view', $data);
+        
     }
 
     public function list_load($param1='', $param2='', $param3=''){

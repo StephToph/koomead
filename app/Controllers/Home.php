@@ -395,8 +395,6 @@ class Home extends BaseController {
 			die;
 		}
 
-		
-        
             
         $data['title'] = 'View Listing | '.app_name;
         $data['page_active'] = 'listing';
@@ -547,6 +545,8 @@ class Home extends BaseController {
 		}
 
     }
+
+
     public function get_country(){
             $country = $this->request->getPost('country');
             if($this->Crud->check('name', $country, 'country') > 0){

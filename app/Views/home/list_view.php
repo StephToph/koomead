@@ -59,7 +59,7 @@
             <!--  list-single-opt_header-->
             <div class="list-single-opt_header fl-wrap">
                 <ul class="list-single-opt_header_cat">
-                    <li><a href="#" class="cat-opt color-bg"><?=$category; ?></a></li>
+                    <li><a href="#" class="cat-opt color-bg mb-3"><?=$category; ?></a></li>
                     <li><a href="#" class="cat-opt blue-bg"><?=$mains; ?></a></li>
                 </ul>
             </div>

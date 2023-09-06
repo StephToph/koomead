@@ -259,7 +259,7 @@ class Home extends BaseController {
 
         if($param1 == 'get_country'){
             $country = $this->request->getPost('country');
-            if(!empty($country)){
+            if($this->Crud->check('name', $country, 'country') > 0){
                 echo $this->Crud->read_field('name', $country, 'country', 'id');
             } else {
                 echo 0;

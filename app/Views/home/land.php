@@ -158,7 +158,7 @@
                                 <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/1.jpg"></div>
                             </div>
                             <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">26 Businesses</div>
+                                <div class="hc-counter color-bg">0 Businesses</div>
                                 <h3><a href="listing.html">Explore NewYork</a></h3>
                                 <p>Constant care and attention to the patients makes good record</p>
                             </div>
@@ -172,7 +172,7 @@
                                 <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/2.jpg"></div>
                             </div>
                             <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">89 Businesses</div>
+                                <div class="hc-counter color-bg">0 Businesses</div>
                                 <h3><a href="listing.html">Awesome London</a></h3>
                                 <p>Constant care and attention to the patients makes good record</p>
                             </div>
@@ -186,7 +186,7 @@
                                 <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/3.jpg"></div>
                             </div>
                             <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">102 Businesses</div>
+                                <div class="hc-counter color-bg">0 Businesses</div>
                                 <h3><a href="listing.html">Find Dream in Paris</a></h3>
                                 <p>Constant care and attention to the patients makes good record</p>
                             </div>
@@ -200,7 +200,7 @@
                                 <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/4.jpg"></div>
                             </div>
                             <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">51 Businesses</div>
+                                <div class="hc-counter color-bg">0 Businesses</div>
                                 <h3><a href="listing.html">Elite Houses in Dubai</a></h3>
                                 <p>Constant care and attention to the patients makes good record</p>
                             </div>

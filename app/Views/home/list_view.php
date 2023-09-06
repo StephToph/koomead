@@ -381,14 +381,14 @@
                 <!--  sidebar end-->                            
             </div>
             <div class="fl-wrap limit-box"></div>
-            <div class="listing-carousel-wrapper carousel-wrap fl-wrap">
+            <!-- <div class="listing-carousel-wrapper carousel-wrap fl-wrap">
                 <div class="list-single-main-item-title">
                     <h3>Similar Properties</h3>
                 </div>
                 <div class="listing-carousel carousel ">
-                    <!-- slick-slide-item -->
+                    
                     <div class="slick-slide-item">
-                        <!-- listing-item -->
+                        
                         <div class="listing-item">
                             <article class="geodir-category-listing fl-wrap">
                                 <div class="geodir-category-img fl-wrap">
@@ -426,13 +426,11 @@
                                     </div>
                                 </div>
                             </article>
-                        </div>
-                        <!-- listing-item end-->							
+                        </div>							
                     </div>
-                    <!-- slick-slide-item end-->
-                    <!-- slick-slide-item -->
+                    
                     <div class="slick-slide-item">
-                        <!-- listing-item -->
+                        
                         <div class="listing-item">
                             <article class="geodir-category-listing fl-wrap">
                                 <div class="geodir-category-img fl-wrap">
@@ -470,13 +468,9 @@
                                     </div>
                                 </div>
                             </article>
-                        </div>
-                        <!-- listing-item end-->							
+                        </div>						
                     </div>
-                    <!-- slick-slide-item end-->									
-                    <!-- slick-slide-item -->
                     <div class="slick-slide-item">
-                        <!-- listing-item -->
                         <div class="listing-item">
                             <article class="geodir-category-listing fl-wrap">
                                 <div class="geodir-category-img fl-wrap">
@@ -514,13 +508,9 @@
                                     </div>
                                 </div>
                             </article>
-                        </div>
-                        <!-- listing-item end-->							
+                        </div>							
                     </div>
-                    <!-- slick-slide-item end-->									
-                    <!-- slick-slide-item -->
                     <div class="slick-slide-item">
-                        <!-- listing-item -->
                         <div class="listing-item">
                             <article class="geodir-category-listing fl-wrap">
                                 <div class="geodir-category-img fl-wrap">
@@ -559,14 +549,12 @@
                                     </div>
                                 </div>
                             </article>
-                        </div>
-                        <!-- listing-item end-->							
-                    </div>
-                    <!-- slick-slide-item end-->								
+                        </div>							
+                    </div>								
                 </div>
                 <div class="swiper-button-prev lc-wbtn lc-wbtn_prev"><i class="far fa-angle-left"></i></div>
                 <div class="swiper-button-next lc-wbtn lc-wbtn_next"><i class="far fa-angle-right"></i></div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

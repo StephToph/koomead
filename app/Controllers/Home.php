@@ -35,6 +35,7 @@ class Home extends BaseController {
         
         
 		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+        $data['log_id'] = $log_id;
         $data['log_name'] = $log_name;
         $data['page'] = 'My Listings';
        

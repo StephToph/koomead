@@ -32,21 +32,8 @@ class Home extends BaseController {
 
         // check login
         $log_id = $this->session->get('km_id');
-        if(empty($log_id)) return redirect()->to(site_url(''));
-
-        $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
-        $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
-        $role_c = $this->Crud->module($role_id, 'listing', 'create');
-        $role_r = $this->Crud->module($role_id, 'listing', 'read');
-        $role_u = $this->Crud->module($role_id, 'listing', 'update');
-        $role_d = $this->Crud->module($role_id, 'listing', 'delete');
-        if($role_r == 0){
-            return redirect()->to(site_url('profile'));	
-        }
-
-        $data['log_id'] = $log_id;
-        $data['role'] = $role;
-        $data['role_c'] = $role_c;
+        
+        
 		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
         $data['log_name'] = $log_name;
         $data['page'] = 'My Listings';

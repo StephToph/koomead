@@ -414,7 +414,8 @@ class Home extends BaseController {
 			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
 			if(!empty($this->request->getPost('category_id'))) { $category_id = $this->request->getPost('category_id'); } else { $category_id = ''; }
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
-			
+            $cur = '$';
+            if($country_id == '161')$cur = '&#8358;';
             $log_id = 1;
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
@@ -448,8 +449,11 @@ class Home extends BaseController {
 							$main = $images[0];
 						}
 
+                        
 							$user =  ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname'));
-						
+                            $user_img = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
+                            if(empty($user_img))$user_img = 'assets/images/avatar.png';
+                            
 						
 						$category = $this->Crud->read_field('id', $category_id, 'category', 'name');
 						$main_id = $this->Crud->read_field('id', $category_id, 'category', 'category_id');
@@ -491,11 +495,11 @@ class Home extends BaseController {
                                         </div>
                                         <div class="geodir-category-content fl-wrap">
                                             <h3 class="title-sin_item"><a href="'.site_url('home/listing/view/'.$id).'">'.ucwords($name).'</a></h3>
-                                            <div class="geodir-category-content_price">$ '.number_format($price,2).'</div>
+                                            <div class="geodir-category-content_price">'.$cur.' '.number_format($price,2).'</div>
                                             
                                             <div class="geodir-category-footer fl-wrap">
-                                                <a href="agent-single.html" class="gcf-company"><img src="'.site_url().'assets/images/avatar/2.jpg" alt=""><span>'.$user.'</span></a>
-                                                <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="4"></div>
+                                                <a href=javascript:;" class="gcf-company"><img src="'.site_url($user_img).'" alt=""><span>'.$user.'</span></a>
+                                                <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="0"></div>
                                             </div>
                                         </div>
                                     </article>
@@ -537,6 +541,7 @@ class Home extends BaseController {
 
     public function get_country(){
             $country = $this->request->getPost('country');
+            if($country != 'Nigeria' && $country != 'United Kingdom')$country = 'United Kingdom';
             if($this->Crud->check('name', $country, 'country') > 0){
                 echo $this->Crud->read_field('name', $country, 'country', 'id');
             } else {

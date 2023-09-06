@@ -69,7 +69,7 @@
             </div>
             <!--  add new  btn end -->
             <!--  header-opt_btn -->
-            <div class="header-opt_btn tolt" data-microtip-position="bottom" data-tooltip="Language / Currency">
+            <div class="header-opt_btn tolt" data-microtip-position="bottom" data-tooltip="Country">
                 <span><i class="fal fa-globe"></i></span>
             </div>
             <!--  header-opt_btn end -->
@@ -135,8 +135,8 @@
                         <h4>Country: <span>NGN</span></h4>
                         <div class="header-opt-modal-list fl-wrap">
                             <ul>
-                                <li><a href="#" class="current-lan" data-lantext="NGN">Nigeria</a></li>
-                                <li><a href="#" data-lantext="UK">United Kingdom</a></li>
+                                <li><a href="javascript:;" onclick="get_country('Nigeria')" class="current-lan" data-lantext="NGN">Nigeria</a></li>
+                                <li><a href="javascript:;" onclick="get_country('United Kingdom')" data-lantext="UK">United Kingdom</a></li>
                             </ul>
                         </div>
                     </div>

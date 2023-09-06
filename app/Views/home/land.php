@@ -436,7 +436,7 @@
    
 <script>
     $(function() {
-        load('', '');
+        // load('', '');
     });
 
     

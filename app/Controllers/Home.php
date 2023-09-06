@@ -345,7 +345,7 @@ class Home extends BaseController {
                                 <div class="listing-item">
                                     <article class="geodir-category-listing fl-wrap">
                                         <div class="geodir-category-img fl-wrap" style="height: 250px;">
-                                            <a href="'.site_url('home/listing/view').'" class="geodir-category-img_item mb-3">
+                                            <a href="'.site_url('home/listing/view/'.$id).'" class="geodir-category-img_item mb-3">
                                                 <img src="'.site_url($main).'" alt="" style="height:250px">
                                                 <div class="overlay"style="height:250px"></div>
                                             </a>
@@ -362,7 +362,7 @@ class Home extends BaseController {
                                             </div>
                                         </div>
                                         <div class="geodir-category-content fl-wrap">
-                                            <h3 class="title-sin_item"><a href="'.site_url('home/listing/view').'">'.ucwords($name).'</a></h3>
+                                            <h3 class="title-sin_item"><a href="'.site_url('home/listing/view/'.$id).'">'.ucwords($name).'</a></h3>
                                             <div class="geodir-category-content_price">$ '.number_format($price,2).'</div>
                                             
                                             <div class="geodir-category-footer fl-wrap">
@@ -411,21 +411,9 @@ class Home extends BaseController {
 			$data['title'] = 'View Listing | '.app_name;
             $data['page_active'] = 'listing';
 			if(empty($param2)){
-				return redirect()->to(site_url('listing'));	
+				return redirect()->to(site_url(''));	
 			}
-			return view('listing/view', $data);
-		} elseif($param1 == 'add' || $param1=='edit'){
-			if($param1 == 'edit'){
-				 $data['page'] = 'Edit Listing';
-				$data['title'] = 'Edit Listing | '.app_name;
-			} else {
-				$data['page'] = 'New Listing';
-             
-				$data['title'] = 'New Listing | '.app_name;
-			}
-            $data['page_active'] = 'listing';
-           
-			return view('listing/add', $data);
+			return view('home/list_view', $data);
 		} else { // view for main page
             
 			$data['title'] = 'My Listing | '.app_name;

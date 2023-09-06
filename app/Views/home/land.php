@@ -498,17 +498,44 @@
             });
         }
     }
-    fetch("https://ip-api.com/json/")
-    .then(response => response.json())
-    .then(data => {
-        const country = data.country;
-        console.log(country);
-        // Use the country information as needed.
-        get_country(country);
-    })
-    .catch(error => {
-        console.error("Error fetching IP information:", error);
-    });
     
+    
+</script>
+
+<script>
+    function showCountry(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        // Use a reverse geocoding service to get the country from the latitude and longitude.
+        // You can use an API like OpenCage Geocoder, Google Geocoding API, or others.
+        // Here, we're using the Nominatim service for simplicity.
+        const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const country = data.address.country;
+                // const countryElement = document.getElementById('country');
+                // countryElement.textContent = country;
+                console.log(country);
+                // Use the country information as needed.
+                get_country(country);
+            })
+            .catch(error => {
+                console.error("Error fetching country information:", error);
+            });
+    }
+
+    function showError(error) {
+        console.error("Error getting location:", error);
+    }
+
+    // Check if the Geolocation API is available in the browser
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(showCountry, showError);
+    } else {
+        console.error("Geolocation is not available in this browser.");
+    }
 </script>
 <?php echo $this->endSection(); ?>

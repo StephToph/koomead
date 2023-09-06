@@ -50,7 +50,8 @@
             if(!empty($state_id)) $loca .= ', '.$state;
             if(!empty($country_id)) $loca .= ', '.$country;
             $main_img = $image[0];
-
+            $cur = '$';
+            if($country_id == '161')$cur = '&#8358;';
         ?>
         <div class="bg-wrap bg-parallax-wrap-gradien">
             <div class="bg par-elem "  data-bg="<?=site_url($main_img); ?>" data-scrollax="properties: { translateY: '30%' }"></div>
@@ -80,7 +81,7 @@
                     </div>
                 </div>
                 <div class="list-single-header-footer fl-wrap">
-                    <div class="list-single-header-price" data-propertyprise="50500"><strong>Price:</strong><span>$</span><?=number_format($price);?></div>
+                    <div class="list-single-header-price" data-propertyprise="50500"><strong>Price:</strong><span><?=$cur; ?></span><?=number_format($price,2);?></div>
                     <div class="list-single-header-date"><span>Date:</span><?=date('d.m.Y', strtotime($reg_date));?></div>
                     <div class="list-single-stats">
                         <ul class="no-list-style">

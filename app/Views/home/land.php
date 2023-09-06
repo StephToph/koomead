@@ -83,54 +83,7 @@
             </div>
             <div class="clearfix"></div>
             <div id="load_data">
-                <div class="grid-item-holder gallery-ite fl-wrap" >
-                    <?php
-                        $listing = '';
-                    ?>
-                    <div class="gallery-item for_sale">
-                        <div class="listing-item">
-                            <article class="geodir-category-listing fl-wrap">
-                                <div class="geodir-category-img fl-wrap">
-                                    <a href="listing-single.html" class="geodir-category-img_item">
-                                        <img src="<?=site_url();?>assets/images/all/3.jpg" alt="">
-                                        <div class="overlay"></div>
-                                    </a>
-                                    <div class="geodir-category-location">
-                                        <a href="#" class="single-map-item tolt" data-newlatitude="40.72956781" data-newlongitude="-73.99726866"   data-microtip-position="top-left" data-tooltip="On the map"><i class="fas fa-map-marker-alt"></i> <span>  70 Bright St New York, USA</span></a>
-                                    </div>
-                                    <ul class="list-single-opt_header_cat">
-                                        <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
-                                        <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
-                                    </ul>
-                                    <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                    <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                    <div class="geodir-category-listing_media-list">
-                                        <span><i class="fas fa-camera"></i> 8</span>
-                                    </div>
-                                </div>
-                                <div class="geodir-category-content fl-wrap">
-                                    <h3 class="title-sin_item"><a href="listing-single.html">Gorgeous House For Sale</a></h3>
-                                    <div class="geodir-category-content_price">$ 600,000</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                    <div class="geodir-category-content-details">
-                                        <ul>
-                                            <li><i class="fal fa-bed"></i><span>3</span></li>
-                                            <li><i class="fal fa-bath"></i><span>2</span></li>
-                                            <li><i class="fal fa-cube"></i><span>450 ft2</span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="geodir-category-footer fl-wrap">
-                                        <a href="agent-single.html" class="gcf-company"><img src="<?=site_url();?>assets/images/avatar/2.jpg" alt=""><span>By Liza Rose</span></a>
-                                        <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="4"></div>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>															
-                    </div>
-                    
-                                                                                    
-                </div>
-            
+                
             </div>
             
             	
@@ -476,6 +429,7 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="country_id" value="">
 <!-- subscribe-wrap end -->	 
 <script src="<?php echo site_url(); ?>/assets/js/jquery.min.js"></script>
 <script>var site_url = '<?php echo site_url(); ?>';</script>
@@ -503,16 +457,12 @@
 
         var country_id = $('#country_id').val();
         var state_id = $('#state_id').val();
-        var city_id = $('#city_id').val();
-        var ban = $('#ban').val();
-        var search = $('#search').val();
-        var start_date = $('#start_date').val();
-        var end_date = $('#end_date').val();
+       
 
         $.ajax({
             url: site_url + 'home/listing/load' + methods,
             type: 'post',
-            data: { ban: ban,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id },
+            data: {state_id: state_id,country_id: country_id },
             success: function (data) {
                 var dt = JSON.parse(data);
                 if (more == 'no') {
@@ -535,15 +485,30 @@
         });
     }
 
+    function get_country(country){
+        if(country !== ''){
+            $.ajax({
+                url: site_url + 'home/listing/get_country',
+                type: 'post',
+                data: {country: country },
+                success: function (data) {
+                    $('#country_id').val(data);
+                    load();
+                }
+            });
+        }
+    }
     fetch("http://ip-api.com/json/")
     .then(response => response.json())
     .then(data => {
         const country = data.country;
         console.log(country);
         // Use the country information as needed.
+        get_country(country);
     })
     .catch(error => {
         console.error("Error fetching IP information:", error);
     });
+    
 </script>
 <?php echo $this->endSection(); ?>

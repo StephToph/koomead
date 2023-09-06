@@ -257,6 +257,16 @@ class Home extends BaseController {
 			}
 		}
 
+        if($param1 == 'get_country'){
+            $country = $this->request->getPost('country');
+            if(!empty($country)){
+                echo $this->Crud->read_field('name', $country, 'country', 'id');
+            } else {
+                echo 0;
+            }
+            die;
+        }
+
 		// record listing
 		if($param1 == 'load') {
 			$limit = $param2;
@@ -334,16 +344,13 @@ class Home extends BaseController {
                             <div class="gallery-item">
                                 <div class="listing-item">
                                     <article class="geodir-category-listing fl-wrap">
-                                        <div class="geodir-category-img fl-wrap" style="height: 200px;">
-                                            <div class="bg-wrap">
-                                                <div class="bg "  data-bg="" style="background-image: url('.$main.');height:250px"></div>
-                                            </div><div class="overlay"></div>
-                                            <a href="'.site_url('home/listing/view').'" class="geodir-category-img_item">
-                                                <img src="'.site_url($main).'" alt="" style="height:200px">
-                                                <div class="overlay"></div>
+                                        <div class="geodir-category-img fl-wrap" style="height: 250px;">
+                                            <a href="'.site_url('home/listing/view').'" class="geodir-category-img_item mb-3">
+                                                <img src="'.site_url($main).'" alt="" style="height:250px">
+                                                <div class="overlay"style="height:250px"></div>
                                             </a>
-                                            <div class="geodir-category-location">
-                                                <a href="javascript:;" class="single-map-item tolt"><i class="fas fa-map-marker-alt"></i> <span>  '.$loca.'</span></a>
+                                            <div class="geodir-category-location pt-5">
+                                                <a href="javascript:;" class="single-map-item"><i class="fas fa-map-marker-alt"></i> <span>'.$loca.'</span></a>
                                             </div>
                                             <ul class="list-single-opt_header_cat">
                                                 <li><a href="javascript:;" class="cat-opt blue-bg mb-3">'.$category.'</a></li>

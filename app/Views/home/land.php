@@ -87,7 +87,7 @@
             </div>
             
             	
-            <a href="listing.html" class="btn float-btn small-btn color-bg">View All Businesses</a>
+            <a href="javascript:;" class="btn float-btn small-btn color-bg">View All Businesses</a>
         </div><div class="clearfix"></div>
     </section>
     <!-- section end-->	

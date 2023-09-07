@@ -320,7 +320,7 @@
     </div>
     <!-- Main end -->
 
-    <div class="modal modal-center fade" id="modal">
+    <div class="modal modal-center fade modality" id="modal">
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">

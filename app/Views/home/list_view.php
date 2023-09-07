@@ -72,16 +72,16 @@
                         <h1><?=ucwords($name);?> <span class="verified-badge tolt" data-microtip-position="bottom"  data-tooltip="Verified"><i class="fas fa-check"></i></span></h1>
                         <div class="geodir-category-location fl-wrap">
                             <a href="#"><i class="fas fa-map-marker-alt"></i>  <?=$loca;?></a> 
-                            <div class="listing-rating card-popup-rainingvis" data-starrating2="0"><span class="re_stars-title">Not Rated</span></div>
+                            
                         </div>
-                        <div class="share-holder hid-share">
+                        <div class="share-holder hid-share mb-5">
                             <a href="#" class="share-btn showshare sfcs">  <i class="fas fa-share-alt"></i>  Share   </a>
                             <div class="share-container  isShare"></div>
                         </div>
                     </div>
                 </div>
                 <div class="list-single-header-footer fl-wrap">
-                    <div class="list-single-header-price" data-propertyprise="50500"><strong>Price:</strong><span><?=$cur; ?></span><?=number_format($price,2);?></div>
+                    <div class="list-single-header-price text-white" data-propertyprise="50500"><strong>Price:</strong><span><?=$cur; ?></span><?=number_format($price,2);?></div>
                     <div class="list-single-header-date"><span>Date:</span><?=date('d.m.Y', strtotime($reg_date));?></div>
                     <div class="list-single-stats">
                         <ul class="no-list-style">
@@ -342,36 +342,23 @@
                     
                     <div class="box-widget fl-wrap">
                         <div class="box-widget-fixed-init fl-wrap" id="sec-contact">
-                            <div class="box-widget-title fl-wrap box-widget-title-color color-bg">Contact Property</div>
+                            <div class="box-widget-title fl-wrap box-widget-title-color color-bg">Message Advertiser</div>
                             <div class="box-widget-content fl-wrap">
                                 <div class="custom-form">
                                     <form method="post"  name="contact-property-form">
-                                        <label>Your name* <span class="dec-icon"><i class="fas fa-user"></i></span></label>
-                                        <input   name="phone" type="text"    onClick="this.select()" value="">
-                                        <label>Your phone  * <span class="dec-icon"><i class="fas fa-phone"></i></span></label>
-                                        <input   name="phone" type="text"    onClick="this.select()" value="">      
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label>Date   <span class="dec-icon"><i class="fas fa-calendar-check"></i></span></label>
-                                                <div class="date-container fl-wrap">
-                                                    <input type="text" placeholder="" style="padding: 16px 5px 16px 60px;"     name="datepicker-here"   value=""/>                                                 
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <label>Time  </label>
-                                                <select data-placeholder="9 AM" class="chosen-select on-radius no-search-select" >
-                                                    <option>9 AM</option>
-                                                    <option>10 AM</option>
-                                                    <option>11 AM</option>
-                                                    <option>12 AM</option>
-                                                    <option>13 PM</option>
-                                                    <option>14 PM</option>
-                                                    <option>15 PM</option>
-                                                    <option>16 PM</option>
-                                                </select>
-                                            </div>
+                                        <label>Type a Message* </label>
+                                        <div class="listsearch-input-item">
+                                            <textarea cols="40" rows="3" style="height: 135px" placeholder="Messsage" spellcheck="false"></textarea>
                                         </div>
-                                        <button type="submit" class="btn float-btn color-bg fw-btn"> Send</button>
+                                        <?php
+                                            // echo $log_id;
+                                            if(empty($log_id)){
+                                                echo '<button type="submit" class="btn float-btn show-reg-form modal-open color-bg fw-btn"> Send</button>';
+                                            } else {
+                                                echo '<button type="submit" class="btn float-btn color-bg fw-btn"> Send</button>';
+                                            }
+                                            ?>
+                                        
                                     </form>
                                 </div>
                             </div>

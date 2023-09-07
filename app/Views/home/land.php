@@ -149,8 +149,9 @@
                 </div>
                 <div class="pwh_bg"></div>
             </div>
-            <div class="half-carousel-conatiner">
-                <div class="half-carousel fl-wrap full-height">
+            <div class="half-carousel-conatiner" id="load_state">
+                <div class="half-carousel fl-wrap full-height" >
+
                     <!--slick-item -->
                     <div class="slick-item">
                         <div class="half-carousel-item fl-wrap">
@@ -165,48 +166,7 @@
                         </div>
                     </div>
                     <!--slick-item end -->
-                    <!--slick-item -->
-                    <div class="slick-item">
-                        <div class="half-carousel-item fl-wrap">
-                            <div class="bg-wrap bg-parallax-wrap-gradien">
-                                <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/2.jpg"></div>
-                            </div>
-                            <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">0 Businesses</div>
-                                <h3><a href="listing.html">Awesome London</a></h3>
-                                <p>Constant care and attention to the patients makes good record</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!--slick-item end -->									
-                    <!--slick-item -->
-                    <div class="slick-item">
-                        <div class="half-carousel-item fl-wrap">
-                            <div class="bg-wrap bg-parallax-wrap-gradien">
-                                <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/3.jpg"></div>
-                            </div>
-                            <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">0 Businesses</div>
-                                <h3><a href="listing.html">Find Dream in Paris</a></h3>
-                                <p>Constant care and attention to the patients makes good record</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!--slick-item end -->
-                    <!--slick-item -->
-                    <div class="slick-item">
-                        <div class="half-carousel-item fl-wrap">
-                            <div class="bg-wrap bg-parallax-wrap-gradien">
-                                <div class="bg"  data-bg="<?=site_url();?>assets/images/bg/long/4.jpg"></div>
-                            </div>
-                            <div class="half-carousel-content">
-                                <div class="hc-counter color-bg">0 Businesses</div>
-                                <h3><a href="listing.html">Elite Houses in Dubai</a></h3>
-                                <p>Constant care and attention to the patients makes good record</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!--slick-item end -->									
+                    								
                 </div>
             </div>
         </div>
@@ -485,6 +445,42 @@
         });
     }
 
+    function load_state(x, y) {
+        var more = 'no';
+        var methods = '';
+        if (parseInt(x) > 0 && parseInt(y) > 0) {
+            more = 'yes';
+            methods = '/' +x + '/' + y;
+        }
+
+        if (more == 'no') {
+            $('#load_state').html('<div class="col-sm-12 text-center"><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i><br/><br/><br/></div>');
+        } else {
+            $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
+        }
+
+        var country_id = $('#country_id').val();
+        var state_id = $('#state_id').val();
+       
+
+        $.ajax({
+            url: site_url + 'home/list_state/load' + methods,
+            type: 'post',
+            data: {state_id: state_id,country_id: country_id },
+            success: function (data) {
+                var dt = JSON.parse(data);
+                if (more == 'no') {
+                    $('#load_state').html(dt.item);
+                } else {
+                    $('#load_state').append(dt.item);
+                }
+
+                
+            }
+        });
+    }
+
+
     function get_country(country){
         if(country !== ''){
             $.ajax({
@@ -494,7 +490,7 @@
                 success: function (data) {
                     $('#country_id').val(data);
                     console.log(data);
-                    load('','');
+                    load('','');load_state('','');
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error("AJAX Error:", textStatus, errorThrown);

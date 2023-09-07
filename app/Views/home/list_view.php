@@ -164,7 +164,7 @@
                                 </div>
                                 <div class="list-single-main-item_content fl-wrap">
                                     <div class="details-list">
-                                        <ul>
+                                        <!-- <ul>
                                             <li><span>Property Id:</span>154</li>
                                             <li><span>Property Lot Size:</span>850 m2</li>
                                             <li><span>Bathrooms:</span>4</li>
@@ -174,7 +174,7 @@
                                             <li><span>Available from:</span>25.05.2020</li>
                                             <li><span>Price:</span>$ 50.500.00</li>
                                             <li><span>Type:</span>Apartment/House</li>
-                                        </ul>
+                                        </ul> -->
                                     </div>
                                 </div>
                             </div>                                          

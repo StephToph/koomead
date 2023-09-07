@@ -120,13 +120,28 @@ class Listing extends BaseController {
 					$price = $this->request->getVar('price');
 					$description = $this->request->getVar('description');
 					$price_status = $this->request->getVar('price_status');
+					$email = $this->request->getVar('b_email');
+					$phone = $this->request->getVar('b_phone');
+					$website = $this->request->getVar('website');
+					$address = $this->request->getVar('address');
+					$facebook = $this->request->getVar('facebook');
+					$instagram = $this->request->getVar('instagram');
+					$whatsapp = $this->request->getVar('whatsapp');
+					$twitter = $this->request->getVar('twitter');
 					$negotiable = $this->request->getVar('negotiable');
 					$img = $this->request->getVar('img');
 
 					if($negotiable == 'on')$negotiable = 1; else $negotiable = 0;
 
 					if($price_status == 'on')$price_status = 1; else $price_status = 0;
+					$profile = [];
 
+					$profile['website'] = $website;
+					$profile['facebook'] = $facebook;
+					$profile['instagram'] = $instagram;
+					$profile['whatsapp'] = $whatsapp;
+					$profile['twitter'] = $twitter;
+					
 
 					$uploadedImagePaths = [];
 					/// upload image
@@ -177,6 +192,10 @@ class Listing extends BaseController {
 					$p_data['price_status'] = $price_status;
 					$p_data['negotiable'] = $negotiable;
 					$p_data['category_id'] = $sub_id;
+					$p_data['address'] = $address;
+					$p_data['email'] = $email;
+					$p_data['phone'] = $phone;
+					$p_data['profile'] = json_encode($profile);
 
 					// check if already exist
 					if(!empty($listing_id)) {
@@ -233,6 +252,10 @@ class Listing extends BaseController {
 						$data['e_price_status'] = $e->price_status;
 						$data['e_negotiable'] = $e->negotiable;
 						$data['e_images'] = json_decode($e->images);
+						$data['e_address'] = $e->address;
+						$data['e_email'] = $e->email;
+						$data['e_phone'] = $e->phone;
+						$data['e_profile'] = json_decode($e->profile);
 						$data['e_main'] = $this->Crud->read_field('id', $e->category_id, 'category', 'category_id');
 						
 					}
@@ -276,6 +299,7 @@ class Listing extends BaseController {
 						$name = $q->name;
 						$category_id = $q->category_id;
 						$state_id = $q->state_id;
+						$address = $q->address;
 						$country_id = $q->country_id;
 						$city_id = $q->city_id;
 						$price = $q->price;
@@ -310,6 +334,7 @@ class Listing extends BaseController {
 						
 						$loca = '';
 						
+						if(!empty($address)) $loca .= $address.', ';
 						if(!empty($city_id)) $loca .= $city;
 						if(!empty($state_id)) $loca .= ', '.$state;
 						if(!empty($country_id)) $loca .= ', '.$country;

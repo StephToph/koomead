@@ -33,9 +33,13 @@
                             $category_id = $this->Crud->read_field('id', $param2, 'listing', 'category_id');
                             $state_id = $this->Crud->read_field('id', $param2, 'listing', 'state_id');
                             $country_id = $this->Crud->read_field('id', $param2, 'listing', 'country_id');
+                            $address = $this->Crud->read_field('id', $param2, 'listing', 'address');
+                            $email = $this->Crud->read_field('id', $param2, 'listing', 'email');
+                            $phone = $this->Crud->read_field('id', $param2, 'listing', 'phone');
                             $city_id = $this->Crud->read_field('id', $param2, 'listing', 'city_id');
                             $price = $this->Crud->read_field('id', $param2, 'listing', 'price');
                             $active = $this->Crud->read_field('id', $param2, 'listing', 'active');
+                            $profile = $this->Crud->read_field('id', $param2, 'listing', 'profile');
                             $negotiable = $this->Crud->read_field('id', $param2, 'listing', 'negotiable');
                             $price_status = $this->Crud->read_field('id', $param2, 'listing', 'price_status');
                             $description = $this->Crud->read_field('id', $param2, 'listing', 'description');
@@ -54,12 +58,14 @@
                             $city = $this->Crud->read_field('id', $city_id, 'city', 'name');
                             
                             $loca = '';
+                            $profiles = json_decode($profile);
                             $image = json_decode($images);
 
                             if($negotiable == 0)$negotiate = 'No'; else $negotiate = 'Yes';
                             if($active == 0)$active = 'Disabled'; else $active = 'Active';
                             
-                            if(!empty($city_id)) $loca .= $city;
+                            if(!empty($address)) $loca .= $address.', ';
+						    if(!empty($city_id)) $loca .= $city;
                             if(!empty($state_id)) $loca .= ', '.$state;
                             if(!empty($country_id)) $loca .= ', '.$country;
                         ?>
@@ -153,7 +159,69 @@
                                             <h6>Active</h6>
                                             <span><?=$active; ?></span>
                                         </div>
-                                    </div>                                                                       
+                                    </div>   
+
+                                    <div class="inline-facts-wrap">
+                                        <div class="inline-facts">
+                                            <i class="fal fa-user-cowboy"></i>
+                                            <h6>Email</h6>
+                                            <span><?=$email; ?></span>
+                                        </div>
+                                    </div>    
+                                    <div class="inline-facts-wrap">
+                                        <div class="inline-facts">
+                                            <i class="fal fa-user-cowboy"></i>
+                                            <h6>Phone</h6>
+                                            <span><?=$phone; ?></span>
+                                        </div>
+                                    </div>
+
+                                    <?php if(!empty($profiles->website)){?>    
+                                    <div class="inline-facts-wrap">
+                                        <div class="inline-facts">
+                                            <i class="fal fa-user-cowboy"></i>
+                                            <h6>Website</h6>
+                                            <span><?=$profiles->website; ?></span>
+                                        </div>
+                                    </div> 
+                                    <?php } ?>  
+
+                                    <?php if(!empty($profiles->facebook)){?> 
+                                    <div class="inline-facts-wrap">
+                                        <div class="inline-facts">
+                                            <i class="fal fa-user-cowboy"></i>
+                                            <h6>Facebook</h6>
+                                            <span><?=$profiles->facebook; ?></span>
+                                        </div>
+                                    </div> 
+                                    <?php } ?>  
+                                    <?php if(!empty($profiles->instagram)){?>  
+                                    <div class="inline-facts-wrap">
+                                        <div class="inline-facts">
+                                            <i class="fal fa-user-cowboy"></i>
+                                            <h6>Instagram</h6>
+                                            <span><?=$profiles->instagram; ?></span>
+                                        </div>
+                                    </div> 
+                                    <?php } ?>  
+                                    <?php if(!empty($profiles->twitter)){?>  
+                                    <div class="inline-facts-wrap">
+                                        <div class="inline-facts">
+                                            <i class="fal fa-user-cowboy"></i>
+                                            <h6>Twitter</h6>
+                                            <span><?=$profiles->twitter; ?></span>
+                                        </div>
+                                    </div> 
+                                    <?php } ?>   
+                                    <?php if(!empty($profiles->whatsapp)){?> 
+                                    <div class="inline-facts-wrap">
+                                        <div class="inline-facts">
+                                            <i class="fal fa-user-cowboy"></i>
+                                            <h6>Whatsapp</h6>
+                                            <span><?=$profiles->whatsapp; ?></span>
+                                        </div>
+                                    </div>   
+                                    <?php } ?>                                                                     
                                 </div>
                                 <div class="list-single-main-container fl-wrap">
                                     <!-- list-single-main-item -->
@@ -167,25 +235,7 @@
                                     </div>
                                                                                
                                     <!-- list-single-main-item -->
-                                    <div class="list-single-main-item fl-wrap" id="sec6">
-                                        <div class="list-single-main-item-title">
-                                            <h3>Reviews <span>0</span></h3>
-                                        </div>
-                                        <div class="list-single-main-item_content fl-wrap">
-                                            <div class="reviews-comments-wrap fl-wrap">
-                                                <div class="review-total mt-5">
-                                                    <span class="review-number blue-bg">0.0</span>
-                                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="0"><span class="re_stars-title">Not Rated</span></div>
-                                                </div>
-                                                <!-- reviews-comments-item -->  
-                                                <div class="reviews-comments-item mt-5">
-                                                    <div class="reviews-comments-item-text smpr">
-                                                        No Review
-                                                    </div>
-                                                </div>                                          
-                                            </div>
-                                        </div>
-                                    </div>                                         
+                                                                       
                                 </div>
                             </div>
                         </div>           

@@ -86,7 +86,6 @@
                     <div class="list-single-stats">
                         <ul class="no-list-style">
                             <li><span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  0 </span></li>
-                            <li><span class="bookmark-counter"><i class="fas fa-heart"></i> Bookmark -  0 </span></li>
                         </ul>
                     </div>
                 </div>
@@ -99,9 +98,6 @@
                 <a href="<?=site_url(); ?>">Home</a><a href="javascript:;"><?=$mains; ?></a><a href="javascript:;"><?=$category; ?></a><span><?=ucwords($name); ?></span>
             </div>
             
-            <a href="javascript:;" class="like-btn tolt" data-microtip-position="bottom"  data-tooltip="Report" > <i class="fas fa-exclamation-triangle"></i> Report </a>
-            
-            <a href="#sec15" class="like-btn"> <i class="fas fa-comment-alt"></i> Write a review</a>
             <div class="like-btn"><i class="fas fa-heart"></i> Save</div>
         </div>
     </div>
@@ -117,7 +113,8 @@
                                 <ul class="no-list-style">
                                     <li><a class="act-scrlink" href="#sec1"><i class="fal fa-home-lg-alt"></i></a><span>Main</span></li>
                                     <li><a  href="#sec2"><i class="fal fa-image"></i></a><span>Gallery</span></li>
-                                    <li><a href="#sec3"><i class="fal fa-info"></i> </a><span>Details</span></li>
+                                    <li><a href="#sec3"><i class="fal fa-info"></i> </a><span>About</span></li>
+                                    <li><a href="#sec4"><i class="fal fa-address-card"></i> </a><span>Contact Details</span></li>
                                 </ul>
                                 <div class="progress-indicator">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +158,26 @@
                                     <p><?=ucwords($description);?></p>
                                 </div>
                             </div>
-                                                                       
+                            <div class="list-single-main-item fl-wrap" id="sec4">
+                                <div class="list-single-main-item-title">
+                                    <h3>Contact Details</h3>
+                                </div>
+                                <div class="list-single-main-item_content fl-wrap">
+                                    <div class="details-list">
+                                        <ul>
+                                            <li><span>Property Id:</span>154</li>
+                                            <li><span>Property Lot Size:</span>850 m2</li>
+                                            <li><span>Bathrooms:</span>4</li>
+                                            <li><span>Rooms:</span>8</li>
+                                            <li><span>Bedrooms:</span>2</li>
+                                            <li><span>Garage Size:</span>2 cars</li>
+                                            <li><span>Available from:</span>25.05.2020</li>
+                                            <li><span>Price:</span>$ 50.500.00</li>
+                                            <li><span>Type:</span>Apartment/House</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>                                          
                             <!-- list-single-main-item -->
                             <!-- <div class="list-single-main-item fl-wrap" id="sec7">
                                 <div class="list-single-main-item-title">
@@ -274,7 +290,6 @@
                                         <div class="clearfix"></div>
                                         <div class="pwh_counter"><span><?=$this->Crud->check('user_id', $user_id, 'listing'); ?></span> Listings</div>
                                         <div class="clearfix"></div>
-                                        <div class="listing-rating card-popup-rainingvis" data-starrating2="0"></div>
                                     </div>
                                 </div>
                             </div>

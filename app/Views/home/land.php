@@ -149,7 +149,7 @@
                 </div>
                 <div class="pwh_bg"></div>
             </div>
-            <div class="half-carousel-conatiner" id="load_state">
+            <div class="half-carousel-conatiner" id="loa_state">
                 <div class="half-carousel fl-wrap full-height" >
 
                     <!--slick-item -->

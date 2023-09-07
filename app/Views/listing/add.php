@@ -162,7 +162,40 @@
                         
                         <div class="col-sm-4  mb-3">		 
                             <label>Listing Price  <span class="dec-icon"><i class="far fa-money-bill-wave"></i></span></label>
-                            <input type="text" name="price" placeholder="Listing Price" required value="<?php if(!empty($e_price)){echo $e_price;} ?>"/>
+                            <input type="text" name="price" placeholder="Listing Price"  value="<?php if(!empty($e_price)){echo $e_price;} ?>"/>
+                        </div>
+
+                        <div class="col-sm-8 mb-3">
+                            <label>Address <span class="dec-icon"><i class="far fa-map-marker"></i></span></label>
+                            <input type="text" name="address" placeholder="Address of your business" value="<?php if(!empty($e_address)){echo $e_address;} ?>"/>
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <label>Email Address <span class="dec-icon"><i class="far fa-envelope"></i></span>  </label>
+                            <input type="email" name="b_email" value="<?php if(!empty($e_email)){echo $e_email;} ?>" placeholder="JessieManrty@koomeli.com" />
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <label>Phone <span class="dec-icon"><i class="far fa-phone"></i> </span> </label>
+                            <input type="text" name="b_phone" placeholder="+7(123)987654" value="<?php if(!empty($e_phone)){echo $e_phone;} ?>"/>
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <label> Website <span class="dec-icon"><i class="far fa-globe"></i> </span> </label>
+                            <input type="text" name="website" placeholder="https://koomeli.net" value="<?php if(!empty($e_profile) && !empty($e_profile->website)){echo $e_profile->website;} ?>"/>
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <label> Facebook <span class="dec-icon"><i class="fab fa-facebook"></i> </span> </label>
+                            <input type="text" name="facebook" placeholder="https://facebook.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->facebook)){echo $e_profile->facebook;} ?>"/>
+                        </div>
+                          <div class="col-sm-4 mb-3">
+                            <label> Instagram <span class="dec-icon"><i class="fab fa-instagram"></i> </span> </label>
+                            <input type="text" name="instagram" placeholder="https://instagram.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->instagram)){echo $e_profile->instagram;} ?>"/>
+                        </div>
+                          <div class="col-sm-4 mb-3">
+                            <label> Twitter <span class="dec-icon"><i class="fab fa-twitter"></i> </span> </label>
+                            <input type="text" name="twitter" placeholder="https://twitter.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->twitter)){echo $e_profile->twitter;} ?>"/>
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <label> Whatsapp <span class="dec-icon"><i class="fab fa-whatsapp"></i> </span> </label>
+                            <input type="text" name="whatsapp" placeholder="https://whatsapp.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->whatsapp)){echo $e_profile->whatsapp;} ?>"/>
                         </div>
                                         
                         <div class="col-sm-5  mb-3">

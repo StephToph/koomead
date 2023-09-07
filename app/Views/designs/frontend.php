@@ -69,7 +69,7 @@
             </div>
             <!--  add new  btn end -->
             <!--  header-opt_btn -->
-            <div class="header-opt_btn tolt" data-microtip-position="bottom" data-tooltip="Country">
+            <div class="header-opt_btn tolt" style="display:bloc" data-microtip-position="bottom" data-tooltip="Country">
                 <span><i class="fal fa-globe"></i></span>
             </div>
             <!--  header-opt_btn end -->
@@ -84,7 +84,7 @@
             <?php
 
                 if(empty($log_id)){
-                    echo '<div class="show-reg-form modal-open"><i class="fas fa-user"></i><span>Sign In</span></div>';
+                    echo '<div class="show-reg-form modal-open"><i class="fas fa-user"></i><span>Signs In</span></div>';
                 } else {
                     echo '<div class="show-reg-form"><a href="'.site_url('dashboard').'"><i class="fas fa-user"></i><span>User Dashboard</span></a></div>';
                 }

@@ -12,6 +12,8 @@ class Auth extends BaseController {
         // check login
         $log_id = $this->session->get('km_id');
         // if(!empty($log_id)) return redirect()->to(site_url('dashboard'));
+        $redir = $this->session->get('km_redirect');
+		
 
         if($this->request->getMethod() == 'post') {
             $email = $this->request->getVar('email');
@@ -32,7 +34,12 @@ class Auth extends BaseController {
 
                     echo $this->Crud->msg('success', 'Login Successful!');
                     $this->session->set('km_id', $user_id);
-                    echo '<script>window.location.replace("'.site_url('dashboard').'");</script>';
+                    if($redir == ''){
+                        $redirs = 'dashboard';
+                    } else {
+                        $redirs = $redir;
+                    }
+                    echo '<script>window.location.replace("'.site_url($redirs).'");</script>';
                 }
             }
 

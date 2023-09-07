@@ -1699,22 +1699,22 @@ class Crud extends Model {
 
 	}
 
-	public function filter_referral($limit='', $offset='', $user_id, $search='', $start_date='', $end_date='') {
-		$db = db_connect();
-		$db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
+	public function filter_state($limit='', $offset='', $log_id, $country_id='', $search='') {
+        $db = db_connect();
+        $builder = $db->table('state');
+
+        // build query
+		$builder->orderBy('name', 'asc');
+
+		if($country_id != 'all'){
+			$builder->where('country_id', $country_id);
+			if(!empty($search)) {
+				$builder->like('name', $search);
+			}
+		}
+		
         
-        $builder = $db->table('referral');
 		
-		// build query
-		$builder->orderBy('id', 'DESC');
-		
-		$builder->groupBy('user_id');
-		
-		if(!empty($start_date) && !empty($end_date)){
-			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') >= '".$start_date."'",NULL,FALSE);
-			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') <= '".$end_date."'",NULL,FALSE); 
-		}
-
         // limit query
         if($limit && $offset) {
 			$query = $builder->get($limit, $offset);
@@ -1727,35 +1727,9 @@ class Crud extends Model {
         // return query
         return $query->getResult();
         $db->close();
+
 	}
 
-	public function filter_collection($limit='', $offset='', $user_id, $search='', $start_date='', $end_date='') {
-		$db = db_connect();
-		 
-        $builder = $db->table('collection');
-		
-		// build query
-		$builder->orderBy('id', 'DESC');
-		
-		
-		if(!empty($start_date) && !empty($end_date)){
-			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') >= '".$start_date."'",NULL,FALSE);
-			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') <= '".$end_date."'",NULL,FALSE); 
-		}
-
-        // limit query
-        if($limit && $offset) {
-			$query = $builder->get($limit, $offset);
-		} else if($limit) {
-			$query = $builder->get($limit);
-		} else {
-            $query = $builder->get();
-        }
-
-        // return query
-        return $query->getResult();
-        $db->close();
-	}
 
 	public function filter_listing($limit='', $offset='', $user_id, $search='', $category_id='', $active='', $country_id='', $state_id='', $city_id='', $start_date='', $end_date='') {
 		$db = db_connect();

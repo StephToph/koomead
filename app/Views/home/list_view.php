@@ -72,21 +72,20 @@
                         <h1><?=ucwords($name);?> <span class="verified-badge tolt" data-microtip-position="bottom"  data-tooltip="Verified"><i class="fas fa-check"></i></span></h1>
                         <div class="geodir-category-location fl-wrap">
                             <a href="#"><i class="fas fa-map-marker-alt"></i>  <?=$loca;?></a> 
-                            <div class="listing-rating card-popup-rainingvis" data-starrating2="0"><span class="re_stars-title">Not Rated</span></div>
+                            
                         </div>
-                        <div class="share-holder hid-share">
+                        <div class="share-holder hid-share mb-5">
                             <a href="#" class="share-btn showshare sfcs">  <i class="fas fa-share-alt"></i>  Share   </a>
                             <div class="share-container  isShare"></div>
                         </div>
                     </div>
                 </div>
                 <div class="list-single-header-footer fl-wrap">
-                    <div class="list-single-header-price" data-propertyprise="50500"><strong>Price:</strong><span><?=$cur; ?></span><?=number_format($price,2);?></div>
+                    <div class="list-single-header-price text-white" data-propertyprise="50500"><strong>Price:</strong><span><?=$cur; ?></span><?=number_format($price,2);?></div>
                     <div class="list-single-header-date"><span>Date:</span><?=date('d.m.Y', strtotime($reg_date));?></div>
                     <div class="list-single-stats">
                         <ul class="no-list-style">
                             <li><span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  0 </span></li>
-                            <li><span class="bookmark-counter"><i class="fas fa-heart"></i> Bookmark -  0 </span></li>
                         </ul>
                     </div>
                 </div>
@@ -99,9 +98,6 @@
                 <a href="<?=site_url(); ?>">Home</a><a href="javascript:;"><?=$mains; ?></a><a href="javascript:;"><?=$category; ?></a><span><?=ucwords($name); ?></span>
             </div>
             
-            <a href="javascript:;" class="like-btn tolt" data-microtip-position="bottom"  data-tooltip="Report" > <i class="fas fa-exclamation-triangle"></i> Report </a>
-            
-            <a href="#sec15" class="like-btn"> <i class="fas fa-comment-alt"></i> Write a review</a>
             <div class="like-btn"><i class="fas fa-heart"></i> Save</div>
         </div>
     </div>
@@ -117,7 +113,8 @@
                                 <ul class="no-list-style">
                                     <li><a class="act-scrlink" href="#sec1"><i class="fal fa-home-lg-alt"></i></a><span>Main</span></li>
                                     <li><a  href="#sec2"><i class="fal fa-image"></i></a><span>Gallery</span></li>
-                                    <li><a href="#sec3"><i class="fal fa-info"></i> </a><span>Details</span></li>
+                                    <li><a href="#sec3"><i class="fal fa-info"></i> </a><span>About</span></li>
+                                    <li><a href="#sec4"><i class="fal fa-address-card"></i> </a><span>Contact Details</span></li>
                                 </ul>
                                 <div class="progress-indicator">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +158,26 @@
                                     <p><?=ucwords($description);?></p>
                                 </div>
                             </div>
-                                                                       
+                            <div class="list-single-main-item fl-wrap" id="sec4">
+                                <div class="list-single-main-item-title">
+                                    <h3>Contact Details</h3>
+                                </div>
+                                <div class="list-single-main-item_content fl-wrap">
+                                    <div class="details-list">
+                                        <ul>
+                                            <li><span>Property Id:</span>154</li>
+                                            <li><span>Property Lot Size:</span>850 m2</li>
+                                            <li><span>Bathrooms:</span>4</li>
+                                            <li><span>Rooms:</span>8</li>
+                                            <li><span>Bedrooms:</span>2</li>
+                                            <li><span>Garage Size:</span>2 cars</li>
+                                            <li><span>Available from:</span>25.05.2020</li>
+                                            <li><span>Price:</span>$ 50.500.00</li>
+                                            <li><span>Type:</span>Apartment/House</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>                                          
                             <!-- list-single-main-item -->
                             <!-- <div class="list-single-main-item fl-wrap" id="sec7">
                                 <div class="list-single-main-item-title">
@@ -274,7 +290,6 @@
                                         <div class="clearfix"></div>
                                         <div class="pwh_counter"><span><?=$this->Crud->check('user_id', $user_id, 'listing'); ?></span> Listings</div>
                                         <div class="clearfix"></div>
-                                        <div class="listing-rating card-popup-rainingvis" data-starrating2="0"></div>
                                     </div>
                                 </div>
                             </div>
@@ -342,36 +357,23 @@
                     
                     <div class="box-widget fl-wrap">
                         <div class="box-widget-fixed-init fl-wrap" id="sec-contact">
-                            <div class="box-widget-title fl-wrap box-widget-title-color color-bg">Contact Property</div>
+                            <div class="box-widget-title fl-wrap box-widget-title-color color-bg">Message Advertiser</div>
                             <div class="box-widget-content fl-wrap">
                                 <div class="custom-form">
                                     <form method="post"  name="contact-property-form">
-                                        <label>Your name* <span class="dec-icon"><i class="fas fa-user"></i></span></label>
-                                        <input   name="phone" type="text"    onClick="this.select()" value="">
-                                        <label>Your phone  * <span class="dec-icon"><i class="fas fa-phone"></i></span></label>
-                                        <input   name="phone" type="text"    onClick="this.select()" value="">      
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label>Date   <span class="dec-icon"><i class="fas fa-calendar-check"></i></span></label>
-                                                <div class="date-container fl-wrap">
-                                                    <input type="text" placeholder="" style="padding: 16px 5px 16px 60px;"     name="datepicker-here"   value=""/>                                                 
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <label>Time  </label>
-                                                <select data-placeholder="9 AM" class="chosen-select on-radius no-search-select" >
-                                                    <option>9 AM</option>
-                                                    <option>10 AM</option>
-                                                    <option>11 AM</option>
-                                                    <option>12 AM</option>
-                                                    <option>13 PM</option>
-                                                    <option>14 PM</option>
-                                                    <option>15 PM</option>
-                                                    <option>16 PM</option>
-                                                </select>
-                                            </div>
+                                        <label>Type a Message* </label>
+                                        <div class="listsearch-input-item">
+                                            <textarea cols="40" rows="3" style="height: 135px" placeholder="Messsage" spellcheck="false"></textarea>
                                         </div>
-                                        <button type="submit" class="btn float-btn color-bg fw-btn"> Send</button>
+                                        <?php
+                                            // echo $log_id;
+                                            if(empty($log_id)){
+                                                echo '<button type="submit" class="btn float-btn show-reg-form modal-open color-bg fw-btn"> Send</button>';
+                                            } else {
+                                                echo '<button type="submit" class="btn float-btn color-bg fw-btn"> Send</button>';
+                                            }
+                                            ?>
+                                        
                                     </form>
                                 </div>
                             </div>

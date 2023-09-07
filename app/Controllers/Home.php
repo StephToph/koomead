@@ -11,7 +11,7 @@ class Home extends BaseController {
 
     public function index() {
         $db = \Config\Database::connect();
-
+        $this->session->set('km_redirect', uri_string());
         // check login
         $log_id = $this->session->get('km_id'); 
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
@@ -29,10 +29,10 @@ class Home extends BaseController {
 
     public function listing($param1='', $param2='', $param3='') {
 		$db = \Config\Database::connect();
-
+        
+        $this->session->set('km_redirect', uri_string());
         // check login
         $log_id = $this->session->get('km_id');
-        
         
 		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
         $data['log_id'] = $log_id;
@@ -245,155 +245,21 @@ class Home extends BaseController {
 			}
 		}
 
-       
-		// record listing
-		if($param1 == 'load') {
-			$limit = $param2;
-			$offset = $param3;
-
-			$count = 0;
-			$rec_limit = 25;
-			$item = '';
-
-			if($limit == '') {$limit = $rec_limit;}
-			if($offset == '') {$offset = 0;}
-			
-			$search = $this->request->getVar('search');
-			if(!empty($this->request->getPost('active'))) { $active = $this->request->getPost('active'); } else { $active = ''; }
-			if(!empty($this->request->getPost('country_id'))) { $country_id = $this->request->getPost('country_id'); } else { $country_id = ''; }
-			if(!empty($this->request->getPost('state_id'))) { $state_id = $this->request->getPost('start_date'); } else { $state_id = ''; }
-			if(!empty($this->request->getPost('city_id'))) { $city_id = $this->request->getPost('city_id'); } else { $city_id = ''; }
-			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
-			if(!empty($this->request->getPost('category_id'))) { $category_id = $this->request->getPost('category_id'); } else { $category_id = ''; }
-			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
-			
-			if(!$log_id) {
-				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
-			} else {
-				$query = $this->Crud->filter_listings($limit, $offset, $log_id, $search,$category_id, $active,  $country_id,$state_id,$city_id, $start_date, $end_date);
-				$all_rec = $this->Crud->filter_listings('', '', $log_id, $search, $category_id, $active, $country_id,$state_id,$city_id, $start_date, $end_date);
-				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
-				$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
-				$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
-				
-				if(!empty($query)) {
-					foreach($query as $q) {
-						$id = $q->id;
-						$name = $q->name;
-						$category_id = $q->category_id;
-						$state_id = $q->state_id;
-						$country_id = $q->country_id;
-						$city_id = $q->city_id;
-						$price = $q->price;
-						$description = $q->description;
-						$price_status = $q->price_status;
-						$negotiable = $q->negotiable;
-						$user_id = $q->user_id;
-						$active = $q->active;
-						$images = $q->images;
-						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
-
-						$images = json_decode($images);
-						$main = 'assets/images/file.png';
-						if(!empty($images)){
-							$main = $images[0];
-						}
-
-							$user =  ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname'));
-						
-						
-						$category = $this->Crud->read_field('id', $category_id, 'category', 'name');
-						$main_id = $this->Crud->read_field('id', $category_id, 'category', 'category_id');
-						$mains = $this->Crud->read_field('id', $main_id, 'category', 'name');
-						
-						$country = $this->Crud->read_field('id', $country_id, 'country', 'name');
-						$state = $this->Crud->read_field('id', $state_id, 'state', 'name');
-						$city = $this->Crud->read_field('id', $city_id, 'city', 'name');
-						
-						$loca = '';
-						
-						if(!empty($city_id)) $loca .= $city;
-						if(!empty($state_id)) $loca .= ', '.$state;
-						if(!empty($country_id)) $loca .= ', '.$country;
-
-						$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-signal"></i></a>';
-						if($active > 0)$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Disable"><i class="far fa-signal-alt-slash"></i></a>';
-
-						$item .= '
-                            <div class="gallery-item">
-                                <div class="listing-item">
-                                    <article class="geodir-category-listing fl-wrap">
-                                        <div class="geodir-category-img fl-wrap" style="height: 250px;">
-                                            <a href="'.site_url('home/listing/view/'.$id).'" class="geodir-category-img_item mb-3">
-                                                <img src="'.site_url($main).'" alt="" style="height:250px">
-                                                <div class="overlay"style="height:250px"></div>
-                                            </a>
-                                            <div class="geodir-category-location pt-5">
-                                                <a href="javascript:;" class="single-map-item"><i class="fas fa-map-marker-alt"></i> <span>'.$loca.'</span></a>
-                                            </div>
-                                            <ul class="list-single-opt_header_cat">
-                                                <li><a href="javascript:;" class="cat-opt blue-bg mb-3">'.$category.'</a></li>
-                                                <li><a href="javascript:;" class="cat-opt color-bg text-end"><b>'.$mains.'</b></a></li>
-                                            </ul>
-                                            
-                                            <div class="geodir-category-listing_media-list">
-                                                <span><i class="fas fa-eye"></i> 0</span>
-                                            </div>
-                                        </div>
-                                        <div class="geodir-category-content fl-wrap">
-                                            <h3 class="title-sin_item"><a href="'.site_url('home/listing/view/'.$id).'">'.ucwords($name).'</a></h3>
-                                            <div class="geodir-category-content_price">$ '.number_format($price,2).'</div>
-                                            
-                                            <div class="geodir-category-footer fl-wrap">
-                                                <a href="agent-single.html" class="gcf-company"><img src="'.site_url().'assets/images/avatar/2.jpg" alt=""><span>'.$user.'</span></a>
-                                                <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="4"></div>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>															
-                            </div>
-						';
-					}
-				}
-			}
-			if(empty($item)) {
-				$resp['item'] = '
-					<div class="text-center text-muted mb-5">
-						<br/>
-						<i class="fal fa-clipboard-list-check" style="font-size:150px;"></i><br/><br/>No Listing Returned
-					</div>
-				';
-			} else {
-				$resp['item'] = '<div class="grid-item-holder gallery-items fl-wrap" >'.$item.'</div>';
-			}
-			$resp['count'] = $count;
-
-			$more_record = $count - ($offset + $rec_limit);
-			$resp['left'] = $more_record;
-
-			if($count > ($offset + $rec_limit)) { // for load more records
-				$resp['limit'] = $rec_limit;
-				$resp['offset'] = $offset + $limit;
-			} else {
-				$resp['limit'] = 0;
-				$resp['offset'] = 0;
-			}
-
-			echo json_encode($resp);
-			die;
-		}
-
             
         $data['title'] = 'View Listing | '.app_name;
         $data['page_active'] = 'listing';
         if(empty($param2)){
+
             return redirect()->to(site_url(''));	
-        }
+        } $this->session->set('km_redirect', uri_string());
         return view('home/list_view', $data);
         
     }
 
     public function list_load($param1='', $param2='', $param3=''){
+        $log_id = $this->session->get('km_id');
+        
+        
         // record listing
 		if($param1 == 'load') {
 			$limit = $param2;
@@ -416,10 +282,8 @@ class Home extends BaseController {
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
             $cur = '$';
             if($country_id == '161')$cur = '&#8358;';
-            $log_id = 1;
-			if(!$log_id) {
-				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
-			} else {
+
+			
 				$query = $this->Crud->filter_listings($limit, $offset, $log_id, $search,$category_id, $active,  $country_id,$state_id,$city_id, $start_date, $end_date);
 				$all_rec = $this->Crud->filter_listings('', '', $log_id, $search, $category_id, $active, $country_id,$state_id,$city_id, $start_date, $end_date);
 				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
@@ -508,7 +372,7 @@ class Home extends BaseController {
 						';
 					}
 				}
-			}
+			
 			if(empty($item)) {
 				$resp['item'] = '
 					<div class="text-center text-muted mb-5">
@@ -538,15 +402,134 @@ class Home extends BaseController {
 
     }
 
+	public function list_state($param1='', $param2='', $param3=''){
+        $log_id = $this->session->get('km_id');
+        
+        
+        // record listing
+		if($param1 == 'load') {
+			$limit = $param2;
+			$offset = $param3;
+
+			$count = 0;
+			$rec_limit = 25;
+			$item = '';
+
+			if($limit == '') {$limit = $rec_limit;}
+			if($offset == '') {$offset = 0;}
+			
+			if(!empty($this->request->getPost('country_id'))) { $country_id = $this->request->getPost('country_id'); } else { $country_id = ''; }
+			
+			$cur = '$';
+            if($country_id == '161')$cur = '&#8358;';
+
+			
+				$query = $this->Crud->read_single('country_id', $country_id, 'listing', $limit, $offset);
+				$all_rec = $this->Crud->read_single('country_id', $country_id, 'listing', '', '');
+				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
+				$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+				$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+				
+				if(!empty($query)) {
+					foreach($query as $q) {
+						$id = $q->id;
+						$name = $q->name;
+						$category_id = $q->category_id;
+						$state_id = $q->state_id;
+						$country_id = $q->country_id;
+						$city_id = $q->city_id;
+						$price = $q->price;
+						$description = $q->description;
+						$price_status = $q->price_status;
+						$negotiable = $q->negotiable;
+						$user_id = $q->user_id;
+						$active = $q->active;
+						$images = $q->images;
+						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
+
+						$images = json_decode($images);
+						$main = 'assets/images/file.png';
+						if(!empty($images)){
+							$main = $images[0];
+						}
+
+                        
+							$user =  ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname'));
+                            $user_img = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
+                            if(empty($user_img))$user_img = 'assets/images/avatar.png';
+                            
+						
+						$category = $this->Crud->read_field('id', $category_id, 'category', 'name');
+						$main_id = $this->Crud->read_field('id', $category_id, 'category', 'category_id');
+						$mains = $this->Crud->read_field('id', $main_id, 'category', 'name');
+						
+						$country = $this->Crud->read_field('id', $country_id, 'country', 'name');
+						$state = $this->Crud->read_field('id', $state_id, 'state', 'name');
+						$city = $this->Crud->read_field('id', $city_id, 'city', 'name');
+						
+						$loca = '';
+						
+						if(!empty($city_id)) $loca .= $city;
+						if(!empty($state_id)) $loca .= ', '.$state;
+						if(!empty($country_id)) $loca .= ', '.$country;
+
+						
+
+						$item .= '
+							<div class="slick-item">
+								<div class="half-carousel-item fl-wrap">
+									<div class="bg-wrap bg-parallax-wrap-gradien">
+										<div class="bg"  data-bg="'.site_url($main).'" style="backgroung-image:url('.$main.')"></div>
+									</div>
+									<div class="half-carousel-content">
+										<div class="hc-counter color-bg">0 Businesses</div>
+										<h3><a href="listing.html">'.$country.'</a></h3>
+										<p>Constant care and attention to the patients makes good record</p>
+									</div>
+								</div>
+							</div>
+						';
+					}
+				}
+			
+			if(empty($item)) {
+				$resp['item'] = '
+					<div class="text-center text-muted mb-5">
+						<br/>
+						<i class="fal fa-clipboard-list-check" style="font-size:150px;"></i><br/><br/>No Listing Returned
+					</div>
+				';
+			} else {
+				$resp['item'] = '<div class="half-carousel fl-wrap full-height" >'.$item.'</div>';
+			}
+			$resp['count'] = $count;
+
+			$more_record = $count - ($offset + $rec_limit);
+			$resp['left'] = $more_record;
+
+			if($count > ($offset + $rec_limit)) { // for load more records
+				$resp['limit'] = $rec_limit;
+				$resp['offset'] = $offset + $limit;
+			} else {
+				$resp['limit'] = 0;
+				$resp['offset'] = 0;
+			}
+
+			echo json_encode($resp);
+			// die;
+		}
+
+    }
+
 
     public function get_country(){
-            $country = $this->request->getPost('country');
-            if($country != 'Nigeria' && $country != 'United Kingdom')$country = 'United Kingdom';
-            if($this->Crud->check('name', $country, 'country') > 0){
-                echo $this->Crud->read_field('name', $country, 'country', 'id');
-            } else {
-                echo 0;
-            }
+        $country = $this->request->getPost('country');
+        if($country != 'Nigeria' && $country != 'United Kingdom')$country = 'United Kingdom';
+        if($this->Crud->check('name', $country, 'country') > 0){
+            echo $this->Crud->read_field('name', $country, 'country', 'id');
+        } else {
+            echo 0;
+        }
        
     }
 }

@@ -19,6 +19,10 @@
             $state_id = $this->Crud->read_field('id', $param2, 'listing', 'state_id');
             $country_id = $this->Crud->read_field('id', $param2, 'listing', 'country_id');
             $city_id = $this->Crud->read_field('id', $param2, 'listing', 'city_id');
+            $address = $this->Crud->read_field('id', $param2, 'listing', 'address');
+            $email = $this->Crud->read_field('id', $param2, 'listing', 'email');
+            $phone = $this->Crud->read_field('id', $param2, 'listing', 'phone');
+            $profile = json_decode($this->Crud->read_field('id', $param2, 'listing', 'profile'));
             $price = $this->Crud->read_field('id', $param2, 'listing', 'price');
             $active = $this->Crud->read_field('id', $param2, 'listing', 'active');
             $negotiable = $this->Crud->read_field('id', $param2, 'listing', 'negotiable');
@@ -46,12 +50,16 @@
             if($negotiable == 0)$negotiate = 'No'; else $negotiate = 'Yes';
             if($active == 0)$active = 'Disabled'; else $active = 'Active';
             
+            if(!empty($address)) $loca .= $address.', ';
             if(!empty($city_id)) $loca .= $city;
             if(!empty($state_id)) $loca .= ', '.$state;
             if(!empty($country_id)) $loca .= ', '.$country;
             $main_img = $image[0];
             $cur = '$';
             if($country_id == '161')$cur = '&#8358;';
+
+            $prices = '<span>'.$cur.'</span>'.number_format($price,2);
+            if($price_status == 1)$prices = 'Contact for Price';
         ?>
         <div class="bg-wrap bg-parallax-wrap-gradien">
             <div class="bg par-elem "  data-bg="<?=site_url($main_img); ?>" data-scrollax="properties: { translateY: '30%' }"></div>
@@ -81,7 +89,7 @@
                     </div>
                 </div>
                 <div class="list-single-header-footer fl-wrap">
-                    <div class="list-single-header-price text-white" data-propertyprise="50500"><strong>Price:</strong><span><?=$cur; ?></span><?=number_format($price,2);?></div>
+                    <div class="list-single-header-price text-white" data-propertyprise="50500"><strong>Price:</strong><?=$prices;?></div>
                     <div class="list-single-header-date"><span>Date:</span><?=date('d.m.Y', strtotime($reg_date));?></div>
                     <div class="list-single-stats">
                         <ul class="no-list-style">
@@ -164,17 +172,15 @@
                                 </div>
                                 <div class="list-single-main-item_content fl-wrap">
                                     <div class="details-list">
-                                        <!-- <ul>
-                                            <li><span>Property Id:</span>154</li>
-                                            <li><span>Property Lot Size:</span>850 m2</li>
-                                            <li><span>Bathrooms:</span>4</li>
-                                            <li><span>Rooms:</span>8</li>
-                                            <li><span>Bedrooms:</span>2</li>
-                                            <li><span>Garage Size:</span>2 cars</li>
-                                            <li><span>Available from:</span>25.05.2020</li>
-                                            <li><span>Price:</span>$ 50.500.00</li>
-                                            <li><span>Type:</span>Apartment/House</li>
-                                        </ul> -->
+                                        <ul>
+                                            <?php if(!empty($email)){?><li><span>Business Email:</span><?=$email; ?></li><?php } ?>
+                                            <?php if(!empty($email)){?><li><span>Business Phone:</span><?=$phone; ?></li><?php } ?>
+                                            <?php if(!empty($profile) && !empty($profile->website)){?><li style="width:100% !important;"><span>Business Website:</span><?=$profile->website; ?></li><?php } ?>
+                                            <?php if(!empty($profile) && !empty($profile->facebook)){?><li style="width:100% !important;"><span>Business Facebook:</span><?=$profile->facebook; ?></li><?php } ?>
+                                            <?php if(!empty($profile) && !empty($profile->whatsapp)){?><li style="width:100% !important;"><span>Business Whatsapp:</span><?=$profile->whatsapp; ?></li><?php } ?>
+                                            <?php if(!empty($profile) && !empty($profile->instagram)){?><li style="width:100% !important;"><span>Business Instagram:</span><?=$profile->instagram; ?></li><?php } ?>
+                                            <?php if(!empty($profile) && !empty($profile->twitter)){?><li style="width:100% !important;"><span>Business Twitter:</span><?=$profile->twitter; ?></li><?php } ?>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>                                          

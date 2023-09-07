@@ -245,6 +245,7 @@ class Home extends BaseController {
 			}
 		}
 
+		echo $this->saveDeviceInfo();
             
         $data['title'] = 'View Listing | '.app_name;
         $data['page_active'] = 'listing';
@@ -329,6 +330,9 @@ class Home extends BaseController {
 						
 						$loca = '';
 						
+						$prices = '<span>'.$cur.'</span>'.number_format($price,2);
+						if($price_status == 1)$prices = 'Contact for Price';
+
 						if(!empty($city_id)) $loca .= $city;
 						if(!empty($state_id)) $loca .= ', '.$state;
 						if(!empty($country_id)) $loca .= ', '.$country;
@@ -359,7 +363,7 @@ class Home extends BaseController {
                                         </div>
                                         <div class="geodir-category-content fl-wrap">
                                             <h3 class="title-sin_item"><a href="'.site_url('home/listing/view/'.$id).'">'.ucwords($name).'</a></h3>
-                                            <div class="geodir-category-content_price">'.$cur.' '.number_format($price,2).'</div>
+                                            <div class="geodir-category-content_price">'.$prices.'</div>
                                             
                                             <div class="geodir-category-footer fl-wrap">
                                                 <a href=javascript:;" class="gcf-company"><img src="'.site_url($user_img).'" alt=""><span>'.$user.'</span></a>
@@ -500,7 +504,7 @@ class Home extends BaseController {
 					</div>
 				';
 			} else {
-				$resp['item'] = '<div class="half-carousel fl-wrap full-height" >'.$item.'</div>';
+				$resp['item'] = '<div class="half-carousel fl-wrap full-height" >'.$item.'</div><script>(".half-carousel").slick();</script>';
 			}
 			$resp['count'] = $count;
 
@@ -531,5 +535,36 @@ class Home extends BaseController {
             echo 0;
         }
        
+    }
+
+	public function saveDeviceInfo(){
+        // Get user agent information (browser, OS, etc.)
+        $userAgent = $this->request->getUserAgent();
+
+        // Get the IP address of the device
+        $ipAddress = $this->request->getIPAddress();
+		$uri = $this->request->uri->getPath();
+
+        // Check if the device has visited the page before using sessions
+        $session = session();
+        $visitedBefore = $session->get('visited_before');
+        if (!$visitedBefore) {
+            // If not visited before, set a session variable
+            $session->set('visited_before', true);
+        }
+        // Create a timestamp for the current visit
+        $timestamp = date('Y-m-d H:i:s');
+
+
+        // Prepare data to insert into the database
+        $data = [
+            'user_agent' => $userAgent,
+            'ip_address' => $ipAddress,
+            'uri' => $uri,
+            'visited_before' => $visitedBefore,
+            'timestamp' => $timestamp,
+        ];
+
+       return json_encode($data);
     }
 }

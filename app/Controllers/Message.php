@@ -42,6 +42,7 @@ class Message extends BaseController {
 		if($param2){$form_link .= $param2.'/';}
 		if($param3){$form_link .= $param3.'/';}
 		
+		
 		// pass parameters to view
 		$data['param1'] = $param1;
 		$data['param2'] = $param2;

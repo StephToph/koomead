@@ -455,7 +455,7 @@ class Home extends BaseController {
 							<div class="slick-item">
 								<div class="half-carousel-item fl-wrap">
 									<div class="bg-wrap bg-parallax-wrap-gradien">
-										<div class="bg"  data-bg="'.site_url($main).'" style="backgroung-image:url('.$main.')"></div>
+										<div class="bg"  data-bg="'.site_url($main).'" style="background-image:url('.$main.')"></div>
 									</div>
 									<div class="half-carousel-content">
 										<div class="hc-counter color-bg">'.$val.' Businesses</div>
@@ -476,7 +476,32 @@ class Home extends BaseController {
 					</div>
 				';
 			} else {
-				$resp['item'] = '<div class="half-carousel fl-wrap full-height" >'.$item.'</div>';
+				$resp['item'] = '<div class="half-carousel fl-wrap full-height" >'.$item.'</div><script>
+					$(".half-carousel").slick({
+						infinite: true,
+						slidesToShow: 3,
+						dots: true,
+						arrows: false,
+						centerMode: false,
+						variableWidth: false,
+						responsive: [{
+								breakpoint: 1224,
+								settings: {
+									slidesToShow: 2,
+									centerMode: false,
+								}
+							},
+							{
+								breakpoint: 564,
+								settings: {
+									slidesToShow: 1,
+									centerMode: false,
+								}
+							}
+						]
+				
+					});
+				</script>';
 			}
 			$resp['count'] = $count;
 

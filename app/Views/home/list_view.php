@@ -368,10 +368,13 @@
                             <div class="box-widget-title fl-wrap box-widget-title-color color-bg">Message Advertiser</div>
                             <div class="box-widget-content fl-wrap">
                                 <div class="custom-form">
-                                    <form method="post"  name="contact-property-form">
+                                    
+                                    <?php echo form_open_multipart('home/listing/message', array('id'=>'bb_ajax_form', 'class'=>'text-start customform')); ?>
+                                        <input type="hidden" name="listing_id" value="<?=$param2;?>"> 
+                                        <input type="hidden" name="business_id" value="<?=$user_id;?>"> 
                                         <label>Type a Message* </label>
                                         <div class="listsearch-input-item">
-                                            <textarea cols="40" rows="3" style="height: 135px" placeholder="Messsage" spellcheck="false"></textarea>
+                                            <textarea cols="40" rows="3" name="message" style="height: 135px" placeholder="Messsage" spellcheck="true" required></textarea>
                                         </div>
                                         <?php
                                             // echo $log_id;
@@ -383,6 +386,9 @@
                                             ?>
                                         
                                     </form>
+                                    <div class="row">
+                                        <div class="col-sm-12 py-2"><div id="bb_ajax_msg"></div></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

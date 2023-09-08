@@ -262,6 +262,28 @@ class Crud extends Model {
         return $query->getResult();
         $db->close();
 	}
+     public function reads3($field, $value, $field2, $value2, $field3, $value3, $table, $limit='', $offset='') {
+		$db = db_connect();
+        $builder = $db->table($table);
+
+		$builder->orderBy('id', 'asc');
+        $builder->where($field, $value);
+        $builder->where($field2, $value2);
+        $builder->where($field3, $value3);
+
+        // limit query
+        if($limit && $offset) {
+			$query = $builder->get($limit, $offset);
+		} else if($limit) {
+			$query = $builder->get($limit);
+		} else {
+            $query = $builder->get();
+        }
+
+        // return query
+        return $query->getResult();
+        $db->close();
+	}
     
 
     public function read_field_like($field, $value, $table,$or_field, $or_value, $call) {
@@ -307,49 +329,58 @@ class Crud extends Model {
 		}
 		return $return_call;
 	}
+	public function read_fields3($field, $value, $field2, $value2, $field3, $value3, $table, $call) {
+		$return_call = '';
+		$getresult = $this->reads3($field, $value, $field2, $value2, $field3, $value3, $table);
+		if(!empty($getresult)) {
+			foreach($getresult as $result)  {
+				$return_call = $result->$call;
+			}
+		}
+		return $return_call;
+	}
 
 	public function read_group($table, $group, $limit='', $offset='') {
 		$db = db_connect();
 		$db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
-        $builder = $db->table($table);
+        $sql = "SELECT t1.* 
+            FROM $table AS t1
+            INNER JOIN (
+                SELECT MAX(id) AS latest_id
+                FROM $table
+                GROUP BY $group
+            ) AS t2 ON t1.id = t2.latest_id
+            ORDER BY t1.id DESC";
 
-		$builder->orderBy('id', 'DESC');
-		$builder->groupBy($group);
+		$query = $db->query($sql);
+		$result = $query->getResult();
 
-        // limit query
-        if($limit && $offset) {
-			$query = $builder->get($limit, $offset);
-		} else if($limit) {
-			$query = $builder->get($limit);
-		} else {
-            $query = $builder->get();
-        }
 
-        // return query
-        return $query->getResult();
-        $db->close();
+		// Close the database connection (optional)
+		$db->close();
+
+		// Return query result
+		return $query->getResult();
+
 	}
 
 	public function read_single_group($field, $value, $table, $group, $limit='', $offset='') {
 		$db = db_connect();
 		$db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
-        $builder = $db->table($table);
+        $sql = "SELECT t1.* FROM $table AS t1 INNER JOIN (
+                SELECT MAX(id) AS max_id
+                FROM $table
+                WHERE $field = ? 
+                GROUP BY $group
+            ) AS t2
+            ON t1.id = t2.max_id";
 
-		$builder->orderBy('id', 'DESC');
-        $builder->where($field, $value);
-		$builder->groupBy($group);
+    	$query = $db->query($sql, [$value]);
 
         // limit query
-        if($limit && $offset) {
-			$query = $builder->get($limit, $offset);
-		} else if($limit) {
-			$query = $builder->get($limit);
-		} else {
-            $query = $builder->get();
-        }
-
+        
+		return $query->getResult();
         // return query
-        return $query->getResult();
         $db->close();
 	}
 

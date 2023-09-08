@@ -15,7 +15,8 @@ class Accounts extends BaseController {
         // check login
         $log_id = $this->session->get('km_id');
         if(empty($log_id)) return redirect()->to(site_url(''));
-
+		
+        $this->session->set('km_redirect', uri_string());
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
         $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
         $role_c = $this->Crud->module($role_id, 'accounts/user', 'create');

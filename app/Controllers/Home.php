@@ -245,6 +245,31 @@ class Home extends BaseController {
 			}
 		}
 
+		if($param1 == 'message'){
+			$message = $this->request->getPost('message');
+			$listing_id = $this->request->getPost('listing_id');
+			$business_id = $this->request->getPost('business_id');
+
+			$code = substr(md5(time().rand()), 0, 6);
+            if($this->Crud->check3('sender_id', $log_id, 'receiver_id', $business_id, 'listing_id', $listing_id, 'message') > 0){
+				$code = $this->Crud->read_field3('sender_id', $log_id, 'receiver_id', $business_id, 'listing_id', $listing_id, 'message', 'code');
+			}
+			$ins['message'] = $message;
+			$ins['code'] = $code;
+			$ins['listing_id'] = $listing_id;
+			$ins['receiver_id'] = $business_id;
+			$ins['sender_id'] = $log_id;
+			$ins['reg_date'] = date(fdate);
+			
+			$ins_rec = $this->Crud->create('message', $ins);
+			if($ins_rec > 0){
+				echo $this->Crud->msg('success', 'Message Sent!<br><a href="'.site_url('message').'">Click to view Message Board</a>');
+			} else {
+				echo $this->Crud->msg('warning', 'Message Not Sent.<br>Try Again.');
+			}
+			die;
+		}
+
 		$this->saveDeviceInfo();
             
         $data['title'] = 'View Listing | '.app_name;

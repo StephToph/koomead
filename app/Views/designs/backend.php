@@ -24,7 +24,7 @@
     <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/plugins.css">
     <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/style.css?v=<?=time(); ?>">
     <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/bootstrap.css?v=<?=time(); ?>">
-    <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/dashboard-style.css">
+    <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/dashboard-style.css?v=<?=time(); ?>">
     <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/color.css">
     <link rel="stylesheet" href="<?=site_url();?>assets/css/select2.min.css" />
     <link rel="shortcut icon" href="<?=site_url();?>assets/images/favicon.ico">

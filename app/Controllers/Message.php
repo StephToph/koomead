@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class Listing extends BaseController {
+class Message extends BaseController {
     private $db;
 
     public function __construct() {
@@ -20,10 +20,10 @@ class Listing extends BaseController {
         $this->session->set('km_redirect', uri_string());
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
         $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
-        $role_c = $this->Crud->module($role_id, 'listing', 'create');
-        $role_r = $this->Crud->module($role_id, 'listing', 'read');
-        $role_u = $this->Crud->module($role_id, 'listing', 'update');
-        $role_d = $this->Crud->module($role_id, 'listing', 'delete');
+        $role_c = $this->Crud->module($role_id, 'message', 'create');
+        $role_r = $this->Crud->module($role_id, 'message', 'read');
+        $role_u = $this->Crud->module($role_id, 'message', 'update');
+        $role_d = $this->Crud->module($role_id, 'message', 'delete');
         if($role_r == 0){
             return redirect()->to(site_url('profile'));	
         }
@@ -33,11 +33,11 @@ class Listing extends BaseController {
         $data['role_c'] = $role_c;
 		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
         $data['log_name'] = $log_name;
-        $data['page'] = 'My Listings';
+        $data['page'] = 'Message';
        
-        $table = 'listing';
+        $table = 'message';
 
-		$form_link = site_url('listing/index/');
+		$form_link = site_url('message/index/');
 		if($param1){$form_link .= $param1.'/';}
 		if($param2){$form_link .= $param2.'/';}
 		if($param3){$form_link .= $param3.'/';}
@@ -408,34 +408,224 @@ class Listing extends BaseController {
 			echo json_encode($resp);
 			die;
 		}
+		
+		
+		// record listing
+		if($param1 == 'load_chat') {
+			
+			if(!$log_id) {
+				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
+			} else {
+				$query = $this->Crud->read_group('km_message', 'code');
+				$counts = count($query);
+				$count = 0;
+				$item = '';
+				if(!empty($query)) {
+					$array = [];
+					
+					foreach($query as $q) {
+						$id = $q->id;
+						$sender_id = $q->sender_id;
+						$code = $q->code;
+						$listing_id = $q->listing_id;
+						$receiver_id = $q->receiver_id;
+						$message = $q->message;
+						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
 
+						//check if message has been initiated before between the parties
+
+						
+						$count = $this->Crud->check3('receiver_id', $log_id, 'code', $code, 'status', 0, 'message');
+						$m_count = '';
+						if($count > 0)$m_count = '<div class="message-counter">'.$count.'</div>';
+
+						$listing = $this->Crud->read_field('id', $listing_id, 'listing', 'name');
+						$sender = $this->Crud->read_field('id', $sender_id, 'user', 'fullname');
+						$sender_img = $this->Crud->read_field('id', $sender_id, 'user', 'img_id');
+						if(empty($sender_img))$sender_img = 'assets/images/avatar.png';
+
+						$item .= '
+							<a class="chat-contacts-item" href="javascript:;" id="chat_'.$code.'" onclick="get_chats(this)">
+								<div class="dashboard-message-avatar">
+									<img src="'.site_url($sender_img).'" alt="">
+									'.$m_count.'
+								</div>
+								<div class="chat-contacts-item-text">
+									<h4>'.$sender.'</h4>
+									
+									<span>'.$reg_date.' </span>
+									<h4 class="text-info">'.ucwords($listing).'</h4>
+									<p>'.$message.'</p>
+								</div>
+							</a>
+						
+						';
+					}
+				}
+			}
+			if(empty($item)) {
+				$resp['item'] = '
+					<div class="text-center text-muted">
+						<br/><br/><br/><br/>
+						<i class="fal fa-comment-alt-lines" style="font-size:150px;"></i><br/><br/>No Chat Returned
+					</div>
+				';
+			} else {
+				$resp['item'] = $item;
+			}
+			$resp['count'] = $counts;
+
+			
+			echo json_encode($resp);
+			die;
+		}
+
+		// record listing
+		if($param1 == 'load_message') {
+			
+			if(!$log_id) {
+				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
+			} else {
+				$code = $this->request->getPost('code');
+
+				$query = $this->Crud->read_single_order('code', $code, 'km_message', 'id', 'asc');
+				$counts = count($query);
+				$count = 0;
+				$item = '';
+				if(!empty($query)) {
+					foreach($query as $q) {
+						$id = $q->id;
+						$sender_id = $q->sender_id;
+						$code = $q->code;
+						$listing_id = $q->listing_id;
+						$receiver_id = $q->receiver_id;
+						$message = $q->message;
+						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
+
+						//check if message has been initiated before between the parties
+
+						
+						$count = $this->Crud->check3('receiver_id', $log_id, 'code', $code, 'status', 0, 'message');
+						$m_count = '';
+						if($count > 0)$m_count = '<div class="message-counter">'.$count.'</div>';
+
+						$listing = $this->Crud->read_field('id', $listing_id, 'listing', 'name');
+						$sender = $this->Crud->read_field('id', $sender_id, 'user', 'fullname');
+						$sender_img = $this->Crud->read_field('id', $sender_id, 'user', 'img_id');
+						if(empty($sender_img))$sender_img = 'assets/images/avatar.png';
+
+						$receiver = $this->Crud->read_field('id', $receiver_id, 'user', 'fullname');
+						$receiver_img = $this->Crud->read_field('id', $receiver_id, 'user', 'img_id');
+						if(empty($receiver_img))$receiver_img = 'assets/images/avatar.png';
+
+						if($sender_id == $log_id){
+							$ite = '
+							<div class="chat-message chat-message_user fl-wrap">
+								<div class="dashboard-message-avatar">
+									<img src="'.site_url($sender_img).'" alt="">
+									<span class="chat-message-user-name cmun_sm">'.ucwords($sender).'</span>
+								</div>
+								<span class="massage-date">'.date('d F Y', strtotime($q->reg_date)).'  <span>'.date('h:i A', strtotime($q->reg_date)).' </span></span>
+								<p>'.$message.'</p>
+							</div>
+							
+							';
+						}
+
+						if($receiver_id == $log_id){
+							$ite = '
+								<div class="chat-message   fl-wrap">
+									<div class="dashboard-message-avatar">
+										<img src="'.site_url($sender_img).'" alt="">
+										<span class="chat-message-user-name cmun_sm">'.ucwords($sender).'</span>
+									</div>
+									<span class="massage-date">'.date('d F Y', strtotime($q->reg_date)).'  <span>'.date('h:i A', strtotime($q->reg_date)).' </span></span>
+									<p>'.$message.'</p>
+								</div>
+							
+							';
+						}
+
+						$item .= $ite.'
+							
+						';
+					}
+				}
+			}
+			if(empty($item)) {
+				$resp['item'] = '<div class="chat-box fl-wrap">
+				<div class="chat-box-scroll fl-wrap full-height" data-simplebar="init">
+					<div class="text-center text-muted">
+						<br/><br/><br/><br/>
+						<i class="fal fa-comment-alt-lines" style="font-size:150px;"></i><br/><br/>No Message Returned
+					</div></div>
+					</div>
+				';
+			} else {
+				$resp['item'] = '
+					<div class="chat-box fl-wrap">
+						<div class="chat-box-scroll fl-wrap full-height" data-simplebar="init" id="chatBox">
+						'.$item.'
+						</div>
+					</div>
+					<input type="hidden" id="chat_code" value="'.$code.'">
+					<div class="chat-widget_input">
+						<textarea id="chat_msg" placeholder="Type Message" ></textarea>
+						<button type="button" onclick="send_chat()" class="color-bg"><i class="fal fa-paper-plane"></i></button>
+					</div>
+					<script>
+					
+					</script>
+					';
+			}
+			$resp['count'] = $counts;
+
+			
+			echo json_encode($resp);
+			die;
+		}
+
+		if($param1 == 'send_message'){
+			$code = $this->request->getPost('code');
+			$msg = $this->request->getPost('msg');
+			
+			$listing_id = $this->Crud->read_field('code', $code, 'message', 'listing_id');
+			$sender_id = $this->Crud->read_field('code', $code, 'message', 'sender_id');
+			$receiver_id = $this->Crud->read_field('code', $code, 'message', 'receiver_id');
+
+			if($log_id == $sender_id){
+				$send_id = $sender_id;
+				$receive_id = $receiver_id;
+				
+			} else {
+				$send_id = $receiver_id;
+				$receive_id = $sender_id;
+				
+			}
+
+			$data = array(
+                'sender_id' => $send_id,
+                'receiver_id' => $receive_id,
+                'listing_id' => $listing_id,
+                'code' => $code,
+                'message' => $msg,
+                'reg_date' => date('Y-m-d H:i:s'),
+                'status' => 0,
+            );
+
+			$this->Crud->create('message', $data);
+
+			die;
+		}
 		
         if($param1 == 'manage') { // view for form data posting
-			return view('listing/manage_form', $data);
-		} elseif($param1 == 'view'){
-			$data['title'] = 'View Listing | '.app_name;
-            $data['page_active'] = 'listing';
-			if(empty($param2)){
-				return redirect()->to(site_url('listing'));	
-			}
-			return view('listing/view', $data);
-		} elseif($param1 == 'add' || $param1=='edit'){
-			if($param1 == 'edit'){
-				 $data['page'] = 'Edit Listing';
-				$data['title'] = 'Edit Listing | '.app_name;
-			} else {
-				$data['page'] = 'New Listing';
-             
-				$data['title'] = 'New Listing | '.app_name;
-			}
-            $data['page_active'] = 'listing';
-           
-			return view('listing/add', $data);
+			return view('message/manage_form', $data);
+		
 		} else { // view for main page
             
-			$data['title'] = 'My Listing | '.app_name;
+			$data['title'] = 'Message | '.app_name;
             $data['page_active'] = 'listing';
-            return view('listing/manage', $data);
+            return view('message/manage', $data);
         }
     }
 

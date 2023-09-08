@@ -30,7 +30,9 @@
             $description = $this->Crud->read_field('id', $param2, 'listing', 'description');
             $images = $this->Crud->read_field('id', $param2, 'listing', 'images');
             $reg_date = $this->Crud->read_field('id', $param2, 'listing', 'reg_date');
-            
+            $uri = 'home/listing/view/'.$param2;
+			$view = $this->Crud->check('page', $uri, 'listing_view');
+						
             $user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
             $user_mail = $this->Crud->read_field('id', $user_id, 'user', 'email');
             $user_phone = $this->Crud->read_field('id', $user_id, 'user', 'phone');
@@ -93,7 +95,7 @@
                     <div class="list-single-header-date"><span>Date:</span><?=date('d.m.Y', strtotime($reg_date));?></div>
                     <div class="list-single-stats">
                         <ul class="no-list-style">
-                            <li><span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  0 </span></li>
+                            <li><span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -   <?=$view;?></span></li>
                         </ul>
                     </div>
                 </div>
@@ -606,80 +608,7 @@
 <script>var site_url = '<?php echo site_url(); ?>';</script>
    
 <script>
-    $(function() {
-        load('', '');
-    });
+   
 
-    
-
-    function load(x, y) {
-        var more = 'no';
-        var methods = '';
-        if (parseInt(x) > 0 && parseInt(y) > 0) {
-            more = 'yes';
-            methods = '/' +x + '/' + y;
-        }
-
-        if (more == 'no') {
-            $('#load_data').html('<div class="col-sm-12 text-center"><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i><br/><br/><br/></div>');
-        } else {
-            $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
-        }
-
-        var country_id = $('#country_id').val();
-        var state_id = $('#state_id').val();
-       
-
-        $.ajax({
-            url: site_url + 'home/listing/load' + methods,
-            type: 'post',
-            data: {state_id: state_id,country_id: country_id },
-            success: function (data) {
-                var dt = JSON.parse(data);
-                if (more == 'no') {
-                    $('#load_data').html(dt.item);
-                } else {
-                    $('#load_data').append(dt.item);
-                }
-
-                if (dt.offset > 0) {
-                    $('#loadmore').html('<a href="javascript:;" class="btn btn-secondary b-block p-30" onclick="load(' + dt.limit + ', ' + dt.offset + ');"><i class="fal fa-repeat"></i> Load ' + dt.left + ' More</a>');
-                } else {
-                    $('#loadmore').html('');
-                }
-
-                $('#listCount').html(dt.count);
-            },
-            complete: function () {
-                $.getScript(site_url + 'assets/js/jsmodal.js');
-            }
-        });
-    }
-
-    function get_country(country){
-        if(country !== ''){
-            $.ajax({
-                url: site_url + 'home/listing/get_country',
-                type: 'post',
-                data: {country: country },
-                success: function (data) {
-                    $('#country_id').val(data);
-                    load();
-                }
-            });
-        }
-    }
-    fetch("http://ip-api.com/json/")
-    .then(response => response.json())
-    .then(data => {
-        const country = data.country;
-        console.log(country);
-        // Use the country information as needed.
-        get_country(country);
-    })
-    .catch(error => {
-        console.error("Error fetching IP information:", error);
-    });
-    
 </script>
 <?php echo $this->endSection(); ?>

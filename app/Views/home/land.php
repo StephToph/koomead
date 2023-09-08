@@ -149,7 +149,7 @@
                 </div>
                 <div class="pwh_bg"></div>
             </div>
-            <div class="half-carousel-conatiner" id="loadstate">
+            <div class="half-carousel-conatiner" id="load_state">
                 <div class="half-carousel fl-wrap full-height" >
 
                     <!--slick-item -->
@@ -474,6 +474,9 @@
                 } else {
                     $('#load_state').append(dt.item);
                 }
+            },
+            complete: function () {
+                $.getScript(site_url + 'assets/js/scripts.js');
             }
         });
     }

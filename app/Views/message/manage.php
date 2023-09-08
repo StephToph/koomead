@@ -31,7 +31,10 @@
                     
                 </div>
                 <div class="chat-wrapper fl-wrap">
+                   <?php
+                        
                    
+                   ?>
                     <!--  chat-box-->
                     <div id="load_message">
                         <div class="text-center text-muted py-5" style="font-size:20px;">
@@ -93,6 +96,7 @@
             $(".chat-contacts-item_active").removeClass("chat-contacts-item_active");
             $('#chat_'+code).addClass('chat-contacts-item_active');
             $('#codes').val(code);
+            update_message();
             load_message(code);
             // console.log(secondValue);
         }
@@ -106,22 +110,36 @@
             }
         }
 
-        function load_message() {
+        function update_message() {
            
         //    $('#load_message').html('<div class="col-sm-12 text-center"><br/><br/><br/><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
            var code = $('#codes').val();
            
            $.ajax({
-               url: site_url + 'message/index/load_message',
+               url: site_url + 'message/index/update_message',
                type: 'post',
                data: {code:code},
-               success: function (data) {
-                   var dt = JSON.parse(data);
-                   $('#load_message').html(dt.item);
-                   scrollToLastElement('#chatBox');
+               success: function (data) {load_chat();
                }
            });
        }
+
+       function load_message() {
+           
+           //    $('#load_message').html('<div class="col-sm-12 text-center"><br/><br/><br/><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
+              var code = $('#codes').val();
+              
+              $.ajax({
+                  url: site_url + 'message/index/load_message',
+                  type: 'post',
+                  data: {code:code},
+                  success: function (data) {
+                      var dt = JSON.parse(data);
+                      $('#load_message').html(dt.item);
+                      scrollToLastElement('#chatBox');
+                  }
+              });
+          }
 
         function send_chat(){
             var code = $('#chat_code').val();

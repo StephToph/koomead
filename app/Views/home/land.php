@@ -476,6 +476,7 @@
                 }
             },
             complete: function () {
+                $.getScript(site_url + 'assets/js/jquery.min.js');
                 $.getScript(site_url + 'assets/js/scripts.js');
             }
         });

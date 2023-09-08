@@ -42,6 +42,7 @@ class Message extends BaseController {
 		if($param2){$form_link .= $param2.'/';}
 		if($param3){$form_link .= $param3.'/';}
 		
+		
 		// pass parameters to view
 		$data['param1'] = $param1;
 		$data['param2'] = $param2;
@@ -617,6 +618,22 @@ class Message extends BaseController {
 
 			die;
 		}
+
+		if($param1 == 'update_message'){
+			$code = $this->request->getPost('code');
+			
+			$query = $this->Crud->read_single('code', $code, 'message');
+			if(!empty($query)){
+				foreach($query as $q){
+					$id = $q->id;
+					if($q->receiver_id != $log_id)continue;
+					$this->Crud->updates('id', $id, 'message', array('status' => '1'));
+				}
+			}
+
+			die;
+		}
+		
 		
         if($param1 == 'manage') { // view for form data posting
 			return view('message/manage_form', $data);

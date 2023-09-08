@@ -567,10 +567,14 @@ class Home extends BaseController {
         $ipAddress = $this->request->getIPAddress();
 		$uri = $this->request->uri->getPath();
 
-       
+		$request = service('request');
+		$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
+        
+		// Extract the original client's IP address from the list
+		$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
         // Create a timestamp for the current visit
         $timestamp = date('Y-m-d H:i:s');
-
+	
 
         // Prepare data to insert into the database
         $data = [

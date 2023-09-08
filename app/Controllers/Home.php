@@ -471,8 +471,8 @@ class Home extends BaseController {
 			if(empty($item)) {
 				$resp['item'] = '
 					<div class="text-center text-muted mb-5">
-						<br/>
-						<i class="fal fa-clipboard-list-check" style="font-size:150px;"></i><br/><br/>No Listing Returned
+						<br/><br>
+						<i class="fal fa-street-view mt-5" style="font-size:150px;"></i><br/><br/>No Listing Returned
 					</div>
 				';
 			} else {

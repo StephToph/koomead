@@ -245,7 +245,7 @@ class Home extends BaseController {
 			}
 		}
 
-		echo $this->saveDeviceInfo();
+		$this->saveDeviceInfo();
             
         $data['title'] = 'View Listing | '.app_name;
         $data['page_active'] = 'listing';
@@ -329,6 +329,9 @@ class Home extends BaseController {
 						$city = $this->Crud->read_field('id', $city_id, 'city', 'name');
 						
 						$loca = '';
+
+						$uri = 'home/listing/view/'.$id;
+						$view = $this->Crud->check('page', $uri, 'listing_view');
 						
 						$prices = '<span>'.$cur.'</span>'.number_format($price,2);
 						if($price_status == 1)$prices = 'Contact for Price';
@@ -358,7 +361,7 @@ class Home extends BaseController {
                                             </ul>
                                             
                                             <div class="geodir-category-listing_media-list">
-                                                <span><i class="fas fa-eye"></i> 0</span>
+                                                <span><i class="fas fa-eye"></i> '.$view.'</span>
                                             </div>
                                         </div>
                                         <div class="geodir-category-content fl-wrap">
@@ -367,7 +370,7 @@ class Home extends BaseController {
                                             
                                             <div class="geodir-category-footer fl-wrap">
                                                 <a href=javascript:;" class="gcf-company"><img src="'.site_url($user_img).'" alt=""><span>'.$user.'</span></a>
-                                                <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="0"></div>
+                                               
                                             </div>
                                         </div>
                                     </article>
@@ -428,57 +431,26 @@ class Home extends BaseController {
             if($country_id == '161')$cur = '&#8358;';
 
 			
-				$query = $this->Crud->read_single('country_id', $country_id, 'listing', $limit, $offset);
-				$all_rec = $this->Crud->read_single('country_id', $country_id, 'listing', '', '');
-				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
-				$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
-				$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
-				
-				if(!empty($query)) {
-					foreach($query as $q) {
-						$id = $q->id;
-						$name = $q->name;
-						$category_id = $q->category_id;
-						$state_id = $q->state_id;
-						$country_id = $q->country_id;
-						$city_id = $q->city_id;
-						$price = $q->price;
-						$description = $q->description;
-						$price_status = $q->price_status;
-						$negotiable = $q->negotiable;
-						$user_id = $q->user_id;
-						$active = $q->active;
-						$images = $q->images;
-						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
-
-						$images = json_decode($images);
-						$main = 'assets/images/file.png';
-						if(!empty($images)){
-							$main = $images[0];
+				$querys = $this->Crud->read_single('country_id', $country_id, 'state');
+				//Get state in current country to get number of listing
+				$query = [];
+				if(!empty($querys)){
+					foreach($querys as $qu){
+						if($this->Crud->check('state_id', $qu->id, 'listing') > 0){
+							$query[$qu->name] = $this->Crud->check('state_id', $qu->id, 'listing');
 						}
-
-                        
-							$user =  ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname'));
-                            $user_img = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
-                            if(empty($user_img))$user_img = 'assets/images/avatar.png';
-                            
-						
-						$category = $this->Crud->read_field('id', $category_id, 'category', 'name');
-						$main_id = $this->Crud->read_field('id', $category_id, 'category', 'category_id');
-						$mains = $this->Crud->read_field('id', $main_id, 'category', 'name');
-						
-						$country = $this->Crud->read_field('id', $country_id, 'country', 'name');
-						$state = $this->Crud->read_field('id', $state_id, 'state', 'name');
-						$city = $this->Crud->read_field('id', $city_id, 'city', 'name');
-						
-						$loca = '';
-						
-						if(!empty($city_id)) $loca .= $city;
-						if(!empty($state_id)) $loca .= ', '.$state;
-						if(!empty($country_id)) $loca .= ', '.$country;
-
-						
-
+					}
+				}
+				arsort($query);
+				// $query = $this->Crud->read_single('country_id', $country_id, 'listing', '', '');
+				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
+				$c = 1;
+				if(!empty($query)) {
+					foreach($query as $q => $val) {
+						if($c >8)continue;
+						$id = $this->Crud->read_field('name', $q, 'state', 'id');
+						$main = $this->Crud->read_field('name', $q, 'state', 'images');
+						if(empty($main))$main = 'assets/images/bg/long/1.jpg';
 						$item .= '
 							<div class="slick-item">
 								<div class="half-carousel-item fl-wrap">
@@ -486,13 +458,13 @@ class Home extends BaseController {
 										<div class="bg"  data-bg="'.site_url($main).'" style="backgroung-image:url('.$main.')"></div>
 									</div>
 									<div class="half-carousel-content">
-										<div class="hc-counter color-bg">0 Businesses</div>
-										<h3><a href="listing.html">'.$country.'</a></h3>
-										<p>Constant care and attention to the patients makes good record</p>
+										<div class="hc-counter color-bg">'.$val.' Businesses</div>
+										<h3><a href="javascript:;">Explore '.$q.'</a></h3>
 									</div>
 								</div>
 							</div>
 						';
+						$c++;
 					}
 				}
 			
@@ -504,7 +476,7 @@ class Home extends BaseController {
 					</div>
 				';
 			} else {
-				$resp['item'] = '<div class="half-carousel fl-wrap full-height" >'.$item.'</div><script>(".half-carousel").slick();</script>';
+				$resp['item'] = '<div class="half-carousel fl-wrap full-height" >'.$item.'</div>';
 			}
 			$resp['count'] = $count;
 
@@ -545,13 +517,7 @@ class Home extends BaseController {
         $ipAddress = $this->request->getIPAddress();
 		$uri = $this->request->uri->getPath();
 
-        // Check if the device has visited the page before using sessions
-        $session = session();
-        $visitedBefore = $session->get('visited_before');
-        if (!$visitedBefore) {
-            // If not visited before, set a session variable
-            $session->set('visited_before', true);
-        }
+       
         // Create a timestamp for the current visit
         $timestamp = date('Y-m-d H:i:s');
 
@@ -560,11 +526,13 @@ class Home extends BaseController {
         $data = [
             'user_agent' => $userAgent,
             'ip_address' => $ipAddress,
-            'uri' => $uri,
-            'visited_before' => $visitedBefore,
-            'timestamp' => $timestamp,
+            'page' => $uri,
+            'reg_date' => $timestamp,
         ];
 
+		if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
+			$this->Crud->create('listing_view', $data);
+		}
        return json_encode($data);
     }
 }

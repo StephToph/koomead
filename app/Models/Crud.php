@@ -2335,6 +2335,17 @@ class Crud extends Model {
 		return $this->create('activity', $ins);
 	}
 
+	public function notify($from, $to, $content, $item, $item_id) {
+	    $ins['from_id'] = $from;
+	    $ins['to_id'] = $to;
+	    $ins['content'] = $content;
+	    $ins['item'] = $item;
+	    $ins['item_id'] = $item_id;
+	    $ins['new'] = 1;
+	    $ins['reg_date'] = date(fdate);
+	    
+	    $this->create('notify', $ins);
+	}
 
 	//// filter activities
 	public function filter_activity($limit='', $offset='', $user_id, $search='', $start_date='', $end_date='') {

@@ -15,7 +15,7 @@ class Activity extends BaseController {
 		if($this->session->get('km_id') == ''){
 			$request_uri = uri_string();
 			$this->session->set('fls_redirect', $request_uri);
-			return redirect()->to(site_url('auth'));
+			return redirect()->to(site_url(''));
 		} 
 
         $mod = 'activity';

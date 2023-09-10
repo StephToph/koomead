@@ -374,7 +374,7 @@
                                         <input type="hidden" name="business_id" value="<?=$user_id;?>"> 
                                         <label>Type a Message* </label>
                                         <div class="listsearch-input-item">
-                                            <textarea cols="40" rows="3" name="message" style="height: 135px" placeholder="Messsage" spellcheck="true" required></textarea>
+                                            <textarea cols="40" rows="3" id="message" name="message" style="height: 135px" placeholder="Messsage" spellcheck="true" required></textarea>
                                         </div>
                                         <?php
                                             // echo $log_id;

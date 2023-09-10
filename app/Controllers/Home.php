@@ -268,7 +268,7 @@ class Home extends BaseController {
 				$listing = $this->Crud->read_field('id', $listing_id, 'listing', 'name');
 				$action = $send.' sent a message to '.$receive.' on Business { '.$listing.' }';
 				$content = $send.' Sent You a Message';
-				$item = 'listing';$items = 'message';
+				$item = 'message';$items = 'message';
 				$this->Crud->notify($log_id, $business_id, $content, $item, $listing_id);
 				$this->Crud->activity($items, $ins_rec, $action);
 				echo $this->Crud->msg('success', 'Message Sent!<br><a href="'.site_url('message').'">Click to view Message Board</a>');

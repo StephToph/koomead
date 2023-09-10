@@ -71,10 +71,12 @@
                 </div>
                 <!--  header-opt_btn end -->
                 <!--  cart-btn   -->
-                <div class="cart-btn  tolt show-header-modal" data-microtip-position="bottom"  data-tooltip="Your Notification">
-                    <i class="fal fa-bell"></i>
-                    <span class="cart-btn_counter color-bg" id="notify_no">0</span>
-                </div>
+                <?php if(!empty($log_id)){?>
+                    <div class="cart-btn  tolt show-header-modal" data-microtip-position="bottom"  data-tooltip="Your Notification">
+                        <i class="fal fa-bell"></i>
+                        <span class="cart-btn_counter color-bg" id="notify_no">0</span>
+                    </div>
+                <?php } ?>
                 <!--  cart-btn end -->
                 <!--  login btn -->
                 <div class="show-reg-form dasbdord-submenu-open"><img src="<?=site_url(); ?>assets/images/avatar.png" alt=""></div>
@@ -104,21 +106,15 @@
                                     <!--widget-posts-->
                                     <div class="widget-posts  fl-wrap">
                                         <ul class="no-list-style" id="notify_show">
-                                            <li>
-                                                <div class="widget-posts-descr">
-                                                    <h4>No Notification</h4>
-                                                    <!-- <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i> 40 Journal Square  , NJ, USA</a></div>
-                                                    <div class="widget-posts-descr-price"><span>Price: </span> $ 1500 / per month</div>
-                                                    <div class="clear-wishlist"><i class="fal fa-trash-alt"></i></div> -->
-                                                </div>
-                                            </li>
+                                            
                                         </ul>
                                     </div>
                                     <!-- widget-posts end-->
                                 </div>
                                 <!-- header-modal-container end--> 
                                 <div class="header-modal-top fl-wrap">
-                                    <div class="clear_wishlist color-bg"><i class="fal fa-trash-alt"></i> Clear all</div>
+                                    <div class="clear_wishlist color-bg" onclick="mark_all();"><i class="fal fa-trash-alt"></i> Clear all</div><br>
+                                    <div class="clear_wishlist color-bg"><a class="text-white" href="<?=site_url('notification'); ?>"><i class="fal fa-eye"></i>See All</a></div>
                                 </div>
                             </div>
                             <!--tab end -->
@@ -309,14 +305,66 @@
     <script src="<?=site_url(); ?>assets/js/scripts.js"></script>
     <script src="<?=site_url(); ?>assets/js/dashboard.js"></script>
     <script src="<?=site_url();?>assets/js/jsform.js"></script>
+    
+<script>var site_url = '<?php echo site_url(); ?>';</script>
+   
+<script>
+    $(function() {
+        loada('', '');
+    });
+
+    
+
+    function loada(x, y) {
+        var more = 'no';
+        var methods = '';
+        
+
+        if (more == 'no') {
+            $('#notify_show').html('<div class="col-sm-12 text-center"><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
+        } else {
+            $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
+        }
+
+        var country_id = $('#country_id').val();
+        var state_id = $('#state_id').val();
+       
+
+        $.ajax({
+            url: site_url + 'notification/index/nav_load' + methods,
+            type: 'post',
+            success: function (data) {
+                var dt = JSON.parse(data);
+                if (more == 'no') {
+                    $('#notify_show').html(dt.item);
+                }
+
+                $('#notify_no').html(dt.count);
+            },
+        });
+    }
+
+    
+</script>
+
     <script>
         function mark_read(id){
             $.ajax({
                 url: site_url + 'notification/mark_read/' + id,
                 type: 'post',
                 success: function (data) {
-                    window.location.replace("<?=site_url('notification/list'); ?>");
-            
+                    // window.location.replace("<?=site_url('notification/list'); ?>");
+                    load();
+                }
+            });
+        }
+
+        function mark_all(){
+            $.ajax({
+                url: site_url + 'notification/mark_all',
+                type: 'post',
+                success: function (data) {
+                    load();
                 }
             });
         }

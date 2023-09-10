@@ -622,7 +622,7 @@ class Message extends BaseController {
 			$item_id = $this->Crud->create('message', $data);
 			if($item_id > 0){
 				$content = $send.' Sent You a Message';
-				$item = 'listing';$items = 'message';
+				$item = 'message';$items = 'message';
 				$this->Crud->notify($send_id, $receive_id, $content, $item, $listing_id);
 				$this->Crud->activity($items, $item_id, $action);
 			}

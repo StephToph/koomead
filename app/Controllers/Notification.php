@@ -20,7 +20,7 @@ class Notification extends BaseController {
         $role_u = $this->Crud->module($role_id, 'notification', 'update');
         $role_d = $this->Crud->module($role_id, 'notification', 'delete');
         if($role_r == 0){
-            return redirect()->to(site_url('profile'));	
+            // return redirect()->to(site_url('profile'));	
         }
 
         $data['log_id'] = $log_id;
@@ -53,66 +53,57 @@ class Notification extends BaseController {
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {
-				$all_rec = $this->Crud->api('get', 'notification/get', '&log_id='.$log_id);
-                $all_rec = json_decode($all_rec);
-				if(!empty($all_rec->data)) { $counts = count($all_rec->data); } else { $counts = 0; }
+				$all_rec = $this->Crud->read_single('to_id', $log_id, 'notify',);
+                if(!empty($all_rec->data)) { $counts = count($all_rec->data); } else { $counts = 0; }
 
-				$query = $this->Crud->api('get', 'notification/get', 'limit='.$limit.'&offset='.$offset.'&log_id='.$log_id);
+				$query = $this->Crud->read_single('to_id', $log_id, 'notify', $limit, $offset);
 				$data['count'] = $counts;
-                $query = json_decode($query);
-				//print_r($query);
+                
 				$items = '';
-                if ($query->status == true) {
-					if (!empty($query->data)) {
-						foreach($query->data as $q) {
-							$id = $q->id;
-							$type_id = $q->item_id;
-							$content = $q->content;
-							$new = $q->new;
-							$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
-	
-							$timespan = $this->Crud->timespan(strtotime($q->reg_date));
-	
-							$icon = 'vol';
+				if (!empty($query)) {
+					foreach($query as $q) {
+						$id = $q->id;
+						$type = $q->item;
+						$itema = $q->item;
+						$new = $q->new;
+						$from_id = $q->from_id;
+						$content = $q->content;
+						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
 
-							$st = '<span class="text-danger"  id="read_stat'.$id.'">Unread</span> &nbsp; &nbsp;';
+						$from = $this->Crud->read_field('id', $from_id, 'user', 'fullname');
+						$timespan = $this->Crud->timespan(strtotime($q->reg_date));
+
+						$icon = 'bell';
+
+						$st = '<span class="text-danger"  id="read_stat'.$id.'">Unread</span> &nbsp; &nbsp;';
+						$btn = '
+						<span id="read_btn'.$id.'"><a href="javascript:;" class="text-primary" onclick="reads('.$id.')">
+							<i class="fal fa-check-circle-cut"></i> Mark as Read
+							</a>&nbsp;
+						</span><br>
+						';
+						if($new == 0){
+							$st = '<span class="text-success" id="read_stat'.$id.'">Read</span>';
 							$btn = '
-							<span id="read_btn'.$id.'"><a href="javascript:;" class="text-primary" onclick="reads('.$id.')">
-								<em class="icon ni ni-check-circle-cut"></em> Mark as Read
-								</a>&nbsp;
-							</span><br>
-							';
-							if($new == 0){
-								$st = '<span class="text-success" id="read_stat'.$id.'">Read</span>';
-								$btn = '
 
-								';
-							}
-							
-							$item .= '
-								<tr class="nk-tb-item">
-									<td class="nk-tb-col">
-										<a href="javascript:;" class="project-title">
-											<div class="project-info">
-												<h6 class="title">'.    $content.' <small>on '.$reg_date.'</small></h6>
-												<p class="d-md-none">
-													'.$st.'  <br>
-													<span >'.$timespan.'</span><br>
-													'.$btn.'
-													<span id="read_resp'.$id.'"></span>
-												</p>
-											</div>
-										</a>
-									</td>
-									<td class="nk-tb-col tb-col-lg">
-										'.$st.'<br>
-										<span>'.$timespan.'</span><br>
-										'.$btn.'
-										<span id="read_resp'.$id.'"></span>
-									</td>
-								</tr><!-- .nk-tb-item -->       
 							';
 						}
+						
+						$item .= '
+							<li class="list-group-item">
+								<div class="row pt-4 align-items-center">
+									<div class="col-2 col-sm-2 text-centr">
+										<i class="fal fa-'.$icon.' text-muted" style="font-size:45px;"></i>
+									</div>
+									<div class="col-10 col-sm-10">
+										You received a new '.ucwords(str_replace('_', ' ', $itema)).' notification from '.$from.' <small>on '.$reg_date.'</small>
+										<div class="text-muted small text-right">'.$st.'<br>'.$timespan.'<br>'.$btn.'<span id="read_resp'.$id.'"></span></div>
+										
+									</div>
+								</div>
+							</li>
+    
+						';
 					}
 				}
 			}
@@ -122,7 +113,7 @@ class Notification extends BaseController {
 				$resp['item'] = '
 					<div class="text-center text-muted">
 						<br/><br/><br/><br/>
-						<em class="icon ni ni-vol" style="font-size:150px;"></em><br/><br/>No Notification Returned
+						<em class="fal fa-bell" style="font-size:150px;"></em><br/><br/>No Notification Returned
 					</div>
 				';
 			} else {
@@ -147,7 +138,90 @@ class Notification extends BaseController {
 			die;
 		}
 
-        $mod = 'moficiation/manage';
+		if($param1 == 'nav_load') {
+			$limit = $param2;
+			$offset = $param3;
+
+			$counts = 0;
+			$rec_limit = 5;
+			$item = '';
+
+			if($limit == '') {$limit = $rec_limit;}
+			if($offset == '') {$offset = 0;}
+			
+			
+			if(!$log_id) {
+				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
+			} else {
+				$all_rec = $this->Crud->read2('to_id', $log_id, 'new', 1, 'notify');
+               if(!empty($all_rec)) { $counts = count($all_rec); } else { $counts = 0; }
+
+				$query = $this->Crud->read2('to_id', $log_id, 'new', 1, 'notify', $limit, $offset);
+				$data['count'] = $counts;
+                
+				$items = '';
+				if (!empty($query)) {
+					foreach($query as $q) {
+						$id = $q->id;
+						$type_id = $q->item_id;
+						$content = $q->content;
+						$itema = $q->item;
+						$item_id = $q->item_id;
+						$new = $q->new;
+						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
+
+						$link= '';
+						if($itema == 'message'){
+							$link = 'message';
+						}
+						
+						
+						$item .= '
+							<li>
+								<div class="widget-posts-descr">
+									<h4> <a href="'.site_url($link).'">New Notification</a></h4>
+									<div class="geodir-category-location fl-wrap"><a href="'.site_url($link).'"><i class="fas fa-user-ninja"></i>'.$content.'</a></div>
+									<div class="clear-wishlist tolt" data-microtip-position="left"  data-tooltip="Mark as Read"><i class="fal fa-envelope-open" onclick="mark_read('.$id.')"></i></div>
+								</div>
+							</li>  
+						';
+					}
+				}
+			}
+
+
+			if(empty($item)) {
+				$resp['item'] = '
+				<li>
+					<div class="widget-posts-descr text-center">
+						<h4>No New Notification</h4>
+					
+					</div>
+				</li>
+				';
+			} else {
+				$resp['item'] = $item;
+			}
+
+			$resp['count'] = $counts;
+
+			$more_record = $counts - ($offset + $rec_limit);
+			$resp['left'] = $more_record;
+
+			if($counts > ($offset + $rec_limit)) { // for load more records
+				$resp['limit'] = $rec_limit;
+				$resp['offset'] = $offset + $limit;
+			} else {
+				$resp['limit'] = 0;
+				$resp['offset'] = 0;
+			}
+
+            //print_r($resp);
+			echo json_encode($resp);
+			die;
+		}
+
+        $mod = 'notification/manage';
 		
 		if($param1 == 'manage') { // view for form data posting
 			return view($mod.'_form', $data);
@@ -156,9 +230,23 @@ class Notification extends BaseController {
 			$data['title'] = 'Notification | '.app_name;
 			$data['page_active'] = $mod;
 
-			return view($mod.'/list', $data);
+			return view($mod, $data);
 		}
 	
+	}
+
+	public function mark_all(){
+		$id = $this->session->get('km_id');
+		if($id){
+			$notify = $this->Crud->read_single('to_id', $id, 'notify');
+			if(!empty($notify)){
+				foreach ($notify as $n) {
+					$upd = $this->Crud->updates('id', $n->id, 'notify', array('new'=>0));
+					
+				}
+			}
+			
+		}
 	}
 
 	public function mark_read($id){

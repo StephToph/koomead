@@ -84,7 +84,7 @@
             <?php
 
                 if(empty($log_id)){
-                    echo '<div class="show-reg-form modal-open"><i class="fas fa-user"></i><span>Signs In</span></div>';
+                    echo '<div class="show-reg-form modal-open"><i class="fas fa-user"></i><span>Sign In</span></div>';
                 } else {
                     echo '<div class="show-reg-form"><a href="'.site_url('dashboard').'"><i class="fas fa-user"></i><span>User Dashboard</span></a></div>';
                 }

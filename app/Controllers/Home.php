@@ -263,7 +263,16 @@ class Home extends BaseController {
 			
 			$ins_rec = $this->Crud->create('message', $ins);
 			if($ins_rec > 0){
+				$send = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+				$receive = $this->Crud->read_field('id', $business_id, 'user', 'fullname');
+				$listing = $this->Crud->read_field('id', $listing_id, 'listing', 'name');
+				$action = $send.' sent a message to '.$receive.' on Business { '.$listing.' }';
+				$content = $send.' Sent You a Message';
+				$item = 'listing';$items = 'message';
+				$this->Crud->notify($log_id, $business_id, $content, $item, $listing_id);
+				$this->Crud->activity($items, $ins_rec, $action);
 				echo $this->Crud->msg('success', 'Message Sent!<br><a href="'.site_url('message').'">Click to view Message Board</a>');
+				echo '<script>$("#message").val(" ");</script>';
 			} else {
 				echo $this->Crud->msg('warning', 'Message Not Sent.<br>Try Again.');
 			}

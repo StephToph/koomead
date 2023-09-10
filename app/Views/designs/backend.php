@@ -73,7 +73,7 @@
                 <!--  cart-btn   -->
                 <div class="cart-btn  tolt show-header-modal" data-microtip-position="bottom"  data-tooltip="Your Notification">
                     <i class="fal fa-bell"></i>
-                    <span class="cart-btn_counter color-bg">0</span>
+                    <span class="cart-btn_counter color-bg" id="notify_no">0</span>
                 </div>
                 <!--  cart-btn end -->
                 <!--  login btn -->
@@ -91,41 +91,8 @@
                 </div>
                 <!--  dashboard-submenu  end -->
                 
-                <!-- header-search-wrapper -->
-                <div class="header-search-wrapper novis_search">
-                    <div class="header-serach-menu">
-                        <div class="custom-switcher fl-wrap">
-                            <div class="fieldset fl-wrap">
-                                <input type="radio" name="duration-1"  id="buy_sw" class="tariff-toggle" checked>
-                                <label for="buy_sw">Buy</label>
-                                <input type="radio" name="duration-1" class="tariff-toggle"  id="rent_sw">
-                                <label for="rent_sw" class="lss_lb">Rent</label>
-                                <span class="switch color-bg"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="custom-form">
-                        <form method="post"  name="registerform">
-                            <label>Keywords </label>
-                            <input type="text" placeholder="Address , Street , State..." value=""/>
-                            <label >Categories</label>
-                            <select data-placeholder="Categories" class="chosen-select on-radius no-search-select" >
-                                <option>All Categories</option>
-                                <option>House</option>
-                                <option>Apartment</option>
-                                <option>Hotel</option>
-                                <option>Villa</option>
-                                <option>Office</option>
-                            </select>
-                            <label style="margin-top:10px;" >Price Range</label>
-                            <div class="price-rage-item fl-wrap">
-                                <input type="text" class="price-range" data-min="100" data-max="100000"  name="price-range1"  data-step="1" value="1" data-prefix="$">
-                            </div>
-                            <button onclick="location.href='listing.html'" type="button"  class="btn float-btn color-bg"><i class="fal fa-search"></i> Search</button>
-                        </form>
-                    </div>
-                </div>
-                <!-- header-search-wrapper end  -->				
+               
+                			
                 <!-- wishlist-wrap--> 
                 <div class="header-modal novis_wishlist tabs-act">
                     <div class="tabs-container">
@@ -136,10 +103,8 @@
                                 <div class="header-modal-container scrollbar-inner fl-wrap" data-simplebar>
                                     <!--widget-posts-->
                                     <div class="widget-posts  fl-wrap">
-                                        <ul class="no-list-style">
+                                        <ul class="no-list-style" id="notify_show">
                                             <li>
-                                                <!-- <div class="widget-posts-img"><a href="listing-single.html"><img src="<?=site_url(); ?>assets/images/all/small/1.jpg" alt=""></a>  
-                                                </div> -->
                                                 <div class="widget-posts-descr">
                                                     <h4>No Notification</h4>
                                                     <!-- <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i> 40 Journal Square  , NJ, USA</a></div>
@@ -344,7 +309,33 @@
     <script src="<?=site_url(); ?>assets/js/scripts.js"></script>
     <script src="<?=site_url(); ?>assets/js/dashboard.js"></script>
     <script src="<?=site_url();?>assets/js/jsform.js"></script>
-        
+    <script>
+        function mark_read(id){
+            $.ajax({
+                url: site_url + 'notification/mark_read/' + id,
+                type: 'post',
+                success: function (data) {
+                    window.location.replace("<?=site_url('notification/list'); ?>");
+            
+                }
+            });
+        }
+
+        function plays(){
+            var src = '<?=site_url(); ?>' +'assets/audio/3.wav';
+            var audio = new Audio(src);
+            audio.play();
+        }
+
+        <?php 
+        $notify = $this->Crud->read2('to_id', $log_id, 'new', 1, 'notify');
+        if(!empty($notify)){?>
+            $(function() {
+                plays();
+            });
+        <?php }?>
+    </script>
+
     <script src="<?=site_url();?>assets/js/jsmodal.js"></script>
     <?php if(!empty($table_rec)){ ?>
          

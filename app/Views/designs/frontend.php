@@ -459,11 +459,7 @@
             <script src="<?=site_url();?>assets/js/plugins.js"></script>
             <script src="<?=site_url();?>assets/js/scripts.js"></script>
             <script src="<?=site_url();?>assets/js/jsform.js"></script>
-            <script
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwJSRi0zFjDemECmFl9JtRj1FY7TiTRRo&amp;libraries=places">
-            </script>
-            <script src="<?=site_url();?>assets/js/map-single.js"></script>
-            <script>
+             <script>
             var site_url = '<?php echo site_url(); ?>';
 
             function get_state() {
@@ -516,10 +512,11 @@
 <script>var site_url = '<?php echo site_url(); ?>';</script>
    
    <script>
+    <?php if($log_id){?>
        $(function() {
            loada('', '');
        });
-   
+   <?php } ?>
        
    
        function loada(x, y) {

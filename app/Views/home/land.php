@@ -14,7 +14,7 @@
     <!--  section  -->
     <section class="hero-section hero-section_dec" data-scrollax-parent="true">
         <div class="bg-wrap">
-            <div class="bg par-elem "  data-bg="<?=site_url();?>assets/images/bg1.jpg" data-scrollax="Businesses: { translateY: '30%' }"></div>
+            <div class="bg par-elem "  data-bg="<?=site_url();?>assets/images/bg1.jpg" data-scrollax="Businesses: { translateY: '30%' }" style="background-position: top;"></div>
         </div>
         <div class="overlay"></div>
         <div class="container">
@@ -391,16 +391,10 @@
 </div>
 <input type="hidden" id="country_id" value="">
 <!-- subscribe-wrap end -->	 
-<script src="<?php echo site_url(); ?>/assets/js/jquery.min.js"></script>
 <script>var site_url = '<?php echo site_url(); ?>';</script>
    
 <script>
-    $(function() {
-        // load('', '');
-    });
-
     
-
     function load(x, y) {
         var more = 'no';
         var methods = '';

@@ -133,36 +133,48 @@ class Profile extends BaseController {
 			if($this->request->getMethod() == 'post') {
 				$bank_code = $this->request->getVar('bank_code');
 				$account_number = $this->request->getVar('account_number');
+				$paypal = $this->request->getVar('paypal');
 				
-				if(!$bank_code || !$account_number) {
-					echo $this->Crud->msg('danger', 'Bank, Account Number field(s) missing');
-					die;
+				
+				
+				if(!empty($paypal)){
+					$banks = [];
+					$banks['paypal'] = $paypal;
+
+					$upd_data['bank_details'] = json_encode($banks);
+					if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
+						echo $this->Crud->msg('success', 'Bank Information Updated');
+					} else {
+						echo $this->Crud->msg('info', 'No Changes');
+					}
 				}
-				
 
-				$valid = $this->Crud->validate_account($account_number, $bank_code);
-				$valids = json_decode($valid);
-				if($valids->status == 'success'){
-					$acc_name = $valids->data->account_name;
-					if(!empty($acc_name)){
-						$banks = [];
-						$banks['bank_code'] = $bank_code;
-						$banks['account_number'] = $account_number;
-						$banks['account_name'] = $acc_name;
+				if($bank_code && $account_number){
+					$valid = $this->Crud->validate_account($account_number, $bank_code);
+					$valids = json_decode($valid);
+					if($valids->status == 'success'){
+						$acc_name = $valids->data->account_name;
+						if(!empty($acc_name)){
+							$banks = [];
+							$banks['bank_code'] = $bank_code;
+							$banks['account_number'] = $account_number;
+							$banks['account_name'] = $acc_name;
 
-						$upd_data['bank_details'] = json_encode($banks);
-						$msg = 'Bank Account Validated.<br> <b>'.$acc_name.'</b><br>Bank Details Updated';
-						if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
-							echo $this->Crud->msg('success', $msg);
+							$upd_data['bank_details'] = json_encode($banks);
+							$msg = 'Bank Account Validated.<br> <b>'.$acc_name.'</b><br>Bank Details Updated';
+							if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
+								echo $this->Crud->msg('success', $msg);
+							} else {
+								echo $this->Crud->msg('info', 'No Changes');
+							}
 						} else {
-							echo $this->Crud->msg('info', 'No Changes');
+							echo $this->Crud->msg('danger', 'Account not Found');
 						}
 					} else {
-						echo $this->Crud->msg('danger', 'Account not Found');
+						echo $this->Crud->msg('danger', 'Invalid Account Details');
 					}
-				} else {
-					echo $this->Crud->msg('danger', 'Invalid Account Details');
 				}
+
 				die;
 			}
 

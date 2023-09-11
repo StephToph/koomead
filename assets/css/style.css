@@ -2171,7 +2171,7 @@ nav li ul a:before , nav li ul a:after {
     width: 100%;
 	top: 0;
 	left: 15%;
-    background: linear-gradient(to left, rgba(255,255,255,0.99) 20%, rgba(255,255,255,0.5) 70%, rgba(255,255,255,0) 95%);
+    /* background: linear-gradient(to left, rgba(255,255,255,0.99) 0%, rgba(255,255,255,0.5) 70%, rgba(255,255,255,0) 95%); */
 	z-index: 5
 }
 .hero-notifer {

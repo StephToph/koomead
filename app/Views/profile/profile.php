@@ -106,43 +106,60 @@
                     </div>
                     <div class="dasboard-widget-box fl-wrap mb-5">
                         <?php echo form_open_multipart('profile/index/bank', array('id'=>'bb_ajax_form2', 'class'=>'', 'clear'=>'true')); ?>
-                        <div class="row">
-                            <div class="col-sm-12"><div id="bb_ajax_msg2"></div></div>
-                        </div>
-                        <div class="custom-form">
-                            <label>Bank</label>
-                            <div class="listsearch-input-item mb-2">
-                                <select data-placeholder="Select" name="bank_code" id="bank_code" required class="mb-2 chosen-select search-select">
-                                    <option value="">Select Bank</option>
-                                    <?php
-                                        $bank = $this->Crud->read_order('bank', 'name', 'asc');
-                                       if(!empty($bank)){
-                                            foreach($bank as $b){
-                                                $sel = '';
-                                                if(!empty($bank_details)){
-                                                    if(!empty($bank_details->bank_code)){
-                                                        if($bank_details->bank_code == $b->code)$sel = 'selected';
-                                                    }
-                                                }
-                                                echo '<option value="'.$b->code.'" '.$sel.'>'.$b->name.'</option>';
-                                            }
-                                       }
-                                       $acc_no = '';$acc_name = '';
-                                       if(!empty($bank_details)){
-                                            if(!empty($bank_details->account_number)){
-                                                $acc_no = $bank_details->account_number;
-                                                $acc_name = $bank_details->account_name;
-                                            }
-                                        }
-                                    ?>
-                                </select>
-                                
+                            <div class="row">
+                                <div class="col-sm-12"><div id="bb_ajax_msg2"></div></div>
                             </div>
-                            <label>Account Number <span class="dec-icon"><i class="fas fa-user-circle"></i> </span></label>
-                            <input type="text" name="account_number" placeholder="0000000000" required minlength="10" value="<?=$acc_no; ?>"/>
-                            <label class="text-center text-danger font-weight-bold" style="font-size:14px;"><?=strtoupper($acc_name); ?></label>
-                            <button class="btn    color-bg  float-btn">Save Changes</button>
-                        </div>
+                            <?php if($country_id != 161){
+                                $paypal = '';
+                                if(!empty($bank_details)){
+                                    if(!empty($bank_details->paypal)){
+                                        $paypal = $bank_details->paypal;
+                                    }
+                                }
+                                ?>
+                                <div class="custom-form">
+                                    <label>Paypal Info <span class="dec-icon"><i class="fas fa-user-circle"></i> </span></label>
+                                    <input type="text" name="paypal" placeholder="" required  value="<?=$paypal; ?>"/>
+                                    <button class="btn    color-bg  float-btn">Save Changes</button>
+                                </div>
+                            
+                            
+                            <?php } else{?>
+                                <div class="custom-form">
+                                    <label>Bank</label>
+                                    <div class="listsearch-input-item mb-2">
+                                        <select data-placeholder="Select" name="bank_code" id="bank_code" required class="mb-2 chosen-select search-select">
+                                            <option value="">Select Bank</option>
+                                            <?php
+                                                $bank = $this->Crud->read_order('bank', 'name', 'asc');
+                                            if(!empty($bank)){
+                                                    foreach($bank as $b){
+                                                        $sel = '';
+                                                        if(!empty($bank_details)){
+                                                            if(!empty($bank_details->bank_code)){
+                                                                if($bank_details->bank_code == $b->code)$sel = 'selected';
+                                                            }
+                                                        }
+                                                        echo '<option value="'.$b->code.'" '.$sel.'>'.$b->name.'</option>';
+                                                    }
+                                            }
+                                            $acc_no = '';$acc_name = '';
+                                            if(!empty($bank_details)){
+                                                if(!empty($bank_details->account_number)){
+                                                    $acc_no = $bank_details->account_number;
+                                                    $acc_name = $bank_details->account_name;
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                        
+                                    </div>
+                                    <label>Account Number <span class="dec-icon"><i class="fas fa-user-circle"></i> </span></label>
+                                    <input type="text" name="account_number" placeholder="0000000000" required minlength="10" value="<?=$acc_no; ?>"/>
+                                    <label class="text-center text-danger font-weight-bold" style="font-size:14px;"><?=strtoupper($acc_name); ?></label>
+                                    <button class="btn    color-bg  float-btn">Save Changes</button>
+                                </div>
+                            <?php } ?>
                         </form>
                     </div>
                     <div class="dasboard-widget-title dbt-mm fl-wrap">

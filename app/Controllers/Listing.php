@@ -318,7 +318,11 @@ class Listing extends BaseController {
 							$main = $images[0];
 						}
 
-						$users = 'a';
+						$page = 'home/listing/view/'.$id;
+						$view = $this->Crud->check('page', $page, 'listing_view');
+						
+
+						$users = '';
 						if($role == 'developer' || $role == 'administrator'){
 							$users = '<br><div class="geodir-category-location mb-2">
 								<a href="javascript:;"><i class="fal fa-user-secret"></i> <span>'.ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname')).'</b></span></a>
@@ -366,7 +370,7 @@ class Listing extends BaseController {
 												'.$users.'
 												<div class="clearfix"></div>
 												<div class="dashboard-listings-item_opt text-center">
-													<span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  0 </span>
+													<span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  '.$view.' </span>
 													<ul>
 														<li><a href="'.site_url('listing/index/edit/'.$id).'" class="tolt" data-microtip-position="top-left"  data-tooltip="Edit"><i class="far fa-edit"></i></a></li>
 														<li>'.$act.'</li>

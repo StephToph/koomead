@@ -1204,6 +1204,54 @@ class Crud extends Model {
 	}
 
 	
+	public function date_range1_group($firstDate, $col1, $secondDate, $col2,$col3, $val3, $table, $group, $limit='', $offset=''){
+		$db = db_connect();
+        $builder = $db->table($table);
+		$db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
+        
+		 // Use placeholders for the date range
+		 $sql = "SELECT t1.*
+		 FROM $table AS t1
+		 INNER JOIN (
+			 SELECT MAX(id) AS max_id
+			 FROM $table
+			 WHERE $col3 = ? AND reg_date >= ? AND reg_date <= ?
+			 GROUP BY $group
+		 ) AS t2
+		 ON t1.id = t2.max_id";
+
+		$query = $db->query($sql, [$val3, $firstDate, $secondDate]);
+		$result = $query->getResult();
+
+		// return query
+		return $query->getResult();
+		$db->close();
+	}
+
+	public function date_range_group($firstDate, $col1, $secondDate, $col2, $table, $group, $limit='', $offset=''){
+		$db = db_connect();
+        $builder = $db->table($table);
+		$db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
+        
+		// Use placeholders for the date range
+		$sql = "SELECT t1.* 
+				FROM $table AS t1
+				INNER JOIN (
+					SELECT MAX(id) AS latest_id
+					FROM $table
+					WHERE reg_date >= ? AND reg_date <= ?
+					GROUP BY $group
+				) AS t2 ON t1.id = t2.latest_id
+				ORDER BY t1.id DESC";
+
+		$query = $db->query($sql, [$firstDate, $secondDate]);
+		$result = $query->getResult();
+		
+		// return query
+		return $query->getResult();
+		$db->close();
+	}
+
 	public function date_range1($firstDate, $col1, $secondDate, $col2,$col3, $val3, $table, $limit='', $offset=''){
 		$db = db_connect();
         $builder = $db->table($table);

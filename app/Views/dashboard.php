@@ -26,216 +26,195 @@
                 
                 				
             </div>
+            <div class="row">
+                <div class="col-sm-12" style="text-align:right;">
+                    <input type="hidden" id="date_type">
+
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">
+                            <span><i class="fal fa-filter"></i> <span id="filter_type">This Month</span></span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item text-muted typeBtn" href="javascript:;" data-value="Today">Today</a>
+                            <a class="dropdown-item text-muted typeBtn" href="javascript:;" data-value="Yesterday">Yesterday</a>
+                            <a class="dropdown-item text-muted typeBtn" href="javascript:;" data-value="Last_Week">Last 7 Days</a>
+                            <a class="dropdown-item text-muted typeBtn active" href="javascript:;" data-value="">This Month</a>
+                            <a class="dropdown-item text-muted typeBtn" href="javascript:;" data-value="Last_Month">Last 30 Days</a>
+                            <a class="dropdown-item text-muted typeBtn" href="javascript:;" data-value="Date_Range">Date Range</a>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group align-items-center mt-3" id="data-resp" style="display:none;">
+                        &nbsp;|&nbsp;<b>Date:</b>&nbsp;
+                        <input type="date" class="form-control" name="date_from" id="date_from" oninput="load()" style="border:1px solid #ddd;" placeholder="START DATE">
+                        &nbsp;<i class="fal fa-arrow-right"></i>&nbsp;
+                        <input type="date" class="form-control" name="date_to" id="date_to" oninput="load()" style="border:1px solid #ddd;" placeholder="END DATE">
+                    </div>
+                </div>
+                <div class="col-md-12" style="color:transparent; text-align:right;"><span id="date_resul"></span></div>
+
+            </div>
+
             <!-- dashboard-title end -->		
             <div class="dasboard-wrapper fl-wrap no-pag">
                 <div class="dashboard-stats-container fl-wrap">
                     <div class="row">
                         <!--dashboard-stats-->
+                       <div class="col-md-3">
+                            <div class="dashboard-stats fl-wrap">
+                                <i class="fal fa-chart-bar"></i>
+                                <h4>Total Listing</h4>
+                                <div class="dashboard-stats-count" id="total_list">0</div>
+                            </div>
+                        </div>
+                        <!-- dashboard-stats end -->
+                       <!--dashboard-stats-->
                         <div class="col-md-3">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-map-marked"></i>
                                 <h4>Active Listings</h4>
-                                <div class="dashboard-stats-count">124</div>
+                                <div class="dashboard-stats-count" id="active_list">0</div>
                             </div>
                         </div>
                         <!-- dashboard-stats end -->
                         <!--dashboard-stats-->
                         <div class="col-md-3">
                             <div class="dashboard-stats fl-wrap">
-                                <i class="fal fa-chart-bar"></i>
+                                <i class="fal fa-eye"></i>
                                 <h4>Listing Views</h4>
-                                <div class="dashboard-stats-count">1056<span>(<strong>+356</strong> this week)</span></div>
+                                <div class="dashboard-stats-count" id="list_view">0</div>
                             </div>
                         </div>
                         <!-- dashboard-stats end -->
+                       <?php if($role != 'user'){?>
                         <!--dashboard-stats-->
                         <div class="col-md-3">
                             <div class="dashboard-stats fl-wrap">
-                                <i class="fal fa-comments-alt"></i>
-                                <h4>Your Reviews</h4>
-                                <div class="dashboard-stats-count">357<span>(<strong>+12</strong> this week)</span></div>
+                                <i class="fal fa-users"></i>
+                                <h4>No of User</h4>
+                                <div class="dashboard-stats-count" id="user">0</div>
                             </div>
                         </div>
-                        <!-- dashboard-stats end -->
-                        <!--dashboard-stats-->
-                        <div class="col-md-3">
-                            <div class="dashboard-stats fl-wrap">
-                                <i class="fal fa-heart"></i>
-                                <h4>Times Bookmarked</h4>
-                                <div class="dashboard-stats-count">2329<span>(<strong>+234</strong> this week)</span></div>
-                            </div>
-                        </div>
+                        <?php } ?>
                         <!-- dashboard-stats end -->		
                     </div>
                 </div>
                 <div class="clearfix"></div>
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="notification success-notif  fl-wrap">
-                            <p>Your listing <a href="#">Family house in Brooklyn</a> has been approved!</p>
-                            <a class="notification-close" href="#"><i class="fal fa-times"></i></a>
-                        </div>
-                        <div class="dashboard-widget-title fl-wrap">Your  Statistic</div>
-                        <div class="dasboard-content fl-wrap">
-                            <!-- chart-wra-->
-                            <div class="chart-wrap   fl-wrap">
-                                <div class="chart-header fl-wrap">
-                                    <div class="listsearch-input-item">
-                                        <select data-placeholder="Week" class="chosen-select no-search-select" >
-                                            <option>Week</option>
-                                            <option>Month</option>
-                                            <option>Year</option>
-                                        </select>
-                                    </div>
-                                    <div id="myChartLegend"></div>
-                                </div>
-                                <canvas id="canvas-chart"></canvas>
-                            </div>
-                            <!--chart-wrap end-->									
-                        </div>
                         <div class="dashboard-widget-title fl-wrap">Last Activites</div>
-                        <div class="dashboard-list-box  fl-wrap">
+                        <div class="dashboard-list-box  fl-wrap" id="activity_load">
                             <!-- dashboard-list end-->
-                            <div class="dashboard-list fl-wrap">
-                                <div class="dashboard-message">
-                                    <span class="close-dashboard-item color-bg"><i class="fal fa-times"></i></span>
-                                    <div class="main-dashboard-message-icon color-bg"><i class="far fa-check"></i></div>
-                                    <div class="main-dashboard-message-text">
-                                        <p>Your listing <a href="#">Urban Appartmes</a> has been approved! </p>
-                                    </div>
-                                    <div class="main-dashboard-message-time"><i class="fal fa-calendar-week"></i> 28 may 2020</div>
-                                </div>
-                            </div>
-                            <!-- dashboard-list end-->
-                            <!-- dashboard-list end-->
-                            <div class="dashboard-list fl-wrap">
-                                <div class="dashboard-message">
-                                    <span class="close-dashboard-item color-bg"><i class="fal fa-times"></i></span>
-                                    <div class="main-dashboard-message-icon color-bg"><i class="fal fa-comment-alt"></i></div>
-                                    <div class="main-dashboard-message-text">
-                                        <p> Someone left a review on <a href="#">Park Central</a> listing!</p>
-                                    </div>
-                                    <div class="main-dashboard-message-time"><i class="fal fa-calendar-week"></i> 28 may 2020</div>
-                                </div>
-                            </div>
-                            <!-- dashboard-list end-->
-                            <!-- dashboard-list end-->
-                            <div class="dashboard-list fl-wrap">
-                                <div class="dashboard-message">
-                                    <span class="close-dashboard-item color-bg"><i class="fal fa-times"></i></span>
-                                    <div class="main-dashboard-message-icon color-bg"><i class="far fa-heart"></i></div>
-                                    <div class="main-dashboard-message-text">
-                                        <p><a href="#">Fider Mamby</a> bookmarked your <a href="#">Holiday Home</a> listing!</p>
-                                    </div>
-                                    <div class="main-dashboard-message-time"><i class="fal fa-calendar-week"></i> 28 may 2020</div>
-                                </div>
-                            </div>
-                            <!-- dashboard-list end-->
+                            
+                            
                         </div>
                     </div>
                     <div class="col-md-4">
                         <!--box-widget-->
-                        <div class="dasboard-widget fl-wrap">
+                        <div class="dasboard-widget fl-wrap mt-5">
                             <div class="dasboard-widget-title fl-wrap">
                                 <h5><i class="fas fa-comment-alt"></i>Last Messages</h5>
                             </div>
-                            <div class="chat-contacts fl-wrap">
-                                <!-- chat-contacts-item-->
-                                <a class="chat-contacts-item" href="#">
-                                    <div class="dashboard-message-avatar">
-                                        <img src="<?=site_url(); ?>assets/images/avatar/2.jpg" alt="">
-                                        <div class="message-counter">2</div>
-                                    </div>
-                                    <div class="chat-contacts-item-text">
-                                        <h4>Mark Rose</h4>
-                                        <span>27 Dec 2018 </span>
-                                        <p>Vivamus lobortis vel nibh nec maximus. Donec dolor erat, rutrum ut feugiat sed, ornare vitae nunc. Donec massa nisl, bibendum id ultrices sed, accumsan sed dolor.</p>
-                                    </div>
-                                </a>
-                                <!-- chat-contacts-item -->
-                                <!-- chat-contacts-item-->
-                                <a class="chat-contacts-item" href="#">
-                                    <div class="dashboard-message-avatar">
-                                        <img src="<?=site_url(); ?>assets/images/avatar/1.jpg" alt="">
-                                        <div class="message-counter">1</div>
-                                    </div>
-                                    <div class="chat-contacts-item-text">
-                                        <h4>Adam Koncy</h4>
-                                        <span>27 Dec 2018 </span>
-                                        <p>Vivamus lobortis vel nibh nec maximus. Donec dolor erat, rutrum ut feugiat sed, ornare vitae nunc. Donec massa nisl, bibendum id ultrices sed, accumsan sed dolor.</p>
-                                    </div>
-                                </a>
-                                <!-- chat-contacts-item -->
-                                <!-- chat-contacts-item-->
-                                <a class="chat-contacts-item chat-contacts-item_active" href="#">
-                                    <div class="dashboard-message-avatar">
-                                        <img src="<?=site_url(); ?>assets/images/avatar/3.jpg" alt="">
-                                        <div class="message-counter">3</div>
-                                    </div>
-                                    <div class="chat-contacts-item-text">
-                                        <h4>Andy Smith</h4>
-                                        <span>27 Dec 2018 </span>
-                                        <p>Vivamus lobortis vel nibh nec maximus. Donec dolor erat, rutrum ut feugiat sed, ornare vitae nunc. Donec massa nisl, bibendum id ultrices sed, accumsan sed dolor.</p>
-                                    </div>
-                                </a>
-                                <!-- chat-contacts-item -->
-                                <!-- chat-contacts-item-->
-                                <a class="chat-contacts-item" href="#">
-                                    <div class="dashboard-message-avatar">
-                                        <img src="<?=site_url(); ?>assets/images/avatar/5.jpg" alt="">
-                                        <div class="message-counter">4</div>
-                                    </div>
-                                    <div class="chat-contacts-item-text">
-                                        <h4>Joe Frick</h4>
-                                        <span>27 Dec 2018 </span>
-                                        <p>Vivamus lobortis vel nibh nec maximus. Donec dolor erat, rutrum ut feugiat sed, ornare vitae nunc. Donec massa nisl, bibendum id ultrices sed, accumsan sed dolor.</p>
-                                    </div>
-                                </a>
-                                <!-- chat-contacts-item -->
-                                <!-- chat-contacts-item-->
-                                <a class="chat-contacts-item" href="#">
-                                    <div class="dashboard-message-avatar">
-                                        <img src="<?=site_url(); ?>assets/images/avatar/4.jpg" alt="">
-                                    </div>
-                                    <div class="chat-contacts-item-text">
-                                        <h4>Alise Goovy</h4>
-                                        <span>27 Dec 2018 </span>
-                                        <p>Vivamus lobortis vel nibh nec maximus. Donec dolor erat, rutrum ut feugiat sed, ornare vitae nunc. Donec massa nisl, bibendum id ultrices sed, accumsan sed dolor.</p>
-                                    </div>
-                                </a>
-                                <!-- chat-contacts-item -->
-                                <!-- chat-contacts-item-->
-                                <a class="chat-contacts-item" href="#">
-                                    <div class="dashboard-message-avatar">
-                                        <img src="<?=site_url(); ?>assets/images/avatar/6.jpg" alt="">
-                                    </div>
-                                    <div class="chat-contacts-item-text">
-                                        <h4>Cristiano Olando</h4>
-                                        <span>27 Dec 2018 </span>
-                                        <p>Vivamus lobortis vel nibh nec maximus. Donec dolor erat, rutrum ut feugiat sed, ornare vitae nunc. Donec massa nisl, bibendum id ultrices sed, accumsan sed dolor.</p>
-                                    </div>
-                                </a>
+                            <div class="chat-contacts fl-wrap" id="message_load">
+                                
                                 <!-- chat-contacts-item -->
                             </div>
                         </div>
-                        <!--box-widget end -->								
-                        <!--box-widget-->
-                        <div class="box-widget fl-wrap">
-                            <div class="banner-widget fl-wrap">
-                                <div class="bg-wrap bg-parallax-wrap-gradien">
-                                    <div class="bg  "  data-bg="<?=site_url(); ?>assets/images/all/blog/1.jpg"></div>
-                                </div>
-                                <div class="banner-widget_content">
-                                    <h5>Participate in our loyalty program. Refer a friend and get a discount.</h5>
-                                    <a href="#" class="btn float-btn color-bg small-btn">Read More</a>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <!--box-widget end --> 								
                     </div>
                 </div>
             </div>
         </div>
         
+        <script>
+    $(function() {
+        load_metrics();
+        load_activity();load_message();
+    });
+
+    $('.typeBtn').click(function() {
+        $('#date_type').val($(this).attr('data-value'));
+        $('#filter_type').html($(this).html());
+        $(this).addClass('active');
+        $(this).siblings().removeClass('active');
+
+        if($(this).attr('data-value') == 'Date_Range') {
+            $('#data-resp').show(300);
+        } else {
+            $('#data-resp').hide(300);
+            load_metrics();
+              load_activity();load_message();
+        }
+    });
+
+    function load_metrics(){
+
+        var date_type = $('#date_type').val();
+        var date_from = $('#date_from').val();
+        var date_to = $('#date_to').val();
+       
+        $.ajax({
+            url: site_url + 'dashboard/load_metric',
+            type: 'post',
+            data: { date_type: date_type, date_from: date_from, date_to: date_to },
+            success: function (data) {
+                var dt = JSON.parse(data);
+                $('#total_list').html(dt.total_list);
+                $('#list_view').html(dt.list_view);
+                $('#active_list').html(dt.active_list);
+                $('#user').html(dt.user);
+               
+            }
+        });
     
+    }
+
+    function load_activity(){
+        $('#activity_load').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin" style="font-size:29px;"></i>  </div>');
+        
+        var date_type = $('#date_type').val();
+        var date_from = $('#date_from').val();
+        var date_to = $('#date_to').val();
+
+       
+        $.ajax({
+            url: site_url + 'dashboard/activity_load',
+            type: 'post',
+            data: { date_type: date_type, date_from: date_from, date_to: date_to },
+            success: function (data) {
+                var dt = JSON.parse(data);
+                $('#activity_load').html(dt.activity_load);
+                    
+            }
+        });
+    
+    }
+
+    function load_message(){
+        $('#message_load').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin" style="font-size:29px;"></i>  </div>');
+        
+        var date_type = $('#date_type').val();
+        var date_from = $('#date_from').val();
+        var date_to = $('#date_to').val();
+
+       
+        $.ajax({
+            url: site_url + 'dashboard/message_load',
+            type: 'post',
+            data: { date_type: date_type, date_from: date_from, date_to: date_to },
+            success: function (data) {
+                var dt = JSON.parse(data);
+                $('#message_load').html(dt.message_load);
+                    
+            }
+        });
+    
+    }
+
+    
+
+
+
+</script>  
 <?php echo $this->endSection(); ?>

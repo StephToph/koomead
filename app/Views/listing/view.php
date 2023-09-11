@@ -57,6 +57,10 @@
                             $state = $this->Crud->read_field('id', $state_id, 'state', 'name');
                             $city = $this->Crud->read_field('id', $city_id, 'city', 'name');
                             
+
+                            $page = 'home/listing/view/'.$param2;
+						    $view = $this->Crud->check('page', $page, 'listing_view');
+						
                             $loca = '';
                             $profiles = json_decode($profile);
                             $image = json_decode($images);
@@ -93,7 +97,7 @@
                                         <div class="list-single-header-date"><span>Date:</span><?=date('d F, Y', strtotime($reg_date)); ?></div>
                                         <div class="list-single-stats">
                                             <ul class="no-list-style">
-                                                <li><span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  0 </span></li>
+                                                <li><span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  <?=$view; ?></span></li>
                                             </ul>
                                         </div>
                                     </div>

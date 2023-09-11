@@ -228,7 +228,7 @@ class Notification extends BaseController {
 		} else { // view for main page
             
 			$data['title'] = 'Notification | '.app_name;
-			$data['page_active'] = $mod;
+			$data['page_active'] = 'notification';
 
 			return view($mod, $data);
 		}

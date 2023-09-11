@@ -15,7 +15,8 @@ class Dashboard extends BaseController {
         // check login
         $log_id = $this->session->get('km_id');
         if(empty($log_id)) return redirect()->to(site_url(''));
-
+		
+        $this->session->set('km_redirect', uri_string());
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
         $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
         $role_c = $this->Crud->module($role_id, 'dashboard', 'create');
@@ -346,4 +347,242 @@ class Dashboard extends BaseController {
             }
         }
     }
-}
+
+	public function load_metric(){
+		$log_id = $this->session->get('km_id');
+		$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+		$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+		$date_type = $this->request->getPost('date_type');
+		if(!empty($this->request->getPost('date_from'))) { $date_froms = $this->request->getPost('date_from'); } else { $date_froms = ''; }
+		if(!empty($this->request->getPost('date_to'))) { $date_tos = $this->request->getPost('date_to'); } else { $date_tos = ''; }
+		if($date_type == 'Today'){
+			$date_from = date('Y-m-d');
+			$date_to = date('Y-m-d');
+		} elseif($date_type == 'Yesterday'){
+			$date_from = date('Y-m-d', strtotime( '-1 days' ));
+			$date_to = date('Y-m-d', strtotime( '-1 days' ));
+		} elseif($date_type == 'Last_Week'){
+			$date_from = date('Y-m-d', strtotime( '-7 days' ));
+			$date_to = date('Y-m-d');
+		} elseif($date_type == 'Last_Month'){
+			$date_from = date('Y-m-d', strtotime( '-30 days' ));
+			$date_to = date('Y-m-d');
+		} elseif($date_type == 'Date_Range'){
+			$date_from = $date_froms;
+			$date_to = $date_tos;
+		} else {
+			$date_from = date('Y-m-01');
+			$date_to = date('Y-m-d');
+		}
+		
+		if(!$log_id) {
+			$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
+		} else {
+			
+			// Admin
+			if($role == 'administrator' || $role == 'developer') {
+				
+				$v_id = $this->Crud->read_field('name', 'User', 'access_role', 'id');
+				
+
+				
+				$total_list = $this->Crud->date_check($date_from, 'reg_date',  $date_to, 'reg_date', 'listing');
+				$list_view = $this->Crud->date_check($date_from, 'reg_date',  $date_to, 'reg_date',  'listing_view');
+				$active_list = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'active', 1, 'listing');
+				$user = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'role_id', $v_id, 'user');
+				
+				// $list_views = 0;
+				// if(!empty($list_view)){
+				// 	foreach($list_view as $list){
+
+				// 	}
+				// }
+
+				$resp['total_list'] = number_format((float)($total_list));
+				$resp['list_view'] = number_format((float)($list_view));
+				$resp['active_list'] = number_format((float)($active_list));
+				$resp['user'] = number_format((float)($user));
+			}
+
+			// Admin
+			if($role != 'administrator' && $role != 'developer') {
+				
+				$v_id = $this->Crud->read_field('name', 'User', 'access_role', 'id');
+				
+
+				
+				$total_list = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'listing');
+				$list_view = $this->Crud->date_range1($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'listing');
+				$active_list = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'active', 1, 'user_id', $log_id, 'listing');
+				$user = 0;
+				
+				$list_views = 0;
+				if(!empty($list_view)){
+					foreach($list_view as $list){
+						$page = 'home/listing/view/'.$list->id;
+						$view = $this->Crud->check('page', $page, 'listing_view');
+						$list_views += $view;
+					}
+				}
+
+				$resp['total_list'] = number_format((float)($total_list));
+				$resp['list_view'] = number_format((float)($list_view));
+				$resp['active_list'] = number_format((float)($active_list));
+				$resp['user'] = number_format((float)($user));
+			}
+
+			
+
+		}
+		
+		echo json_encode($resp);
+		die;
+	}
+
+	public function activity_load(){
+		$log_id = $this->session->get('km_id');
+		$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+		$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+		$date_type = $this->request->getPost('date_type');
+		if(!empty($this->request->getPost('date_from'))) { $date_froms = $this->request->getPost('date_from'); } else { $date_froms = ''; }
+		if(!empty($this->request->getPost('date_to'))) { $date_tos = $this->request->getPost('date_to'); } else { $date_tos = ''; }
+		if($date_type == 'Today'){
+			$date_from = date('Y-m-d');
+			$date_to = date('Y-m-d');
+		} elseif($date_type == 'Yesterday'){
+			$date_from = date('Y-m-d', strtotime( '-1 days' ));
+			$date_to = date('Y-m-d', strtotime( '-1 days' ));
+		} elseif($date_type == 'Last_Week'){
+			$date_from = date('Y-m-d', strtotime( '-7 days' ));
+			$date_to = date('Y-m-d');
+		} elseif($date_type == 'Last_Month'){
+			$date_from = date('Y-m-d', strtotime( '-30 days' ));
+			$date_to = date('Y-m-d');
+		} elseif($date_type == 'Date_Range'){
+			$date_from = $date_froms;
+			$date_to = $date_tos;
+		} else {
+			$date_from = date('Y-m-01');
+			$date_to = date('Y-m-d');
+		}
+		
+		if(!$log_id) {
+			$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
+		} else {
+			$activity_query = $this->Crud->date_range2($date_from, 'reg_date',  $date_to, 'reg_date', 'item', 'authentication','item_id', $log_id, 'activity',5);
+
+			// Admin
+			if($role == 'administrator' || $role == 'developer') {
+				$activity_query = $this->Crud->date_range($date_from, 'reg_date',  $date_to, 'reg_date', 'activity',5);
+
+			}
+			$activity_load = '';
+			if(!empty($activity_query)){
+				foreach($activity_query as $q){
+					$activity_load .= '
+						<div class="dashboard-list fl-wrap">
+							<div class="dashboard-message">
+								<span class="close-dashboard-item"></span>
+								<div class="main-dashboard-message-icon color-bg"><i class="far fa-check"></i></div>
+								<div class="main-dashboard-message-text">
+									<p>'.$q->action.' </p>
+								</div>
+								<div class="main-dashboard-message-time"><i class="fal fa-calendar-week"></i> '.$this->Crud->timespan(strtotime($q->reg_date)).'</div>
+							</div>
+						</div>
+					
+					';
+				}
+			}
+			$resp['activity_load'] = $activity_load;
+		}
+		
+		echo json_encode($resp);
+		die;
+	}
+
+	public function message_load(){
+		$log_id = $this->session->get('km_id');
+		$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+		$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+		$date_type = $this->request->getPost('date_type');
+		if(!empty($this->request->getPost('date_from'))) { $date_froms = $this->request->getPost('date_from'); } else { $date_froms = ''; }
+		if(!empty($this->request->getPost('date_to'))) { $date_tos = $this->request->getPost('date_to'); } else { $date_tos = ''; }
+		if($date_type == 'Today'){
+			$date_from = date('Y-m-d');
+			$date_to = date('Y-m-d');
+		} elseif($date_type == 'Yesterday'){
+			$date_from = date('Y-m-d', strtotime( '-1 days' ));
+			$date_to = date('Y-m-d', strtotime( '-1 days' ));
+		} elseif($date_type == 'Last_Week'){
+			$date_from = date('Y-m-d', strtotime( '-7 days' ));
+			$date_to = date('Y-m-d');
+		} elseif($date_type == 'Last_Month'){
+			$date_from = date('Y-m-d', strtotime( '-30 days' ));
+			$date_to = date('Y-m-d');
+		} elseif($date_type == 'Date_Range'){
+			$date_from = $date_froms;
+			$date_to = $date_tos;
+		} else {
+			$date_from = date('Y-m-01');
+			$date_to = date('Y-m-d');
+		}
+		
+		if(!$log_id) {
+			$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
+		} else {
+			$activity_query = $this->Crud->date_range1_group($date_from, 'reg_date',  $date_to, 'reg_date', 'receiver_id', $log_id,'km_message','code',5);
+
+			// Admin
+			if($role == 'administrator' || $role == 'developer') {
+				$activity_query = $this->Crud->date_range_group($date_from, 'reg_date',  $date_to, 'reg_date', 'km_message','code',5);
+
+			}
+			$counts = 0;
+			$message_load = '';
+			if(!empty($activity_query)){
+				foreach($activity_query as $q){
+					if($counts > 5)continue;
+					$send = $this->Crud->read_field('id', $q->sender_id, 'user', 'fullname');
+					$send_img = $this->Crud->read_field('id', $q->sender_id, 'user', 'img_id');
+					$receive =  $this->Crud->read_field('id', $q->receiver_id, 'user', 'fullname');
+					
+					if(empty($send_img)){
+						$send_img = 'assets/images/avatar.png';
+					}
+					$count = $this->Crud->check2('code', $q->code, 'status', 0, 'message');
+					$c = '';
+					if($count > 0)$c='<div class="message-counter">'.$count.'</div>';
+					$message_load .= '
+						<a class="chat-contacts-item" href="'.site_url('message').'">
+							<div class="dashboard-message-avatar">
+								<img src="'.site_url($send_img).'" alt="">
+								'.$c.'
+							</div>
+							<div class="chat-contacts-item-text">
+								<h4>'.ucwords($send).'</h4>
+								<span>'.$this->Crud->timespan(strtotime($q->reg_date)).' </span>
+								<p>'.$q->message.'</p>
+							</div>
+						</a>
+					
+					';
+					$counts ++;
+				}
+			} else {
+				$message_load .= '
+					<a class="chat-contacts-item" href="javascript:;">
+						<div class="chat-contacts-item-text">
+							<h4>No Message</h4>
+						</div>
+					</a>
+				';
+			}
+			$resp['message_load'] = $message_load;
+		}
+		
+		echo json_encode($resp);
+		die;
+	}
+
+}	

@@ -250,31 +250,35 @@ class Home extends BaseController {
 			$listing_id = $this->request->getPost('listing_id');
 			$business_id = $this->request->getPost('business_id');
 
-			$code = substr(md5(time().rand()), 0, 6);
-            if($this->Crud->check3('sender_id', $log_id, 'receiver_id', $business_id, 'listing_id', $listing_id, 'message') > 0){
-				$code = $this->Crud->read_field3('sender_id', $log_id, 'receiver_id', $business_id, 'listing_id', $listing_id, 'message', 'code');
-			}
-			$ins['message'] = $message;
-			$ins['code'] = $code;
-			$ins['listing_id'] = $listing_id;
-			$ins['receiver_id'] = $business_id;
-			$ins['sender_id'] = $log_id;
-			$ins['reg_date'] = date(fdate);
-			
-			$ins_rec = $this->Crud->create('message', $ins);
-			if($ins_rec > 0){
-				$send = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-				$receive = $this->Crud->read_field('id', $business_id, 'user', 'fullname');
-				$listing = $this->Crud->read_field('id', $listing_id, 'listing', 'name');
-				$action = $send.' sent a message to '.$receive.' on Business { '.$listing.' }';
-				$content = $send.' Sent You a Message';
-				$item = 'message';$items = 'message';
-				$this->Crud->notify($log_id, $business_id, $content, $item, $listing_id);
-				$this->Crud->activity($items, $ins_rec, $action);
-				echo $this->Crud->msg('success', 'Message Sent!<br><a href="'.site_url('message').'">Click to view Message Board</a>');
-				echo '<script>$("#message").val(" ");</script>';
-			} else {
-				echo $this->Crud->msg('warning', 'Message Not Sent.<br>Try Again.');
+			if($business_id == $log_id){
+				echo $this->Crud->msg('warning', 'You cannot message yourself as you are the owner of the Business.');
+			} else{
+				$code = substr(md5(time().rand()), 0, 6);
+				if($this->Crud->check3('sender_id', $log_id, 'receiver_id', $business_id, 'listing_id', $listing_id, 'message') > 0){
+					$code = $this->Crud->read_field3('sender_id', $log_id, 'receiver_id', $business_id, 'listing_id', $listing_id, 'message', 'code');
+				}
+				$ins['message'] = $message;
+				$ins['code'] = $code;
+				$ins['listing_id'] = $listing_id;
+				$ins['receiver_id'] = $business_id;
+				$ins['sender_id'] = $log_id;
+				$ins['reg_date'] = date(fdate);
+				
+				$ins_rec = $this->Crud->create('message', $ins);
+				if($ins_rec > 0){
+					$send = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+					$receive = $this->Crud->read_field('id', $business_id, 'user', 'fullname');
+					$listing = $this->Crud->read_field('id', $listing_id, 'listing', 'name');
+					$action = $send.' sent a message to '.$receive.' on Business { '.$listing.' }';
+					$content = $send.' Sent You a Message';
+					$item = 'message';$items = 'message';
+					$this->Crud->notify($log_id, $business_id, $content, $item, $listing_id);
+					$this->Crud->activity($items, $ins_rec, $action);
+					echo $this->Crud->msg('success', 'Message Sent!<br><a href="'.site_url('message').'">Click to view Message Board</a>');
+					echo '<script>$("#message").val(" ");</script>';
+				} else {
+					echo $this->Crud->msg('warning', 'Message Not Sent.<br>Try Again.');
+				}
 			}
 			die;
 		}

@@ -879,4 +879,278 @@ class Settings extends BaseController {
             return view('setting/state', $data);
         }
     }
+
+
+    public function promotion($param1='', $param2='', $param3='') {
+		$db = \Config\Database::connect();
+		$this->session->set('km_redirect', uri_string());
+        
+        // check login
+        $log_id = $this->session->get('km_id');
+        if(empty($log_id)) return redirect()->to(site_url(''));
+		
+        $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+        $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+        $role_c = $this->Crud->module($role_id, 'settings/promotion', 'create');
+        $role_r = $this->Crud->module($role_id, 'settings/promotion', 'read');
+        $role_u = $this->Crud->module($role_id, 'settings/promotion', 'update');
+        $role_d = $this->Crud->module($role_id, 'settings/promotion', 'delete');
+        if($role_r == 0){
+            return redirect()->to(site_url('profile'));	
+        }
+        $log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+        $data['log_name'] = $log_name;
+        $data['page'] = 'Promotions';
+        $data['log_id'] = $log_id;
+        $data['role'] = $role;
+        $data['role_c'] = $role_c;
+
+        $table = 'promotion';
+
+		$form_link = site_url('settings/promotion/');
+		if($param1){$form_link .= $param1.'/';}
+		if($param2){$form_link .= $param2.'/';}
+		if($param3){$form_link .= $param3.'/';}
+		
+		// pass parameters to view
+		$data['param1'] = $param1;
+		$data['param2'] = $param2;
+		$data['param3'] = $param3;
+		$data['form_link'] = rtrim($form_link, '/');
+		
+		// manage record
+		if($param1 == 'manage') {
+			// prepare for delete
+			if($param2 == 'delete') {
+				if($param3) {
+					$edit = $this->Crud->read_single('id', $param3, $table);
+					if(!empty($edit)) {
+						foreach($edit as $e) {
+							$data['d_id'] = $e->id;
+						}
+					}
+
+					if($this->request->getMethod() == 'post'){
+						$del_id = $this->request->getVar('d_promotion_id');
+						///// store activities
+						$code = $this->Crud->read_field('id', $del_id, $table, 'name');
+						$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+						$action = $by.' Deleted Promotion '.$code.' Record';
+						
+						if($this->Crud->deletes('id', $del_id, $table) > 0) {
+							$this->Crud->activity('setup', $del_id, $action);
+
+							echo $this->Crud->msg('success', 'Record Deleted');
+							echo '<script>location.reload(false);</script>';
+						} else {
+							echo $this->Crud->msg('danger', 'Please try later');
+						}
+						exit;	
+					}
+				}
+			} else {
+				// prepare for edit
+				if($param2 == 'edit') {
+					if($param3) {
+						$edit = $this->Crud->read_single('id', $param3, $table);
+						if(!empty($edit)) {
+							foreach($edit as $e) {
+								$data['e_id'] = $e->id;
+                                $data['e_name'] = $e->name;
+								$data['e_price'] = $e->amount;
+								$data['e_nig_price'] = $e->nig_amount;
+								$data['e_view'] = $e->view;
+								$data['e_status'] = $e->status;
+								$data['e_duration'] = $e->duration;
+								$data['e_promoter_no'] = $e->promoter_no;
+							}
+						}
+					}
+				}
+
+				if($this->request->getMethod() == 'post'){
+					$promotion_id = $this->request->getVar('promotion_id');
+					$name = $this->request->getVar('name');
+                    $amount = $this->request->getVar('price');
+					$nig_amount = $this->request->getVar('nig_price');
+					$view = $this->request->getVar('view');
+                    $status = $this->request->getVar('status');
+                    $duration = $this->request->getVar('duration');
+					$promoter_no = $this->request->getVar('promoter_no');
+
+
+					$p_data['name'] = $name;
+					$p_data['amount'] = $amount;
+					$p_data['status'] = $status;
+					$p_data['nig_amount'] = $nig_amount;
+					$p_data['view'] = $view;
+					$p_data['duration'] = $duration;
+					$p_data['promoter_no'] = $promoter_no;
+					
+
+					// check if already exist
+					if(!empty($promotion_id)) {
+						$upd_rec = $this->Crud->updates('id', $promotion_id, $table, $p_data);
+						if($upd_rec > 0) {
+							///// store activities
+							$code = $this->Crud->read_field('id', $promotion_id, $table, 'name');
+							$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+							$action = $by.' updated Promotion '.$code.' Record';
+							$this->Crud->activity('setup', $promotion_id, $action);
+
+							echo $this->Crud->msg('success', 'Promotion Updated');
+							echo '<script>location.reload(false);</script>';
+						} else {
+							echo $this->Crud->msg('info', 'No Changes');	
+						}
+					} else {
+						if($this->Crud->check('name', $name, $table) > 0) {
+							echo $this->Crud->msg('warning', 'Record Already Exist');
+						} else {
+							$p_data['reg_date'] = date(fdate);
+					
+							$ins_rec = $this->Crud->create($table, $p_data);
+							if($ins_rec > 0) {
+								///// store activities
+								$code = $this->Crud->read_field('id', $ins_rec, $table, 'name');
+								$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+								$action = $by.' Created Promotion '.$code.' Record';
+								$this->Crud->activity('setup', $ins_rec, $action);
+
+								echo $this->Crud->msg('success', 'Promotion Created');
+								echo '<script>location.reload(false);</script>';
+							} else {
+								echo $this->Crud->msg('danger', 'Please try later');	
+							}	
+						}
+					}
+					die;	
+				}
+			}
+		}
+
+		
+        // record listing
+		if($param1 == 'load') {
+			$limit = $param2;
+			$offset = $param3;
+
+			$rec_limit = 60;
+			$item = '';
+			$counts = 0;
+
+			if(empty($limit)) {$limit = $rec_limit;}
+			if(empty($offset)) {$offset = 0;}
+			
+			if (!empty($this->request->getPost('country_id'))) {$country_id = $this->request->getPost('country_id');} else {$country_id = '';}
+			if (!empty($this->request->getPost('search'))) {$search = $this->request->getPost('search');} else {$search = '';}
+			
+
+			$log_id = $this->session->get('km_id');
+			if(!$log_id) {
+				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
+			} else {
+				$all_rec = $this->Crud->read_like('promotion', 'name', $search, '', '');
+				if(!empty($all_rec)) { $counts = count($all_rec); } else { $counts = 0; }
+				$query = $this->Crud->read_like('promotion', 'name', $search, $limit, $offset);
+
+				if(!empty($query)) {
+					foreach($query as $q) {
+						$id = $q->id;
+						$name = $q->name;
+						$amount = $q->amount;
+						$nig_amount = $q->nig_amount;
+                        $view = $q->view;
+						$promoter_no = $q->promoter_no;
+                        $duration = $q->duration;
+						$reg_date = $q->reg_date;
+                        $status = $q->status;
+						
+						$st = '<b class="text-danger mb-2">Not Active</b><br>';
+						if($status == 0)$st = '<b class="text-success mb-2">Active</b><br>';
+                        
+						if($role_u != 1) {
+                            $all_btn = '';
+                        } else {
+							$all_btn = '
+                                <a href="javascript:;" class="text-primary pop mr-3" pageTitle="Manage '.$name.'" pageName="'.site_url('settings/promotion/manage/edit/'.$id).'" pageSize="modal-md">
+                                    <i class="fal fa-edit"></i> Edit
+                                </a> 
+								<a class="text-danger pop" href="javascript:;" pageTitle="Delete '.$name.'" pageName="'.site_url('settings/promotion/manage/delete/'.$id).'">
+									<i class="fal fa-trash"></i> Delete
+								</a>
+                                    
+                            ';
+							
+                            
+                        }
+						
+						$item .= '
+							<li class="list-group-item">
+								<div class="row pt-3">
+									<div class="col-12 col-sm-5 mb-2">
+										<div class="single">
+											<div class="font-size-12 small text-dark">'.date('d F Y', strtotime($reg_date)).'</div>
+											<b class="text-primary">'.strtoupper($name).'</b>
+											<div class="text-muted">'.$view.' Views</div>
+										</div>
+									</div>
+									<div class="col-12 col-md-4 mb-2">
+										<div class="single">
+                                            <div class="text-muted">'.$promoter_no.' Promoters</div>
+											<b class="font-size-14 text-danger">$'.number_format($amount,2).'/ ₦'.number_format($nig_amount,2).'</b>
+                                            <div class="font-size-12 text-dark">'.$duration.' Days</div>
+										</div>
+									</div>
+                                    <div class="col-12 col-md-3 mb-2">
+										<div class="single text-end">'.$st.'<br>
+											<div class="text-muted ">'.$all_btn.'</div>
+										</div>
+									</div>
+								</div>
+							</li>
+						';
+					}
+				}
+			}
+			
+			if(empty($item)) {
+				$resp['item'] = '
+					<div class="text-center text-muted">
+						<br/><br/><br/><br/>
+						<i class="fal fa-ad" style="font-size:150px;"></i><br/><br/>No Promotion Returned<br>
+					</div>
+				';
+			} else {
+				$resp['item'] = $item;
+			}
+
+			$resp['count'] = $counts;
+
+			$more_record = $counts - ($offset + $rec_limit);
+			$resp['left'] = $more_record;
+
+			if($counts > ($offset + $rec_limit)) { // for load more records
+				$resp['limit'] = $rec_limit;
+				$resp['offset'] = $offset + $limit;
+			} else {
+				$resp['limit'] = 0;
+				$resp['offset'] = 0;
+			}
+
+			echo json_encode($resp);
+			die;
+		}
+
+
+
+        if($param1 == 'manage') { // view for form data posting
+			return view('setting/promotion_form', $data);
+		} else { // view for main page
+            
+			$data['title'] = 'Promotions | '.app_name;
+            $data['page_active'] = 'settings/promotion';
+            return view('setting/promotion', $data);
+        }
+    }
 }

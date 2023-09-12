@@ -109,6 +109,37 @@ class Listing extends BaseController {
 						exit;	
 					}
 				}
+			} elseif($param2 == 'promote'){
+				if($param3) {
+					$edit = $this->Crud->read_single('id', $param3, $table);
+					if(!empty($edit)) {
+						foreach($edit as $e) {
+							$data['e_id'] = $e->id;
+							$data['e_active'] = $e->active;
+						}
+					}
+
+					if($this->request->getMethod() == 'post'){
+						$del_id = $this->request->getVar('d_listing_id');
+						$active = $this->request->getVar('active');
+						
+						///// store activities
+						$code = $this->Crud->read_field('id', $del_id, 'listing', 'name');
+						$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+						$action = $by.' enabled Listing '.$code.'';
+						if($active  == 0)$action = $by.' disabled Listing '.$code.'';
+
+						if($this->Crud->updates('id', $del_id, $table, array('active'=>$active)) > 0) {
+							$this->Crud->activity('listing', $del_id, $action);
+
+							echo $this->Crud->msg('success', 'Listing Status Updated');
+							echo '<script>location.reload(false);</script>';
+						} else {
+							echo $this->Crud->msg('danger', 'Please try later');
+						}
+						exit;	
+					}
+				}
 			} else {
 				// prepare for edit
 				
@@ -346,6 +377,13 @@ class Listing extends BaseController {
 
 						$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-signal"></i></a>';
 						if($active > 0)$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Disable"><i class="far fa-signal-alt-slash"></i></a>';
+						
+						$ad = '
+							<li>
+								<a href="javascript:;" class="pop tolt"  pageTitle="Promote '.$name.'" pageName="'.site_url('listing/index/manage/promote/'.$id).'" pageSize="modal-lg" data-microtip-position="top-left"  data-tooltip="Promote"><i class="far fa-ad"></i></a>
+							</li>
+						';
+
 						$item .= '
 							<li class="list-group-item ">
 								<div class="row pt-4 align-items-center ">
@@ -372,7 +410,7 @@ class Listing extends BaseController {
 												<div class="dashboard-listings-item_opt text-center">
 													<span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  '.$view.' </span>
 													<ul>
-														<li><a href="'.site_url('listing/index/edit/'.$id).'" class="tolt" data-microtip-position="top-left"  data-tooltip="Edit"><i class="far fa-edit"></i></a></li>
+														<li><a href="'.site_url('listing/index/edit/'.$id).'" class="tolt" data-microtip-position="top-left"  data-tooltip="Edit"><i class="far fa-edit"></i></a></li>'.$ad.'
 														<li>'.$act.'</li>
 														<li><a href="javascript:;" class="pop tolt"  pageTitle="Delete '.$name.' Record" pageName="'.site_url('listing/index/manage/delete/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Delete"><i class="far fa-trash-alt"></i></a></li>
 													</ul>

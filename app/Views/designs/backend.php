@@ -263,11 +263,11 @@
                     <div class="dashboard-footer-links fl-wrap">
                         <span>Helpfull Links:</span>
                         <ul>
-                            <li><a href="about.html">About  </a></li>
-                            <li><a href="blog.html">Blog</a></li>
-                            <li><a href="pricing.html">Pricing Plans</a></li>
-                            <li><a href="contacts.html">Contacts</a></li>
-                            <li><a href="help.html">Help Center</a></li>
+                            <li><a href="javasctipt:;">About  </a></li>
+                            <li><a href="javasctipt:;">Blog</a></li>
+                            <li><a href="javasctipt:;">Pricing Plans</a></li>
+                            <li><a href="javasctipt:;">Contacts</a></li>
+                            <li><a href="javasctipt:;">Help Center</a></li>
                         </ul>
                     </div>
                     <a href="#main" class="dashbord-totop  custom-scroll-link"><i class="fas fa-caret-up"></i></a>

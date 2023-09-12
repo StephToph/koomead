@@ -54,147 +54,101 @@
         </div>
     <?php } ?>
 
-    <!-- profile view -->
-    <?php if($param2 == 'profile') { ?>
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="text-muted small">DATA</div>
-                <div class="row small">
-                    <div class="col-sm-6">
-                        <img alt="" src="<?php echo $v_img; ?>" width="100%" />
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="text-muted">NAME</div>
-                        <div><?php echo strtoupper($v_name); ?></div><br/>
-
-                        <div class="text-muted">PHONE</div>
-                        <div><?php echo $v_phone; ?></div><br/>
-
-                        <div class="text-muted">EMAIL</div>
-                        <div><?php echo $v_email; ?></div><br/>
-
-                        <div class="text-muted">ADDRESS</div>
-                        <div><?php echo $v_address; ?></div><br/>
-
-                        <div class="text-muted">STATE</div>
-                        <div><?php echo $v_state; ?></div><br/>
-
-                        <div class="text-muted">COUNTRY</div>
-                        <div><?php echo $v_country; ?></div><br/>
-
-                        <div class="text-muted">ISV</div>
-                        <div><?php echo $v_isv; ?></div><br/>
-
-                        <div class="text-muted">CLUSTER</div>
-                        <div><?php echo $v_cluster; ?></div><br/>
-                    </div>
-
-
-                    <div class="col-sm-12">
-                        
-                    </div>
-
-                    <div class="col-sm-6">
-                        
-                    </div>
-
-                    <div class="col-sm-6">
-                        
-                    </div>
-                </div>
-                <br/>
-            </div>
-           
-        </div>
-    <?php } ?>
-
-    <?php if($param2 == 'view') { ?>
-        <div class="row" style="padding:10px;">
-            <?php
-                $items = '';
-               
-                $query = $this->Crud->read_single_order('parent_id', $param3, 'child', 'id', 'asc');
-                if(!empty($query)) {
-                    foreach($query as $q) {
-                        $date = date('M d, Y h:i:sA', strtotime($q->reg_date));
-                        $user = $q->name;
-                        $age_id = $q->age_id;
-                        $age = $this->Crud->read_field('id', $age_id, 'age', 'name');
-                        
-                        $items .= '
-                            <tr>
-                                <td>'.$date.'</td>
-                                <td align="right">'.strtoupper($user).'</td>
-                                <td align="right">'.strtoupper($age).'</td>
-                            </tr>
-                        ';
-                    }
-                } else {
-                    $items .= '
-                            <tr>
-                                <td colspan="3" class="text-center">No Child</td>
-                                
-                            </tr>
-                        ';
-                }
-
-                echo '
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td><b>DATE</b></td>
-                                <td width="200px" align="right"><b>CHILD</b></td>
-                                <td width="200px" align="right"><b>AGE</b></td>
-                            </tr>
-                        </thead>
-                        <tbody>'.$items.'</tbody>
-                    </table>
-                ';
-            ?>
-        </div>
-    <?php } ?>
-
+    <?php echo form_close(); ?>
+    
+    <?php echo form_open_multipart('listing/promotion/manage/add', array('id'=>'bb_ajax_form2', 'class'=>'text-start custom-form')); ?>
     <!-- insert/edit view -->
-    <?php if($param2 == 'edit' || $param2 == '') { ?>
+    <?php if($param2 == 'promote') { ?>
         <div class="row">
-            <div class="col-sm-12"><div id="bb_ajax_msg"></div></div>
+            <div class="col-sm-12"><div id="bb_ajax_msg2"></div></div>
         </div>
 
         <div class="row">
-            <input type="hidden" name="user_id" value="<?php if(!empty($e_id)){echo $e_id;} ?>" />
+            <input type="hidden" name="listing_id" id="listing_id" value="<?php if(!empty($e_id)){echo $e_id;} ?>" />
 
-            
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="markerter_id"><?php if(!empty($e_email)) { echo 'Reset'; } ?> Password</label>
-                    <input class="form-control" type="text" id="password" name="password">
-                </div>
-            </div>
-
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="markerter_id">Ban</label>
+                    <label for="markerter_id">Promotion Type</label>
                     <div class="listsearch-input-item mb-2">
-                        <select data-placeholder="Select" id="ban" name="ban" required class="mb-2 select22 form-select">
-                            <option value="0" <?php if(!empty($e_activate)){if($e_activate == 0){echo 'selected';}} ?>>No</option>
-                            <option value="1" <?php if(!empty($e_activate)){if($e_activate == 1){echo 'selected';}} ?>>Yes</option>
+                        <select data-placeholder="Select" id="promotion_id" name="promote_id" onchange="promote();" required class="mb-2 select22 form-select">
+                            <option value="">Select</option>
+                            <?php 
+                                $prom = $this->Crud->read_single_order('status', 0, 'promotion', 'name', 'asc');
+                                if(!empty($prom)){
+                                    foreach($prom as $p){
+                                        $sel = '';
+                                       if(!empty($e_promotion_id)){if($e_promotion_id == $p->id){$sel= 'selected';}} 
+                                        echo '<option value="'.$p->id.'" '.$sel.'>'.$p->name.'</option>';
+                                    }
+                                }
+
+                            ?>
+                            
                         </select>
                         
                     </div>
                 </div>
             </div>
 
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="markerter_id"><span class="dec-icon"><i class="fal fa-sack-dollar"></i> </span> Amount</label>
+                    <input class="form-control" type="text" id="amount" name="amount" readonly required>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="markerter_id"><span class="dec-icon"><i class="far fa-eye"></i> </span> Expected Number of View</label>
+                    <input class="form-control" type="text" id="no_view" name="no_view" readonly required>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="markerter_id"> <span class="dec-icon"><i class="far fa-clock"></i> </span> Duration (Days)</label>
+                    <input class="form-control" type="text" id="duration" name="duration" readonly required>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="markerter_id"> <span class="dec-icon"><i class="far fa-calendar-alt"></i> </span> Expiry Date</label>
+                    <input class="form-control" type="text" id="expiry_date" name="expiry_date" readonly required>
+                </div>
+            </div>
+
+           
 
             <div class="col-sm-12 text-center">
                 <button class="btn btn-primary bb_form_btn" type="submit">
-                    <i class="fal fa-save"></i> Save Record
+                    <i class="fal fa-save"></i> Run Promotion
                 </button>
             </div>
         </div>
     <?php } ?>
-<?php echo form_close(); ?>
 
+    <?php echo form_close(); ?>
 <script src="<?php echo base_url(); ?>/assets/js/jsform.js"></script>
 <script>
     $(".select22").select2();
+    function promote(){
+        var promotion_id = $('#promotion_id').val();
+        var listing_id = $('#listing_id').val();
+        if(promotion_id !== ''){
+            $.ajax({
+                url: site_url + 'listing/promote/' + promotion_id + '/'+listing_id,
+                type: 'post',
+                success: function (data) {
+                    var dt = JSON.parse(data);
+                    $('#amount').val(dt.amount);
+                    $('#duration').val(dt.duration);
+                    $('#expiry_date').val(dt.expiry_date);
+                    $('#no_view').val(dt.no_view);
+                    
+
+                }
+            });
+        }
+    }
 </script>

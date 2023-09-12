@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="col-sm-12"><div id="bb_ajax_msg"></div></div>
             </div>
-        <div class="custom-form">
+        <div class="customform">
             <div class="row text-start">
                 <input type="hidden" name="module_id" value="<?php if(!empty($e_id)){echo $e_id;} ?>" />
 

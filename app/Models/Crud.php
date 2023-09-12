@@ -2033,9 +2033,9 @@ class Crud extends Model {
         $db->close();
 	}
 	
-	public function filter_voucher($limit='', $offset='', $user_id, $search='', $start_date='', $end_date='') {
+	public function filter_promotion($limit='', $offset='', $user_id, $search='', $promotion_id='', $start_date='', $end_date='') {
 		$db = db_connect();
-        $builder = $db->table('voucher');
+        $builder = $db->table('business_promotion');
 
         // build query
 		$builder->orderBy('id', 'DESC');
@@ -2048,8 +2048,7 @@ class Crud extends Model {
 		} 
 		// filter
 		if(!empty($search)) {
-            $builder->like('amount', $search);
-			$builder->orLike('code', $search);
+            $builder->like('code', $search);
 			
         }
 	

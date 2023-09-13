@@ -283,16 +283,29 @@ class Home extends BaseController {
 			die;
 		}
 
-		$this->saveDeviceInfo();
-            
-        $data['title'] = 'View Listing | '.app_name;
-        $data['page_active'] = 'listing';
-        if(empty($param2)){
+		
+		if($param1 == 'promote'){
+			
+			$data['title'] = 'Promote Listing | '.app_name;
+			$data['page_active'] = 'listing';
+			if(empty($param2)){
 
-            return redirect()->to(site_url(''));	
-        } $this->session->set('km_redirect', uri_string());
-        return view('home/list_view', $data);
-        
+				return redirect()->to(site_url(''));	
+			} $this->session->set('km_redirect', uri_string());
+			return view('home/list_promote', $data);
+
+		} else {
+			$this->saveDeviceInfo();
+			
+
+			$data['title'] = 'View Listing | '.app_name;
+			$data['page_active'] = 'listing';
+			if(empty($param2)){
+
+				return redirect()->to(site_url(''));	
+			} $this->session->set('km_redirect', uri_string());
+			return view('home/list_view', $data);
+		}
     }
 
     public function list_load($param1='', $param2='', $param3=''){
@@ -404,9 +417,9 @@ class Home extends BaseController {
                                         </div>
                                         <div class="geodir-category-content fl-wrap">
                                             <h3 class="title-sin_item"><a href="'.site_url('home/listing/view/'.$id).'">'.ucwords($name).'</a></h3>
-                                            <div class="geodir-category-content_price">'.$prices.'</div>
-                                            
-                                            <div class="geodir-category-footer fl-wrap">
+                                            <div class="geodir-category-content_price">'.$prices.' <span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary"><i class="fas fa-paper-plane"></i> </a></span></div>
+
+											<div class="geodir-category-footer fl-wrap">
                                                 <a href=javascript:;" class="gcf-company"><img src="'.site_url($user_img).'" alt=""><span>'.$user.'</span></a>
                                                
                                             </div>
@@ -571,6 +584,10 @@ class Home extends BaseController {
         }
        
     }
+
+	public function location(){
+		
+	}
 
 	public function saveDeviceInfo(){
         // Get user agent information (browser, OS, etc.)

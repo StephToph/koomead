@@ -298,7 +298,7 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
     <!--=============== scripts  ===============-->
     <script src="<?=site_url(); ?>assets/js/charts.js"></script>
     <script src="<?=site_url(); ?>assets/js/plugins.js"></script>

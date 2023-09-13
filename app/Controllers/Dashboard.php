@@ -47,7 +47,7 @@ class Dashboard extends BaseController {
 
         // check login
         $log_id = $this->session->get('km_id');
-        if(empty($log_id)) return redirect()->to(site_url(''));
+        // if(empty($log_id)) return redirect()->to(site_url(''));
 		
         $this->session->set('km_redirect', uri_string());
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
@@ -57,7 +57,7 @@ class Dashboard extends BaseController {
         $role_u = $this->Crud->module($role_id, 'dashboard/category', 'update');
         $role_d = $this->Crud->module($role_id, 'dashboard/category', 'delete');
         if($role_r == 0){
-            return redirect()->to(site_url('profile'));	
+            // return redirect()->to(site_url('profile'));	
         }
         $log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
         $data['log_name'] = $log_name;

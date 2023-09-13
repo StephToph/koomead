@@ -9,6 +9,7 @@
 <?php echo $this->endSection(); ?>
 
 <?php echo $this->section('content'); ?>
+
 <!-- content -->	
 <div class="content">
     <!--  section  -->
@@ -351,9 +352,13 @@
         </div>
     </section> -->
     <!-- section end-->					
+    <!-- Button to trigger the modal -->
+
     
+
+
     <section  class="subscribe-wrap padding-section" style="padding:10px">
-       
+
     </sec>
     <!-- section end-->
 </div>
@@ -389,145 +394,4 @@
         </div>
     </div>
 </div>
-<input type="hidden" id="country_id" value="">
-<!-- subscribe-wrap end -->	 
-<script>var site_url = '<?php echo site_url(); ?>';</script>
-   
-<script>
-    
-    function load(x, y) {
-        var more = 'no';
-        var methods = '';
-        if (parseInt(x) > 0 && parseInt(y) > 0) {
-            more = 'yes';
-            methods = '/' +x + '/' + y;
-        }
-
-        if (more == 'no') {
-            $('#load_data').html('<div class="col-sm-12 text-center"><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i><br/><br/><br/></div>');
-        } else {
-            $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
-        }
-
-        var country_id = $('#country_id').val();
-        var state_id = $('#state_id').val();
-       
-
-        $.ajax({
-            url: site_url + 'home/list_load/load' + methods,
-            type: 'post',
-            data: {state_id: state_id,country_id: country_id },
-            success: function (data) {
-                var dt = JSON.parse(data);
-                if (more == 'no') {
-                    $('#load_data').html(dt.item);
-                } else {
-                    $('#load_data').append(dt.item);
-                }
-
-                if (dt.offset > 0) {
-                    $('#loadmore').html('<a href="javascript:;" class="btn btn-secondary b-block p-30" onclick="load(' + dt.limit + ', ' + dt.offset + ');"><i class="fal fa-repeat"></i> Load ' + dt.left + ' More</a>');
-                } else {
-                    $('#loadmore').html('');
-                }
-
-                $('#listCount').html(dt.count);
-            },
-            complete: function () {
-                $.getScript(site_url + 'assets/js/jsmodal.js');
-            }
-        });
-    }
-
-    function load_state(x, y) {
-        var more = 'no';
-        var methods = '';
-        if (parseInt(x) > 0 && parseInt(y) > 0) {
-            more = 'yes';
-            methods = '/' +x + '/' + y;
-        }
-
-        if (more == 'no') {
-            $('#load_state').html('<div class="col-sm-12 text-center"><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i><br/><br/><br/></div>');
-        } else {
-            $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
-        }
-
-        var country_id = $('#country_id').val();
-        var state_id = $('#state_id').val();
-       
-
-        $.ajax({
-            url: site_url + 'home/list_state/load' + methods,
-            type: 'post',
-            data: {state_id: state_id,country_id: country_id },
-            success: function (data) {
-                var dt = JSON.parse(data);
-                if (more == 'no') {
-                    $('#load_state').html(dt.item);
-                } else {
-                    $('#load_state').append(dt.item);
-                }
-            }
-        });
-    }
-
-
-    function get_country(country){
-        if(country !== ''){
-            $.ajax({
-                url: site_url + 'home/get_country',
-                type: 'post',
-                data: {country: country },
-                success: function (data) {
-                    $('#country_id').val(data);
-                    console.log(data);
-                    load('','');load_state('','');
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error("AJAX Error:", textStatus, errorThrown);
-                }
-            });
-        }
-    }
-    
-    
-</script>
-
-<script>
-    function showCountry(position) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-
-        // Use a reverse geocoding service to get the country from the latitude and longitude.
-        // You can use an API like OpenCage Geocoder, Google Geocoding API, or others.
-        // Here, we're using the Nominatim service for simplicity.
-        const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
-
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const country = data.address.country;
-                // const countryElement = document.getElementById('country');
-                // countryElement.textContent = country;
-                console.log(country);
-                // Use the country information as needed.
-                get_country(country);
-            })
-            .catch(error => {
-                console.error("Error fetching country information:", error);
-            });
-    }
-
-    function showError(error) {
-        console.error("Error getting location:", error);
-    }
-
-    // Check if the Geolocation API is available in the browser
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(showCountry, showError);
-    } else {
-        console.error("Geolocation is not available in this browser.");
-    }
-</script>
 <?php echo $this->endSection(); ?>

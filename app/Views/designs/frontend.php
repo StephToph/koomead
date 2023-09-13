@@ -19,12 +19,24 @@
     <meta name="robots" content="index, follow" />
     <meta name="keywords" content="" />
     <meta name="description" content="" />
-    <!-- css   -->
-    <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/plugins.css?v=<?=time(); ?>">
+    <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/plugins.css">
     <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/style.css?v=<?=time(); ?>">
-    <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/color.css?v=<?=time(); ?>">
-    <!--  favicons  -->
+    <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/bootstrap.css?v=<?=time(); ?>">
+    <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/dashboard-style.css?v=<?=time(); ?>">
+    <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/color.css">
+    <link rel="stylesheet" href="<?=site_url();?>assets/css/select2.min.css" />
     <link rel="shortcut icon" href="<?=site_url();?>assets/images/favicon.ico">
+
+
+    <script src="<?=site_url(); ?>assets/js/jquery.min.js"></script>
+    <!-- Include Bootstrap JS and Popper.js -->
+    <script src="<?=site_url(); ?>assets/js/popper.min.js" ></script>
+    <script src="<?=site_url(); ?>assets/js/bootstrap.min.js"></script>
+    
+    <!-- Include Bootstrap Select JS -->
+    <script src="<?=site_url(); ?>assets/js/select2.min.js" ></script>
+
+
 </head>
 
 <body>
@@ -69,17 +81,19 @@
             </div>
             <!--  add new  btn end -->
             <!--  header-opt_btn -->
-            <div class="header-opt_btn tolt" style="display:bloc" data-microtip-position="bottom" data-tooltip="Country">
+            <div class="header-opt_btn tolt" style="display:bloc" data-microtip-position="bottom"
+                data-tooltip="Country">
                 <span><i class="fal fa-globe"></i></span>
             </div>
             <!--  header-opt_btn end -->
             <!--  cart-btn   -->
             <!--  cart-btn   -->
             <?php if(!empty($log_id)){?>
-                <div class="cart-btn  tolt show-header-modal" data-microtip-position="bottom"  data-tooltip="Your Notification">
-                    <i class="fal fa-bell"></i>
-                    <span class="cart-btn_counter color-bg" id="notify_no">0</span>
-                </div>
+            <div class="cart-btn  tolt show-header-modal" data-microtip-position="bottom"
+                data-tooltip="Your Notification">
+                <i class="fal fa-bell"></i>
+                <span class="cart-btn_counter color-bg" id="notify_no">0</span>
+            </div>
             <?php } ?>
 
             <?php
@@ -99,37 +113,53 @@
                     <div class="tab">
                         <!--tab -->
                         <div id="tab-wish" class="tab-content first-tab">
-                            <!-- header-modal-container--> 
+                            <!-- header-modal-container-->
                             <div class="header-modal-container scrollbar-inner fl-wrap" data-simplebar>
                                 <!--widget-posts-->
                                 <div class="widget-posts  fl-wrap">
                                     <ul class="no-list-style" id="notify_show">
-                                        
+
                                     </ul>
                                 </div>
                                 <!-- widget-posts end-->
                             </div>
-                            <!-- header-modal-container end--> 
+                            <!-- header-modal-container end-->
                             <div class="header-modal-top fl-wrap">
-                                <div class="clear_wishlist color-bg" onclick="mark_all();"><i class="fal fa-trash-alt"></i> Clear all</div><br>
-                                <div class="clear_wishlist color-bg"><a class="text-white" href="<?=site_url('notification'); ?>"><i class="fal fa-eye"></i>See All</a></div>
+                                <div class="clear_wishlist color-bg" onclick="mark_all();"><i
+                                        class="fal fa-trash-alt"></i> Clear all</div><br>
+                                <div class="clear_wishlist color-bg"><a class="text-white"
+                                        href="<?=site_url('notification'); ?>"><i class="fal fa-eye"></i>See All</a>
+                                </div>
                             </div>
                         </div>
                         <!--tab end -->
-                        
+
                     </div>
-                    <!--tabs end -->							
+                    <!--tabs end -->
                 </div>
             </div>
             <!--header-opt-modal-->
             <div class="header-opt-modal novis_header-mod">
                 <div class="header-opt-modal-container hopmc_init">
                     <div class="header-opt-modal-item lang-item fl-wrap">
-                        <h4>Country: <span>NGN</span></h4>
+                        <?php 
+                            $cur = 'NGN';
+                            $sel = 'class="current-lan"';
+                            if(!empty($log_id)){
+                                $country = $this->Crud->read_field('id', $log_id, 'user', 'country_id'); 
+                                if($country != 161){
+                                    $cur = 'UK';
+                                    $sel = 'class="current-lan"';
+                                }
+                            }
+                        ?>
+                        <h4>Country: <span><?=$cur;?></span></h4>
                         <div class="header-opt-modal-list fl-wrap">
                             <ul>
-                                <li><a href="javascript:;" onclick="get_country('Nigeria')" class="current-lan" data-lantext="NGN">Nigeria</a></li>
-                                <li><a href="javascript:;" onclick="get_country('United Kingdom')" data-lantext="UK">United Kingdom</a></li>
+                                <li><a href="javascript:;" onclick="get_country('Nigeria')" <?=$sel;?>
+                                        data-lantext="NGN">Nigeria</a></li>
+                                <li><a href="javascript:;" onclick="get_country('United Kingdom')"
+                                        data-lantext="UK">United Kingdom</a></li>
                             </ul>
                         </div>
                     </div>
@@ -388,21 +418,27 @@
                                 <div class="custom-form">
 
                                     <?php echo form_open_multipart('auth/password/forgot', array('id'=>'bb_ajax_form3', 'class'=>'')); ?>
-                                    <label>Email Address * <span class="dec-icon"><i class="fal fa-envelope"></i></span></label>
-                                    <input name="email" id="email" type="email" placeholder="Your Mail"  autocomplete="off" onClick="this.select()" required value="">
+                                    <label>Email Address * <span class="dec-icon"><i
+                                                class="fal fa-envelope"></i></span></label>
+                                    <input name="email" id="email" type="email" placeholder="Your Mail"
+                                        autocomplete="off" onClick="this.select()" required value="">
                                     <div id="code_resp" style="display:none">
-                                        <label>Reset Code * <span class="dec-icon"><i class="fal fa-envelope"></i></span></label>
-                                        <input name="code" id="code" type="text" placeholder="Reset Code" onClick="this.select()"  value="">
-                                    
+                                        <label>Reset Code * <span class="dec-icon"><i
+                                                    class="fal fa-envelope"></i></span></label>
+                                        <input name="code" id="code" type="text" placeholder="Reset Code"
+                                            onClick="this.select()" value="">
+
                                     </div>
-                                     <div id="password_resp" style="display:none">
+                                    <div id="password_resp" style="display:none">
                                         <div class="pass-input-wrap fl-wrap">
-                                            <label>New Password * <span class="dec-icon"><i class="fal fa-key"></i></span></label>
-                                            <input name="pwd" id="pwd" type="password" placeholder="New Password" autocomplete="off"  onClick="this.select()" value="">
+                                            <label>New Password * <span class="dec-icon"><i
+                                                        class="fal fa-key"></i></span></label>
+                                            <input name="pwd" id="pwd" type="password" placeholder="New Password"
+                                                autocomplete="off" onClick="this.select()" value="">
                                             <span class="eye"><i class="fal fa-eye"></i> </span>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="clearfix"></div>
                                     <button type="submit" class="log_btn color-bg bb_orm_btn"> Reset </button>
                                     </form>
@@ -415,7 +451,7 @@
 
                         </div>
                     </div>
-                    
+
                 </div>
                 <!--register form end -->
                 <!--secondary-nav -->
@@ -437,29 +473,208 @@
                 <!--secondary-nav end -->
                 <a class="to-top color-bg"><i class="fas fa-caret-up"></i></a>
                 <!--map-modal -->
-                <div class="map-modal-wrap">
-                    <div class="map-modal-wrap-overlay"></div>
-                    <div class="map-modal-item">
-                        <div class="map-modal-container fl-wrap">
-                            <h3> <span>Listing Title </span></h3>
-                            <div class="map-modal-close"><i class="far fa-times"></i></div>
-                            <div class="map-modal fl-wrap">
-                                <div id="singleMap" data-latitude="40.7" data-longitude="-73.1"></div>
-                                <div class="scrollContorl"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <!--map-modal end -->
             </div>
-            <!-- Main end -->
+            <!-- Main end -->                            
+        </div>
+    </div>
+    <div class="modal modal-center fade modality" id="modal">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">  </h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal">
+                        <i class="fal fa-times-octagon"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fal fa-times-octagon"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <!--=============== scripts  ===============-->
-            <script src="<?=site_url();?>assets/js/jquery.min.js"></script>
-            <script src="<?=site_url();?>assets/js/plugins.js"></script>
-            <script src="<?=site_url();?>assets/js/scripts.js"></script>
-            <script src="<?=site_url();?>assets/js/jsform.js"></script>
-             <script>
+   
+    <!--=============== scripts  ===============-->
+    <script src="<?=site_url(); ?>assets/js/charts.js"></script>
+    <script src="<?=site_url(); ?>assets/js/plugins.js"></script>
+    <script src="<?=site_url(); ?>assets/js/scripts.js"></script>
+    <script src="<?=site_url(); ?>assets/js/dashboard.js"></script>
+    <script src="<?=site_url();?>assets/js/jsform.js"></script>
+    <?php
+
+    if($page_active == 'home'){?>
+            
+        <input type="hidden" id="country_id" value="">
+
+        <script>var site_url = '<?php echo site_url(); ?>';</script>
+        <script>
+            
+            function load(x, y) {
+                var more = 'no';
+                var methods = '';
+                if (parseInt(x) > 0 && parseInt(y) > 0) {
+                    more = 'yes';
+                    methods = '/' +x + '/' + y;
+                }
+
+                if (more == 'no') {
+                    $('#load_data').html('<div class="col-sm-12 text-center"><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i><br/><br/><br/></div>');
+                } else {
+                    $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
+                }
+
+                var country_id = $('#country_id').val();
+                var state_id = $('#state_id').val();
+            
+
+                $.ajax({
+                    url: site_url + 'home/list_load/load' + methods,
+                    type: 'post',
+                    data: {state_id: state_id,country_id: country_id },
+                    success: function (data) {
+                        var dt = JSON.parse(data);
+                        if (more == 'no') {
+                            $('#load_data').html(dt.item);
+                        } else {
+                            $('#load_data').append(dt.item);
+                        }
+
+                        if (dt.offset > 0) {
+                            $('#loadmore').html('<a href="javascript:;" class="btn btn-secondary b-block p-30" onclick="load(' + dt.limit + ', ' + dt.offset + ');"><i class="fal fa-repeat"></i> Load ' + dt.left + ' More</a>');
+                        } else {
+                            $('#loadmore').html('');
+                        }
+
+                        $('#listCount').html(dt.count);
+                    }
+                });
+            }
+
+            function load_state(x, y) {
+                var more = 'no';
+                var methods = '';
+                if (parseInt(x) > 0 && parseInt(y) > 0) {
+                    more = 'yes';
+                    methods = '/' +x + '/' + y;
+                }
+
+                if (more == 'no') {
+                    $('#load_state').html('<div class="col-sm-12 text-center"><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i><br/><br/><br/></div>');
+                } else {
+                    $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
+                }
+
+                var country_id = $('#country_id').val();
+                var state_id = $('#state_id').val();
+            
+
+                $.ajax({
+                    url: site_url + 'home/list_state/load' + methods,
+                    type: 'post',
+                    data: {state_id: state_id,country_id: country_id },
+                    success: function (data) {
+                        var dt = JSON.parse(data);
+                        if (more == 'no') {
+                            $('#load_state').html(dt.item);
+                        } else {
+                            $('#load_state').append(dt.item);
+                        }
+                    },
+                        complete: function () {
+                            $.getScript(site_url + 'assets/js/jsmodal.js');
+                        }
+                });
+            }
+
+
+            function get_country(country){
+                if(country !== ''){
+                    $.ajax({
+                        url: site_url + 'home/get_country',
+                        type: 'post',
+                        data: {country: country },
+                        success: function (data) {
+                            $('#country_id').val(data);
+                            
+                            console.log(data);
+                            load('','');load_state('','');
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                        }
+                    });
+                }
+            }
+            
+            function modals(){
+                $(".modal").on('hidden.bs.modal', function () {
+                    $(this).data('bs.modal', null);
+                });	
+                var pageTitle = 'Location Info';
+                var pageName = site_url + 'dashboard/categoy/mana';
+                var pageSize = 'modal-lg';
+
+                $(".modal-dialog").addClass(pageSize);
+                $(".modal-center .modal-title").html(pageTitle);
+                $(".modal-center .modal-body").html('<div class="col-sm-12 text-center"><i class="fa fa-spinner fa-spin" style="font-size:24px;"></i> Processing Request.. Please Wait..</div>');
+                $(".modal-center .modal-body").load(pageName);
+                $(".modal-center").modal("show");
+            }
+
+            function showCountry(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                // Use a reverse geocoding service to get the country from the latitude and longitude.
+                // You can use an API like OpenCage Geocoder, Google Geocoding API, or others.
+                // Here, we're using the Nominatim service for simplicity.
+                const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const country = data.address.country;
+                        
+                        console.log(country);
+                        // Use the country information as needed.
+                        // modals();
+                        get_country(country);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching country information:", error);
+                    });
+            }
+
+            function showError(error) {
+                console.error("Error getting location:", error);
+            }
+
+            // Check if the Geolocation API is available in the browser
+
+            <?php 
+
+            if(empty($log_id)){?>
+                if ("geolocation" in navigator) {
+                    navigator.geolocation.getCurrentPosition(showCountry, showError);
+                } else {
+                    console.error("Geolocation is not available in this browser.");
+                }
+            <?php } else {  $country = $this->Crud->read_field('id', $log_id, 'user', 'country_id'); 
+                $country =  $this->Crud->read_field('id', $country, 'country', 'name'); ?>
+                // console.log('tre'+<?=$country; ?>);
+                var country = '<?=$country; ?>';
+                get_country(country);
+            <?php } ?>
+        </script>
+
+
+    <?php } ?>
+    <script>
             var site_url = '<?php echo site_url(); ?>';
 
             function get_state() {
@@ -473,16 +688,16 @@
                 });
             }
 
-            function forgots(){
+            function forgots() {
                 $('#forgot_tab').show(500);
                 $('#register_tab').hide(500);
-                
+
             }
 
-            function register(){
+            function register() {
                 $('#forgot_tab').hide(500);
                 $('#register_tab').show(500);
-                
+
             }
 
 
@@ -508,86 +723,89 @@
                 });
             }
             </script>
-             
-<script>var site_url = '<?php echo site_url(); ?>';</script>
-   
-   <script>
-    <?php if($log_id){?>
-       $(function() {
-           loada('', '');
-       });
-   <?php } ?>
-       
-   
-       function loada(x, y) {
-           var more = 'no';
-           var methods = '';
-           
-   
-           if (more == 'no') {
-               $('#notify_show').html('<div class="col-sm-12 text-center"><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
-           } else {
-               $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
-           }
-   
-           var country_id = $('#country_id').val();
-           var state_id = $('#state_id').val();
-          
-   
-           $.ajax({
-               url: site_url + 'notification/index/nav_load' + methods,
-               type: 'post',
-               success: function (data) {
-                   var dt = JSON.parse(data);
-                   if (more == 'no') {
-                       $('#notify_show').html(dt.item);
-                   }
-   
-                   $('#notify_no').html(dt.count);
-               },
-           });
-       }
-   
-       
-   </script>
-   
-       <script>
-           function mark_read(id){
-               $.ajax({
-                   url: site_url + 'notification/mark_read/' + id,
-                   type: 'post',
-                   success: function (data) {
-                       // window.location.replace("<?=site_url('notification/list'); ?>");
-                       load();
-                   }
-               });
-           }
-   
-           function mark_all(){
-               $.ajax({
-                   url: site_url + 'notification/mark_all',
-                   type: 'post',
-                   success: function (data) {
-                       load();
-                   }
-               });
-           }
-   
-           function plays(){
-               var src = '<?=site_url(); ?>' +'assets/audio/3.wav';
-               var audio = new Audio(src);
-               audio.play();
-           }
-   
-           <?php 
+
+            <script>
+            var site_url = '<?php echo site_url(); ?>';
+            </script>
+
+            <script>
+            <?php if($log_id){?>
+            $(function() {
+                loada('', '');
+            });
+            <?php } ?>
+
+
+            function loada(x, y) {
+                var more = 'no';
+                var methods = '';
+
+
+                if (more == 'no') {
+                    $('#notify_show').html(
+                        '<div class="col-sm-12 text-center"><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>'
+                        );
+                } else {
+                    $('#loadmore').html(
+                        '<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
+                }
+
+                var country_id = $('#country_id').val();
+                var state_id = $('#state_id').val();
+
+
+                $.ajax({
+                    url: site_url + 'notification/index/nav_load' + methods,
+                    type: 'post',
+                    success: function(data) {
+                        var dt = JSON.parse(data);
+                        if (more == 'no') {
+                            $('#notify_show').html(dt.item);
+                        }
+
+                        $('#notify_no').html(dt.count);
+                    },
+                });
+            }
+            </script>
+
+            <script>
+            function mark_read(id) {
+                $.ajax({
+                    url: site_url + 'notification/mark_read/' + id,
+                    type: 'post',
+                    success: function(data) {
+                        // window.location.replace("<?=site_url('notification/list'); ?>");
+                        load();
+                    }
+                });
+            }
+
+            function mark_all() {
+                $.ajax({
+                    url: site_url + 'notification/mark_all',
+                    type: 'post',
+                    success: function(data) {
+                        load();
+                    }
+                });
+            }
+
+            function plays() {
+                var src = '<?=site_url(); ?>' + 'assets/audio/3.wav';
+                var audio = new Audio(src);
+                audio.play();
+            }
+
+            <?php 
            $notify = $this->Crud->read2('to_id', $log_id, 'new', 1, 'notify');
            if(!empty($notify)){?>
-               $(function() {
-                   plays();
-               });
-           <?php }?>
-       </script>
-   
+            $(function() {
+                plays();
+            });
+            <?php }?>
+            </script>
+
 </body>
 
 </html>

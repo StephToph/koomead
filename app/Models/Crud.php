@@ -2033,13 +2033,13 @@ class Crud extends Model {
         $db->close();
 	}
 	
-	public function filter_promotion($limit='', $offset='', $user_id, $search='', $promotion_id='', $start_date='', $end_date='') {
+	public function filter_promotion($limit='', $offset='', $user_id, $search='', $promotion_id='', $listing_id='', $start_date='', $end_date='') {
 		$db = db_connect();
         $builder = $db->table('business_promotion');
 
         // build query
 		$builder->orderBy('id', 'DESC');
-
+		$builder->where('listing_id', $listing_id);
 		// build query
 		$role_id = $this->read_field('id', $user_id, 'user', 'role_id');
 		$role = strtolower($this->read_field('id', $role_id, 'access_role', 'name'));

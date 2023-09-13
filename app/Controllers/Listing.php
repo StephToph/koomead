@@ -578,6 +578,8 @@ class Listing extends BaseController {
                     $duration = $this->request->getVar('duration');
 
 					$user_id = $this->Crud->read_field('id', $listing_id, 'listing', 'user_id');
+					$country_id = $this->Crud->read_field('id', $user_id, 'listing', 'country_id');
+					$state_id = $this->Crud->read_field('id', $user_id, 'listing', 'state_id');
 					$p_data['listing_id'] = $listing_id;
 					$p_data['promotion_id'] = $promote_id;
 					$p_data['amount'] = $amount;
@@ -585,33 +587,63 @@ class Listing extends BaseController {
 					$p_data['expiry_date'] = $expiry_date;
 					$code = substr(md5(time().rand()), 0, 6);
                     
-					if($this->Crud->check3('listing_id', $listing_id, 'user_id', $user_id, 'status', 0, $table) > 0){
-						echo $this->Crud->msg('warning', 'You have an active Promotion on this Listing.<br>Try again Later');
-						die;
+					// if($this->Crud->check3('listing_id', $listing_id, 'user_id', $user_id, 'status', 0, $table) > 0){
+					// 	echo $this->Crud->msg('warning', 'You have an active Promotion on this Listing.<br>Try again Later');
+					// 	die;
+					// }
+
+					//Get Business Wallet Balance
+					$wallet = $this->Crud->read_single('user_id', $user_id, 'wallet');
+					$bal = 0;
+					if(!empty($wallet)){
+						$credit = 0;$debit =0;
+						foreach($wallet as $w){
+							if($w->type == 'credit')$credit +=(float)$w->amount;
+							if($w->type == 'debit')$debit +=(float)$w->amount;
+							
+						}
+						$bal = $credit - $debit;
 					}
 					
-					if($this->Crud->check('code', $code, $table) > 0) {
-						echo $this->Crud->msg('warning', 'Promotion Already Exist');
-					} else {
-						$p_data['code'] = $code;
-						$p_data['user_id'] = $user_id;
-						$p_data['reg_date'] = date(fdate);
-				
-						$ins_rec = $this->Crud->create($table, $p_data);
-						if($ins_rec > 0) {
-							///// store activities
-							$code = $this->Crud->read_field('id', $ins_rec, $table, 'code');
-							$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-							$action = $by.' Created Promotion '.$code.' for Business';
-							$this->Crud->activity('setup', $ins_rec, $action);
-
-							echo $this->Crud->msg('success', 'Promotion Created');
-							echo '<script>location.reload(false);</script>';
+					if($bal <= $amount){
+						echo $this->Crud->msg('danger', 'Insufficient Funds.<br>Please Fund Account First');
+					} else{
+						if($this->Crud->check('code', $code, $table) > 0) {
+							echo $this->Crud->msg('warning', 'Promotion Already Exist');
 						} else {
-							echo $this->Crud->msg('danger', 'Please try later');	
-						}	
+							$p_data['code'] = $code;
+							$p_data['user_id'] = $user_id;
+							$p_data['reg_date'] = date(fdate);
+					
+							$ins_rec = $this->Crud->create($table, $p_data);
+							if($ins_rec > 0) {
+								//Deduct Catch from wallet
+								$v_ins['user_id'] = $user_id;
+								$v_ins['type'] = 'debit';
+								$v_ins['amount'] = $amount;
+								$v_ins['item'] = 'listing';
+								$v_ins['item_id'] = $ins_rec;
+								$v_ins['country_id'] = $country_id;
+								$v_ins['state_id'] = $state_id;
+								$v_ins['remark'] = 'Business Listing Promotion';
+								$v_ins['reg_date'] = date(fdate);
+								$w_id = $this->Crud->create('wallet', $v_ins);
+
+								///// store activities
+								$code = $this->Crud->read_field('id', $ins_rec, $table, 'code');
+								$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+								$action = $by.' Created Promotion '.$code.' for Business';
+								$this->Crud->activity('setup', $ins_rec, $action);
+	
+								echo $this->Crud->msg('success', 'Promotion Created');
+								echo '<script>location.reload(false);</script>';
+							} else {
+								echo $this->Crud->msg('danger', 'Please try later');	
+							}	
+						}
+					
 					}
-				
+					
 
 					die;	
 				}
@@ -712,6 +744,7 @@ class Listing extends BaseController {
 			
 			if (!empty($this->request->getPost('search'))) {$search = $this->request->getPost('search');} else {$search = '';}
 			if(!empty($this->request->getPost('promotion_id'))) { $promotion_id = $this->request->getPost('promotion_id'); } else { $promotion_id = ''; }
+			if(!empty($this->request->getPost('listing_id'))) { $listing_id = $this->request->getPost('listing_id'); } else { $listing_id = ''; }
 			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
 			
@@ -720,8 +753,8 @@ class Listing extends BaseController {
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {
-				$query = $this->Crud->filter_promotion($limit, $offset, $log_id, $search, $promotion_id, $start_date, $end_date);
-				$all_rec = $this->Crud->filter_promotion('', '', $log_id, $search, $promotion_id, $start_date, $end_date);
+				$query = $this->Crud->filter_promotion($limit, $offset, $log_id, $search, $promotion_id, $listing_id, $start_date, $end_date);
+				$all_rec = $this->Crud->filter_promotion('', '', $log_id, $search, $promotion_id, $listing_id, $start_date, $end_date);
 				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
 				
 				if(!empty($query)) {

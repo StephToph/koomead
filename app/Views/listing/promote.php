@@ -65,7 +65,7 @@
             
         </div>
     </div>
-
+    <input type="hidden" id="listing_id" value="<?=$param2; ?>">
     
     <!-- <script src="<?php echo site_url(); ?>assets/js/jquery.min.js"></script> -->
     <script>var site_url = '<?php echo site_url(); ?>';</script>
@@ -90,11 +90,12 @@
             }
 
             var search = $('#search').val();
+            var listing_id = $('#listing_id').val();
 
             $.ajax({
                 url: site_url + 'listing/promotion/load' + methods,
                 type: 'post',
-                data: { search: search },
+                data: { search: search,listing_id: listing_id },
                 success: function (data) {
                     var dt = JSON.parse(data);
                     if (more == 'no') {

@@ -72,7 +72,7 @@
                 <?php
 
                 if(empty($log_id)){
-                    echo '<div class="show-reg-form modal-open"><a href="javascript:;" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a></div>';
+                    echo '<div class="show-reg-form "><a href="javascript:;" class="add-list pops color-bg"  " pageTitle="" pageName="'.site_url('auth/login').'" pageSize="modal-xl"><i class="fal fa-plus"></i> <span>Add Listing</span></a></div>';
                 } else {
                     echo '<a href="'.site_url('listing/index/add').'" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>';
                 }
@@ -100,7 +100,7 @@
 
 
                 if(empty($log_id)){
-                    echo '<div class="show-reg-form modal-open"><i class="fas fa-user"></i><span>Sign In</span></div>';
+                    echo '<div class="show-reg-form"><a href="javascript:;" class="pops"  " pageTitle="" pageName="'.site_url('auth/login').'" pageSize="modal-xl"><i class="fas fa-user"></i><span>Sign In</span></a></div>';
                 } else {
                     echo '<div class="show-reg-form"><a href="'.site_url('dashboard').'"><i class="fas fa-user"></i><span>User Dashboard</span></a></div>';
                 }
@@ -269,192 +269,8 @@
         </div>
         <!-- wrapper end -->
         <!--register form -->
-        <div class="main-register-wrap modal">
+        <div class="main-register-wrap ">
             <div class="reg-overlay"></div>
-            <div class="main-register-holder tabs-act">
-                <div class="main-register-wrapper modal_main fl-wrap">
-                    <div class="main-register-header color-bg">
-                        <div class="main-register-logo fl-wrap">
-                            <img src="<?=site_url();?>assets/images/white-logo.png" alt="">
-                        </div>
-                        <div class="main-register-bg">
-                            <div class="mrb_pin"></div>
-                            <div class="mrb_pin mrb_pin2"></div>
-                        </div>
-                        <div class="mrb_dec"></div>
-                        <div class="mrb_dec mrb_dec2"></div>
-                    </div>
-                    <div class="main-register">
-                        <div class="close-reg"><i class="fal fa-times"></i></div>
-                        <div id="register_tab">
-                            <ul class="tabs-menu fl-wrap no-list-style">
-                                <li class="current"><a href="#tab-1"><i class="fal fa-sign-in-alt"></i> Login</a></li>
-                                <li><a href="#tab-2"><i class="fal fa-user-plus"></i> Register</a></li>
-
-                            </ul>
-                            <!--tabs -->
-                            <div class="tabs-container">
-                                <div class="tab">
-                                    <!--tab -->
-                                    <div id="tab-1" class="tab-content first-tab">
-                                        <div class="row py-1">
-                                            <div class="col-sm-12">
-                                                <div id="bb_ajax_msg"></div>
-                                            </div>
-                                        </div>
-                                        <div class="custom-form">
-
-                                            <?php echo form_open_multipart('auth/login', array('id'=>'bb_ajax_form', 'class'=>'')); ?>
-                                            <label>Email Address * <span class="dec-icon"><i
-                                                        class="fal fa-user"></i></span></label>
-                                            <input name="email" type="text" placeholder="Your Name or Mail"
-                                                onClick="this.select()" value="">
-                                            <div class="pass-input-wrap fl-wrap">
-                                                <label>Password * <span class="dec-icon"><i
-                                                            class="fal fa-key"></i></span></label>
-                                                <input name="password" placeholder="Your Password" type="password"
-                                                    autocomplete="off" onClick="this.select()" value="">
-                                                <span class="eye"><i class="fal fa-eye"></i> </span>
-                                            </div>
-                                            <div class="lost_password">
-                                                <a href="javascript:;" onclick="forgots()">Lost Your Password?</a>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                            <button type="submit" class="log_btn color-bg bb_form_btn"> LogIn </button>
-                                            </form>
-                                        </div>
-                                    </div>
-
-
-                                    <!--tab end -->
-                                    <!--tab -->
-                                    <div class="tab">
-                                        <div id="tab-2" class="tab-content">
-                                            <div class="row py-1">
-                                                <div class="col-sm-12">
-                                                    <div id="bb_ajax_msg2"></div>
-                                                </div>
-                                            </div>
-                                            <div class="custom-form">
-                                                <?php echo form_open_multipart('auth/register', array('id'=>'bb_ajax_form2', 'class'=>'')); ?>
-                                                <label>Full Name * <span class="dec-icon"><i
-                                                            class="fal fa-user"></i></span></label>
-                                                <input name="name" type="text" placeholder="Your Name" required
-                                                    onClick="this.select()" value="">
-                                                <label>Email Address * <span class="dec-icon"><i
-                                                            class="fal fa-envelope"></i></span></label>
-                                                <input name="email" type="email" placeholder="Your Mail" required
-                                                    onClick="this.select()" value="">
-                                                <label>Country</label>
-                                                <div class="listsearch-input-item mb-2">
-                                                    <select data-placeholder="Select" name="country_id" id="country_id"
-                                                        required class="mb-2 chosen-select search-select"
-                                                        onchange="get_state();">
-                                                        <option value="">Select</option>
-                                                        <?php
-                                                                $country = $this->Crud->read_order('country', 'name', 'asc');
-                                                                if(!empty($country)){
-                                                                    foreach($country as $c){
-                                                                        echo '<option value="'.$c->id.'">'.$c->name.'</option>';
-                                                                    }
-                                                                }
-                                                            ?>
-                                                    </select>
-                                                </div>
-                                                <label>State</label>
-                                                <div class="listsearch-input-item mb-2" id="states_id">
-                                                    <select data-placeholder="Select" name="state_id" id="state_id"
-                                                        required onchange="get_city();"
-                                                        class="mb-2 chosen-select search-select">
-                                                        <option value="">Select Country First</option>
-
-                                                    </select>
-                                                </div>
-                                                <label>City</label>
-                                                <div class="listsearch-input-item mb-2" id="citys_id">
-                                                    <select data-placeholder="Select" name="city_id" id="city_id"
-                                                        required class="mb-2 chosen-select search-select">
-                                                        <option value="">Select State First</option>
-
-                                                    </select>
-                                                </div>
-                                                <label>Phone Number * <span class="dec-icon"><i
-                                                            class="fal fa-phone"></i></span></label>
-                                                <input name="phone" type="text" placeholder="Your Phone Number" required
-                                                    onClick="this.select()" value="">
-                                                <div class="pass-input-wrap fl-wrap">
-                                                    <label>Password * <span class="dec-icon"><i
-                                                                class="fal fa-key"></i></span></label>
-                                                    <input name="password" type="password" placeholder="Your Password"
-                                                        autocomplete="off" required onClick="this.select()" value="">
-                                                    <span class="eye"><i class="fal fa-eye"></i> </span>
-                                                </div>
-                                                <div class="filter-tags ft-list">
-                                                    <input id="check-a2" type="checkbox" name="agree">
-                                                    <label for="check-a2">I agree to the <a href="javascript:;">Privacy
-                                                            Policy</a> and <a href="javascript:;">Terms and
-                                                            Conditions</a></label>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                                <button type="submit" class="log_btn color-bg bb_fom_btn"> Register
-                                                </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--tab end -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="forgot_tab" style="display:none;">
-                            <!--tabs -->
-                            <div class="container" style="padding:35px;">
-                                <div class="row py-1">
-                                    <div class="col-sm-12">
-                                        <div id="bb_ajax_msg3"></div>
-                                    </div>
-                                </div>
-                                <div class="custom-form">
-
-                                    <?php echo form_open_multipart('auth/password/forgot', array('id'=>'bb_ajax_form3', 'class'=>'')); ?>
-                                    <label>Email Address * <span class="dec-icon"><i
-                                                class="fal fa-envelope"></i></span></label>
-                                    <input name="email" id="email" type="email" placeholder="Your Mail"
-                                        autocomplete="off" onClick="this.select()" required value="">
-                                    <div id="code_resp" style="display:none">
-                                        <label>Reset Code * <span class="dec-icon"><i
-                                                    class="fal fa-envelope"></i></span></label>
-                                        <input name="code" id="code" type="text" placeholder="Reset Code"
-                                            onClick="this.select()" value="">
-
-                                    </div>
-                                    <div id="password_resp" style="display:none">
-                                        <div class="pass-input-wrap fl-wrap">
-                                            <label>New Password * <span class="dec-icon"><i
-                                                        class="fal fa-key"></i></span></label>
-                                            <input name="pwd" id="pwd" type="password" placeholder="New Password"
-                                                autocomplete="off" onClick="this.select()" value="">
-                                            <span class="eye"><i class="fal fa-eye"></i> </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="clearfix"></div>
-                                    <button type="submit" class="log_btn color-bg bb_orm_btn"> Reset </button>
-                                    </form>
-                                    <div class="lost_password">
-                                        <a href="javascript:;" onclick="register()">Return to Login</a>
-                                    </div>
-                                </div>
-                                <!--tab end -->
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-                <!--register form end -->
-                <!--secondary-nav -->
                 <div class="secondary-nav">
                     <ul>
                         <li><a href="javascript:;" class="tolt show-reg-form modal-open" data-microtip-position="left"
@@ -611,14 +427,15 @@
                 }
             }
             
-            function modals(){
+            function modals(country){
                 $(".modal").on('hidden.bs.modal', function () {
                     $(this).data('bs.modal', null);
                 });	
+                var country_id = $('#country_id').val();
                 var pageTitle = 'Location Info';
-                var pageName = site_url + 'dashboard/categoy/mana';
-                var pageSize = 'modal-lg';
-
+                var pageName = site_url + 'home/location/'+country;
+                var pageSize = 'modal-md';
+               
                 $(".modal-dialog").addClass(pageSize);
                 $(".modal-center .modal-title").html(pageTitle);
                 $(".modal-center .modal-body").html('<div class="col-sm-12 text-center"><i class="fa fa-spinner fa-spin" style="font-size:24px;"></i> Processing Request.. Please Wait..</div>');
@@ -642,8 +459,13 @@
                         
                         console.log(country);
                         // Use the country information as needed.
-                        // modals();
-                        get_country(country);
+                        if(country !== 'Nigeria' && country != 'United Kingdom'){
+                            modals(country);
+                            
+                        } else{
+                            get_country(country);
+                        }
+                       
                     })
                     .catch(error => {
                         console.error("Error fetching country information:", error);
@@ -658,12 +480,19 @@
 
             <?php 
 
-            if(empty($log_id)){?>
+            if(empty($log_id)){
+                if(!empty($location)){?>
+                    var country = '<?=$location; ?>';
+                    get_country(country);
+               <?php }else{?>
                 if ("geolocation" in navigator) {
                     navigator.geolocation.getCurrentPosition(showCountry, showError);
                 } else {
                     console.error("Geolocation is not available in this browser.");
                 }
+
+                <?php }?>
+               
             <?php } else {  $country = $this->Crud->read_field('id', $log_id, 'user', 'country_id'); 
                 $country =  $this->Crud->read_field('id', $country, 'country', 'name'); ?>
                 // console.log('tre'+<?=$country; ?>);

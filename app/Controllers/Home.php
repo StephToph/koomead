@@ -19,6 +19,8 @@ class Home extends BaseController {
        
 
         $data['log_id'] = $log_id;
+		$location = $this->session->get('km_location'); 
+        $data['location'] = $location;
         $data['role'] = $role;
         
         
@@ -577,6 +579,7 @@ class Home extends BaseController {
     public function get_country(){
         $country = $this->request->getPost('country');
         if($country != 'Nigeria' && $country != 'United Kingdom')$country = 'United Kingdom';
+		$this->session->set('km_location', $country);
         if($this->Crud->check('name', $country, 'country') > 0){
             echo $this->Crud->read_field('name', $country, 'country', 'id');
         } else {
@@ -585,8 +588,22 @@ class Home extends BaseController {
        
     }
 
-	public function location(){
+	public function location($param1=''){
+		if($this->request->getMethod() == 'post'){
+
+			$country_id = $this->request->getPost('country_id');
+			$country = $this->Crud->read_field('id', $country_id, 'country', 'name');
+			$this->session->set('km_location', $country);
+			echo $this->Crud->msg('info', 'Location Saved');
+			echo '<script>location.reload(false);</script>';
+			die;
+		}
+
 		
+        $log_id = $this->session->get('km_id'); 
+        $data['log_id'] = $log_id;
+		$data['country'] = $param1;
+        return view('home/location', $data);
 	}
 
 	public function saveDeviceInfo(){

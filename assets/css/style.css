@@ -1748,8 +1748,8 @@ nav li ul a:before , nav li ul a:after {
     overflow:hidden;
 }
 .main-register-holder {
-	max-width:850px;
-	margin:150px auto 50px;
+	max-width:100%;
+	margin:5px auto 5px;
 	position:relative;
 	z-index:5;
 }

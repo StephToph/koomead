@@ -43,10 +43,10 @@ class Home extends BaseController {
        
         $table = 'listing';
 
-		$form_link = site_url('listing/index/');
+		$form_link = site_url('home/listing/');
 		if($param1){$form_link .= $param1.'/';}
 		if($param2){$form_link .= $param2.'/';}
-		if($param3){$form_link .= $param3.'/';}
+		if($param3){$form_link .= $param3;}
 		
 		// pass parameters to view
 		$data['param1'] = $param1;
@@ -57,29 +57,56 @@ class Home extends BaseController {
 		// manage record
 		if($param1 == 'manage') {
 			// prepare for delete
-			if($param2 == 'delete') {
+			if($param2 == 'promote') {
 				if($param3) {
-					$edit = $this->Crud->read_single('id', $param3, $table);
+					$edit = $this->Crud->read_single('id', $param3,  'business_promotion');
 					if(!empty($edit)) {
 						foreach($edit as $e) {
 							$data['d_id'] = $e->id;
+							$data['applicant'] = json_decode($e->applicant);
+							$data['user_id'] = $e->user_id;
+							$data['codes'] = $e->code;
 						}
 					}
 
 					if($this->request->getMethod() == 'post'){
-						$del_id = $this->request->getVar('d_listing_id');
-						///// store activities
-						$code = $this->Crud->read_field('id', $del_id, 'listing', 'name');
-						$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
-						$action = $by.' deleted Listing '.$code.' Record';
-						
-						if($this->Crud->deletes('id', $del_id, $table) > 0) {
-							$this->Crud->activity('listing', $del_id, $action);
+						$promotion_id = $this->request->getVar('promotion_id');
 
-							echo $this->Crud->msg('success', 'Record Deleted');
-							echo '<script>location.reload(false);</script>';
+						$applicant = json_decode($this->Crud->read_field('id',$promotion_id, 'business_promotion',  'applicant'));
+						// print_r($applicant);
+						//Get nuber of user in the category
+						$codes = $this->Crud->read_field('id',$promotion_id, 'business_promotion',  'code');
+						$prom_id = $this->Crud->read_field('id',$promotion_id, 'business_promotion',  'promotion_id');
+						$user_no = $this->Crud->read_field('id',$prom_id, 'promotion',  'promoter_no');
+						$applicants =0 ;
+						
+						if(is_array($applicant))$applicants = count($applicant);
+						if($applicants >= $user_no){
+							echo $this->Crud->msg('warning', 'Number of Promoter already Reached');
 						} else {
-							echo $this->Crud->msg('danger', 'Please try later');
+							if(in_array($log_id, $applicant)){
+								echo $this->Crud->msg('warning', 'You have already Applied for this promotion');
+
+							} else{
+								$applicant[] = $log_id;
+								$p_data['applicant'] = json_encode($applicant);
+								if($this->Crud->updates('id', $promotion_id, 'business_promotion', $p_data) > 0){
+
+									///// store activities
+									$code = $this->Crud->read_field('id', $promotion_id, 'business_promotion', 'code');
+									$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+									$action = $by.' Applied to Promote Listing '.$code.'';
+									$this->Crud->activity('promote', $promotion_id, $action);
+
+									$msg = 'Your Unique Promotion Link for this Advert is <br> <b>'.site_url('home/promotion/'.$log_id.'/'.$codes).'</b>';
+									echo $this->Crud->msg('success', 'Promotion Applied Successfully');
+									echo $this->Crud->msg('success', $msg);
+									
+									// echo '<script>window.location.replace("'.site_url('listing').'");</script>';
+								} else {
+									echo $this->Crud->msg('info', 'No Changes');	
+								}
+							}
 						}
 						exit;	
 					}
@@ -296,6 +323,9 @@ class Home extends BaseController {
 			} $this->session->set('km_redirect', uri_string());
 			return view('home/list_promote', $data);
 
+		} elseif($param1 == 'manage'){
+
+			return view('home/listing_form', $data);
 		} else {
 			$this->saveDeviceInfo();
 			
@@ -394,10 +424,16 @@ class Home extends BaseController {
 						if(!empty($country_id)) $loca .= ', '.$country;
 
 						$promote = '';
-						if($this->Crud->check2('listing_id', $id, 'status', '0', 'business_promotion') > 0){
+						if(!empty($log_id)){
+							if($this->Crud->check2('listing_id', $id, 'status', '0', 'business_promotion') > 0){
+								$promote = '
+									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary"><i class="fas fa-paper-plane"></i> </a></span>
+								';
+							}
+						} else {
 							$promote = '
-								<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary"><i class="fas fa-paper-plane"></i> </a></span>
-							';
+									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="javascript:;" pageSize="modal-xl" pageName="'.site_url('auth/login').'" class="text-primary pop"><i class="fas fa-paper-plane"></i> </a></span>
+								';
 						}
 
 						$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-signal"></i></a>';

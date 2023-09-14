@@ -198,6 +198,7 @@
                                         $prom = $this->Crud->read2('listing_id', $param2, 'status', '0', 'business_promotion');
                                         if(!empty($prom)){$count = 1;
                                             foreach($prom as $p){
+                                                
                                                 if($count < 10)$count = '0'.$count;
                                                 $p_name = $this->Crud->read_field('id', $p->promotion_id, 'promotion', 'name');
                                                 $duration = $this->Crud->read_field('id', $p->promotion_id, 'promotion', 'duration');
@@ -225,7 +226,7 @@
                                                             <li class="not-included">Non-Featured</li>
                                                             <li class="not-included">Limited Support</li> -->
                                                         </ul>
-                                                        <a href="javascript:;" class="btn btn-primary  pops " pageTitle="Manage " pageName="<?=site_url('home/listing/manage/edit/'.$p->id); ?>" pageSize="modal-md">Choose Free</a>  
+                                                        <a href="javascript:;" class="btn btn-primary  pops " pageTitle="Promote " pageName="<?=site_url('home/listing/manage/promote/'.$p->id); ?>" pageSize="modal-md">Participate</a>  
                                                         
                                                     </div>
                                                 </div>

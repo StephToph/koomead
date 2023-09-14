@@ -679,4 +679,26 @@ class Home extends BaseController {
 		}
        return json_encode($data);
     }
+
+	public function promotion($param1='', $param2=''){
+		if(!empty($param1) && !empty($param2)){
+			if($this->Crud->check('id', $param1, 'user') > 0){
+				if($this->Crud->check2('code', $param2, 'status', 0, 'business_promotion') > 0){
+					$page_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'listing_id');
+					$uri = 'home/listing/view/'.$page_id;
+					$ipAddress = $this->request->getIPAddress();
+					$request = service('request');
+					$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
+					// Extract the original client's IP address from the list
+					$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
+					
+					if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
+
+					} else {
+						
+					}
+				}
+			} 
+		}
+	}
 }

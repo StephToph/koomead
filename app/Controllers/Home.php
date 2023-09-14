@@ -19,6 +19,8 @@ class Home extends BaseController {
        
 
         $data['log_id'] = $log_id;
+		$location = $this->session->get('km_location'); 
+        $data['location'] = $location;
         $data['role'] = $role;
         
         
@@ -391,6 +393,13 @@ class Home extends BaseController {
 						if(!empty($state_id)) $loca .= ', '.$state;
 						if(!empty($country_id)) $loca .= ', '.$country;
 
+						$promote = '';
+						if($this->Crud->check2('listing_id', $id, 'status', '0', 'business_promotion') > 0){
+							$promote = '
+								<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary"><i class="fas fa-paper-plane"></i> </a></span>
+							';
+						}
+
 						$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-signal"></i></a>';
 						if($active > 0)$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Disable"><i class="far fa-signal-alt-slash"></i></a>';
 
@@ -417,7 +426,7 @@ class Home extends BaseController {
                                         </div>
                                         <div class="geodir-category-content fl-wrap">
                                             <h3 class="title-sin_item"><a href="'.site_url('home/listing/view/'.$id).'">'.ucwords($name).'</a></h3>
-                                            <div class="geodir-category-content_price">'.$prices.' <span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary"><i class="fas fa-paper-plane"></i> </a></span></div>
+                                            <div class="geodir-category-content_price">'.$prices.' '.$promote.'</div>
 
 											<div class="geodir-category-footer fl-wrap">
                                                 <a href=javascript:;" class="gcf-company"><img src="'.site_url($user_img).'" alt=""><span>'.$user.'</span></a>
@@ -577,6 +586,7 @@ class Home extends BaseController {
     public function get_country(){
         $country = $this->request->getPost('country');
         if($country != 'Nigeria' && $country != 'United Kingdom')$country = 'United Kingdom';
+		$this->session->set('km_location', $country);
         if($this->Crud->check('name', $country, 'country') > 0){
             echo $this->Crud->read_field('name', $country, 'country', 'id');
         } else {
@@ -585,8 +595,22 @@ class Home extends BaseController {
        
     }
 
-	public function location(){
+	public function location($param1=''){
+		if($this->request->getMethod() == 'post'){
+
+			$country_id = $this->request->getPost('country_id');
+			$country = $this->Crud->read_field('id', $country_id, 'country', 'name');
+			$this->session->set('km_location', $country);
+			echo $this->Crud->msg('info', 'Location Saved');
+			echo '<script>location.reload(false);</script>';
+			die;
+		}
+
 		
+        $log_id = $this->session->get('km_id'); 
+        $data['log_id'] = $log_id;
+		$data['country'] = $param1;
+        return view('home/location', $data);
 	}
 
 	public function saveDeviceInfo(){

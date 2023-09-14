@@ -225,7 +225,8 @@
                                                             <li class="not-included">Non-Featured</li>
                                                             <li class="not-included">Limited Support</li> -->
                                                         </ul>
-                                                        <a href="javascript:;" class="btn float-btn  pop color-bg fl-wrap" pageTitle="Manage " pageName="<?=site_url('home/listing/manage/edit/'.$p->id); ?>" pageSize="modal-md">Choose Free</a>  
+                                                        <a href="javascript:;" class="btn btn-primary  pops " pageTitle="Manage " pageName="<?=site_url('home/listing/manage/edit/'.$p->id); ?>" pageSize="modal-md">Choose Free</a>  
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -568,7 +569,7 @@
 </div>
 <input type="hidden" id="country_id" value="">
 <!-- subscribe-wrap end -->	 
-    <script src="<?=site_url(); ?>assets/js/jquery.min.js"></script>
 
 <script src="<?=site_url();?>assets/js/jsmodal.js"></script>
+    <script src="<?=site_url(); ?>assets/js/select2.min.js" ></script>
 <?php echo $this->endSection(); ?>

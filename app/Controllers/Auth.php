@@ -31,7 +31,7 @@ class Auth extends BaseController {
 					$code = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
 					$action = $code.' logged into Account ';
 					$this->Crud->activity('authentication', $user_id, $action);
-
+                    $this->session->set('km_location', '');
                     echo $this->Crud->msg('success', 'Login Successful!');
                     $this->session->set('km_id', $user_id);
                     if($redir == ''){
@@ -46,8 +46,8 @@ class Auth extends BaseController {
             die;
         }
         
-        // $data['title'] = 'Log In | '.app_name;
-        // return view('auth/login', $data);
+        $data['title'] = 'Log In | '.app_name;
+        return view('auth/login', $data);
     }
 
     public function register() {
@@ -59,7 +59,7 @@ class Auth extends BaseController {
             $phone = $this->request->getPost('phone');
             $agree = $this->request->getPost('agree');
             $country_id = $this->request->getPost('country_id');
-            $state_id = $this->request->getPost('state_id');
+            $state_id = $this->request->getPost('state_ids');
             $city_id = $this->request->getPost('city_id');
 
             $Error = '';
@@ -110,13 +110,15 @@ class Auth extends BaseController {
                     foreach ($state as $s) {
                         $st .= '<option value="'.$s->id.'">'.$s->name.'</option>';
                     }
+                } else {
+                    $st =  '<option value="">Select Country First</option>';
                 }
             }
-            echo '<div class="listsearch-input-item mb-2">
-                <select data-placeholder="Select" name="state_id" id="state_id" required onchange="get_city();" class="mb-2 chosen-select search-select" >
+            echo '
+                <select data-placeholder="Select" name="state_id" id="state_ids" required onchange="get_city();" class="mb-2 chosen-selects search-select" >
                     '.$st.'
-                </select></div><script>$("#state_id").niceSelect();</script>
-            ';
+                </select><script>$(".chosen-selects").niceSelect();</script>
+            ';die;
         }
 
         if($param1 == 'get_city'){
@@ -129,13 +131,15 @@ class Auth extends BaseController {
                     foreach ($state as $s) {
                         $st .= '<option value="'.$s->id.'">'.$s->name.'</option>';
                     }
+                }  else {
+                    $st =  '<option value="">Select State First</option>';
                 }
             }
             echo '<div class="listsearch-input-item mb-2">
-                <select data-placeholder="Select" name="city_id" id="city_id" required class="mb-2 chosen-select search-select" >
+                <select data-placeholder="Select" name="city_id" id="city_id" required class="mb-2 chosen-selec search-select" >
                     '.$st.'
-                </select></div><script>$("#city_id").niceSelect();</script>
-            ';
+                </select></div><script>$(".chosen-selec").niceSelect();</script>
+            ';die;
         }
 
         if($param1 == 'get_category'){
@@ -154,7 +158,7 @@ class Auth extends BaseController {
                 <select data-placeholder="Select" name="sub_id" id="sub_id" required class="mb-2 chosen-select" >
                     '.$st.'
                 </select></div><script>$("#sub_id").niceSelect();</script>
-            ';
+            ';die;
         }
     }
     ///// LOGOUT

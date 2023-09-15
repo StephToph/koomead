@@ -527,6 +527,29 @@
 
             }
 
+            function copyTextToClipboard() {
+                var textToCopy = document.getElementById('textToCopy');
+                var copyButton = document.getElementById('copyButton');
+
+                var text = textToCopy.innerText; // Get the text to copy
+
+                // Use the Clipboard API to copy the text
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        // Success callback: the text has been copied
+                        console.log('Text copied to clipboard: ' + text);
+
+                        // Provide a visual indication that the text has been copied (optional)
+                        copyButton.textContent = 'Link Copied!';
+                        setTimeout(() => {
+                            copyButton.textContent = 'Copy Link';
+                        }, 4000); // Reset button text after 4 seconds
+                    })
+                    .catch(err => {
+                        // Error callback: handle errors here
+                        console.error('Could not copy text: ' + err);
+                    });
+            }
 
             function get_city() {
                 var state_id = $('#state_id').val();

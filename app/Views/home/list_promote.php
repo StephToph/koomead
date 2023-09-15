@@ -228,7 +228,23 @@
                                                             <li class="not-included">Non-Featured</li>
                                                             <li class="not-included">Limited Support</li> -->
                                                         </ul>
-                                                        <a href="javascript:;" class="btn btn-primary  pops " pageTitle="Promote " pageName="<?=site_url('home/listing/manage/promote/'.$p->id); ?>" pageSize="modal-md"><?php if(in_array($log_id, $app)){echo 'View Analytics';}else{echo 'Participate';} ?></a>  
+                                                        <?php
+                                                            if(in_array($log_id, $app)){
+                                                                echo '
+                                                                    <div class="col-sm-12 text-cener">
+                                                                        <h6>This is your unique link <br><span id="textToCopy" class="text-danger mt-3 mb-2">'.site_url('home/promotion/'.$log_id.'/'.$p->code).'</span></h6>
+                                                                    </div>
+                                                                    <div class="col-sm-12 text-center">
+                                                                        <button class="btn btn-primary text-uppercase" id="copyButton" onclick="copyTextToClipboard();" type="button">
+                                                                           Copy Link
+                                                                        </button>
+                                                                    </div>
+                                                                    ';
+                                                            }
+                                                        ?>
+                                                        <a href="javascript:;" class="btn btn-primary  pops " pageTitle="Promote " pageName="<?=site_url('home/listing/manage/promote/'.$p->id); ?>" pageSize="modal-md"><?php if(in_array($log_id, $app)){
+                                                            
+                                                            echo 'View Analytics';}else{echo 'Participate';} ?></a>  
                                                         
                                                     </div>
                                                 </div>

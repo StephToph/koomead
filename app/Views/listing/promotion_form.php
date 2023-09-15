@@ -3,7 +3,7 @@
     $this->Crud = new Crud();
 ?>
 <?php echo form_open_multipart($form_link, array('id'=>'bb_ajax_form', 'class'=>'text-start custom-form')); ?>
-    if
+    
     <?php if($param2 == 'delete') { ?>
         <div class="row">
             <div class="col-sm-12"><div id="bb_ajax_msg"></div></div>
@@ -22,17 +22,37 @@
             </div>
         </div>
     <?php } ?>
-    <?php if($param2 == 'view') { ?>
+    <?php if($param1 == 'view') { ?>
        
        <div class="row">
            <table  class="table table-striped table-bordered text-start table-responsive ">
                <thead>
                    <tr>
-                       <th>Module</th>
-                       <th width="150px"></th>
+                       <th>User</th>
+                       <th>Number of Views</th>
                    </tr>
                </thead>
-               <tbody> </tbody>
+               <tbody>
+                <?php
+                    // $prom = $this->Crud->read_single('code', $code, 'promotion_metric');
+                    if(!empty($applicant)){
+                        foreach($applicant as $p => $val){
+                            $user = $this->Crud->read_field('id', $val, 'user', 'fullname');
+                            $view = $this->Crud->read_field2('user_id', $val, 'code', $code, 'promotion_metric', 'view');
+                            if(empty($view))$view = 0;
+                            echo '
+                                <tr>
+                                    <td>'.$user.'</td>
+                                    <td>'.$view.'</td>
+                                        
+                                </tr>
+                            
+                            ';
+                        }
+                    }
+
+                ?>
+                </tbody>
            </table>
        </div>
    <?php } ?>

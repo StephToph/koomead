@@ -98,9 +98,21 @@ class Home extends BaseController {
 									$action = $by.' Applied to Promote Listing '.$code.'';
 									$this->Crud->activity('promote', $promotion_id, $action);
 
-									$msg = 'Your Unique Promotion Link for this Advert is <br> <b>'.site_url('home/promotion/'.$log_id.'/'.$codes).'</b>';
-									echo $this->Crud->msg('success', 'Promotion Applied Successfully');
+									$msg = 'Promotion Applied Successfully. Your Unique Promotion Link for this Advert is <br> <b>'.site_url('home/promotion/'.$log_id.'/'.$codes).'</b>';
+									
 									echo $this->Crud->msg('success', $msg);
+									echo '
+										<div class="col-sm-12 text-center">
+											<h3 class="mb-3"><b>You have already applied to Promote this Business Listing.</b></h3>
+											<h4>This is your unique link <br><span id="textToCopy" class="text-danger mt-3 mb-2">'.site_url('home/promotion/'.$log_id.'/'.$code).'</span></h4>
+										</div>
+										<div class="col-sm-12 text-center">
+											<button class="btn btn-primary text-uppercase" id="copyButton" onclick="copyTextToClipboard();" type="button">
+												<i class="fal fa-paper-plane"></i> Copy Link
+											</button>
+										</div>
+										<script>$("#gen_view").hide(500);</script>
+									';
 									
 									// echo '<script>window.location.replace("'.site_url('listing').'");</script>';
 								} else {
@@ -427,12 +439,12 @@ class Home extends BaseController {
 						if(!empty($log_id)){
 							if($this->Crud->check2('listing_id', $id, 'status', '0', 'business_promotion') > 0){
 								$promote = '
-									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary"><i class="fas fa-paper-plane"></i> </a></span>
+									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary small"><i class="fas fa-bullhorn"></i> Promote </a></span>
 								';
 							}
 						} else {
 							$promote = '
-									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="javascript:;" pageSize="modal-xl" pageName="'.site_url('auth/login').'" class="text-primary pop"><i class="fas fa-paper-plane"></i> </a></span>
+									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="javascript:;" pageSize="modal-xl" pageName="'.site_url('auth/login').'" class="text-primary small pop"><i class="fas fa-bullhorn"></i> Promote </a></span>
 								';
 						}
 

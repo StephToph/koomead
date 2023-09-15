@@ -231,12 +231,12 @@
                                                         <?php
                                                             if(in_array($log_id, $app)){
                                                                 echo '
-                                                                    <div class="col-sm-12 text-center">
-                                                                        <h4>This is your unique link <br><span id="textToCopy" class="text-danger mt-3 mb-2">'.site_url('home/promotion/'.$log_id.'/'.$p->code).'</span></h4>
+                                                                    <div class="col-sm-12 text-cener">
+                                                                        <h6>This is your unique link <br><span id="textToCopy" class="text-danger mt-3 mb-2">'.site_url('home/promotion/'.$log_id.'/'.$p->code).'</span></h6>
                                                                     </div>
                                                                     <div class="col-sm-12 text-center">
                                                                         <button class="btn btn-primary text-uppercase" id="copyButton" onclick="copyTextToClipboard();" type="button">
-                                                                            <i class="fal fa-paper-plane"></i> Copy Link
+                                                                           Copy Link
                                                                         </button>
                                                                     </div>
                                                                     ';

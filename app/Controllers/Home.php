@@ -82,7 +82,7 @@ class Home extends BaseController {
 						
 						if(is_array($applicant))$applicants = count($applicant);
 						if($applicants >= $user_no){
-							echo $this->Crud->msg('warning', 'Number of Promoter already Reached');
+							 $this->Crud->msg('warning', 'Number of Promoter already Reached');
 						} else {
 							if(in_array($log_id, $applicant)){
 								echo $this->Crud->msg('warning', 'You have already Applied for this promotion');
@@ -312,7 +312,7 @@ class Home extends BaseController {
 			die;
 		}
 
-		
+		if($param1 == 'view'){$this->saveDeviceInfo();}
 		if($param1 == 'promote'){
 			
 			$data['title'] = 'Promote Listing | '.app_name;
@@ -327,7 +327,7 @@ class Home extends BaseController {
 
 			return view('home/listing_form', $data);
 		} else {
-			$this->saveDeviceInfo();
+			
 			
 
 			$data['title'] = 'View Listing | '.app_name;
@@ -679,4 +679,49 @@ class Home extends BaseController {
 		}
        return json_encode($data);
     }
+
+	public function promotion($param1='', $param2=''){
+		 $log_id = $param1;
+        
+		if(!empty($param1) && !empty($param2)){
+			$page_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'listing_id');
+					
+			if($this->Crud->check('id', $param1, 'user') > 0){
+				if($this->Crud->check2('code', $param2, 'status', 0, 'business_promotion') > 0){
+					$uri = 'home/listing/view/'.$page_id;
+					$ipAddress = $this->request->getIPAddress();
+					$request = service('request');
+					$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
+					// Extract the original client's IP address from the list
+					$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
+					
+					if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
+						$view = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'view');
+						$id = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'id');
+						if($this->Crud->check2('code', $param2, 'user_id', $log_id, 'promotion_metric') == 0){
+							$i_data['code'] = $param2;
+							$i_data['user_id'] = $log_id;
+							$i_data['page'] = $uri;
+							$i_data['view'] = (int)$view + 1;
+							
+							 $this->Crud->create('promotion_metric', $i_data);
+						} else {
+							 $this->Crud->updates('id', $id, 'promotion_metric', array('view'=>(int)$view + 1));
+						}
+						
+						return '<script>window.location.replace("'.site_url($uri).'");</script>';
+					} else{
+						return '<script>window.location.replace("'.site_url('').'");</script>';
+					} 
+				} else{
+					return '<script>window.location.replace("'.site_url('').'");</script>';
+				}
+			} else{
+				return '<script>window.location.replace("'.site_url('').'");</script>';
+			}
+			
+		} else {
+			return '<script>window.location.replace("'.site_url('').'");</script>';
+		}
+	}
 }

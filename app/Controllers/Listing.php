@@ -577,6 +577,7 @@ class Listing extends BaseController {
                     $expiry_date = $this->request->getVar('expiry_date');
                     $duration = $this->request->getVar('duration');
 
+					$promoter_no = $this->Crud->read_field('id', $promote_id, 'promotion', 'promoter_no');
 					$user_id = $this->Crud->read_field('id', $listing_id, 'listing', 'user_id');
 					$country_id = $this->Crud->read_field('id', $user_id, 'listing', 'country_id');
 					$state_id = $this->Crud->read_field('id', $user_id, 'listing', 'state_id');
@@ -584,6 +585,7 @@ class Listing extends BaseController {
 					$p_data['promotion_id'] = $promote_id;
 					$p_data['amount'] = $amount;
 					$p_data['no_view'] = $no_view;
+					$p_data['promoter_no'] = $promoter_no;
 					$p_data['expiry_date'] = $expiry_date;
 					$code = substr(md5(time().rand()), 0, 6);
                     

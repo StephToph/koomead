@@ -208,6 +208,7 @@
                                                 $p_view = $p->no_view / $promoter_no;
                                                 $cur = '$';
                                                 if($this->Crud->check2('id', $p->listing_id, 'country_id', '161', 'listing') > 0)$cur = '₦';
+                                                if(date('Y-m-d') > $p->expiry_date)continue;
                                     ?>
                                             <div class="col-md-6">
                                                 <div class="pricing-column fl-wrap">

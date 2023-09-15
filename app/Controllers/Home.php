@@ -103,7 +103,6 @@ class Home extends BaseController {
 									echo $this->Crud->msg('success', $msg);
 									echo '
 										<div class="col-sm-12 text-center">
-											<h3 class="mb-3"><b>You have already applied to Promote this Business Listing.</b></h3>
 											<h4>This is your unique link <br><span id="textToCopy" class="text-danger mt-3 mb-2">'.site_url('home/promotion/'.$log_id.'/'.$code).'</span></h4>
 										</div>
 										<div class="col-sm-12 text-center">

@@ -209,6 +209,7 @@
                                                 $cur = '$';
                                                 if($this->Crud->check2('id', $p->listing_id, 'country_id', '161', 'listing') > 0)$cur = '₦';
                                                 if(date('Y-m-d') > $p->expiry_date)continue;
+                                                $app = json_decode($p->applicant);
                                     ?>
                                             <div class="col-md-6">
                                                 <div class="pricing-column fl-wrap">
@@ -227,7 +228,7 @@
                                                             <li class="not-included">Non-Featured</li>
                                                             <li class="not-included">Limited Support</li> -->
                                                         </ul>
-                                                        <a href="javascript:;" class="btn btn-primary  pops " pageTitle="Promote " pageName="<?=site_url('home/listing/manage/promote/'.$p->id); ?>" pageSize="modal-md">Participate</a>  
+                                                        <a href="javascript:;" class="btn btn-primary  pops " pageTitle="Promote " pageName="<?=site_url('home/listing/manage/promote/'.$p->id); ?>" pageSize="modal-md"><?php if(in_array($log_id, $app)){echo 'View Analytics';}else{echo 'Participate';} ?></a>  
                                                         
                                                     </div>
                                                 </div>

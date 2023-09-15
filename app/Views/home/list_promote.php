@@ -227,6 +227,7 @@
                                                             <!-- <li class="not-included">90 Days Availability</li>
                                                             <li class="not-included">Non-Featured</li>
                                                             <li class="not-included">Limited Support</li> -->
+                                                            
                                                         </ul>
                                                         <?php
                                                             if(in_array($log_id, $app)){

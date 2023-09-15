@@ -527,10 +527,10 @@ class Listing extends BaseController {
 		
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
         $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
-        $role_c = $this->Crud->module($role_id, 'listing/promotion', 'create');
-        $role_r = $this->Crud->module($role_id, 'listing/promotion', 'read');
-        $role_u = $this->Crud->module($role_id, 'listing/promotion', 'update');
-        $role_d = $this->Crud->module($role_id, 'listing/promotion', 'delete');
+        $role_c = $this->Crud->module($role_id, 'listing', 'create');
+        $role_r = $this->Crud->module($role_id, 'listing', 'read');
+        $role_u = $this->Crud->module($role_id, 'listing', 'update');
+        $role_d = $this->Crud->module($role_id, 'listing', 'delete');
         if($role_r == 0){
             // return redirect()->to(site_url('profile'));	
         }
@@ -557,18 +557,7 @@ class Listing extends BaseController {
 		// manage record
 		if($param1 == 'manage') {
 			// prepare for delete
-			if($param2 == 'view') {
-				if($param3) {
-					$edit = $this->Crud->read_single('id', $param3, $table);
-					if(!empty($edit)) {
-						foreach($edit as $e) {
-							$data['d_id'] = $e->id;
-						}
-					
-						exit;	
-					}
-				}
-			} elseif($param2 == 'add'){
+			if($param2 == 'add'){
 				if($this->request->getMethod() == 'post'){
 					$promote_id = $this->request->getVar('promote_id');
 					$listing_id = $this->request->getVar('listing_id');
@@ -731,7 +720,22 @@ class Listing extends BaseController {
 			}
 		}
 
-		
+		if($param1 == 'view') {
+			if($param2) {
+				$edit = $this->Crud->read_single('id', $param2, 'business_promotion');
+				if(!empty($edit)) {
+					foreach($edit as $e) {
+						$data['d_id'] = $e->id;
+						$data['code'] = $e->code;
+						$data['applicant'] = json_decode($e->applicant);
+					}
+					
+					
+				}
+			}
+			return view('listing/promotion_form', $data);
+			exit;	
+		}
         // record listing
 		if($param1 == 'load') {
 			$limit = $param2;
@@ -776,7 +780,7 @@ class Listing extends BaseController {
                         
 						
 							$all_btn = '
-							<b><a href="javascript:;" class="text-primary pop mr-3" pageTitle="View '.$code.' Listing" pageName="'.site_url('listing/promotion/manage/view/'.$id).'" pageSize="modal-md">
+							<b><a href="javascript:;" class="text-primary pop mr-3" pageTitle="View '.$code.' Listing" pageName="'.site_url('listing/promotion/view/'.$id).'" pageSize="modal-md">
 								<i class="fal fa-eye"></i> VIEW
 							</a> </b>
 							
@@ -846,13 +850,13 @@ class Listing extends BaseController {
 
 
 
-        if($param1 == 'manage') { // view for form data posting
-			return view('setting/promotion_form', $data);
+        if($param1 == 'view') { // view for form data posting
+			return view('listing/promotion_form', $data);
 		} else { // view for main page
             
 			$data['title'] = 'Promotions | '.app_name;
             $data['page_active'] = 'settings/promotion';
-            return view('setting/promotion', $data);
+            return view('listing/promoton', $data);
         }
     }
 }

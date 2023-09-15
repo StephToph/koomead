@@ -54,6 +54,7 @@
         </div>
     <?php } ?>
 
+    
     <?php echo form_close(); ?>
     
     <?php echo form_open_multipart('listing/promotion/manage/add', array('id'=>'bb_ajax_form2', 'class'=>'text-start custom-form')); ?>

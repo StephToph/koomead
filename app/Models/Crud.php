@@ -1929,13 +1929,19 @@ class Crud extends Model {
 
         // build query
 		$builder->orderBy('id', 'DESC');
-
+		$role_id = $this->read_field('id', $user_id, 'user', 'role_id');
+		$role = strtolower($this->read_field('id', $role_id, 'access_role', 'name'));
+		if($role != 'developer' && $role != 'administrator'){
+			$builder->where('user_id', $user_id);
+		} 
 		// build query
-
-		if(!empty($user_id)) { $query = $builder->where('user_id', $user_id); }
 	
-		
-		if(!empty($type) && $type != 'all') { $query = $builder->where('item', $type); }
+		// filter
+		if(!empty($search)) {
+            $builder->like('remark', $search);
+			
+        }
+		if(!empty($type) && $type != 'all') { $query = $builder->where('type', $type); }
 		if(!empty($transact) && $transact != 'all') { $query = $builder->where('type', $transact); }
 	
 		if(!empty($start_date) && !empty($end_date)){

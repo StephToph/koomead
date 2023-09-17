@@ -128,11 +128,24 @@
                 <div class="header-opt-modal novis_header-mod">
                     <div class="header-opt-modal-container hopmc_init">
                         <div class="header-opt-modal-item lang-item fl-wrap">
-                            <h4>Country: <span>NGN</span></h4>
+                            <?php 
+                                $cur = '₦';
+                                $sel = 'class="current-lan"';
+                                if(!empty($log_id)){
+                                    $country = $this->Crud->read_field('id', $log_id, 'user', 'country_id'); 
+                                    if($country != 161){
+                                        $cur = '£';
+                                        $sel = 'class="current-lan"';
+                                    }
+                                }
+                            ?>
+                            <h4>Country: <span><?=$cur;?></span></h4>
                             <div class="header-opt-modal-list fl-wrap">
                                 <ul>
-                                    <li><a href="#" class="current-lan" data-lantext="NGN">Nigeria</a></li>
-                                    <li><a href="#" data-lantext="UK">United Kingdom</a></li>
+                                    <li><a href="javascript:;" onclick="get_country('Nigeria')" <?=$sel;?>
+                                            data-lantext="₦">Nigeria</a></li>
+                                    <li><a href="javascript:;" onclick="get_country('United Kingdom')"
+                                            data-lantext="$">United Kingdom</a></li>
                                 </ul>
                             </div>
                         </div>

@@ -115,7 +115,7 @@
         <div class="container">
             <div class="row">
                 <!--  listing-single content -->
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="list-single-main-wrapper fl-wrap">
                         <!--  scroll-nav-wrap -->
                         <div class="scroll-nav-wrap">
@@ -173,6 +173,37 @@
                                 <div class="list-single-main-item-title">
                                     <h3>Contact Details</h3>
                                 </div>
+                                
+                                <div class="box-widget fl-wrap">
+                                    <div class="profile-widget">
+                                        <div class="profile-widget-header color-bg smpar fl-wrap">
+                                            <div class="pwh_bg"></div>
+                                            <div class="profile-widget-card">
+                                                <div class="profile-widget-image">
+                                                    <img src="<?=site_url($user_img); ?>" alt="">
+                                                </div>
+                                                <div class="profile-widget-header-title">
+                                                    <h4><a href="javascript:;"><?=ucwords($user); ?></a></h4>
+                                                    <div class="clearfix"></div>
+                                                    <div class="pwh_counter"><span><?=$this->Crud->check('user_id', $user_id, 'listing'); ?></span> Listings</div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile-widget-content fl-wrap">
+                                            <div class="contats-list fl-wrap">
+                                                <ul class="no-list-style">
+                                                    <li><span><i class="fal fa-phone"></i> Phone :</span> <a href="javascript:;"><?=$user_phone; ?></a></li>
+                                                    <li><span><i class="fal fa-envelope"></i> Mail :</span> <a href="javascript:;"><?=$user_mail; ?></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="profile-widget-footer fl-wrap">
+                                                <a href="javascript:;" class="btn float-btn color-bg small-btn">View Profile</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <div class="list-single-main-item_content fl-wrap">
                                     <div class="details-list">
                                         <ul>
@@ -232,7 +263,7 @@
                                                         <?php
                                                             if(in_array($log_id, $app)){
                                                                 echo '
-                                                                    <div class="col-sm-12 text-cener">
+                                                                    <div class="col-sm-12 text-center" style="padding:10px;">
                                                                         <h6>This is your unique link <br><span id="textToCopy" class="text-danger mt-3 mb-2">'.site_url('home/promotion/'.$log_id.'/'.$p->code).'</span></h6>
                                                                     </div>
                                                                     <div class="col-sm-12 text-center">
@@ -260,333 +291,17 @@
                                                                    
                         </div>
                     </div>
-                </div>
-                 
-                <div class="col-md-3">
-                    <!--box-widget-->
-                    <div class="box-widget fl-wrap">
-                        <div class="profile-widget">
-                            <div class="profile-widget-header color-bg smpar fl-wrap">
-                                <div class="pwh_bg"></div>
-                                <div class="profile-widget-card">
-                                    <div class="profile-widget-image">
-                                        <img src="<?=site_url($user_img); ?>" alt="">
-                                    </div>
-                                    <div class="profile-widget-header-title">
-                                        <h4><a href="javascript:;"><?=ucwords($user); ?></a></h4>
-                                        <div class="clearfix"></div>
-                                        <div class="pwh_counter"><span><?=$this->Crud->check('user_id', $user_id, 'listing'); ?></span> Listings</div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="profile-widget-content fl-wrap">
-                                <div class="contats-list fl-wrap">
-                                    <ul class="no-list-style">
-                                        <li><span><i class="fal fa-phone"></i> Phone :</span> <a href="javascript:;"><?=$user_phone; ?></a></li>
-                                        <li><span><i class="fal fa-envelope"></i> Mail :</span> <a href="javascript:;"><?=$user_mail; ?></a></li>
-                                    </ul>
-                                </div>
-                                <div class="profile-widget-footer fl-wrap">
-                                    <a href="javascript:;" class="btn float-btn color-bg small-btn">View Profile</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--box-widget end -->
-                    <!--box-widget-->
-                    <!-- <div class="box-widget fl-wrap">
-                        <div class="box-widget-title fl-wrap">Featured Properties</div>
-                        <div class="box-widget-content fl-wrap">
-                            <div class="widget-posts  fl-wrap">
-                                <ul class="no-list-style">
-                                    <li>
-                                        <div class="widget-posts-img"><a href="listing-single.html"><img src="<?=site_url(); ?>assets/images/all/small/1.jpg" alt=""></a>  
-                                        </div>
-                                        <div class="widget-posts-descr">
-                                            <h4><a href="listing-single.html">Affordable Urban Room</a></h4>
-                                            <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i> 40 Journal Square  , NJ, USA</a></div>
-                                            <div class="widget-posts-descr-price"><span>Price: </span> $ 1500 / per month</div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="widget-posts-img"><a href="listing-single.html"><img src="<?=site_url(); ?>assets/images/all/small/2.jpg" alt=""></a>
-                                        </div>
-                                        <div class="widget-posts-descr">
-                                            <h4><a href="listing-single.html">Family House</a></h4>
-                                            <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i> 70 Bright St New York, USA </a></div>
-                                            <div class="widget-posts-descr-price"><span>Price: </span> $ 50000</div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="widget-posts-img"><a href="listing-single.html"><img src="<?=site_url(); ?>assets/images/all/small/3.jpg" alt=""></a>
-                                        </div>
-                                        <div class="widget-posts-descr">
-                                            <h4><a href="listing-single.html">Apartment to Rent</a></h4>
-                                            <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i>75 Prince St, NY, USA</a></div>
-                                            <div class="widget-posts-descr-price"><span>Price: </span> $100 / per night</div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="widget-posts-img"><a href="listing-single.html"><img src="<?=site_url(); ?>assets/images/all/small/3.jpg" alt=""></a>
-                                        </div>
-                                        <div class="widget-posts-descr">
-                                            <h4><a href="listing-single.html">Apartment to Rent</a></h4>
-                                            <div class="geodir-category-location fl-wrap"><a href="#"><i class="fas fa-map-marker-alt"></i>75 Prince St, NY, USA</a></div>
-                                            <div class="widget-posts-descr-price"><span>Price: </span> $100 / per night</div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>                                                        
-                            <a href="listing.html" class="btn float-btn color-bg small-btn">View All Properties</a>
-                        </div>
-                    </div> -->
-                    
-                    <div class="box-widget fl-wrap">
-                        <div class="box-widget-fixed-init fl-wrap" id="sec-contact">
-                            <div class="box-widget-title fl-wrap box-widget-title-color color-bg">Message Advertiser</div>
-                            <div class="box-widget-content fl-wrap">
-                                <div class="custom-form">
-                                    
-                                    <?php echo form_open_multipart('home/listing/message', array('id'=>'bb_ajax_form', 'class'=>'text-start customform')); ?>
-                                        <input type="hidden" name="listing_id" value="<?=$param2;?>"> 
-                                        <input type="hidden" name="business_id" value="<?=$user_id;?>"> 
-                                        <label>Type a Message* </label>
-                                        <div class="listsearch-input-item">
-                                            <textarea cols="40" rows="3" id="message" name="message" style="height: 135px" placeholder="Messsage" spellcheck="true" required></textarea>
-                                        </div>
-                                        <?php
-                                            // echo $log_id;
-                                            if(empty($log_id)){
-                                                echo '<button type="submit" class="btn float-btn show-reg-form modal-open color-bg fw-btn"> Send</button>';
-                                            } else {
-                                                echo '<button type="submit" class="btn float-btn color-bg fw-btn"> Send</button>';
-                                            }
-                                            ?>
-                                        
-                                    </form>
-                                    <div class="row">
-                                        <div class="col-sm-12 py-2"><div id="bb_ajax_msg"></div></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--box-widget end -->                                   
+                
+                
                 </div>
                 <!--  sidebar end-->                            
             </div>
             <div class="fl-wrap limit-box"></div>
-            <!-- <div class="listing-carousel-wrapper carousel-wrap fl-wrap">
-                <div class="list-single-main-item-title">
-                    <h3>Similar Properties</h3>
-                </div>
-                <div class="listing-carousel carousel ">
-                    
-                    <div class="slick-slide-item">
-                        
-                        <div class="listing-item">
-                            <article class="geodir-category-listing fl-wrap">
-                                <div class="geodir-category-img fl-wrap">
-                                    <a href="listing-single.html" class="geodir-category-img_item">
-                                        <img src="<?=site_url(); ?>assets/images/all/3.jpg" alt="">
-                                        <div class="overlay"></div>
-                                    </a>
-                                    <div class="geodir-category-location">
-                                        <a href="#4" class="map-item"><i class="fas fa-map-marker-alt"></i>  70 Bright St New York, USA</a>
-                                    </div>
-                                    <ul class="list-single-opt_header_cat">
-                                        <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
-                                        <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
-                                    </ul>
-                                    <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                    <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                    <div class="geodir-category-listing_media-list">
-                                        <span><i class="fas fa-camera"></i> 8</span>
-                                    </div>
-                                </div>
-                                <div class="geodir-category-content fl-wrap">
-                                    <h3><a href="listing-single.html">Gorgeous house for sale</a></h3>
-                                    <div class="geodir-category-content_price">$ 600,000</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                    <div class="geodir-category-content-details">
-                                        <ul>
-                                            <li><i class="fal fa-bed"></i><span>3</span></li>
-                                            <li><i class="fal fa-bath"></i><span>2</span></li>
-                                            <li><i class="fal fa-cube"></i><span>450 ft2</span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="geodir-category-footer fl-wrap">
-                                        <a href="agent-single.html" class="gcf-company"><img src="<?=site_url(); ?>assets/images/avatar/2.jpg" alt=""><span>By Liza Rose</span></a>
-                                        <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="4"></div>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>							
-                    </div>
-                    
-                    <div class="slick-slide-item">
-                        
-                        <div class="listing-item">
-                            <article class="geodir-category-listing fl-wrap">
-                                <div class="geodir-category-img fl-wrap">
-                                    <a href="listing-single.html" class="geodir-category-img_item">
-                                        <img src="<?=site_url(); ?>assets/images/all/1.jpg" alt="">
-                                        <div class="overlay"></div>
-                                    </a>
-                                    <div class="geodir-category-location">
-                                        <a href="#4" class="map-item"><i class="fas fa-map-marker-alt"></i>   40 Journal Square  , NJ, USA</a>
-                                    </div>
-                                    <ul class="list-single-opt_header_cat">
-                                        <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
-                                        <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
-                                    </ul>
-                                    <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                    <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                    <div class="geodir-category-listing_media-list">
-                                        <span><i class="fas fa-camera"></i> 47</span>
-                                    </div>
-                                </div>
-                                <div class="geodir-category-content fl-wrap">
-                                    <h3><a href="listing-single.html">Luxury Family Home</a></h3>
-                                    <div class="geodir-category-content_price">$ 300,000</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                    <div class="geodir-category-content-details">
-                                        <ul>
-                                            <li><i class="fal fa-bed"></i><span>4</span></li>
-                                            <li><i class="fal fa-bath"></i><span>2</span></li>
-                                            <li><i class="fal fa-cube"></i><span>460 ft2</span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="geodir-category-footer fl-wrap">
-                                        <a href="agent-single.html" class="gcf-company"><img src="<?=site_url(); ?>assets/images/avatar/1.jpg" alt=""><span>By Anna Lips</span></a>
-                                        <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Excellent" data-starrating2="5"></div>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>						
-                    </div>
-                    <div class="slick-slide-item">
-                        <div class="listing-item">
-                            <article class="geodir-category-listing fl-wrap">
-                                <div class="geodir-category-img fl-wrap">
-                                    <a href="listing-single.html" class="geodir-category-img_item">
-                                        <img src="<?=site_url(); ?>assets/images/all/9.jpg" alt="">
-                                        <div class="overlay"></div>
-                                    </a>
-                                    <div class="geodir-category-location">
-                                        <a href="#4" class="map-item"><i class="fas fa-map-marker-alt"></i> 34-42 Montgomery St , NY, USA</a>
-                                    </div>
-                                    <ul class="list-single-opt_header_cat">
-                                        <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
-                                        <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
-                                    </ul>
-                                    <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                    <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                    <div class="geodir-category-listing_media-list">
-                                        <span><i class="fas fa-camera"></i> 4</span>
-                                    </div>
-                                </div>
-                                <div class="geodir-category-content fl-wrap">
-                                    <h3><a href="listing-single.html">Gorgeous house for sale</a></h3>
-                                    <div class="geodir-category-content_price">$ 120,000</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                    <div class="geodir-category-content-details">
-                                        <ul>
-                                            <li><i class="fal fa-bed"></i><span>2</span></li>
-                                            <li><i class="fal fa-bath"></i><span>1</span></li>
-                                            <li><i class="fal fa-cube"></i><span>220 ft2</span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="geodir-category-footer fl-wrap">
-                                        <a href="agent-single.html" class="gcf-company"><img src="<?=site_url(); ?>assets/images/avatar/3.jpg" alt=""><span>By Mark Frosty</span></a>
-                                        <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="4"></div>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>							
-                    </div>
-                    <div class="slick-slide-item">
-                        <div class="listing-item">
-                            <article class="geodir-category-listing fl-wrap">
-                                <div class="geodir-category-img fl-wrap">
-                                    <a href="listing-single.html" class="geodir-category-img_item">
-                                        <img src="<?=site_url(); ?>assets/images/all/6.jpg" alt="">
-                                        <div class="overlay"></div>
-                                    </a>
-                                    <div class="geodir-category-location">
-                                        <a href="#4" class="map-item"><i class="fas fa-map-marker-alt"></i>  W 85th St, New York, USA </a>
-                                    </div>
-                                    <ul class="list-single-opt_header_cat">
-                                        <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
-                                        <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
-                                    </ul>
-                                    <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                                    <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                                    <div class="geodir-category-listing_media-list">
-                                        <span><i class="fas fa-camera"></i> 13</span>
-                                    </div>
-                                </div>
-                                <div class="geodir-category-content fl-wrap">
-                                    <h3><a href="listing-single.html">Contemporary Apartment</a></h3>
-                                    <div class="geodir-category-content_price">$ 1,600,000</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                    <div class="geodir-category-content-details">
-                                        <ul>
-                                            <li><i class="fal fa-bed"></i><span>4</span></li>
-                                            <li><i class="fal fa-bath"></i><span>1</span></li>
-                                            <li><i class="fal fa-cube"></i><span>550 ft2</span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="geodir-category-footer fl-wrap">
-                                        <a href="agent-single.html" class="gcf-company"><img src="<?=site_url(); ?>assets/images/avatar/4.jpg" alt=""><span>By Bill Trust</span></a>
-                                        <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Excellent
-                                            " data-starrating2="5"></div>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>							
-                    </div>								
-                </div>
-                <div class="swiper-button-prev lc-wbtn lc-wbtn_prev"><i class="far fa-angle-left"></i></div>
-                <div class="swiper-button-next lc-wbtn lc-wbtn_next"><i class="far fa-angle-right"></i></div>
-            </div> -->
+           
         </div>
     </div>
 </div>
-                <!-- content end -->	
-<!-- content end -->	
-<!-- subscribe-wrap -->	
-<div class="subscribe-wrap fl-wrap">
-    <div class="container">
-        <div class="subscribe-container fl-wrap color-bg">
-            <div class="pwh_bg"></div>
-            <div class="mrb_dec mrb_dec3"></div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="subscribe-header">
-                        <h4>newsletter</h4>
-                        <h3>Sign up for newsletter and get latest news and update</h3>
-                    </div>
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-5">
-                    <div class="footer-widget fl-wrap">
-                        <div class="subscribe-widget fl-wrap">
-                            <div class="subcribe-form">
-                                <form id="subscribe">
-                                    <input class="enteremail fl-wrap" name="email" id="subscribe-email" placeholder="Enter Your Email" spellcheck="false" type="text">
-                                    <button type="submit" id="subscribe-button" class="subscribe-button color-bg">  Subscribe</button>
-                                    <label for="subscribe-email" class="subscribe-message"></label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+           
 <input type="hidden" id="country_id" value="">
 <!-- subscribe-wrap end -->	 
 

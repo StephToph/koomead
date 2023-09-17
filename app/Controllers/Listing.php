@@ -620,6 +620,7 @@ class Listing extends BaseController {
 								$v_ins['reg_date'] = date(fdate);
 								$w_id = $this->Crud->create('wallet', $v_ins);
 
+								$this->Crud->updates('id', $listing_id, 'listing', array('promote_status'=>1));
 								///// store activities
 								$code = $this->Crud->read_field('id', $ins_rec, $table, 'code');
 								$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');

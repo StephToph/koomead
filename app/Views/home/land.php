@@ -75,7 +75,7 @@
                 <div class="col-md-4">
                     <div class="section-title fl-wrap">
                         <h4>Browse Hot Offers</h4>
-                        <h2>Latest Businesses</h2>
+                        <h2>Featured Business</h2>
                     </div>
                 </div>
                 <div class="col-md-8">

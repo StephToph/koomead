@@ -789,7 +789,7 @@ class Listing extends BaseController {
 							
 							$promotion = $this->Crud->read_field('id', $promotion_id, 'promotion', 'name');
                         $country = $this->Crud->read_field('id', $listing_id, 'listing', 'country_id');
-						$cur = '$';
+						$cur = '£';
                         if($country == 161)$cur = ' ₦';
 						
 						$item .= '

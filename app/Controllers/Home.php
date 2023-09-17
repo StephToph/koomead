@@ -375,7 +375,7 @@ class Home extends BaseController {
 			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
 			if(!empty($this->request->getPost('category_id'))) { $category_id = $this->request->getPost('category_id'); } else { $category_id = ''; }
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
-            $cur = '$';
+            $cur = '£';
             if($country_id == '161')$cur = '&#8358;';
 
 			
@@ -534,7 +534,7 @@ class Home extends BaseController {
 			
 			if(!empty($this->request->getPost('country_id'))) { $country_id = $this->request->getPost('country_id'); } else { $country_id = ''; }
 			
-			$cur = '$';
+			$cur = '£';
             if($country_id == '161')$cur = '&#8358;';
 
 			

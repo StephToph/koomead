@@ -115,7 +115,7 @@
         <div class="container">
             <div class="row">
                 <!--  listing-single content -->
-                <div class="col-md-12">
+                <div class="col-md-9">
                     <div class="list-single-main-wrapper fl-wrap">
                         <!--  scroll-nav-wrap -->
                         <div class="scroll-nav-wrap">
@@ -174,35 +174,6 @@
                                     <h3>Contact Details</h3>
                                 </div>
                                 
-                                <div class="box-widget fl-wrap mb-5">
-                                    <div class="profile-widget">
-                                        <div class="profile-widget-header color-bg smpar fl-wrap">
-                                            <div class="pwh_bg"></div>
-                                            <div class="profile-widget-card">
-                                                <div class="profile-widget-image">
-                                                    <img src="<?=site_url($user_img); ?>" alt="">
-                                                </div>
-                                                <div class="profile-widget-header-title">
-                                                    <h4><a href="javascript:;"><?=ucwords($user); ?></a></h4>
-                                                    <div class="clearfix"></div>
-                                                    <div class="pwh_counter"><span><?=$this->Crud->check('user_id', $user_id, 'listing'); ?></span> Listings</div>
-                                                    <div class="clearfix"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="profile-widget-content fl-wrap">
-                                            <div class="contats-list fl-wrap">
-                                                <ul class="no-list-style">
-                                                    <li><span><i class="fal fa-phone"></i> Phone :</span> <a href="javascript:;"><?=$user_phone; ?></a></li>
-                                                    <li><span><i class="fal fa-envelope"></i> Mail :</span> <a href="javascript:;"><?=$user_mail; ?></a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="profile-widget-footer fl-wrap">
-                                                <a href="javascript:;" class="btn float-btn color-bg small-btn">View Profile</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 
                                 <div class="list-single-main-item_content fl-wrap">
                                     <div class="details-list">
@@ -294,7 +265,72 @@
                 
                 
                 </div>
-                <!--  sidebar end-->                            
+                <!--  sidebar end-->   
+                <div class="col-md-3">
+                    <!--box-widget-->
+                    <div class="box-widget fl-wrap">
+                        <div class="profile-widget">
+                            <div class="profile-widget-header color-bg smpar fl-wrap">
+                                <div class="pwh_bg"></div>
+                                <div class="profile-widget-card">
+                                    <div class="profile-widget-image">
+                                        <img src="<?=site_url($user_img); ?>" alt="">
+                                    </div>
+                                    <div class="profile-widget-header-title">
+                                        <h4><a href="javascript:;"><?=ucwords($user); ?></a></h4>
+                                        <div class="clearfix"></div>
+                                        <div class="pwh_counter"><span><?=$this->Crud->check('user_id', $user_id, 'listing'); ?></span> Listings</div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-widget-content fl-wrap">
+                                <div class="contats-list fl-wrap">
+                                    <ul class="no-list-style">
+                                        <li><span><i class="fal fa-phone"></i> Phone :</span> <a href="javascript:;"><?=$user_phone; ?></a></li>
+                                        <li><span><i class="fal fa-envelope"></i> Mail :</span> <a href="javascript:;"><?=$user_mail; ?></a></li>
+                                    </ul>
+                                </div>
+                                <div class="profile-widget-footer fl-wrap">
+                                    <a href="javascript:;" class="btn float-btn color-bg small-btn">View Profile</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                        
+                    <div class="box-widget fl-wrap">
+                        <div class="box-widget-fixed-init fl-wrap" id="sec-contact">
+                            <div class="box-widget-title fl-wrap box-widget-title-color color-bg">Message Advertiser</div>
+                            <div class="box-widget-content fl-wrap">
+                                <div class="custom-form">
+                                    
+                                    <?php echo form_open_multipart('home/listing/message', array('id'=>'bb_ajax_form', 'class'=>'text-start customform')); ?>
+                                        <input type="hidden" name="listing_id" value="<?=$param2;?>"> 
+                                        <input type="hidden" name="business_id" value="<?=$user_id;?>"> 
+                                        <label>Type a Message* </label>
+                                        <div class="listsearch-input-item">
+                                            <textarea cols="40" rows="3" id="message" name="message" style="height: 135px" placeholder="Messsage" spellcheck="true" required></textarea>
+                                        </div>
+                                        <?php
+                                            // echo $log_id;
+                                            if(empty($log_id)){
+                                                echo '<button type="submit" class="btn float-btn show-reg-form modal-open color-bg fw-btn"> Send</button>';
+                                            } else {
+                                                echo '<button type="submit" class="btn float-btn color-bg fw-btn"> Send</button>';
+                                            }
+                                            ?>
+                                        
+                                    </form>
+                                    <div class="row">
+                                        <div class="col-sm-12 py-2"><div id="bb_ajax_msg"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                
+                </div>                        
             </div>
             <div class="fl-wrap limit-box"></div>
            

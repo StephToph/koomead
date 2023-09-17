@@ -92,8 +92,13 @@
                                             </a>
                                         </div>
                                     </div>
+                                    <?php
+                                         $country = $this->Crud->read_field('id', $param2, 'listing', 'country_id');
+                                         $cur = '£';
+                                         if($country == 161)$cur = ' ₦';
+                                    ?>
                                     <div class="list-single-header-footer fl-wrap">
-                                        <div class="list-single-header-price" data-propertyprise="50500"><strong>Price:</strong><span>$</span><?=number_format($price,2); ?></div>
+                                        <div class="list-single-header-price" data-propertyprise="50500"><strong>Price:</strong><span><?=$cur; ?></span><?=number_format($price,2); ?></div>
                                         <div class="list-single-header-date"><span>Date:</span><?=date('d F, Y', strtotime($reg_date)); ?></div>
                                         <div class="list-single-stats">
                                             <ul class="no-list-style">

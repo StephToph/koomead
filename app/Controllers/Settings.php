@@ -1085,6 +1085,7 @@ class Settings extends BaseController {
                             
                         }
 						
+						
 						$item .= '
 							<li class="list-group-item">
 								<div class="row pt-3">
@@ -1098,7 +1099,7 @@ class Settings extends BaseController {
 									<div class="col-12 col-md-4 mb-2">
 										<div class="single">
                                             <div class="text-muted">'.$promoter_no.' Promoters</div>
-											<b class="font-size-14 text-danger">$'.number_format($amount,2).'/ ₦'.number_format($nig_amount,2).'</b>
+											<b class="font-size-14 text-danger">£'.number_format($amount,2).'/ ₦'.number_format($nig_amount,2).'</b>
                                             <div class="font-size-12 text-dark">'.$duration.' Days</div>
 										</div>
 									</div>

@@ -208,159 +208,131 @@ class Wallets extends BaseController {
 			$limit = $param2;
 			$offset = $param3;
 
-			$count = 0;
 			$rec_limit = 25;
 			$item = '';
+			$counts = 0;
 
-			$log_id = $this->session->get('sh_id');
-			if($limit == '') {$limit = $rec_limit;}
-			if($offset == '') {$offset = 0;}
+			if(empty($limit)) {$limit = $rec_limit;}
+			if(empty($offset)) {$offset = 0;}
 			
-			if(!empty($this->request->getVar('start_date'))) { $start_date = $this->request->getVar('start_date'); } else { $start_date = ''; }
-			if(!empty($this->request->getVar('end_date'))) { $end_date = $this->request->getVar('end_date'); } else { $end_date = ''; }
-			if(!empty($this->request->getVar('type'))) { $transact_type = $this->request->getVar('type'); } else { $transact_type = ''; }
-			if(!empty($this->request->getVar('wallet_type'))) { $wallet_type = $this->request->getVar('wallet_type'); } else { $wallet_type = ''; }
-			$search = $this->request->getVar('search');
-
+			if (!empty($this->request->getPost('search'))) {$search = $this->request->getPost('search');} else {$search = '';}
+			if(!empty($this->request->getPost('type'))) { $type = $this->request->getPost('type'); } else { $type = ''; }
+			if(!empty($this->request->getPost('transact'))) { $transact = $this->request->getPost('transact'); } else { $transact = ''; }
+			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
+			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
+			
+			$total = 0;
+			$credit = 0;
+			$debit = 0;
+			
+			$log_id = $this->session->get('km_id');
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {
-				$items = '
-					<div class="nk-tb-item nk-tb-head">
-						<div class="nk-tb-col"><span class="sub-text">Transaction Type</span></div>
-						<div class="nk-tb-col"><span class="sub-text">User</span></div>
-						<div class="nk-tb-col tb-col-md"><span class="sub-text">Amount</span></div>
-					</div><!-- .nk-tb-item -->
-					
-				';
-				$total = 0;
-				$all_rec = $this->Crud->api('get', 'wallet/get', 'search='.$search.'&start_date='.$start_date.'&end_date='.$end_date.'&transact_type='.$transact_type.'&wallet_type='.$wallet_type.'&user_id='.$log_id);
-                $all_rec = json_decode($all_rec);
-				if(!empty($all_rec->data)) { $counts = count($all_rec->data); } else { $counts = 0; }
+				$all_rec = $this->Crud->filter_wallet('', '', $log_id, $type, $transact,$search, $start_date, $end_date);
+              
+				if(!empty($all_rec)) { $counts = count($all_rec); } else { $counts = 0; }
 
-				$query = $this->Crud->api('get', 'wallet/get', 'limit='.$limit.'&offset='.$offset.'&search='.$search.'&start_date='.$start_date.'&end_date='.$end_date.'&transact_type='.$transact_type.'&wallet_type='.$wallet_type.'&user_id='.$log_id);
-				$data['count'] = $counts;
-                $query = json_decode($query);
-
+				$query = $this->Crud->filter_wallet($limit, $offset, $log_id, $type, $transact,$search, $start_date, $end_date);
+				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
+				
 				//print_r($query);
 				$curr = '&#8358;';
-				if($query->status == true){
-					$total = $query->balance;
-					if($transact_type == 'debit'){
-						$total = $query->withdrawns;
-					}
-					if($transact_type == 'credit'){
-						$total = $query->earnings;
-					}
-                    if(!empty($query->data)) {
-                        foreach($query->data as $q) {
-							
-							$id = $q->id;
-							$user_id = $q->user_id;
-							$type = $q->type;
-							$wallet_type = $q->wallet_type;
-							$mod = $q->item;
-							$mod_id = $q->item_id;
-							$remark = $q->remark;
-							$amount = number_format((float)$q->amount, 2);
-							$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
+					
+				if(!empty($query)) {
+					foreach($query as $q) {
+						
+						$id = $q->id;
+						$user_id = $q->user_id;
+						$type = $q->type;
+						$mod = $q->item;
+						$mod_id = $q->item_id;
+						$remark = $q->remark;
+						$amount = number_format((float)$q->amount, 2);
+						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
 
-							$user_email = $this->Crud->read_field('id', $user_id, 'user', 'email');
-							$deny = array('cmoneydayo@gmail.com', '1cmoneydayo@gmail.com', '3cmoneydayo@gmail.com', '2cmoneydayo@gmail.com', '4cmoneydayo@gmail.com', '5cmoneydayo@gmail.com', '6cmoneydayo@gmail.com', '7cmoneydayo@gmail.com', '0cmoneydayo@gmail.com', '00cmoneydayo@gmail.com', '11cmoneydayo@gmail.com','112cmoneydayo@gmail.com','130cmoneydayo@gmail.com');
-							if(in_array($user_email, $deny)) continue;
+						$user_email = $this->Crud->read_field('id', $user_id, 'user', 'email');
+						$country = $this->Crud->read_field('id', $user_id, 'user', 'country_id');
+						$curr = '£';
+                        if($country == 161)$curr = ' ₦';
+						// user 
+						$user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
+						$user_role_id = $this->Crud->read_field('id', $user_id, 'user', 'role_id');
+						$user_role = strtoupper($this->Crud->read_field('id', $user_role_id, 'access_role', 'name'));
+						$user_image_id = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
+						$user_image = $this->Crud->image($user_image_id, 'big');
 
-							// user 
-							$user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
-							$user_role_id = $this->Crud->read_field('id', $user_id, 'user', 'role_id');
-							$user_role = strtoupper($this->Crud->read_field('id', $user_role_id, 'access_role', 'name'));
-							$user_image_id = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
-							$user_image = $this->Crud->image($user_image_id, 'big');
-
-							// module
-							if($mod == 'order') {
-								$remark = '
-									<a href="javascript:;" class="text-success pop" pageTitle="Order Statement" pageName="'.site_url('order/list/manage/edit/'.$mod_id).'" pageSize="modal-lg">
-										<span class="m-l-3 m-r-10"><b>'.$remark.'</b></span>
-									</a>
-								';
-							}
-
-							// currency
-							
-							
-							// color
-							$color = 'success';
-							if($type == 'debit') { $color = 'danger';}
-
-							$item .= '
-								<div class="nk-tb-item">
-									<div class="nk-tb-col">
-										<small>'.$reg_date.'</small><br>
-										<span class="tb-lead">'.$remark.'</span>
-										<span class="tb-sub text-azure"><b>'.strtoupper($wallet_type).' WALLET</b> </span>
-									</div>
-									<div class="nk-tb-col tb-col-md">
-										<div class="user-card">       
-											<div class="user-avatar">            
-												<a href="javascript:;" class="pop" pageTitle="Wallet Statement" pageName="'.site_url('wallets/list/statement/'.$user_id).'" pageSize="modal-lg">
-													<img alt="" src="'.site_url($user_image).'" class="p-1 avatar" />
-												</a>
-											</div>        
-											<div class="user-info">   
-												<small>'.$user_role.'</small>     
-												<span class="lead-text">'.$user.'</span> 
-											</div>    
-										</div> 
-									</div>
-									<div class="nk-tb-col">
-										<div class="user-card d-sm-none">       
-											<div class="user-avatar">            
-												<a href="javascript:;" class="pop" pageTitle="Wallet Statement" pageName="'.site_url('wallets/list/statement/'.$user_id).'" pageSize="modal-lg">
-													<img alt="" src="'.site_url($user_image).'" class="p-1 avatar" />
-												</a>
-											</div>        
-											<div class="user-info">   
-												<small>'.$user_role.'</small>     
-												<span class="lead-text">'.$user.'</span> 
-											</div>    
-										</div> 
-										<span class="text-'.$color.'">'.strtoupper($type).'</span>
-										<span class="tb-lead"><b>' . $curr . $amount . '</b></span>
-									</div>
-								</div>
-								
+						// module
+						if($mod == 'order') {
+							$remark = '
+								<a href="javascript:;" class="text-success pop" pageTitle="Order Statement" pageName="'.site_url('order/list/manage/edit/'.$mod_id).'" pageSize="modal-lg">
+									<span class="m-l-3 m-r-10"><b>'.$remark.'</b></span>
+								</a>
 							';
 						}
+						
+						
+						if($type == 'credit')$credit+= (float)$q->amount;
+						if($type == 'debit')$debit+= (float)$q->amount;
+						
+						// color
+						$color = 'success';
+						if($type == 'debit') { $color = 'danger';}
+
+						$item .= '
+							<li class="list-group-item">
+								<div class="row pt-3">
+									<div class="col-2 col-sm-4 mb-2">
+										<div class="text-muted">'.$reg_date.'</div>
+										<a href="javascript:;" class="pop" pageTitle="Wallet Statement" pageName="'.site_url('wallets/list/statement/'.$user_id).'" pageSize="modal-lg">
+											<img alt="" src="'.site_url($user_image).'" class="p-1 rounded" height="50"/>
+											<span class="text-primary font-weight-bold">'.strtoupper($user).'</span>
+										</a>  
+										
+									</div>
+									<div class="col-10 col-md-8 mb-4">
+										<div class="single">
+											<b class="font-size-16 text-'.$color.'">'.strtoupper($type).'</b>
+											<div class="font-size-16 text-dark">'.strtoupper($remark).'</div>
+											<span class="tb-lead"><b>' . $curr . $amount . '</b></span>
+										</div>
+									</div>
+								</div>
+							</li>
+							
+							
+						';
 					}
 				}
 			}
 
 			if(empty($item)) {
-				$resp['item'] = $items.'
+				$resp['item'] = '
 					<div class="text-center text-muted">
 						<br/><br/><br/><br/>
-						<i class="icon ni ni-wallet" style="font-size:150px;"></i><br/><br/>No Wallet Returned
+						<i class="fal fa-wallet" style="font-size:150px;"></i><br/><br/>No Wallet Returned<br/><br/><br/>
 					</div>
 				';
 			} else {
-				$resp['item'] = $items.$item;
-				if($offset >= 25){
-					$resp['item'] = $item;
-				}
+				$resp['item'] = $item;
 			}
+			$total = $credit - $debit;
+			
+			$resp['total'] = $curr.number_format($total, 2);
+			$resp['credit'] = $curr.number_format($credit, 2);
+			$resp['debit'] = $curr.number_format($debit, 2);
+			$resp['count'] = $count;
 
-			$more_record = $counts - ($offset + $rec_limit);
+			$more_record = $count - ($offset + $rec_limit);
 			$resp['left'] = $more_record;
-			$resp['total'] = $curr . $total;
 
-			if($counts > ($offset + $rec_limit)) { // for load more records
+			if($count > ($offset + $rec_limit)) { // for load more records
 				$resp['limit'] = $rec_limit;
 				$resp['offset'] = $offset + $limit;
 			} else {
 				$resp['limit'] = 0;
 				$resp['offset'] = 0;
 			}
-
 			echo json_encode($resp);
 			die;
 		}
@@ -463,7 +435,7 @@ class Wallets extends BaseController {
 	    $email = $this->request->getVar('email');
 	    if(!empty($email)) { $id = $this->Crud->read_field('email', $email, 'user', 'id'); }
 	    
-	    if(empty($id)) { redirect(base_url('wallet')); }
+	    if(empty($id)) { redirect(site_url('wallet')); }
 	    
 	    $items = '';
 	    $total_credit = 0;
@@ -499,7 +471,7 @@ class Wallets extends BaseController {
 	        <h3>'.$name.' Wallet Account Statement
 	            <div style="font-size:small; color:#666;">as at '.date('M d, Y h:iA').'</div>
 	        </h3>
-	        <table class="table table-striped">
+	        <table class="table table-striped text-start">
 	            <thead>
 	                <tr>
 	                    <td><b>DATE</b></td>
@@ -510,8 +482,8 @@ class Wallets extends BaseController {
 	            <tbody>'.$items.'</tbody>
 	        </table>
 	        <hr/>
-	        <b>TOTAL CREDIT:</b> &#8358;'.number_format((float)$total_credit, 2).'<br/>
-	        <b>TOTAL DEBIT:</b> &#8358;'.number_format((float)$total_debit, 2).'
+	        <div class="float-start"><b>TOTAL CREDIT:</b> &#8358;'.number_format((float)$total_credit, 2).'<br/>
+	        <b>TOTAL DEBIT:</b> &#8358;'.number_format((float)$total_debit, 2).'</div>
 			<a class="float-end btn btn-danger" href="'.site_url('wallets/list/download/'.$id).'"><em class="icon ni ni-download"></em> <span>Download</span></a><div class="col-sm-12 py-2" id="export_resp"></div>
 	    ';
 	}

@@ -48,8 +48,8 @@
                         <th>Number of Views Remaining</th>
                         <th><?php
                         
-                            $t_view = $this->Crud->read_field2('code', $codes, 'user_id', $log_id, 'business_promotion', 'no_view'); 
-                            $app = $this->Crud->read_field2('code', $codes, 'user_id', $log_id, 'business_promotion', 'promoter_no'); 
+                            $t_view = $this->Crud->read_field('code', $codes,  'business_promotion', 'no_view'); 
+                            $app = $this->Crud->read_field('code', $codes, 'business_promotion', 'promoter_no'); 
                             $p_view = (int)$t_view / (int)$app;
                             $g_view = $this->Crud->read_field2('code', $codes, 'user_id', $log_id, 'promotion_metric', 'view');
                             if(empty($g_view))$g_view = 0;

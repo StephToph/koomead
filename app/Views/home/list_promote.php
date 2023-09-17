@@ -174,7 +174,7 @@
                                     <h3>Contact Details</h3>
                                 </div>
                                 
-                                <div class="box-widget fl-wrap">
+                                <div class="box-widget fl-wrap mb-5">
                                     <div class="profile-widget">
                                         <div class="profile-widget-header color-bg smpar fl-wrap">
                                             <div class="pwh_bg"></div>

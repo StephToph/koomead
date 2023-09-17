@@ -143,12 +143,12 @@
                 <div class="header-opt-modal-container hopmc_init">
                     <div class="header-opt-modal-item lang-item fl-wrap">
                         <?php 
-                            $cur = 'NGN';
+                            $cur = '₦';
                             $sel = 'class="current-lan"';
                             if(!empty($log_id)){
                                 $country = $this->Crud->read_field('id', $log_id, 'user', 'country_id'); 
                                 if($country != 161){
-                                    $cur = 'UK';
+                                    $cur = '$';
                                     $sel = 'class="current-lan"';
                                 }
                             }
@@ -157,9 +157,9 @@
                         <div class="header-opt-modal-list fl-wrap">
                             <ul>
                                 <li><a href="javascript:;" onclick="get_country('Nigeria')" <?=$sel;?>
-                                        data-lantext="NGN">Nigeria</a></li>
+                                        data-lantext="₦">Nigeria</a></li>
                                 <li><a href="javascript:;" onclick="get_country('United Kingdom')"
-                                        data-lantext="UK">United Kingdom</a></li>
+                                        data-lantext="$">United Kingdom</a></li>
                             </ul>
                         </div>
                     </div>

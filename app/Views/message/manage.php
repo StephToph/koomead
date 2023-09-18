@@ -31,11 +31,6 @@
                     
                 </div>
                 <div class="chat-wrapper fl-wrap">
-                   <?php
-                        
-                   
-                   ?>
-                    <!--  chat-box-->
                     <div id="load_message">
                         <div class="text-center text-muted py-5" style="font-size:20px;">
                             <br/><br/>
@@ -55,7 +50,13 @@
         </div>
     </div>
 <input type="hidden" id="codes">
-        
+        <style>
+            #chatBox {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+        </style>
     <!-- <script src="<?php echo site_url(); ?>/assets/js/jquery.min.js"></script> -->
     <script>var site_url = '<?php echo site_url(); ?>';</script>
    
@@ -64,7 +65,27 @@
             load_chat();
         });
 
-        
+        function scrollToSpecificDiv(specificDiv) {
+            var container = document.getElementById('chatBox');
+            
+            // Calculate the scroll position to make the specificDiv visible within the container
+            var scrollTop = specificDiv.offsetTop - container.offsetTop;
+            
+            // Scroll to the calculated position
+            container.scrollTop = scrollTop;
+        }
+
+        function scrollToLastItem() {
+            var container = document.getElementById('chatBoxs');
+            var items = container.getElementsByClassName('chat-message');
+            
+            if (items.length > 0) {
+            var lastItem = items[items.length - 1];
+            
+            // Scroll to the last item
+            container.scrollTop = lastItem.offsetTop - container.offsetTop;
+            }
+        }
 
         function load_chat() {
            
@@ -119,7 +140,7 @@
                url: site_url + 'message/index/update_message',
                type: 'post',
                data: {code:code},
-               success: function (data) {load_chat();
+               success: function (data) {load_chat();scrollToLastItem();
                }
            });
        }
@@ -136,11 +157,14 @@
                   success: function (data) {
                       var dt = JSON.parse(data);
                       $('#load_message').html(dt.item);
-                      scrollToLastElement('#chatBox');
+                      scrollToLastElement('#chatBox');scrollToLastItem();
                   }
               });
           }
 
+        //   setInterval(function() {
+        //     load_message();
+        //     }, 5000); 
         function send_chat(){
             var code = $('#chat_code').val();
             var msg = $('#chat_msg').val();

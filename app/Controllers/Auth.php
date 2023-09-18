@@ -172,6 +172,7 @@ class Auth extends BaseController {
 
             $this->session->remove('km_id');
         }
+        session()->destroy();
         return redirect()->to(site_url());
     }
 

@@ -29,6 +29,41 @@ class Home extends BaseController {
         return view('home/land', $data);
     }
 
+
+	public function search() {
+        $db = \Config\Database::connect();
+        $this->session->set('km_redirect', uri_string());
+        // check login
+        $log_id = $this->session->get('km_id'); 
+        $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+        $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+       
+
+        $data['log_id'] = $log_id;
+		$location = $this->session->get('km_location'); 
+        $data['location'] = $location;
+        $data['role'] = $role;
+        
+		$search ='';
+		$category_ids ='';
+		$state_id ='';
+		
+		if($this->request->getMethod() == 'post'){
+			$search = $this->request->getPost('search');
+			$category_ids = $this->request->getPost('category_ids');
+			$state_id = $this->request->getPost('state_id');
+			
+		}
+
+		$data['search'] = $search;
+		$data['category_ids'] = $category_ids;
+        $data['state_id'] = $state_id;
+        
+        $data['title'] = 'Search '.app_name;
+        $data['page_active'] = 'search';
+        return view('home/search', $data);
+    }
+
     public function listing($param1='', $param2='', $param3='') {
 		$db = \Config\Database::connect();
         

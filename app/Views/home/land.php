@@ -25,12 +25,15 @@
             </div>
             <div class="main-search-input-wrap">
                 <div class="main-search-input fl-wrap">
+                    
+                    <?php echo form_open_multipart('home/search', array('id'=>'bb_ajax_for', 'class'=>'')); ?>
                     <div class="main-search-input-item">
-                        <input type="text" placeholder="What are you looking for?" value=""/>
+                        <input type="text" name="search" placeholder="What are you looking for?" required value=""/>
+                        <input type="text" name="search" placeholder="What are you looking for?" required value=""/>
                     </div>
                     <div class="main-search-input-item">
                         <select data-placeholder="Select" name="category_ids" id="category_ids" required class="mb-2 chosen-select">
-                            <option value="">All Categories</option>
+                            <option value="all">All Categories</option>
                             <?php
                                 $country = $this->Crud->read_order('category', 'name', 'asc');
                                 if(!empty($country)){
@@ -43,9 +46,10 @@
                     </div>
                     <div class="main-search-input-item">
                         <select data-placeholder="Select" name="state_id" id="state_id" required class="mb-2 chosen-select" >
-                                <option value="">All State</option>
+                                <option value="all">All State</option>
                                 <?php
-                                    $country = $this->Crud->read_single_order('country_id', 161, 'state', 'name', 'asc');
+                                    $c_id = $this->Crud->read_field('name', $location, 'country', 'id');
+                                    $country = $this->Crud->read_single_order('country_id', $c_id, 'state', 'name', 'asc');
                                     if(!empty($country)){
                                         foreach($country as $c){
                                             echo '<option value="'.$c->id.'">'.$c->name.'</option>';
@@ -55,7 +59,8 @@
                             </select>
                         </select>
                     </div>
-                    <button class="main-search-button color-bg" onclick="window.location.href='<?=site_url(); ?>'">  Search <i class="far fa-search"></i> </button>
+                    <button class="main-search-button color-bg" >  Search <i class="far fa-search"></i> </button>
+                    </form>
                 </div>
             </div>
             <div class="scroll-down-wrap">
@@ -91,56 +96,8 @@
             <a href="javascript:;" class="btn float-btn small-btn color-bg">View All Businesses</a>
         </div><div class="clearfix"></div>
     </section>
-    <!-- section end-->	
-    <!-- section -->
-    <!-- <section>
-        <div class="container">
-            about-wrap
-            <div class="about-wrap">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="about-title ab-hero fl-wrap">
-                            <h2>Why Choose Our Businesses </h2>
-                            <h4>Check video presentation to find   out more about us .</h4>
-                        </div>
-                        <div class="services-opions fl-wrap">
-                            <ul>
-                                <li>
-                                    <i class="fal fa-headset"></i>
-                                    <h4>24 Hours Support  </h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                </li>
-                                <li>
-                                    <i class="fal fa-users-cog"></i>
-                                    <h4>User Admin Panel</h4>
-                                    <p>Nulla posuere sapien vitae lectus suscipit, et pulvinar nisi tincidunt. Curabitur convallis fringilla diam sed aliquam. </p>
-                                </li>
-                                <li>
-                                    <i class="fal fa-phone-laptop"></i>
-                                    <h4>Mobile Friendly</h4>
-                                    <p>Curabitur convallis fringilla diam sed aliquam. Sed tempor iaculis massa faucibus feugiat. In fermentum facilisis massa.</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-6">
-                        <div class="about-img fl-wrap">
-                            <img src="<?=site_url();?>assets/images/all/27.jpg" class="respimg" alt="">
-                            <div class="about-img-hotifer color-bg">
-                                <p>Your website is fully responsive so visitors can view your content from their choice of device.</p>
-                                <h4>Mark Antony</h4>
-                                <h5>Homeradar CEO</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            about-wrap end 							
-        </div>
-    </section> -->
-    <!-- section end-->	
-    <!-- section  -->
+    
+    
     <section class="hidden-section no-padding-section">
         <div class="half-carousel-wrap">
             <div class="half-carousel-title color-bg">
@@ -173,190 +130,7 @@
         </div>
     </section>
     <!--section end-->  					
-    <!-- section -->
-    <!-- <section >
-        <div class="container">
-            section-title
-            <div class="section-title st-center fl-wrap">
-                <h4>The Best Agents</h4>
-                <h2>Meet Our Agents</h2>
-            </div>
-            section-title end
-            <div class="clearfix"></div>
-            <div class="listing-carousel-wrapper lc_hero carousel-wrap fl-wrap">
-                <div class="listing-carousel carousel ">
-                    slick-slide-item
-                    <div class="slick-slide-item">
-                         agent card item
-                        <div class="listing-item">
-                            <article class="geodir-category-listing fl-wrap">
-                                <div class="geodir-category-img fl-wrap  agent_card">
-                                    <a href="agent-single.html" class="geodir-category-img_item">
-                                        <img src="<?=site_url();?>assets/images/agency/agent/1.jpg" alt="">
-                                        <ul class="list-single-opt_header_cat">
-                                            <li><span class="cat-opt color-bg">4 listings</span></li>
-                                        </ul>
-                                    </a>
-                                    <div class="agent-card-social fl-wrap">
-                                        <ul>
-                                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent</span></div>
-                                </div>
-                                <div class="geodir-category-content fl-wrap">
-                                    <div class="card-verified tolt" data-microtip-position="left" data-tooltip="Verified"><i class="fal fa-user-check"></i></div>
-                                    <div class="agent_card-title fl-wrap">
-                                        <h4><a href="agent-single.html" >Anna Lips</a></h4>
-                                        <h5><a href="agency-single.html">CondorHome RealEstate agency</a></h5>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                    <div class="geodir-category-footer fl-wrap">
-                                        <a href="agent-single.html" class="btn float-btn color-bg small-btn">View Profile</a>
-                                        <a href="mailto:yourmail@email.com" class="tolt ftr-btn" data-microtip-position="left" data-tooltip="Write Message"><i class="fal fa-envelope"></i></a>
-                                        <a href="tel:123-456-7890" class="tolt ftr-btn" data-microtip-position="left" data-tooltip="Call Now"><i class="fal fa-phone"></i></a>	
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                         agent card item end
-                    </div>
-                    slick-slide-item end
-                    slick-slide-item
-                    <div class="slick-slide-item">
-                         agent card item
-                        <div class="listing-item">
-                            <article class="geodir-category-listing fl-wrap">
-                                <div class="geodir-category-img fl-wrap  agent_card">
-                                    <a href="agent-single.html" class="geodir-category-img_item">
-                                        <img src="<?=site_url();?>assets/images/agency/agent/3.jpg" alt="">
-                                        <ul class="list-single-opt_header_cat">
-                                            <li><span class="cat-opt color-bg">6 listings</span></li>
-                                        </ul>
-                                    </a>
-                                    <div class="agent-card-social fl-wrap">
-                                        <ul>
-                                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-vk"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="3"><span class="re_stars-title">Average</span></div>
-                                </div>
-                                <div class="geodir-category-content fl-wrap">
-                                    <div class="card-verified cv_not tolt" data-microtip-position="left" data-tooltip="Not Verified"><i class="fal fa-minus-octagon"></i></div>
-                                    <div class="agent_card-title fl-wrap">
-                                        <h4><a href="agent-single.html" >Jane Kobart</a></h4>
-                                        <h5><a href="agency-single.html">Mavers RealEstate agency</a></h5>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                    <div class="geodir-category-footer fl-wrap">
-                                        <a href="agent-single.html" class="btn float-btn color-bg small-btn">View Profile</a>
-                                        <a href="mailto:yourmail@email.com" class="tolt ftr-btn" data-microtip-position="left" data-tooltip="Write Message"><i class="fal fa-envelope"></i></a>
-                                        <a href="tel:123-456-7890" class="tolt ftr-btn" data-microtip-position="left" data-tooltip="Call Now"><i class="fal fa-phone"></i></a>	
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                         agent card item end
-                    </div>
-                    slick-slide-item end									
-                    slick-slide-item
-                    <div class="slick-slide-item">
-                         agent card item
-                        <div class="listing-item">
-                            <article class="geodir-category-listing fl-wrap">
-                                <div class="geodir-category-img fl-wrap  agent_card">
-                                    <a href="agent-single.html" class="geodir-category-img_item">
-                                        <img src="<?=site_url();?>assets/images/agency/agent/5.jpg" alt="">
-                                        <ul class="list-single-opt_header_cat">
-                                            <li><span class="cat-opt color-bg">23 listings</span></li>
-                                        </ul>
-                                    </a>
-                                    <div class="agent-card-social fl-wrap">
-                                        <ul>
-                                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-vk"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="5"><span class="re_stars-title">Excellent
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="geodir-category-content fl-wrap">
-                                    <div class="card-verified tolt" data-microtip-position="left" data-tooltip="Verified"><i class="fal fa-user-check"></i></div>
-                                    <div class="agent_card-title fl-wrap">
-                                        <h4><a href="agent-single.html" >Bill Trust</a></h4>
-                                        <h5><a href="agency-single.html">Your Sweet Home   agency</a></h5>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                    <div class="geodir-category-footer fl-wrap">
-                                        <a href="agent-single.html" class="btn float-btn color-bg small-btn">View Profile</a>
-                                        <a href="mailto:yourmail@email.com" class="tolt ftr-btn" data-microtip-position="left" data-tooltip="Write Message"><i class="fal fa-envelope"></i></a>
-                                        <a href="tel:123-456-7890" class="tolt ftr-btn" data-microtip-position="left" data-tooltip="Call Now"><i class="fal fa-phone"></i></a>	
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                         agent card item end								
-                    </div>
-                    slick-slide-item end									
-                    slick-slide-item
-                    <div class="slick-slide-item">
-                         agent card item
-                        <div class="listing-item">
-                            <article class="geodir-category-listing fl-wrap">
-                                <div class="geodir-category-img fl-wrap  agent_card">
-                                    <a href="agent-single.html" class="geodir-category-img_item">
-                                        <img src="<?=site_url();?>assets/images/agency/agent/6.jpg" alt="">
-                                        <ul class="list-single-opt_header_cat">
-                                            <li><span class="cat-opt color-bg">12 listings</span></li>
-                                        </ul>
-                                    </a>
-                                    <div class="agent-card-social fl-wrap">
-                                        <ul>
-                                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="listing-rating card-popup-rainingvis" data-starrating2="4"><span class="re_stars-title">Good</span></div>
-                                </div>
-                                <div class="geodir-category-content fl-wrap">
-                                    <div class="card-verified tolt" data-microtip-position="left" data-tooltip="Verified"><i class="fal fa-user-check"></i></div>
-                                    <div class="agent_card-title fl-wrap">
-                                        <h4><a href="agent-single.html" >Martin Smith</a></h4>
-                                        <h5><a href="agency-single.html">Mavers RealEstate agency</a></h5>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                                    <div class="geodir-category-footer fl-wrap">
-                                        <a href="agent-single.html" class="btn float-btn color-bg small-btn">View Profile</a>
-                                        <a href="mailto:yourmail@email.com" class="tolt ftr-btn" data-microtip-position="left" data-tooltip="Write Message"><i class="fal fa-envelope"></i></a>
-                                        <a href="tel:123-456-7890" class="tolt ftr-btn" data-microtip-position="left" data-tooltip="Call Now"><i class="fal fa-phone"></i></a>	
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                         agent card item end								
-                    </div>
-                    slick-slide-item end								
-                </div>
-                <div class="swiper-button-prev lc-wbtn lc-wbtn_prev"><i class="far fa-angle-left"></i></div>
-                <div class="swiper-button-next lc-wbtn lc-wbtn_next"><i class="far fa-angle-right"></i></div>
-            </div>
-        </div>
-    </section> -->
-    <!-- section end-->					
-    <!-- Button to trigger the modal -->
-
-    
-
-
+   
     <section  class="subscribe-wrap padding-section" style="padding:10px">
 
     </sec>

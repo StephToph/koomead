@@ -492,7 +492,7 @@ class Message extends BaseController {
 				$query = $this->Crud->read_single_order('code', $code, 'km_message', 'id', 'asc');
 				$counts = count($query);
 				$count = 0;
-				$item = '';
+				$item = '';$i=0;
 				if(!empty($query)) {
 					foreach($query as $q) {
 						$id = $q->id;
@@ -521,7 +521,7 @@ class Message extends BaseController {
 
 						if($sender_id == $log_id){
 							$ite = '
-							<div class="chat-message chat-message_user fl-wrap">
+							<div class="chat-message chat-message_user fl-wrap" id="chats_'.$i.'">
 								<div class="dashboard-message-avatar">
 									<img src="'.site_url($sender_img).'" alt="">
 									<span class="chat-message-user-name cmun_sm">'.ucwords($sender).'</span>
@@ -535,7 +535,7 @@ class Message extends BaseController {
 
 						if($receiver_id == $log_id){
 							$ite = '
-								<div class="chat-message   fl-wrap">
+								<div class="chat-message   fl-wrap" id="chats_'.$i.'">
 									<div class="dashboard-message-avatar">
 										<img src="'.site_url($sender_img).'" alt="">
 										<span class="chat-message-user-name cmun_sm">'.ucwords($sender).'</span>
@@ -549,7 +549,7 @@ class Message extends BaseController {
 
 						$item .= $ite.'
 							
-						';
+						';$i++;
 					}
 				}
 			}
@@ -565,7 +565,7 @@ class Message extends BaseController {
 			} else {
 				$resp['item'] = '
 					<div class="chat-box fl-wrap">
-						<div class="chat-box-scroll fl-wrap full-height" data-simplebar="init" id="chatBox">
+						<div class="chat-box-scroll fl-wrap full-height" data-simplebar="init" id="chatBoxs">
 						'.$item.'
 						</div>
 					</div>
@@ -575,7 +575,19 @@ class Message extends BaseController {
 						<button type="button" onclick="send_chat()" class="color-bg"><i class="fal fa-paper-plane"></i></button>
 					</div>
 					<script>
-					
+						function scrollToLastItem() {
+							var container = document.getElementById("chatBoxs");
+							var items = container.getElementsByClassName("chat-message");
+							
+							if (items.length > 0) {
+							var lastItem = items[items.length - 1];
+							
+							// Scroll to the last item
+							container.scrollTop = lastItem.offsetTop - container.offsetTop;
+							}
+						}
+			
+						scrollToLastItem();
 					</script>
 					';
 			}

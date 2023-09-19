@@ -44,20 +44,43 @@
                         <!-- listsearch-input-item -->
                         <div class="col-sm-6">
                             <div class="listsearch-input-item  ">
-                                <input type="text"   placeholder="Address , Street , State..." value="<?=$search; ?>"/>
+                                <input type="text" id="search" oninput="load()"  placeholder="Address , Street , State..." value="<?=$search; ?>"/>
                             </div>
                         </div>
-                        <!-- listsearch-input-item -->
-                        <!-- listsearch-input-item -->
-                        <div class="col-sm-3">
+                        <div class="col-12 col-sm-3 mb-2">
                             <div class="listsearch-input-item">
-                                <select data-placeholder="Status" class="chosen-select on-radius no-search-select" >
-                                    <option>Any Status</option>
-                                    <option>For Rent</option>
-                                    <option>For Sale</option>
+                                <select data-placeholder="Select" name="country_id" id="country_id" class="mb-2 chosen-select search-select"  onchange="get_states();">
+                                    <option value="all">All Country</option>
+                                    <?php
+                                            $country = $this->Crud->read_order('country', 'name', 'asc');
+                                            if(!empty($country)){
+                                                foreach($country as $c){
+                                                    if($c->name != 'Nigeria' && $c->name != 'United Kingdom')continue;
+                                                    echo '<option value="'.$c->id.'">'.$c->name.'</option>';
+                                                }
+                                            }
+                                        ?>
                                 </select>
                             </div>
                         </div>
+                        <div class="col-12 col-sm-3 mb-2">
+                            <div class="listsearch-input-item mb-2" id="states_id">
+                                <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 chosen-select search-select" onchange="load()">
+                                    <option value="all">Select Country First</option>
+
+                                </select>
+                            </div>  
+                        </div>
+                        <div class="col-12 col-sm-3 mb-2">
+                            <div class="listsearch-input-item mb-2" id="citys_id">
+                                <select data-placeholder="Select" onchange="load()" name="city_id" id="city_id"
+                                    required class="mb-2 chosen-select search-select">
+                                    <option value="all">Select State First</option>
+
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- listsearch-input-item -->								
                         <!-- listsearch-input-item -->
                         <div class="col-sm-3">
@@ -241,51 +264,13 @@
             <div class="list-main-wrap-header box-list-header fl-wrap">
                 <!-- list-main-wrap-title-->
                 <div class="list-main-wrap-title">
-                    <h2>Results For :  <strong id="counts">8</strong></h2>
+                    <h2>Results:  <strong id="listCount">0</strong> Records</h2>
                 </div>        
             </div>
             <!-- list-main-wrap-header end-->						
             <!-- listing-item-wrap-->
-            <div class="listing-item-container three-columns-grid  box-list_ic fl-wrap">
-                <!-- listing-item -->
-                <div class="listing-item" id="load_data">
-                    <article class="geodir-category-listing fl-wrap">
-                        <div class="geodir-category-img fl-wrap">
-                            <a href="listing-single.html" class="geodir-category-img_item">
-                                <img src="<?=site_url();?>assets/images/all/3.jpg" alt="">
-                                <div class="overlay"></div>
-                            </a>
-                            <div class="geodir-category-location">
-                                <a href="#" class="single-map-item tolt" data-newlatitude="40.72956781" data-newlongitude="-73.99726866"   data-microtip-position="top-left" data-tooltip="On the map"><i class="fas fa-map-marker-alt"></i> <span>  70 Bright St New York, USA</span></a>
-                            </div>
-                            <ul class="list-single-opt_header_cat">
-                                <li><a href="#" class="cat-opt blue-bg">Sale</a></li>
-                                <li><a href="#" class="cat-opt color-bg">Apartment</a></li>
-                            </ul>
-                            <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Save"><span><i class="fal fa-heart"></i></span></a>
-                            <a href="#" class="compare-btn tolt" data-microtip-position="left" data-tooltip="Compare"><span><i class="fal fa-random"></i></span></a>
-                            <div class="geodir-category-listing_media-list">
-                                <span><i class="fas fa-camera"></i> 8</span>
-                            </div>
-                        </div>
-                        <div class="geodir-category-content fl-wrap">
-                            <h3 class="title-sin_item"><a href="listing-single.html">Gorgeous House For Sale</a></h3>
-                            <div class="geodir-category-content_price">$ 600,000</div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur nulla.</p>
-                            <div class="geodir-category-content-details">
-                                <ul>
-                                    <li><i class="fal fa-bed"></i><span>3</span></li>
-                                    <li><i class="fal fa-bath"></i><span>2</span></li>
-                                    <li><i class="fal fa-cube"></i><span>450 ft2</span></li>
-                                </ul>
-                            </div>
-                            <div class="geodir-category-footer fl-wrap">
-                                <a href="agent-single.html" class="gcf-company"><img src="<?=site_url();?>assets/images/avatar/2.jpg" alt=""><span>By Liza Rose</span></a>
-                                <div class="listing-rating card-popup-rainingvis tolt" data-microtip-position="top" data-tooltip="Good" data-starrating2="4"></div>
-                            </div>
-                        </div>
-                    </article>
-                </div>
+            <div class="listing-item-container four-columns-grid  box-list_ic fl-wrap" id="load_data">
+               
                					
             </div>
             <!-- listing-item-wrap end-->
@@ -299,5 +284,101 @@
     <div class="limit-box fl-wrap"></div>
 </div>
         
+<script>var site_url = '<?php echo site_url(); ?>';</script>
+   
+    <script>
+        $(function() {
+            load('', '');
+        });
 
+        function get_states() {
+            var country_id = $('#country_id').val();
+            $.ajax({
+                url: site_url + 'home/account/get_state/' + country_id,
+                type: 'post',
+                success: function(data) {
+                    $('#states_id').html(data);
+                    load();
+                }
+            });
+        }
+
+        function get_citys() {
+            var state_id = $('#state_id').val();
+            $.ajax({
+                url: site_url + 'home/account/get_city/' + state_id,
+                type: 'post',
+                success: function(data) {
+                    $('#citys_id').html(data);
+                     load();
+                }
+            });
+        }
+
+
+        function loads() {
+            var start_date = $('#start_date').val();
+            var end_date = $('#end_date').val();
+
+            if(!start_date || !end_date){
+                $('#date_resul').css('color', 'Red');
+                $('#date_resul').html('Enter Start and End Date!!');
+            } else if(start_date > end_date){
+                $('#date_resul').css('color', 'Red');
+                $('#date_resul').html('Start Date cannot be greater!');
+            } else {
+                load('', '');
+                $('#date_resul').html('');
+            }
+        }
+
+        function load(x, y) {
+            var more = 'no';
+            var methods = '';
+            if (parseInt(x) > 0 && parseInt(y) > 0) {
+                more = 'yes';
+                methods = '/' +x + '/' + y;
+            }
+
+            if (more == 'no') {
+                $('#load_data').html('<div class="col-sm-12 text-center"><br/><br/><br/><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
+            } else {
+                $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
+            }
+
+            var country_id = $('#country_id').val();
+            var state_id = $('#state_id').val();
+            var city_id = $('#city_id').val();
+            var active = $('#active').val();
+            var category_id = $('#category_id').val();
+            var search = $('#search').val();
+            var start_date = $('#start_date').val();
+            var end_date = $('#end_date').val();
+
+            $.ajax({
+                url: site_url + 'home/search/load' + methods,
+                type: 'post',
+                data: { category_id: category_id,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id,active: active },
+                success: function (data) {
+                    var dt = JSON.parse(data);
+                    if (more == 'no') {
+                        $('#load_data').html(dt.item);
+                    } else {
+                        $('#load_data').append(dt.item);
+                    }
+
+                    if (dt.offset > 0) {
+                        $('#loadmore').html('<a href="javascript:;" class="btn btn-secondary b-block p-30" onclick="load(' + dt.limit + ', ' + dt.offset + ');"><i class="fal fa-repeat"></i> Load ' + dt.left + ' More</a>');
+                    } else {
+                        $('#loadmore').html('');
+                    }
+
+                    $('#listCount').html(dt.count);
+                },
+                complete: function () {
+                    $.getScript(site_url + 'assets/js/jsmodal.js');
+                }
+            });
+        }
+    </script>  
 <?php echo $this->endSection(); ?>

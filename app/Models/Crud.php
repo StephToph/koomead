@@ -1889,6 +1889,43 @@ class Crud extends Model {
 	}
 
 
+	public function search_listings($limit='', $offset='', $user_id, $search='', $category_id='', $active='', $country_id='', $state_id='', $city_id='', $start_date='', $end_date='') {
+		$db = db_connect();
+		 
+        $builder = $db->table('listing');
+		
+		// build query
+		$builder->orderBy('promote_status', 'DESC');
+		
+		if(!empty($active) && $active != 'all')$builder->where('active', $active);
+		if(!empty($category_id) && $category_id != 'all')$builder->where('category_id', $category_id);
+		if(!empty($country_id) && $country_id != 'all')$builder->where('country_id', $country_id);
+		if(!empty($state_id) && $state_id != 'all')$builder->where('state_id', $state_id);
+		if(!empty($city_id) && $city_id != 'all')$builder->where('city_id', $city_id);
+		
+		if(!empty($start_date) && !empty($end_date)){
+			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') >= '".$start_date."'",NULL,FALSE);
+			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') <= '".$end_date."'",NULL,FALSE); 
+		}
+		if(!empty($search)) {
+            $builder->like('name', $search);
+			
+        }
+        // limit query
+        if($limit && $offset) {
+			$query = $builder->get($limit, $offset);
+		} else if($limit) {
+			$query = $builder->get($limit);
+		} else {
+            $query = $builder->get();
+        }
+
+        // return query
+        return $query->getResult();
+        $db->close();
+	}
+
+
 	
 
 	public function filter_referrals($limit='', $offset='', $user_id, $search='', $start_date='', $end_date='') {

@@ -3075,6 +3075,14 @@ section.single-par2  .scroll-down-wrap{
 .card-info-list .contats-list li a {
 	margin-left: 10px;
 }
+.four-columns-grid .listing-item  {
+	width:25%;
+	padding:0 4px !important;
+}
+.four-columns-grid .listing-item.has_one_column .geodir-category-listing {
+	padding-left:0 !important;
+}
+
 .three-columns-grid .listing-item {
 	width:33.3%;
 	padding:0 8px !important;
@@ -7108,6 +7116,10 @@ section.single-par2  .scroll-down-wrap{
 .listsearch-input-item .filter-tags li   {
     width: 33.3%;
 }
+.four-columns-grid .listing-item  {
+    width: 33.3%;
+}
+
 .three-columns-grid .listing-item  {
     width: 50%;
 }
@@ -7338,7 +7350,7 @@ section.single-par2  .scroll-down-wrap{
 }
 }
 @media only screen and (max-width: 564px) {
- .subfooter-nav , .agent_card-title .geodir-category-location a  , .details-list li , .listsearch-input-item .filter-tags li  , .three-columns-grid .listing-item    {
+ .subfooter-nav , .agent_card-title .geodir-category-location a  , .details-list li , .listsearch-input-item .filter-tags li  , .three-columns-grid .listing-item , .four-columns-grid .listing-item    {
     width: 100%;
 }
 .header-modal {

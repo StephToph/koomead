@@ -29,7 +29,6 @@
                     <?php echo form_open_multipart('home/search', array('id'=>'bb_ajax_for', 'class'=>'')); ?>
                     <div class="main-search-input-item">
                         <input type="text" name="search" placeholder="What are you looking for?" required value=""/>
-                        <input type="text" name="search" placeholder="What are you looking for?" required value=""/>
                     </div>
                     <div class="main-search-input-item">
                         <select data-placeholder="Select" name="category_ids" id="category_ids" required class="mb-2 chosen-select">
@@ -93,7 +92,7 @@
             </div>
             
             	
-            <a href="javascript:;" class="btn float-btn small-btn color-bg">View All Businesses</a>
+            <a href="<?=site_url('home/search'); ?>" class="btn float-btn small-btn color-bg">View All Businesses</a>
         </div><div class="clearfix"></div>
     </section>
     

@@ -14,8 +14,7 @@
     <section class="parallax-section single-par color-bg">
         <div class="container">
             <div class="section-title center-align big-title">
-                <h2><span>Listings Without Map</span></h2>
-                <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec tincidunt arcu, sit amet fermentum sem.</h4>
+                <h2><span>Search Business Listing</span></h2>
             </div>
         </div>
         <div class="pwh_bg"></div>
@@ -27,7 +26,7 @@
     <div class="breadcrumbs fw-breadcrumbs sp-brd fl-wrap">
         <div class="container">
             <div class="breadcrumbs-list">
-                <a href="<?=site_url(); ?>">Home</a><a href="#">Listings</a> <span>New York</span>
+                <a href="<?=site_url(); ?>">Home</a><a href="javacript:;">Listings</a>
             </div>
         </div>
     </div>
@@ -47,6 +46,7 @@
                                 <input type="text" id="search" oninput="load()"  placeholder="Address , Street , State..." value="<?=$search; ?>"/>
                             </div>
                         </div>
+                       
                         <div class="col-12 col-sm-3 mb-2">
                             <div class="listsearch-input-item">
                                 <select data-placeholder="Select" name="country_id" id="country_id" class="mb-2 chosen-select search-select"  onchange="get_states();">
@@ -55,22 +55,45 @@
                                             $country = $this->Crud->read_order('country', 'name', 'asc');
                                             if(!empty($country)){
                                                 foreach($country as $c){
+                                                    $sel = '';
+                                                    if($c->name == $location)$sel = 'selected';
                                                     if($c->name != 'Nigeria' && $c->name != 'United Kingdom')continue;
-                                                    echo '<option value="'.$c->id.'">'.$c->name.'</option>';
+                                                    echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
                                                 }
                                             }
                                         ?>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-3 mb-2">
-                            <div class="listsearch-input-item mb-2" id="states_id">
-                                <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 chosen-select search-select" onchange="load()">
-                                    <option value="all">Select Country First</option>
+                        <?php
+                          if(!empty($location)){
+                            $country_id = $this->Crud->read_field('name', $location, 'country', 'id');
+                            ?>
+                                <script>$(function() {getstates('', '');});</script>
+                                <div class="col-12 col-sm-3 mb-2">
+                                    <div class="listsearch-input-item mb-2" id="states_id">
+                                        <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 chosen-select search-select" onchange="get_citys()">
+                                        <option value="all">All State</option>
+                                            <?php
+                                                    $country = $this->Crud->read_single_order('country_id', $country_id, 'state', 'name', 'asc');
+                                                    if(!empty($country)){
+                                                        foreach($country as $c){
+                                                            $sel = '';
+                                                            if($c->id == $state_id)$sel = 'selected';
+                                                            echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
+                                                        }
+                                                    }
+                                                ?>
+                                        </select>
+                                    </div>  
+                                </div>
+                            
+                            <?php if($state_id){
 
-                                </select>
-                            </div>  
-                        </div>
+                            }
+                          }  
+                        ?>
+                        
                         <div class="col-12 col-sm-3 mb-2">
                             <div class="listsearch-input-item mb-2" id="citys_id">
                                 <select data-placeholder="Select" onchange="load()" name="city_id" id="city_id"
@@ -99,164 +122,39 @@
                             </div>
                         </div>
                         <!-- listsearch-input-item -->
-                        <div class="clearfix"></div>
-                        <!-- listsearch-input-item -->
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="listsearch-input-item">
-                                <select data-placeholder="Categories" class="chosen-select on-radius no-search-select" >
-                                    <option>All Categories</option>
-                                    <option>House</option>
-                                    <option>Apartment</option>
-                                    <option>Hotel</option>
-                                    <option>Villa</option>
-                                    <option>Office</option>
+                                <select data-placeholder="Main Category" id="main_id" onchange="get_categorys()" class="chosen-select search-select" required >
+                                    <option value="">Main Category</option>
+                                    <?php
+                                        $cate = $this->Crud->read_single_order('category_id', 0, 'category', 'name', 'asc');
+                                        if(!empty($cate)){
+                                            foreach($cate as $c){
+                                                $sel = '';
+                                                if(!empty($e_main)){
+                                                    if($e_main == $c->id)$sel ='selected';
+                                                }
+                                                echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
+                                            }
+                                        }
+                                    ?>
+                                    
                                 </select>
                             </div>
                         </div>
-                        <!-- listsearch-input-item -->								
-                        <!-- listsearch-input-item -->
-                        <div class="col-sm-5">
-                            <div class="listsearch-input-item">
-                                <div class="price-rage-item fl-wrap">
-                                    <span class="pr_title">Price:</span>                            
-                                    <input type="text" class="price-range-double" data-min="100" data-max="100000"  name="price-range2"  data-step="100" value="1" data-prefix="$">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- listsearch-input-item -->								
-                        <!-- listsearch-input-item -->
+                       
                         <div class="col-sm-3">
-                            <div class="listsearch-input-item">
-                                <a href="#" class="btn color-bg fw-btn float-btn small-btn">Search</a>										
+                            <div class="listsearch-input-item mb-2" id="category_ids">
+                                <select data-placeholder="All Category" name="category_id" id="category_id" class="chosen-select search-select" required >
+                                    <option value="">Select Category First</option>
+                                    
+                                </select>
                             </div>
                         </div>
                         <!-- listsearch-input-item --> 						
                     </div>
                     <div class="clearfix"></div>
-                    <div class="hidden-listing-filter fl-wrap">
-                        <div class="row">
-                            <!-- listsearch-input-item -->								
-                            <div class="col-sm-2">
-                                <div class="listsearch-input-item">
-                                    <label>Bedrooms</label>
-                                    <select data-placeholder="Bedrooms" class="chosen-select on-radius no-search-select" >
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- listsearch-input-item end-->
-                            <!-- listsearch-input-item -->								
-                            <div class="col-sm-2">
-                                <div class="listsearch-input-item">
-                                    <label>Bathrooms</label>
-                                    <select data-placeholder="Bathrooms" class="chosen-select on-radius no-search-select" >
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- listsearch-input-item end-->
-                            <!-- listsearch-input-item -->
-                            <div class="col-sm-2">
-                                <div class="listsearch-input-item">
-                                    <label>Floors</label>
-                                    <select data-placeholder="Bathrooms" class="chosen-select on-radius no-search-select" >
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- listsearch-input-item end-->
-                            <!-- listsearch-input-item -->
-                            <div class="col-sm-2">
-                                <div class="listsearch-input-item">
-                                    <label>Property Id</label>
-                                    <input type="text" onClick="this.select()" placeholder="Id" value=""/>
-                                </div>
-                            </div>
-                            <!-- listsearch-input-item end-->								
-                            <!-- listsearch-input-item -->
-                            <div class="col-sm-4">
-                                <div class="listsearch-input-item">
-                                    <label>Area Sq/ft</label>
-                                    <div class="price-rage-item pr-nopad fl-wrap">
-                                        <input type="text" class="price-range-double" data-min="1" data-max="1000"  name="price-range2"  data-step="1" value="1" data-prefix="">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- listsearch-input-item -->								
-                        </div>
-                        <div class="clearfix"></div>
-                        <!-- listsearch-input-item-->
-                        <div class="listsearch-input-item">
-                            <label>Amenities</label>
-                            <div class=" fl-wrap filter-tags">
-                                <ul class="no-list-style">
-                                    <li>
-                                        <input id="check-aa" type="checkbox" name="check">
-                                        <label for="check-aa">Elevator in building</label>
-                                    </li>
-                                    <li>
-                                        <input id="check-b" type="checkbox" name="check">
-                                        <label for="check-b"> Laundry Room</label>
-                                    </li>
-                                    <li>
-                                        <input id="check-c" type="checkbox" name="check" checked>
-                                        <label for="check-c">Equipped Kitchen</label>
-                                    </li>
-                                    <li>
-                                        <input id="check-d" type="checkbox" name="check">
-                                        <label for="check-d">Air Conditioned</label>
-                                    </li>
-                                    <li>
-                                        <input id="check-d2" type="checkbox" name="check" checked>
-                                        <label for="check-d2">Parking</label> 
-                                    </li>
-                                    <li>
-                                        <input id="check-d3" type="checkbox" name="check" checked>
-                                        <label for="check-d3">Swimming Pool</label> 
-                                    </li>
-                                    <li>   
-                                        <input id="check-d4" type="checkbox" name="check">
-                                        <label for="check-d4">Fitness Gym</label>
-                                    </li>
-                                    <li>   
-                                        <input id="check-d5" type="checkbox" name="check">
-                                        <label for="check-d5">Security</label>
-                                    </li>
-                                    <li>   
-                                        <input id="check-d6" type="checkbox" name="check">
-                                        <label for="check-d6">Garage Attached</label>
-                                    </li>
-                                    <li>   
-                                        <input id="check-d7" type="checkbox" name="check">
-                                        <label for="check-d7">Back yard</label>
-                                    </li>
-                                    <li>   
-                                        <input id="check-d8" type="checkbox" name="check">
-                                        <label for="check-d8">Fireplace</label>
-                                    </li>
-                                    <li>   
-                                        <input id="check-d9" type="checkbox" name="check">
-                                        <label for="check-d9">Window Covering</label>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- listsearch-input-item end--> 												
-                    </div>
-                </div>
-                <div class="more-filter-option-wrap">
-                    <div class="more-filter-option-btn more-filter-option act-hiddenpanel"> <span>Advanced search</span> <i class="fas fa-caret-down"></i></div>
-                    <div class="reset-form reset-btn"> <i class="far fa-sync-alt"></i> Reset Filters</div>
+                    
                 </div>
             </div>
             <!-- list-searh-input-wrap end-->							
@@ -315,6 +213,16 @@
             });
         }
 
+        function get_categorys() {
+            var main_id = $('#main_id').val();
+            $.ajax({
+                url: site_url + 'home/account/get_category/' + main_id,
+                type: 'post',
+                success: function(data) {
+                    $('#category_ids').html(data);
+                }
+            });
+        }
 
         function loads() {
             var start_date = $('#start_date').val();
@@ -349,8 +257,8 @@
             var country_id = $('#country_id').val();
             var state_id = $('#state_id').val();
             var city_id = $('#city_id').val();
-            var active = $('#active').val();
-            var category_id = $('#category_id').val();
+            var main_id = $('#main_id').val();
+            var sub_id = $('#sub_id').val();
             var search = $('#search').val();
             var start_date = $('#start_date').val();
             var end_date = $('#end_date').val();
@@ -358,7 +266,7 @@
             $.ajax({
                 url: site_url + 'home/search/load' + methods,
                 type: 'post',
-                data: { category_id: category_id,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id,active: active },
+                data: { main_id: main_id,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id,sub_id: sub_id },
                 success: function (data) {
                     var dt = JSON.parse(data);
                     if (more == 'no') {

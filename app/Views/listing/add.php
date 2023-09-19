@@ -88,13 +88,15 @@
                           <?php  } else {
                         ?>
                             <div class="col-sm-4 mb-3">
-                                <label>Sub-Category</label><div id="category_ids">
-                                <div class="listsearch-input-item">
-                                    <select data-placeholder="All Category" name="category_id" id="category_id" class="chosen-select search-select" required >
-                                        <option value="">Select Category First</option>
-                                        
-                                    </select>
-                                </div></div>
+                                <label>Sub-Category</label>
+                                <div id="category_ids">
+                                    <div class="listsearch-input-item">
+                                        <select data-placeholder="All Category" name="category_id" id="category_id" class="chosen-select search-select" required >
+                                            <option value="">Select Category First</option>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         <?php } ?>
                         <div class=" col-sm-4 mb-3"><label>State</label>

@@ -314,7 +314,6 @@
 
    
     <!--=============== scripts  ===============-->
-    <script src="<?=site_url(); ?>assets/js/charts.js"></script>
     <script src="<?=site_url(); ?>assets/js/plugins.js"></script>
     <script src="<?=site_url(); ?>assets/js/scripts.js"></script>
     <script src="<?=site_url(); ?>assets/js/dashboard.js"></script>

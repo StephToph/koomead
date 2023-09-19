@@ -1897,8 +1897,8 @@ class Crud extends Model {
 		// build query
 		$builder->orderBy('promote_status', 'DESC');
 		
-		if(!empty($active) && $active != 'all')$builder->where('active', $active);
-		if(!empty($category_id) && $category_id != 'all')$builder->where('category_id', $category_id);
+		if(!empty($active) && $active != 'all')$builder->where('category_id', $active);
+		// if(!empty($category_id) && $category_id != 'all')$builder->where('category_id', $category_id);
 		if(!empty($country_id) && $country_id != 'all')$builder->where('country_id', $country_id);
 		if(!empty($state_id) && $state_id != 'all')$builder->where('state_id', $state_id);
 		if(!empty($city_id) && $city_id != 'all')$builder->where('city_id', $city_id);

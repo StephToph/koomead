@@ -29,6 +29,7 @@ class Home extends BaseController {
         return view('home/land', $data);
     }
 
+	
 
 	public function search($param1='', $param2='', $param3='') {
         $db = \Config\Database::connect();
@@ -72,19 +73,19 @@ class Home extends BaseController {
 			if($offset == '') {$offset = 0;}
 			
 			$search = $this->request->getVar('search');
-			if(!empty($this->request->getPost('active'))) { $active = $this->request->getPost('active'); } else { $active = ''; }
+			if(!empty($this->request->getPost('main_id'))) { $main_id = $this->request->getPost('main_id'); } else { $main_id = ''; }
 			if(!empty($this->request->getPost('country_id'))) { $country_id = $this->request->getPost('country_id'); } else { $country_id = ''; }
 			if(!empty($this->request->getPost('state_id'))) { $state_id = $this->request->getPost('start_date'); } else { $state_id = ''; }
 			if(!empty($this->request->getPost('city_id'))) { $city_id = $this->request->getPost('city_id'); } else { $city_id = ''; }
 			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
-			if(!empty($this->request->getPost('category_id'))) { $category_id = $this->request->getPost('category_id'); } else { $category_id = ''; }
+			if(!empty($this->request->getPost('sub_id'))) { $sub_id = $this->request->getPost('sub_id'); } else { $sub_id = ''; }
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
             $cur = '£';
             if($country_id == '161')$cur = '&#8358;';
 
 			
-				$query = $this->Crud->search_listings($limit, $offset, $log_id, $search,$category_id, $active,  $country_id,$state_id,$city_id, $start_date, $end_date);
-				$all_rec = $this->Crud->search_listings('', '', $log_id, $search, $category_id, $active, $country_id,$state_id,$city_id, $start_date, $end_date);
+				$query = $this->Crud->search_listings($limit, $offset, $log_id, $search,$main_id, $sub_id,  $country_id,$state_id,$city_id, $start_date, $end_date);
+				$all_rec = $this->Crud->search_listings('', '', $log_id, $search, $main_id, $sub_id, $country_id,$state_id,$city_id, $start_date, $end_date);
 				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
 				$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
 				$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
@@ -1050,10 +1051,10 @@ class Home extends BaseController {
                     }
                 }
             }
-            echo '<div class="listsearch-input-item mb-2">
+            echo '
                 <select data-placeholder="Select" name="state_id" id="state_id"  required onchange="get_citys();" class="mb-2 chosen-select search-select" >
                     '.$st.'
-                </select></div><script>$("#state_id").niceSelect();</script>
+                </select><script>$("#state_id").niceSelect();</script>
             ';
         }
 
@@ -1069,10 +1070,10 @@ class Home extends BaseController {
                     }
                 }
             }
-            echo '<div class="listsearch-input-item mb-2">
+            echo '
                 <select data-placeholder="Select" name="city_id" id="city_id" onchange="load()" required class="mb-2 chosen-select search-select" >
                     '.$st.'
-                </select></div><script>$("#city_id").niceSelect();</script>
+                </select><script>$("#city_id").niceSelect();</script>
             ';
         }
 
@@ -1088,10 +1089,10 @@ class Home extends BaseController {
                     }
                 }
             }
-            echo '<div class="listsearch-input-item mb-2">
-                <select data-placeholder="Select" name="sub_id" id="sub_id" required class="mb-2 chosen-select" >
+            echo '
+                <select data-placeholder="Select" name="sub_id" id="sub_id" onchange="load();" required class="mb-2 chosen-select" >
                     '.$st.'
-                </select></div><script>$("#sub_id").niceSelect();</script>
+                </select><script>$("#sub_id").niceSelect();</script>
             ';
         }
     }

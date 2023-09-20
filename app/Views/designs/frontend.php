@@ -318,6 +318,7 @@
     <script src="<?=site_url(); ?>assets/js/scripts.js"></script>
     <script src="<?=site_url(); ?>assets/js/dashboard.js"></script>
     <script src="<?=site_url();?>assets/js/jsform.js"></script>
+    <script src="<?=site_url();?>assets/js/jsmodal.js"></script>
     <?php
 
     if($page_active == 'home'){?>

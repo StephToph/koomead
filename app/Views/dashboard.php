@@ -57,10 +57,10 @@
 
             <!-- dashboard-title end -->		
             <div class="dasboard-wrapper fl-wrap no-pag">
-                <div class="dashboard-stats-container fl-wrap">
+                <div class="dashboard-stats-contaner fl-wrap">
                     <div class="row">
                         <!--dashboard-stats-->
-                       <div class="col-md-3">
+                       <div class="col-md-3 col-sm-6">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-chart-bar"></i>
                                 <h4>Total Listing</h4>
@@ -69,7 +69,7 @@
                         </div>
                         <!-- dashboard-stats end -->
                        <!--dashboard-stats-->
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-map-marked"></i>
                                 <h4>Active Listings</h4>
@@ -78,7 +78,7 @@
                         </div>
                         <!-- dashboard-stats end -->
                         <!--dashboard-stats-->
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-eye"></i>
                                 <h4>Listing Views</h4>
@@ -88,7 +88,7 @@
                         <!-- dashboard-stats end -->
                        <?php if($role != 'user'){?>
                         <!--dashboard-stats-->
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-users"></i>
                                 <h4>No of User</h4>

@@ -48,7 +48,8 @@
             
             $loca = '';
             $image = json_decode($images);
-
+            
+            $main_img = $image[0];
             if($negotiable == 0)$negotiate = 'No'; else $negotiate = 'Yes';
             if($active == 0)$active = 'Disabled'; else $active = 'Active';
             
@@ -56,7 +57,6 @@
             if(!empty($city_id)) $loca .= $city;
             if(!empty($state_id)) $loca .= ', '.$state;
             if(!empty($country_id)) $loca .= ', '.$country;
-            $main_img = $image[0];
             $cur = '£';
             if($country_id == '161')$cur = '&#8358;';
 

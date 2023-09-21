@@ -27,6 +27,11 @@
     <link rel="stylesheet" href="<?=site_url();?>assets/css/select2.min.css" />
     <link rel="shortcut icon" href="<?=site_url();?>assets/images/favicon.ico">
 
+    <?=$link_preview; ?>
+
+
+   
+
 
     <script src="<?=site_url(); ?>assets/js/jquery.min.js"></script>
     <!-- Include Bootstrap JS and Popper.js -->

@@ -17,8 +17,9 @@ class Home extends BaseController {
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
         $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
        
-
+		
         $data['log_id'] = $log_id;
+		$data['link_preview'] = '';
 		$location = $this->session->get('km_location'); 
         $data['location'] = $location;
         $data['role'] = $role;
@@ -38,7 +39,7 @@ class Home extends BaseController {
         $log_id = $this->session->get('km_id'); 
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
         $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
-       
+		$data['link_preview'] = '';
 
         $data['log_id'] = $log_id;
 		$location = $this->session->get('km_location'); 
@@ -247,7 +248,7 @@ class Home extends BaseController {
 		if($param1){$form_link .= $param1.'/';}
 		if($param2){$form_link .= $param2.'/';}
 		if($param3){$form_link .= $param3;}
-		
+		$data['link_preview'] = '';
 		// pass parameters to view
 		$data['param1'] = $param1;
 		$data['param2'] = $param2;
@@ -523,6 +524,30 @@ class Home extends BaseController {
 			die;
 		}
 
+		$links='';
+		if($param1 == 'view' || $param1 == 'promote'){
+			$name = $this->Crud->read_field('id', $param2, 'listing', 'name');
+			$description = $this->Crud->read_field('id', $param2, 'listing', 'description');
+			$images = $this->Crud->read_field('id', $param2, 'listing', 'images');
+			$image = json_decode($images);
+			$main_img = $image[0];	
+			$uri = 'home/listing/view/'.$param2;
+			$links = '
+				<!-- Open Graph Protocol (OGP) -->
+				<meta property="og:title" content="'.$name.'">
+				<meta property="og:description" content="'.$description.'">
+				<meta property="og:image" content="'.site_url($main_img).'">
+				<meta property="og:url" content="'.site_url($uri).'">
+			
+				<!-- Twitter Cards -->
+				<meta name="twitter:card" content="'.site_url($uri).'">
+				<meta name="twitter:title" content="'.$name.'">
+				<meta name="twitter:description" content="'.$description.'">
+				<meta name="twitter:image" content="'.site_url($main_img).'">
+			
+			';
+		}
+		$data['link_preview'] = $links;
 		if($param1 == 'view'){$this->saveDeviceInfo();}
 		if($param1 == 'promote'){
 			

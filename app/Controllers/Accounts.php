@@ -157,6 +157,8 @@ class Accounts extends BaseController {
 			if(!empty($this->request->getPost('state_id'))) { $state_id = $this->request->getPost('state_id'); } else { $state_id = '0'; }
 			if(!empty($this->request->getPost('country_id'))) { $country_id = $this->request->getPost('country_id'); } else { $country_id = '0'; }
 			if(!empty($this->request->getPost('city_id'))) { $city_id = $this->request->getPost('city_id'); } else { $city_id = '0'; }
+			if(!empty($this->request->getPost('business'))) { $business = $this->request->getPost('business'); } else { $business = '0'; }
+			if(!empty($this->request->getPost('promoted'))) { $promoted = $this->request->getPost('promoted'); } else { $promoted = '0'; }
 			if(!empty($this->request->getPost('ban'))) { $ban = $this->request->getPost('ban'); } else { $ban = '0'; }
 			$search = $this->request->getPost('search');
 			if (!empty($this->request->getPost('start_date'))) {$start_date = $this->request->getPost('start_date');} else {$start_date = '';}
@@ -165,9 +167,9 @@ class Accounts extends BaseController {
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {
-				$all_rec = $this->Crud->filter_user('', '', $log_id, $search, $ban, $start_date, $end_date, $country_id, $state_id, $city_id);
+				$all_rec = $this->Crud->filter_user('', '', $log_id, $search, $ban, $business, $promoted, $start_date, $end_date, $country_id, $state_id, $city_id);
 				if(!empty($all_rec)) { $counts = count($all_rec); } else { $counts = 0; }
-				$query = $this->Crud->filter_user($limit, $offset, $log_id, $search, $ban, $start_date, $end_date, $country_id, $state_id, $city_id);
+				$query = $this->Crud->filter_user($limit, $offset, $log_id, $search, $ban, $business, $promoted, $start_date, $end_date, $country_id, $state_id, $city_id);
 
 				if(!empty($query)) {
 					foreach($query as $q) {
@@ -178,6 +180,8 @@ class Accounts extends BaseController {
 						$role_id = $q->role_id;
 						$country_id = $q->country_id;
 						$state_id = $q->state_id;
+						$has_promoted = $q->has_promoted;
+						$has_business = $q->has_business;
 						$city_id = $q->city_id;
 						$ban = $q->activate;
 						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
@@ -202,14 +206,20 @@ class Accounts extends BaseController {
 						if(!empty($country_id)) $loca .= $country;
 						if(!empty($state_id)) $loca .= '&#8594; '.$state;
 						if(!empty($city_id)) $loca .= '<br>&#8594; '.$city;
+
+						$business = '<span class="text-danger small mb-2 font-weight-bold font-size-12">NO BUSINESS</span>';
+						if($has_business > 0)$business = '<span class="text-success small mb-2 font-weight-bold font-size-12">HAS BUSINESS</span>';
+						$promoted = '<span class="text-danger small mb-2 font-weight-bold font-size-12">NO PROMOTION</span>';
+						if($has_promoted > 0)$promoted = '<span class="text-success small mb-2 font-weight-bold font-size-12">HAS PROMOTION</span>';
 						
 						// add manage buttons
 						if($role_u != 1) {
-							$all_btn = '';
+							$all_btn = ''.$business.'<br> '.$promoted.'';
 						} else {
 							$all_btn = '
 								<div class="text-right">
-									<a href="javascript:;" class="text-info pop mb-5 mr-1" pageTitle="Edit '.$fullname.' Details" pageName="'.site_url('accounts/user/manage/edit/'.$id).'" pageSize="modal-md">
+									'.$business.'<br> '.$promoted.'<br><br>
+									<a href="javascript:;" class="text-info pop mt-2 mb-5 mr-1" pageTitle="Edit '.$fullname.' Details" pageName="'.site_url('accounts/user/manage/edit/'.$id).'" pageSize="modal-md">
 										<i class="fal fa-pen-alt"></i> EDIT
 									</a>
 									<a href="javascript:;" class="text-danger pop mb-5 ml-1  mr-1" pageTitle="Delete '.$fullname.' Record" pageName="'.site_url('accounts/user/manage/delete/'.$id).'" pageSize="modal-sm">
@@ -246,6 +256,7 @@ class Accounts extends BaseController {
 										<div class="font-size-14 text-dark ">'.$loca.'</div>
 									</div>
 									<div class="col-12 col-md-3">
+										
 										<b class="font-size-12">'.$all_btn.'</b>
 									</div>
 								</div>

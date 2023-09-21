@@ -93,7 +93,7 @@
 
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="markerter_id"><span class="dec-icon"><i class="fal fa-sack-dollar"></i> </span> Amount</label>
+                    <label for="markerter_id"><span class="dec-icon" id="currs"><i class="fal fa-wallet"></i> </span> Amount</label>
                     <input class="form-control" type="text" id="amount" name="amount" readonly required>
                 </div>
             </div>
@@ -143,6 +143,7 @@
                 success: function (data) {
                     var dt = JSON.parse(data);
                     $('#amount').val(dt.amount);
+                    $('#currs').html(dt.currs);
                     $('#duration').val(dt.duration);
                     $('#expiry_date').val(dt.expiry_date);
                     $('#no_view').val(dt.no_view);

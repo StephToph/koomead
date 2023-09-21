@@ -154,7 +154,22 @@
                 <!--header-opt-modal end -->  
         </header>
             <!-- header end  -->	
-        
+        <style>
+            .navbars {
+                height: 100%; /* Set the desired height for the navbar */
+                overflow-y: scroll; /* Add a vertical scrollbar */
+                scrollbar-width: thin; /* "thin" or "auto" depending on your preference */
+            }
+
+            /* Style the scrollbar (for webkit-based browsers like Chrome and Safari) */
+            .navbars::-webkit-scrollbar {
+                width: 5px; /* Adjust the width as needed for a thinner scrollbar */
+            }
+
+            .navbars::-webkit-scrollbar-thumb {
+                background-color: #888; /* Color of the scrollbar thumb */
+            }
+        </style>
         <div id="wrapper">
             <!-- dashbard-menu-wrap -->	
             <div class="dashbard-menu-overlay"></div>
@@ -162,7 +177,7 @@
                 <div class="dashbard-menu-close"><i class="fal fa-times"></i></div>
                 <div class="dashbard-menu-container">
                     <!-- user-profile-menu-->
-                    <div class="user-profile-menu">
+                    <div class="user-profile-menu navbars">
                         <h3>Main</h3>
                         <ul class="no-list-style">
                             <!-- Dynamic Menu Items --> 

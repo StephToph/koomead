@@ -919,6 +919,7 @@ class Home extends BaseController {
 	public function promotion($param1='', $param2=''){
 		$log_id = $param1;
         
+		$links='';$data['link_preview'] = $links;
 		if(!empty($param1) && !empty($param2)){
 			$page_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'listing_id');
 			$promoter_no = $this->Crud->read_field('code', $param2, 'business_promotion', 'promoter_no');
@@ -933,7 +934,6 @@ class Home extends BaseController {
 			$id = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'id');
 			$uri = 'home/listing/view/'.$page_id;
 
-			$links='';
 			$name = $this->Crud->read_field('id', $page_id, 'listing', 'name');
 			$description = $this->Crud->read_field('id', $page_id, 'listing', 'description');
 			$images = $this->Crud->read_field('id', $page_id, 'listing', 'images');
@@ -954,7 +954,7 @@ class Home extends BaseController {
 				<meta name="twitter:image" content="'.site_url($main_img).'">
 			
 			';
-			echo $links;
+			$data['link_preview'] = $links;
 					
 			if($this->Crud->check('id', $param1, 'user') > 0){
 				if($this->Crud->check2('code', $param2, 'status', 0, 'business_promotion') > 0){
@@ -1085,6 +1085,9 @@ class Home extends BaseController {
 		} else {
 			return '<script>window.location.replace("'.site_url('').'");</script>';
 		}
+
+		
+		echo $links;
 	}
 	public function account($param1='', $param2=''){
         if($param1 == 'get_state'){

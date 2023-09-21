@@ -918,6 +918,154 @@ class Home extends BaseController {
 
 	public function promotion($param1='', $param2=''){
 		$log_id = $param1;
+		
+		if(!empty($param1)){			
+			if(!empty($param1) && !empty($param2)){
+				$page_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'listing_id');
+				$promoter_no = $this->Crud->read_field('code', $param2, 'business_promotion', 'promoter_no');
+				$user_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'user_id');
+				$no_view = $this->Crud->read_field('code', $param2, 'business_promotion', 'no_view');
+				$expiry_date = $this->Crud->read_field('code', $param2, 'business_promotion', 'expiry_date');
+				$amount = $this->Crud->read_field('code', $param2, 'business_promotion', 'amount');
+				$is_bal = $this->Crud->read_field('code', $param2, 'business_promotion', 'is_bal');
+				$per_view = (int)$no_view / (int)$promoter_no;
+				$per_amount = (int)$amount / (int)$promoter_no;
+				$view = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'view');
+				$id = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'id');
+				$uri = 'home/listing/view/'.$page_id;
+
+				
+				if($this->Crud->check('id', $param1, 'user') > 0){
+					if($this->Crud->check2('code', $param2, 'status', 0, 'business_promotion') > 0){
+						$ipAddress = $this->request->getIPAddress();
+						$request = service('request');
+						$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
+						// Extract the original client's IP address from the list
+						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
+						
+						if($expiry_date >= date('Y-m-d')){
+							if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
+								if($this->Crud->check2('code', $param2, 'user_id', $log_id, 'promotion_metric') == 0){
+									$i_data['code'] = $param2;
+									$i_data['user_id'] = $log_id;
+									$i_data['page'] = $uri;
+									$i_data['view'] = (int)$view + 1;
+									
+									$this->Crud->create('promotion_metric', $i_data);
+								} else {
+									$this->Crud->updates('id', $id, 'promotion_metric', array('view'=>(int)$view + 1));
+								}
+
+
+								//Pay Promoters
+								if($view <= $per_view){
+									$pay = 0.01 * $per_amount;
+									
+									$country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
+									$state_id = $this->Crud->read_field('id', $log_id, 'user', 'state_id');
+						
+									//Make Payment
+									$v_ins['user_id'] = $log_id;
+									$v_ins['type'] = 'credit';
+									$v_ins['amount'] = $pay;
+									$v_ins['item'] = 'promotion';
+									$v_ins['item_id'] = $log_id;
+									$v_ins['country_id'] = $country_id;
+									$v_ins['state_id'] = $state_id;
+									$v_ins['remark'] = 'Business Listing Promotion Earning';
+									$v_ins['reg_date'] = date(fdate);
+									$w_id = $this->Crud->create('wallet', $v_ins);
+
+								}
+
+								if($expiry_date == date('Y-m-d')){
+									if($is_bal == 0){
+										$ad = $this->Crud->read_single('code', $param2, 'promotion_metric');
+										if(!empty($ad)){
+											$total_view = 0;
+											foreach($ad as $a){
+												$total_view += (int)$a->view;
+											}
+											$rem_view = (int)$no_view - (int)$total_view;
+											$bal = ((float)$rem_view / (float)$no_view) *(int)$amount;
+			
+											
+										} else{
+											$bal = $amount;
+										}
+			
+										$this->Crud->updates('code', $param2, 'business_promotion', array('is_bal'=>1, 'status'=>1));
+											$country_id = $this->Crud->read_field('id', $user_id, 'user', 'country_id');
+											$state_id = $this->Crud->read_field('id', $user_id, 'user', 'state_id');
+							
+											//Make Payment
+											$v_ins['user_id'] = $user_id;
+											$v_ins['type'] = 'credit';
+											$v_ins['amount'] = $bal;
+											$v_ins['item'] = 'promotion';
+											$v_ins['item_id'] = $user_id;
+											$v_ins['country_id'] = $country_id;
+											$v_ins['state_id'] = $state_id;
+											$v_ins['remark'] = 'Business Listing Promotion Balance After Promotion Ended';
+											$v_ins['reg_date'] = date(fdate);
+											$w_id = $this->Crud->create('wallet', $v_ins);
+									}
+								}
+
+								return '<script>window.location.replace("'.site_url($uri).'");</script>';
+							} else{
+								return '<script>window.location.replace("'.site_url($uri).'");</script>';
+							}
+
+						} else{
+							return '<script>window.location.replace("'.site_url($uri).'");</script>';
+						}
+						//Check if there is blance and pay back the balance to the advertiser
+						if($expiry_date <= date('Y-m-d')){
+							if($is_bal == 0){
+								$ad = $this->Crud->read_single('code', $param2, 'promotion_metric');
+								if(!empty($ad)){
+									$total_view = 0;
+									foreach($ad as $a){
+										$total_view += (int)$a->view;
+									}
+									$rem_view = (int)$no_view - (int)$total_view;
+									$bal = ((float)$rem_view / (float)$no_view) *(int)$amount;
+
+									
+								} else{
+									$bal = $amount;
+								}
+
+								$this->Crud->updates('id', $id, 'business_promotion', array('is_bal'=>1, 'status'=>1));
+									$country_id = $this->Crud->read_field('id', $user_id, 'user', 'country_id');
+									$state_id = $this->Crud->read_field('id', $user_id, 'user', 'state_id');
+					
+									//Make Payment
+									$v_ins['user_id'] = $user_id;
+									$v_ins['type'] = 'credit';
+									$v_ins['amount'] = $bal;
+									$v_ins['item'] = 'promotion';
+									$v_ins['item_id'] = $user_id;
+									$v_ins['country_id'] = $country_id;
+									$v_ins['state_id'] = $state_id;
+									$v_ins['remark'] = 'Business Listing Promotion Balance After Promotion Ended';
+									$v_ins['reg_date'] = date(fdate);
+									$w_id = $this->Crud->create('wallet', $v_ins);
+							}
+						}
+					} else {
+						return '<script>window.location.replace("'.site_url($uri).'");</script>';
+					}
+				} else {
+					return '<script>window.location.replace("'.site_url($uri).'");</script>';
+				}
+				
+			} else {
+				return '<script>window.location.replace("'.site_url('').'");</script>';
+			}
+		}
+
 		$page_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'listing_id');
 			
         $name = $this->Crud->read_field('id', $page_id, 'listing', 'name');
@@ -942,154 +1090,6 @@ class Home extends BaseController {
 		';
 		$data['link_preview'] = $links;
 		return view('home/promote', $data);
-					
-		if(!empty($param1) && !empty($param2)){
-			$page_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'listing_id');
-			$promoter_no = $this->Crud->read_field('code', $param2, 'business_promotion', 'promoter_no');
-			$user_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'user_id');
-			$no_view = $this->Crud->read_field('code', $param2, 'business_promotion', 'no_view');
-			$expiry_date = $this->Crud->read_field('code', $param2, 'business_promotion', 'expiry_date');
-			$amount = $this->Crud->read_field('code', $param2, 'business_promotion', 'amount');
-			$is_bal = $this->Crud->read_field('code', $param2, 'business_promotion', 'is_bal');
-			$per_view = (int)$no_view / (int)$promoter_no;
-			$per_amount = (int)$amount / (int)$promoter_no;
-			$view = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'view');
-			$id = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'id');
-			$uri = 'home/listing/view/'.$page_id;
-
-			
-			if($this->Crud->check('id', $param1, 'user') > 0){
-				if($this->Crud->check2('code', $param2, 'status', 0, 'business_promotion') > 0){
-					$ipAddress = $this->request->getIPAddress();
-					$request = service('request');
-					$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
-					// Extract the original client's IP address from the list
-					$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
-					
-					if($expiry_date >= date('Y-m-d')){
-						if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
-							if($this->Crud->check2('code', $param2, 'user_id', $log_id, 'promotion_metric') == 0){
-								$i_data['code'] = $param2;
-								$i_data['user_id'] = $log_id;
-								$i_data['page'] = $uri;
-								$i_data['view'] = (int)$view + 1;
-								
-								 $this->Crud->create('promotion_metric', $i_data);
-							} else {
-								 $this->Crud->updates('id', $id, 'promotion_metric', array('view'=>(int)$view + 1));
-							}
-
-
-							//Pay Promoters
-							if($view <= $per_view){
-								$pay = 0.01 * $per_amount;
-								
-								$country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
-								$state_id = $this->Crud->read_field('id', $log_id, 'user', 'state_id');
-					
-								//Make Payment
-								$v_ins['user_id'] = $log_id;
-								$v_ins['type'] = 'credit';
-								$v_ins['amount'] = $pay;
-								$v_ins['item'] = 'promotion';
-								$v_ins['item_id'] = $log_id;
-								$v_ins['country_id'] = $country_id;
-								$v_ins['state_id'] = $state_id;
-								$v_ins['remark'] = 'Business Listing Promotion Earning';
-								$v_ins['reg_date'] = date(fdate);
-								$w_id = $this->Crud->create('wallet', $v_ins);
-
-							}
-
-							if($expiry_date == date('Y-m-d')){
-								if($is_bal == 0){
-									$ad = $this->Crud->read_single('code', $param2, 'promotion_metric');
-									if(!empty($ad)){
-										$total_view = 0;
-										foreach($ad as $a){
-											$total_view += (int)$a->view;
-										}
-										$rem_view = (int)$no_view - (int)$total_view;
-										$bal = ((float)$rem_view / (float)$no_view) *(int)$amount;
-		
-										
-									} else{
-										$bal = $amount;
-									}
-		
-									$this->Crud->updates('code', $param2, 'business_promotion', array('is_bal'=>1, 'status'=>1));
-										$country_id = $this->Crud->read_field('id', $user_id, 'user', 'country_id');
-										$state_id = $this->Crud->read_field('id', $user_id, 'user', 'state_id');
-						
-										//Make Payment
-										$v_ins['user_id'] = $user_id;
-										$v_ins['type'] = 'credit';
-										$v_ins['amount'] = $bal;
-										$v_ins['item'] = 'promotion';
-										$v_ins['item_id'] = $user_id;
-										$v_ins['country_id'] = $country_id;
-										$v_ins['state_id'] = $state_id;
-										$v_ins['remark'] = 'Business Listing Promotion Balance After Promotion Ended';
-										$v_ins['reg_date'] = date(fdate);
-										$w_id = $this->Crud->create('wallet', $v_ins);
-								}
-							}
-
-							return '<script>window.location.replace("'.site_url($uri).'");</script>';
-						} else{
-							return '<script>window.location.replace("'.site_url($uri).'");</script>';
-						}
-
-					} else{
-						return '<script>window.location.replace("'.site_url($uri).'");</script>';
-					}
-					 //Check if there is blance and pay back the balance to the advertiser
-					if($expiry_date <= date('Y-m-d')){
-						if($is_bal == 0){
-							$ad = $this->Crud->read_single('code', $param2, 'promotion_metric');
-							if(!empty($ad)){
-								$total_view = 0;
-								foreach($ad as $a){
-									$total_view += (int)$a->view;
-								}
-								$rem_view = (int)$no_view - (int)$total_view;
-								$bal = ((float)$rem_view / (float)$no_view) *(int)$amount;
-
-								
-							} else{
-								$bal = $amount;
-							}
-
-							$this->Crud->updates('id', $id, 'business_promotion', array('is_bal'=>1, 'status'=>1));
-								$country_id = $this->Crud->read_field('id', $user_id, 'user', 'country_id');
-								$state_id = $this->Crud->read_field('id', $user_id, 'user', 'state_id');
-				
-								//Make Payment
-								$v_ins['user_id'] = $user_id;
-								$v_ins['type'] = 'credit';
-								$v_ins['amount'] = $bal;
-								$v_ins['item'] = 'promotion';
-								$v_ins['item_id'] = $user_id;
-								$v_ins['country_id'] = $country_id;
-								$v_ins['state_id'] = $state_id;
-								$v_ins['remark'] = 'Business Listing Promotion Balance After Promotion Ended';
-								$v_ins['reg_date'] = date(fdate);
-								$w_id = $this->Crud->create('wallet', $v_ins);
-						}
-					}
-				} else {
-					return '<script>window.location.replace("'.site_url($uri).'");</script>';
-				}
-			} else {
-				return '<script>window.location.replace("'.site_url($uri).'");</script>';
-			}
-			
-		} else {
-			return '<script>window.location.replace("'.site_url('').'");</script>';
-		}
-
-		
-		echo $links;
 	}
 	public function account($param1='', $param2=''){
         if($param1 == 'get_state'){

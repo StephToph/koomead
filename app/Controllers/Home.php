@@ -932,6 +932,29 @@ class Home extends BaseController {
 			$view = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'view');
 			$id = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'id');
 			$uri = 'home/listing/view/'.$page_id;
+
+			$links='';
+			$name = $this->Crud->read_field('id', $page_id, 'listing', 'name');
+			$description = $this->Crud->read_field('id', $page_id, 'listing', 'description');
+			$images = $this->Crud->read_field('id', $page_id, 'listing', 'images');
+			$image = json_decode($images);
+			$main_img = $image[0];	
+			$uri = 'home/listing/view/'.$page_id;
+			$links = '
+				<!-- Open Graph Protocol (OGP) -->
+				<meta property="og:title" content="'.$name.'">
+				<meta property="og:description" content="'.$description.'">
+				<meta property="og:image" content="'.site_url($main_img).'">
+				<meta property="og:url" content="'.site_url($uri).'">
+			
+				<!-- Twitter Cards -->
+				<meta name="twitter:card" content="'.site_url($uri).'">
+				<meta name="twitter:title" content="'.$name.'">
+				<meta name="twitter:description" content="'.$description.'">
+				<meta name="twitter:image" content="'.site_url($main_img).'">
+			
+			';
+			echo $links;
 					
 			if($this->Crud->check('id', $param1, 'user') > 0){
 				if($this->Crud->check2('code', $param2, 'status', 0, 'business_promotion') > 0){

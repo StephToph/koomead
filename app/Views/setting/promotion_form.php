@@ -3,7 +3,7 @@
     $this->Crud = new Crud();
 ?>
 <?php echo form_open_multipart($form_link, array('id'=>'bb_ajax_form', 'class'=>'text-start custom-form')); ?>
-    if
+    
     <?php if($param2 == 'delete') { ?>
         <div class="row">
             <div class="col-sm-12"><div id="bb_ajax_msg"></div></div>

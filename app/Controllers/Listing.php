@@ -255,7 +255,8 @@ class Listing extends BaseController {
 							$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
 							$action = $by.' created Listing '.$code.' Record';
 							$this->Crud->activity('listing', $ins_rec, $action);
-
+							
+							$this->Crud->updates('id', $log_id, 'user', array('has_business'=>1));
 							echo $this->Crud->msg('success', 'Listing Created');
 							echo '<script>window.location.replace("'.site_url('listing').'");</script>';
 						} else {
@@ -503,10 +504,11 @@ class Listing extends BaseController {
 					$resp['expiry_date'] = date("Y-m-d H:i:s", strtotime("+$p->duration days", strtotime(date("Y-m-d H:i:s"))));
 					if($country == 161){
 						$resp['amount'] = $p->nig_amount;
+						$resp['currs'] = '&#8358;';
 
 					} else {
 						$resp['amount'] = $p->amount;
-
+						$resp['currs'] = '<i class="fal fa-pound-sign"></i>';
 					}
 					
 				}
@@ -626,7 +628,9 @@ class Listing extends BaseController {
 								$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
 								$action = $by.' Created Promotion '.$code.' for Business';
 								$this->Crud->activity('setup', $ins_rec, $action);
-	
+								
+							
+								$this->Crud->updates('id', $user_id, 'user', array('has_promoted'=>1));
 								echo $this->Crud->msg('success', 'Promotion Created');
 								echo '<script>location.reload(false);</script>';
 							} else {

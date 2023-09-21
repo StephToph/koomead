@@ -53,8 +53,28 @@
                                     <input type="date" class="form-control" name="end_date" id="end_date" oninput="loads()" style="border:1px solid #ddd;">
                                 </div> 
                                 <div class="col-sm-12" style="color: transparent;"><span id="date_resul"></span></div>
+
+                                <div class="col-12 col-sm-6 mb-2 mt-2">
+                                    <div class="listsearch-input-item">
+                                        <select data-placeholder="All Status" id="business" onchange="load('', '')" class="chosen-select no-search-select" >
+                                            <option value="all">Buiness Listing Status</option>
+                                            <option value="0">No Business</option>
+                                            <option value="1">Has Business</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 mb-2 mt-2">
+                                    <div class="listsearch-input-item">
+                                        <select data-placeholder="All Status" id="promoted" onchange="load('', '')" class="chosen-select no-search-select" >
+                                            <option value="all">Promotion Status</option>
+                                            <option value="0">No Promotion</option>
+                                            <option value="1">Has Prommotion</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        
                         <div class="col-12 col-sm-3 mb-2 mt-2">
                             <div class="listsearch-input-item">
                                 <select data-placeholder="Select" name="country_id" id="country_id" class="mb-2 chosen-select search-select"  onchange="get_state();">
@@ -97,6 +117,7 @@
                                 </select>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
                 
@@ -182,6 +203,8 @@
                 $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
             }
 
+            var business = $('#business').val();
+            var promoted = $('#promoted').val();
             var country_id = $('#country_id').val();
             var state_id = $('#state_id').val();
             var city_id = $('#city_id').val();
@@ -193,7 +216,7 @@
             $.ajax({
                 url: site_url + 'accounts/user/load' + methods,
                 type: 'post',
-                data: { ban: ban,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id },
+                data: { ban: ban,promoted: promoted,business: business,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id },
                 success: function (data) {
                     var dt = JSON.parse(data);
                     if (more == 'no') {

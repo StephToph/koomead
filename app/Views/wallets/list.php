@@ -34,6 +34,8 @@
                     
                     <a href="javascript:;" pageTitle="Add New" onclick="$('#filter_box').toggle();" class="btn btn-info float-end">Filter <i class="fal fa-filter"></i></a>	
                    
+                     <a href="javascript:;" pageTitle="Fund Wallet" pageName="<?=site_url('wallets/list/fund'); ?>"  class="btn btn-primary mr-2 pop float-end">Fund Wallet <i class="fal fa-wallet"></i></a>	
+                   
                     
                 </div>
                 <div id="filter_box" class="row mb-3 pt-3" style="display:none;">
@@ -125,6 +127,16 @@
             $('.selects2').select2();
             load('', '');
         });
+
+        
+        function fund() {
+            $.ajax({
+                url: site_url + 'wallets/list/wallet_fund',
+                success: function(data) {
+                    $('#cart_data').html(data);
+                }
+            });
+        }
 
         
         function loads() {

@@ -847,6 +847,57 @@ class Crud extends Model {
 		return $result;
 	}
 
+	public function paystack($ref='', $email='', $amount=0, $redir='', $server='live', $options='card,account,ussd', $curr='NGN') {
+		// <!-- $publicKey = 'pk_live_95061f69e52faac7b09f422ca264ad5b7798e47c';
+		$publicKey = 'pk_test_64c9ff4c5109eb46a3249e6d23dd2b9110a4aa48';
+		
+		$txref = 'EB-'.time().rand();
+		$amount = $this->to_number($amount) * 100;
+		$icon = '<div class="col-sm-12 text-center"><span class="fa fa-spinner fa-spin" style="font-size:38px;"></span></div>';
+		return '<script src="https://js.paystack.co/v1/inline.js"></script>
+			<script>
+			
+				function payWithPaystack() {
+					
+					
+        
+					let handler = PaystackPop.setup({
+						key: "'.$publicKey.'",
+						email: "'.$email.'",
+						amount:"'.$amount.'",
+						currency:"'.$curr.'",
+    					ref: "'.$ref.'",
+						onClose: function(){
+							console.log("Window closed Transaction Not Completed.");
+						},
+						callback: function(response){
+							var status= response.status;
+							var trans= response.trans;
+							var ref= response.reference;
+
+							$.ajax({
+								url: "'.site_url('wallets/list/transact').'",
+								data: { status: status, trans: trans, ref: ref },
+            					method: "post",
+							
+								success: function (data) {
+							
+								    $("#bb_ajax_msg2").html(data);
+							
+								}
+							
+							  });
+							
+						}
+					});
+					
+  					handler.openIframe();
+				}
+			</script>
+		';
+	}
+
+
 	public function rave_inline($code='', $redir='', $customize='', $amount=0, $customer='', $meta='', $sub='',  $options='card,account,ussd', $curr='NGN') {
 		$publicKey = $this->rave_key('pkey');
 		$txref = $code;

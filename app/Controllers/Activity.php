@@ -90,7 +90,7 @@ class Activity extends BaseController {
 						if($type == 'setup') $icon = 'tools';
 						if($type == 'account') $icon = 'users';
 						if($type == 'tools') $icon = 'toolbox';
-						if($type == 'coupon') $icon = 'reconciliation';
+						if($type == 'wallet') $icon = 'cash-register';
 
 						$item .= '
 							<li class="list-group-item">

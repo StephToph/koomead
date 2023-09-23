@@ -849,7 +849,7 @@ class Crud extends Model {
 
 	public function paystack($ref='', $email='', $amount=0, $redir='', $server='live', $options='card,account,ussd', $curr='NGN') {
 		// <!-- $publicKey = 'pk_live_95061f69e52faac7b09f422ca264ad5b7798e47c';
-		$publicKey = 'pk_test_64c9ff4c5109eb46a3249e6d23dd2b9110a4aa48';
+		$publicKey = $this->read_field('name', 'paystack_public', 'setting', 'value');
 		
 		$txref = 'EB-'.time().rand();
 		$amount = $this->to_number($amount) * 100;
@@ -951,6 +951,38 @@ class Crud extends Model {
 		return $result;
 	}
 
+	public function stripe_inline($amount='0'){
+		require_once FCPATH . 'vendor/autoload.php';
+
+		$stripe_secret_key = $publicKey = $this->read_field('name', 'stripe_secret', 'setting', 'value');
+		
+		;
+
+		\Stripe\Stripe::setApiKey($stripe_secret_key);
+
+		$checkout_session = \Stripe\Checkout\Session::create([
+			"mode" => "payment",
+			"success_url" => site_url('wallets/list/stripe_transact').'?session_id={CHECKOUT_SESSION_ID}',
+			"cancel_url" => site_url('wallets/list').'?session_id={CHECKOUT_SESSION_ID}',
+			"locale" => "auto",
+			"line_items" => [
+				[
+					"quantity" => 1,
+					"price_data" => [
+						"currency" => "eur",
+						"unit_amount" => $amount,
+						"product_data" => [
+							"name" => "Wallet Funding"
+						]
+					]
+				]
+			]
+		]);
+
+		http_response_code(303);
+		return '<script>window.location.href = "'.$checkout_session->url.'";</script>';
+	}
+
 	public function rave_save($user_id, $tnx_id, $item_id='', $item='') {
 		$trans_id = 0;
 		$status = '';
@@ -1023,6 +1055,7 @@ class Crud extends Model {
 
 		return $result;
 	}
+
 
 	public function get_bank($country) {
 		// create a new cURL resource

@@ -34,20 +34,33 @@ $this->Crud = new Crud();
     
 <?php if($param1 == 'fund'){?>
     <div class="login-opup">
-        <div class="row g-0">
+        <div class="row">
             <div class="col-md-12 col-lg-12">
-                <div class="login p-5">
-                
+                <div class="login">
                     <div class="row">
                         <div class="col-sm-12"><div id="bb_ajax_msg2"></div></div>
                     </div>
                     <?php echo form_open_multipart('wallets/wallet_fund', array('id'=>'bb_ajax_form2', 'class'=>'')); ?>
                     <div class="row g-6">
                         <input type="hidden" name="user_id" value="<?php if(!empty($log_id)){echo $log_id;} ?>">
+                        <input type="hidden" name="country_id" value="<?php if(!empty($country_id)){echo $country_id;} ?>">
+                        <?php
+                            if($country_id == '161'){?>
+                            <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
+                                <input type="text" class="form-control bg-white border-0 ps-0" onchange="amo_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                            </div>
+
+                                
+                            <script src="https://js.paystack.co/v1/inline.js"></script>
+                        <?php } else {?>
+
+                            <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
+                                <input type="text" class="form-control bg-white border-0 ps-0" onchange="cur_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                            </div>
+                            
+                            <script src="https://js.stripe.com/v3/"></script>
+                        <?php } ?>
                         
-                        <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
-                            <input type="text" class="form-control bg-white border-0 ps-0" onkeyup="amo_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
-                        </div>
                         <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
                             <h3 id="t_amount" class="text-center text-success mb-1 fw-bold">&#8358;0.00</h3>
                             <input type="hidden" class="form-control bg-white border-0 ps-0"  name="tot_amount" id="tot_amount" readonly placeholder="0.00">
@@ -134,6 +147,20 @@ $this->Crud = new Crud();
         $('#t_amount').html(tot);
     }
 
+    function cur_cal() {
+        var amount = $('#amount').val();
+        var tot = 0.00; // Initialize tot with a default value
+        
+        if (!isEmpty(amount)) {
+            var amo = parseFloat(amount);
+            var tota = (0.029 * amo) + amo + 0.3;
+            var ans = Math.ceil(tota); // Round up to the nearest unit
+            tot = ans.toLocaleString('en-US', { style: 'currency', currency: 'eur' });
+        }
+        
+        $('#tot_amount').val(ans);
+        $('#t_amount').html(tot);
+    }
+
 </script>
 <script src="<?php echo site_url(); ?>assets/js/jsform.js"></script>
-    <script src="https://js.paystack.co/v1/inline.js"></script>

@@ -38,6 +38,10 @@ class Wallets extends BaseController {
 		$data['param2'] = $param2;
 		$data['param3'] = $param3;
 		$data['form_link'] = $form_link;
+
+		$country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
+        $state_id = $this->Crud->read_field('id', $log_id, 'user', 'state_id');
+        $data['country_id'] = $country_id;
 		
 		if($param1 == 'transact'){
 			/////// CHACK PAYMENT RESPONSE //////
@@ -54,7 +58,53 @@ class Wallets extends BaseController {
 						$v_ins['type'] = 'credit';
 						$v_ins['amount'] = $amount;
 						$v_ins['item'] = 'fund';
+						$v_ins['country_id'] = $country_id;
+						$v_ins['state_id'] = $state_id;
 						$v_ins['item_id'] = $user_id;
+						$v_ins['remark'] = 'Wallet Funding';
+						$v_ins['reg_date'] = date(fdate);
+						
+						$w_id = $this->Crud->create('wallet', $v_ins);
+						if($w_id > 0) {
+							echo $this->Crud->msg('success', 'Wallet Funded');
+							$this->session->set('f_amount', '');
+							$this->session->set('km_wallet_id', '');
+							///// store activities
+							$by = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
+							$action = $by.' Funded Wallet with &#8358;'.number_format((float)$amount).' ';
+							$this->Crud->activity('wallet', $w_id, $action);
+							$redir = 'wallets/list';
+							echo '<script>window.location.replace("'.site_url($redir).'");</script>';
+						} else {
+							echo $this->Crud->web_msg('danger', 'Failed! - Please Contact Support.');
+							
+						}
+					}
+				}
+			}
+
+			////////////////////////////////////
+			die;
+		}
+
+		if($param1 == 'stripe_transact'){
+			/////// CHACK PAYMENT RESPONSE //////
+			$check_session = $this->request->getGet('session_id');
+            // echo 'test';
+			$status = 'failed';
+			if($check_session) {
+				$status = 'success';
+				if($status == 'success') {
+					$user_id = $this->session->get('km_wallet_id');
+					$amount = $this->session->get('f_amount');
+					if(!empty($user_id) && !empty($amount)){
+						$v_ins['user_id'] = $user_id;
+						$v_ins['type'] = 'credit';
+						$v_ins['amount'] = $amount;
+						$v_ins['item'] = 'fund';
+						$v_ins['item_id'] = $user_id;
+						$v_ins['country_id'] = $country_id;
+						$v_ins['state_id'] = $state_id;
 						$v_ins['remark'] = 'Wallet Funding';
 						$v_ins['reg_date'] = date(fdate);
 						
@@ -295,7 +345,7 @@ class Wallets extends BaseController {
 						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
 
 						$user_email = $this->Crud->read_field('id', $user_id, 'user', 'email');
-						$country = $this->Crud->read_field('id', $user_id, 'user', 'country_id');
+						$country = $q->country_id;
 						$curr = '£';
                         if($country == 161)$curr = ' ₦';
 						// user 
@@ -392,32 +442,44 @@ class Wallets extends BaseController {
 
 	public function wallet_fund(){
 		$user_id = $this->request->getPost('user_id');
+		$country_id = $this->request->getPost('country_id');
 		$amount = $this->request->getPost('tot_amount');
 		$r_amount = $this->request->getPost('amount');
 
 		////// FORMAT PAYMENT
-		$pay_script = '';
-		if($amount > 0) {
-			$ref = 'KMD-'.time().rand(0,9).rand(1,9);
+		if($country_id != '161'){
+			if($amount > 0) {
+				$r_amount = $amount * 100;
+				$this->session->set('f_amount', $r_amount);
+				$this->session->set('km_wallet_id', $user_id);
+				echo $this->Crud->stripe_inline($r_amount);
+			}
+		} else{
+			$pay_script = '';
+			if($amount > 0) {
+				$ref = 'KMD-'.time().rand(0,9).rand(1,9);
 
-			$redir = site_url('wallets/list');
+				$redir = site_url('wallets/list');
 
-			$user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
-			$phone = $this->Crud->read_field('id', $user_id, 'user', 'phone');
-			$email = $this->Crud->read_field('id', $user_id, 'user', 'email');
-			$this->session->set('f_amount', $r_amount);
-			
-			$user_ids = $user_id;
-			$user = ucwords($user);
-			
-			
-			$this->session->set('km_wallet_id', $user_id);
-			$pay_script = $this->Crud->paystack($ref, $email, $amount, $redir);
-			echo $pay_script;
-			echo '<script>payWithPaystack()</script>';
-		} else {
-			$this->session->set('is_card', '');
+				$user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
+				$phone = $this->Crud->read_field('id', $user_id, 'user', 'phone');
+				$email = $this->Crud->read_field('id', $user_id, 'user', 'email');
+				$this->session->set('f_amount', $r_amount);
+				
+				$user_ids = $user_id;
+				$user = ucwords($user);
+				
+				
+				$this->session->set('km_wallet_id', $user_id);
+				$pay_script = $this->Crud->paystack($ref, $email, $amount, $redir);
+				echo $pay_script;
+				echo '<script>payWithPaystack()</script>';
+			} else {
+				$this->session->set('is_card', '');
+			}
+
 		}
+		
 	}
 
 	public function	export(){

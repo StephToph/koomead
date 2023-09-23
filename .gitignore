@@ -15,7 +15,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 writable/*
 !application/logs/index.html
 !application/logs/.htaccess
-/vendor/
 *.json
 *.log
 *.jpg

@@ -62,7 +62,7 @@ $this->Crud = new Crud();
                         <?php } ?>
                         
                         <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
-                            <h3 id="t_amount" class="text-center text-success mb-1 fw-bold">&#8358;0.00</h3>
+                            <h3 id="t_amount" class="text-center text-success mb-1 fw-bold">0.00</h3>
                             <input type="hidden" class="form-control bg-white border-0 ps-0"  name="tot_amount" id="tot_amount" readonly placeholder="0.00">
                         </div>
                     </div>

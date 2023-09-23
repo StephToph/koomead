@@ -450,7 +450,7 @@ class Wallets extends BaseController {
 		if($country_id != '161'){
 			if($amount > 0) {
 				$r_amount = $amount * 100;
-				$this->session->set('f_amount', $r_amount);
+				$this->session->set('f_amount', $amount);
 				$this->session->set('km_wallet_id', $user_id);
 				echo $this->Crud->stripe_inline($r_amount);
 			}

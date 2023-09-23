@@ -82,6 +82,44 @@ $this->Crud = new Crud();
     </div>
 <?php } ?>
 
+<?php if($param1 == 'withdraw'){?>
+    <div class="login-opup">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="login">
+                    <div class="row">
+                        <div class="col-sm-12"><div id="bb_ajax_msg3"></div></div>
+                    </div>
+                    <?php echo form_open_multipart('wallets/withdraw', array('id'=>'bb_ajax_form3', 'class'=>'')); ?>
+                    <div class="row g-6">
+                        <input type="hidden" name="user_id" value="<?php if(!empty($log_id)){echo $log_id;} ?>">
+                        <input type="hidden" name="country_id" value="<?php if(!empty($country_id)){echo $country_id;} ?>">
+                        <?php
+                            if($country_id == '161'){?>
+                            <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
+                                <input type="text" class="form-control bg-white border-0 ps-0" onchange="amo_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                            </div>
+
+                        <?php } else {?>
+
+                            <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
+                                <input type="text" class="form-control bg-white border-0 ps-0" onchange="cur_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                            </div>
+                            
+                        <?php } ?>
+                        
+                    </div>
+                    <button class="btn btn-lg text-white py-3 bb_form_btn px-4 text-uppercase w-100 mt-4" style="background-color:#1b2a53 !important;"  type="submit" id="btns">Withdraw <i class="bi bi-arrow-right ms-2"></i></button>
+                    
+                </form>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+<?php } ?>
+
 <script>
     $('.js-select2').select2();
     var sid = '<?php if(!empty($statement_id)) { echo $statement_id; } ?>';

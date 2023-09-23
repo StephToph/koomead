@@ -430,7 +430,7 @@ class Wallets extends BaseController {
 			die;
 		}
 
-		if($param1 == 'manage' || $param1 == 'fund' || $param1 == 'statement' ) { // view for form data posting
+		if($param1 == 'manage' || $param1 == 'fund' || $param1 == 'statement' || $param1 == 'withdraw' ) { // view for form data posting
 			return view($mod.'_form', $data);
 		} else { // view for main page
 			

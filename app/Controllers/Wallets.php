@@ -494,7 +494,7 @@ class Wallets extends BaseController {
 		$status = false;
 		$cur = '';
 		if($country_id == '161'){
-			$cur = '₦';
+			$cur = '&#8358;';
 			if($amount > 0) {
 				if($amount > $balance){
 					echo $this->Crud->msg('danger', 'Insufficient Funds');

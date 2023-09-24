@@ -94,19 +94,46 @@ $this->Crud = new Crud();
                     <div class="row g-6">
                         <input type="hidden" name="user_id" value="<?php if(!empty($log_id)){echo $log_id;} ?>">
                         <input type="hidden" name="country_id" value="<?php if(!empty($country_id)){echo $country_id;} ?>">
-                        <?php
-                            if($country_id == '161'){?>
-                            <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
-                                <input type="text" class="form-control bg-white border-0 ps-0" onchange="amo_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
-                            </div>
+                        <?php 
+                            $credit =0; $debit = 0; $bal=0;
+                            $wal = $this->Crud->read_single('user_id', $log_id, 'wallet');
+                            if(!empty($wal)){
+                                foreach($wal as $w){
+                                    if($w->type == 'credit')$credit += (float)$w->amount;
+                                    if($w->type == 'debit')$debit += (float)$w->amount;
+                                    
+                                }
+                                $bal = $credit - $debit;
+                            }
+                            $curr = '£';
+                            if($country_id == 161)$curr = ' ₦';
+						
 
-                        <?php } else {?>
+                        ?>
+                        <div class="bg-white border rounded mb-5 col-md-12 col-12 p-3">
+                            <h3 class="text-center text-success mb-1 fw-bold">AVAILABLE BALANCE: <?=$curr.''.number_format($bal, 2) ;?></h3>
+                        </div>
+                        <input type="hidden" id="balance" name="balance" value="<?=$bal;?>">
 
-                            <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
-                                <input type="text" class="form-control bg-white border-0 ps-0" onchange="cur_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                        
+                        <div class="col-sm-12 mb-3">
+                            <div class="form-group">
+                                <h4>Amount to Withdraw</label>
+                                <?php
+                                    if($country_id == '161'){?>
+                                        <input type="text" class="form-control" onkeyup="bal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                                        
+                                <?php } else {?>
+
+                                        <input type="text" class="form-control" onkeyup="bal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                                    
+                                <?php } ?>
                             </div>
-                            
-                        <?php } ?>
+                        </div>
+                        
+                        <div class="bg-white border rounded mb-5 col-md-12 col-12 p-3" id="with_bal" style="display:none">
+                            <h3 class="text-center text-success mb-1 fw-bold"></h3>
+                        </div>
                         
                     </div>
                     <button class="btn btn-lg text-white py-3 bb_form_btn px-4 text-uppercase w-100 mt-4" style="background-color:#1b2a53 !important;"  type="submit" id="btns">Withdraw <i class="bi bi-arrow-right ms-2"></i></button>
@@ -146,6 +173,39 @@ $this->Crud = new Crud();
             }
         });
         
+    }
+
+    function bal(){
+        var amount = $('#amount').val();
+        var balance = $('#balance').val();
+        var country = $('#country_id').val();
+        if(balance != 0 && amount != ''){
+            $('#with_bal').show(500);
+            var withdraw = parseFloat(balance) - parseFloat(amount);
+            var withdraws = withdraw.toFixed(2);
+            if(withdraw < 0)withdraw = 0;
+            if(country == '161'){
+                
+                var formatter = new Intl.NumberFormat('en-US', {
+                    style: 'currency', currency: 'NGN',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+                });
+                tot = withdraws.toLocaleString('en-US', { style: 'currency', currency: 'NGN' });
+            } else {
+                
+                var formatter = new Intl.NumberFormat('en-US', {
+                    style: 'currency', currency: 'GBP',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+                });
+                tot = withdraws.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+            }
+            var tot = formatter.format(withdraw);
+            $('#with_bal').find('h3').html(tot);
+        } else {
+            $('#with_bal').hide(500);
+        }
     }
 
     function lgaa() {
@@ -193,7 +253,7 @@ $this->Crud = new Crud();
             var amo = parseFloat(amount);
             var tota = (0.029 * amo) + amo + 0.3;
             var ans = Math.ceil(tota); // Round up to the nearest unit
-            tot = ans.toLocaleString('en-US', { style: 'currency', currency: 'eur' });
+            tot = ans.toLocaleString('en-US', { style: 'currency', currency: 'GBP' });
         }
         
         $('#tot_amount').val(ans);

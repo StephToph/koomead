@@ -152,7 +152,7 @@ class Profile extends BaseController {
 				if($bank_code && $account_number){
 					$valid = $this->Crud->validate_account($account_number, $bank_code);
 					$valids = json_decode($valid);
-					if($valids->status == 'success'){
+					if($valids->status == 'true'){
 						$acc_name = $valids->data->account_name;
 						if(!empty($acc_name)){
 							$banks = [];
@@ -164,9 +164,39 @@ class Profile extends BaseController {
 							$msg = 'Bank Account Validated.<br> <b>'.$acc_name.'</b><br>Bank Details Updated';
 							if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
 								echo $this->Crud->msg('success', $msg);
+								// Create Transfer Recipient 
+								$recps = [
+									"type" =>"nuban",
+									"name"=>$acc_name,
+									"bank_code"=>$bank_code,
+									"account_number"=>$account_number,
+									"currency"=>"NGN"
+								];
+								
+								$cre = $this->Crud->create_recipient($recps);
+								$credit = json_decode($cre);
+								if($credit->status == 'true'){
+									$recp_id = $credit->data->id;
+									$recp_code = $credit->data->recipient_code;
+
+									$trans['recp_id'] = $recp_id;
+									$trans['recipient_code'] = $recp_code;
+
+									if($this->Crud->check('user_id', $log_id, 'transfer_recipient') == 0){
+										
+										$trans['user_id'] = $log_id;
+										$this->Crud->create('transfer_recipient', $trans);
+									} else {
+										$this->Crud->updates('user_id', $log_id, 'transfer_recipient', $trans);
+
+									}
+									
+								}
 							} else {
 								echo $this->Crud->msg('info', 'No Changes');
 							}
+
+							
 						} else {
 							echo $this->Crud->msg('danger', 'Account not Found');
 						}
@@ -237,7 +267,9 @@ class Profile extends BaseController {
 
 	public function get_bank(){
 		$bank = $this->Crud->rave_banks();
+		
 		$banks = json_decode($bank);
+		print_r($bank);
 		if(!empty($banks->data)){
 			foreach ($banks->data as $b) {
 				$in['bank_id'] = $b->id;

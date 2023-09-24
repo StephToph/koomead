@@ -115,7 +115,7 @@ class Wallets extends BaseController {
 							$this->session->set('km_wallet_id', '');
 							///// store activities
 							$by = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
-							$action = $by.' Funded Wallet with &#8358;'.number_format((float)$amount).' ';
+							$action = $by.' Funded Wallet with £'.number_format((float)$amount).' ';
 							$this->Crud->activity('wallet', $w_id, $action);
 							$redir = 'wallets/list';
 							echo '<script>window.location.replace("'.site_url($redir).'");</script>';
@@ -480,6 +480,96 @@ class Wallets extends BaseController {
 
 		}
 		
+	}
+
+	public function withdraw(){
+		$user_id = $this->request->getPost('user_id');
+		$country_id = $this->request->getPost('country_id'); 
+		$state_id = $this->Crud->read_field('id', $user_id, 'user', 'state_id');
+        
+		$amount = $this->request->getPost('amount');
+		$balance = $this->request->getPost('balance');
+		$threshhold = $this->Crud->read_field('name', 'nigeria_limit', 'setting', 'value');
+		////// FORMAT PAYMENT
+		$status = false;
+		$cur = '';
+		if($country_id == '161'){
+			$cur = '₦';
+			if($amount > 0) {
+				if($amount > $balance){
+					echo $this->Crud->msg('danger', 'Insufficient Funds');
+				} else{
+					if($amount > $threshhold){
+						echo $this->Crud->msg('danger', 'Threshold is '.$threshhold);
+					} else {
+						$ref = $this->Crud->transfer_referance();
+						$rec_code = $this->Crud->read_field('user_id', $user_id, 'transfer_recipient', 'recp_id');
+						$bank = $this->Crud->read_field('id', $user_id, 'user', 'bank_details');
+						
+						if(empty($rec_code)){
+							echo $this->Crud->msg('danger', 'Please Provide your Bank Account Details in your Profile');
+						} else{
+							if(!empty($bank)){
+								$banks = json_decode($bank);
+								$acc_no = $banks->account_number;
+								$bank_code = $banks->bank_code;
+							}
+							$with_data = [
+								"source"=>"balance",
+								"amount"=>$amount,
+								"account_number"=>$acc_no,
+								"bank_code"=>$bank_code,
+								"reference"=>$ref,
+								"recipient"=>$rec_code,
+								"reason"=>"Wallet Withdrawal"
+
+							];
+							// print_r($with_data);
+							$withdraw = $this->Crud->withdraws($with_data);
+							$withdraws = json_decode($withdraw);
+							if($withdraws->status == 'true'){
+								$status = true;
+								echo $this->Crud->msg('success', 'Withdrawal Successful.');
+							} else{
+								echo $this->Crud->msg('danger', 'Withdrawal Transaction not Successful. Try Again Later.');
+							}
+						}
+					}
+				}
+			} else {
+				echo $this->Crud->msg('danger', 'Amount cannot be Zero');
+			}
+		} else{
+			
+
+		}
+
+		if($status == true){
+			if(!empty($user_id) && !empty($amount)){
+				$v_ins['user_id'] = $user_id;
+				$v_ins['type'] = 'debit';
+				$v_ins['amount'] = $amount;
+				$v_ins['item'] = 'withdraw';
+				$v_ins['country_id'] = $country_id;
+				$v_ins['state_id'] = $state_id;
+				$v_ins['item_id'] = $user_id;
+				$v_ins['remark'] = 'Wallet Withdrawal';
+				$v_ins['reg_date'] = date(fdate);
+				
+				$w_id = $this->Crud->create('wallet', $v_ins);
+				if($w_id > 0) {
+					
+					$by = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
+					$action = $by.' Withdrawed '.$cur.number_format((float)$amount).' from Wallet';
+					$this->Crud->activity('wallet', $w_id, $action);
+					$redir = 'wallets/list';
+					echo '<script>window.location.replace("'.site_url($redir).'");</script>';
+				} else {
+					echo $this->Crud->web_msg('danger', 'Failed! - Please Contact Support.');
+					
+				}
+			}
+		}
 	}
 
 	public function	export(){

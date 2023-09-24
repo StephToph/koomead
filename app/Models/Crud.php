@@ -767,7 +767,7 @@ class Crud extends Model {
 
 		// parameters
 		$key = $this->rave_key('skey');
-		$api_link = 'https://api.flutterwave.com/v3/banks/'.$data;
+		$api_link = 'https://api.paystack.co/bank?currency=NGN';
 		
 		$chead = array();
 		$chead[] = 'Content-Type: application/json';
@@ -824,6 +824,66 @@ class Crud extends Model {
 		// parameters
 		$key = $this->rave_key('skey');
 		$api_link = 'https://api.flutterwave.com/v3/transfers/';
+		
+		$chead = array();
+		$chead[] = 'Content-Type: application/json';
+		$chead[] = 'Authorization: Bearer '.$key;
+
+		// set URL and other appropriate options
+		curl_setopt($curl, CURLOPT_URL, $api_link);
+		curl_setopt($curl, CURLOPT_HEADER, 0);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $chead);
+		curl_setopt($curl, CURLOPT_POST, 1);
+    	curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+		// grab URL and pass it to the browser
+		$result = curl_exec($curl);
+
+		// close cURL resource, and free up system resources
+		curl_close($curl);
+
+		return $result;
+	}
+
+	public function create_recipient($data) {
+		// create a new cURL resource
+		$curl = curl_init();
+
+		// parameters
+		$key = $this->rave_key('skey');
+		$api_link = 'https://api.paystack.co/transferrecipient';
+		
+		$chead = array();
+		$chead[] = 'Content-Type: application/json';
+		$chead[] = 'Authorization: Bearer '.$key;
+
+		// set URL and other appropriate options
+		curl_setopt($curl, CURLOPT_URL, $api_link);
+		curl_setopt($curl, CURLOPT_HEADER, 0);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $chead);
+		curl_setopt($curl, CURLOPT_POST, 1);
+    	curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+		// grab URL and pass it to the browser
+		$result = curl_exec($curl);
+
+		// close cURL resource, and free up system resources
+		curl_close($curl);
+
+		return $result;
+	}
+
+	public function withdraws($data) {
+		// create a new cURL resource
+		$curl = curl_init();
+
+		// parameters
+		$key = $this->rave_key('skey');
+		$api_link = 'https://api.paystack.co/transferrecipient';
 		
 		$chead = array();
 		$chead[] = 'Content-Type: application/json';
@@ -1024,28 +1084,32 @@ class Crud extends Model {
 		return (object)array('id'=>$trans_id, 'status'=>$status);
 	}
 
+	public function transfer_referance(){
+		$length = 64;
+		$randomBytes = random_bytes($length / 2); // Divide by 2 since 2 hex characters represent 1 byte
+		$uniqueString = bin2hex($randomBytes);
+		return $uniqueString;
+
+	}
+
+
 	public function validate_account($acc_no, $bank_code) {
 		// create a new cURL resource
 		$curl = curl_init();
 		// parameters
 		$key = $this->rave_key('skey');
-		$api_link = 'https://api.flutterwave.com/v3/accounts/resolve';
+		$api_link = 'https://api.paystack.co/bank/resolve?account_number='.$acc_no.'&bank_code='.$bank_code.'';
 		
 		$chead = array();
 		$chead[] = 'Content-Type: application/json';
 		$chead[] = 'Authorization: Bearer '.$key;
-		// parameters
-		$curl_data = array('account_number'=>$acc_no, 'account_bank'=>$bank_code);
-		$curl_data = json_encode($curl_data);
 		
-		$chead[] = 'Content-Length: '.strlen($curl_data);
 		// set URL and other appropriate options
 		curl_setopt($curl, CURLOPT_URL, $api_link);
 		curl_setopt($curl, CURLOPT_HEADER, 0);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $chead);
-		curl_setopt($curl, CURLOPT_POST, 1);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_data);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 
 		// grab URL and pass it to the browser
 		$result = curl_exec($curl);

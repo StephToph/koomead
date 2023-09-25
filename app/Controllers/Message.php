@@ -502,7 +502,7 @@ class Message extends BaseController {
 						$receiver_id = $q->receiver_id;
 						$message = $q->message;
 						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
-
+						$i++;
 						//check if message has been initiated before between the parties
 
 						
@@ -549,13 +549,13 @@ class Message extends BaseController {
 
 						$item .= $ite.'
 							
-						';$i++;
+						';
 					}
 				}
 			}
 			if(empty($item)) {
 				$resp['item'] = '<div class="chat-box fl-wrap">
-				<div class="chat-box-scroll fl-wrap full-height" data-simplebar="init">
+				<div class="chat-box-scroll fl-wrap full-height" data-simplebar="init" id="chatBox>
 					<div class="text-center text-muted">
 						<br/><br/><br/><br/>
 						<i class="fal fa-comment-alt-lines" style="font-size:150px;"></i><br/><br/>No Message Returned
@@ -564,8 +564,8 @@ class Message extends BaseController {
 				';
 			} else {
 				$resp['item'] = '
-					<div class="chat-box fl-wrap">
-						<div class="chat-box-scroll fl-wrap full-height" data-simplebar="init" id="chatBoxs">
+					<div class="chat-box fl-wrap"  >
+						<div class="chat-box-scroll fl-wrap full-height" data-simplebr="init" id="chatBoxs" style="overflow: auto; height: 100%;scrollbar-width: thin;">
 						'.$item.'
 						</div>
 					</div>
@@ -575,20 +575,15 @@ class Message extends BaseController {
 						<button type="button" onclick="send_chat()" class="color-bg"><i class="fal fa-paper-plane"></i></button>
 					</div>
 					<script>
-						function scrollToLastItem() {
-							var container = document.getElementById("chatBoxs");
-							var items = container.getElementsByClassName("chat-message");
-							
-							if (items.length > 0) {
-							var lastItem = items[items.length - 1];
-							
-							// Scroll to the last item
-							container.scrollTop = lastItem.offsetTop - container.offsetTop;
-							}
-						}
-			
-						scrollToLastItem();
+						// Get the scrollable div and the last element
+						var scrollableDiv = document.getElementById("chatBoxs");
+						var lastElement = document.getElementById("chats_"+'.$i.');
+						
+						// Scroll to the last element
+						scrollableDiv.scrollTop = lastElement.offsetTop;
+					
 					</script>
+					
 					';
 			}
 			$resp['count'] = $counts;

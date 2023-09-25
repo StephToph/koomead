@@ -50,12 +50,26 @@
         </div>
     </div>
 <input type="hidden" id="codes">
-        <style>
-            #chatBox {
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-}
+<style>
+            /* Style the scrollbar */
+            #chatBoxs::-webkit-scrollbar {
+                width: 6px; /* Adjust the width as desired */
+            }
+
+            /* Style the scrollbar track (the background) */
+            #chatBoxs::-webkit-scrollbar-track {
+                background: #f1f1f1; /* Change the background color as needed */
+            }
+
+            /* Style the scrollbar thumb (the draggable part) */
+            #chatBoxs::-webkit-scrollbar-thumb {
+                background: #888; /* Change the color of the scrollbar thumb */
+            }
+
+            /* Style the scrollbar thumb on hover */
+            #chatBoxs::-webkit-scrollbar-thumb:hover {
+                background: #555; /* Change the hover color */
+            }
         </style>
     <!-- <script src="<?php echo site_url(); ?>/assets/js/jquery.min.js"></script> -->
     <script>var site_url = '<?php echo site_url(); ?>';</script>
@@ -65,27 +79,16 @@
             load_chat();
         });
 
-        function scrollToSpecificDiv(specificDiv) {
-            var container = document.getElementById('chatBox');
-            
-            // Calculate the scroll position to make the specificDiv visible within the container
-            var scrollTop = specificDiv.offsetTop - container.offsetTop;
-            
-            // Scroll to the calculated position
-            container.scrollTop = scrollTop;
-        }
-
-        function scrollToLastItem() {
-            var container = document.getElementById('chatBoxs');
-            var items = container.getElementsByClassName('chat-message');
-            
-            if (items.length > 0) {
-            var lastItem = items[items.length - 1];
-            
-            // Scroll to the last item
-            container.scrollTop = lastItem.offsetTop - container.offsetTop;
+        
+        function last_msg(elementId){
+            var element = $('#chats_'+elementId);
+            console.log(element);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
+
+        
 
         function load_chat() {
            
@@ -122,14 +125,7 @@
             // console.log(secondValue);
         }
         
-         // Function to scroll to a specific element
-         function scrollToLastElement(containerSelector) {
-            var container = document.querySelector(containerSelector);
-            if (container) {
-                // Scroll to the last element
-                container.scrollTop = container.scrollHeight;
-            }
-        }
+        
 
         function update_message() {
            
@@ -140,7 +136,7 @@
                url: site_url + 'message/index/update_message',
                type: 'post',
                data: {code:code},
-               success: function (data) {load_chat();scrollToLastItem();
+               success: function (data) {load_chat();
                }
            });
        }
@@ -157,7 +153,6 @@
                   success: function (data) {
                       var dt = JSON.parse(data);
                       $('#load_message').html(dt.item);
-                      scrollToLastElement('#chatBox');scrollToLastItem();
                   }
               });
           }

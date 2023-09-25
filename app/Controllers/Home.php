@@ -230,6 +230,196 @@ class Home extends BaseController {
         return view('home/search', $data);
     }
 
+	public function profile($param1='', $param2='', $param3='') {
+        $db = \Config\Database::connect();
+        $this->session->set('km_redirect', uri_string());
+        // check login
+        $log_id = $this->session->get('km_id'); 
+        $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+        $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+		$data['link_preview'] = '';
+
+        $data['log_id'] = $log_id;
+		$data['param2'] = $param1;
+		$location = $this->session->get('km_location'); 
+        $data['location'] = $location;
+        $data['role'] = $role;
+        
+		$search ='';
+		$category_ids ='';
+		$state_id ='';
+		
+		if($this->request->getMethod() == 'post'){
+			$search = $this->request->getPost('search');
+			$category_ids = $this->request->getPost('category_ids');
+			$state_id = $this->request->getPost('state_id');
+			
+		}
+
+
+		$log_id = $this->session->get('km_id');
+        
+        
+        // record listing
+		if($param1 == 'load') {
+			$limit = $param2;
+			$offset = $param3;
+
+			$count = 0;
+			$rec_limit = 25;
+			$item = '';
+
+			if($limit == '') {$limit = $rec_limit;}
+			if($offset == '') {$offset = 0;}
+			
+			$user_id = $this->request->getVar('user_id');
+			
+            
+			
+				$query = $this->Crud->read2('user_id', $user_id, 'active', 1, 'listing', $limit, $offset);
+				$all_rec = $this->Crud->read2('user_id', $user_id, 'active', 1, 'listing', '', '');
+				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
+				$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+				$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+				
+				if(!empty($query)) {
+					foreach($query as $q) {
+						$id = $q->id;
+						$name = $q->name;
+						$category_id = $q->category_id;
+						$state_id = $q->state_id;
+						$country_id = $q->country_id;
+						$city_id = $q->city_id;
+						$price = $q->price;
+						$description = $q->description;
+						$price_status = $q->price_status;
+						$negotiable = $q->negotiable;
+						$promote_status = $q->promote_status;
+						$user_id = $q->user_id;
+						$active = $q->active;
+						$images = $q->images;
+						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
+						$cur = '£';
+            			if($country_id == '161')$cur = '&#8358;';
+
+						$images = json_decode($images);
+						$main = 'assets/images/file.png';
+						if(!empty($images)){
+							$main = $images[0];
+						}
+
+                        
+							$user =  ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname'));
+                            $user_img = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
+                            if(empty($user_img))$user_img = 'assets/images/avatar.png';
+                            
+						
+						$category = $this->Crud->read_field('id', $category_id, 'category', 'name');
+						$main_id = $this->Crud->read_field('id', $category_id, 'category', 'category_id');
+						$mains = $this->Crud->read_field('id', $main_id, 'category', 'name');
+						
+						$country = $this->Crud->read_field('id', $country_id, 'country', 'name');
+						$state = $this->Crud->read_field('id', $state_id, 'state', 'name');
+						$city = $this->Crud->read_field('id', $city_id, 'city', 'name');
+						
+						$loca = '';
+
+						$uri = 'home/listing/view/'.$id;
+						$view = $this->Crud->check('page', $uri, 'listing_view');
+						
+						$prices = '<span>'.$cur.'</span>'.number_format($price,2);
+						if($price_status == 1)$prices = 'Contact for Price';
+
+						if(!empty($city_id)) $loca .= $city;
+						if(!empty($state_id)) $loca .= ', '.$state;
+						if(!empty($country_id)) $loca .= ', '.$country;
+
+						$promote = '';
+						if($promote_status > 0){
+								
+							if(!empty($log_id)){
+								$promote = '
+									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary small"><i class="fas fa-bullhorn"></i> Promote </a></span>
+								';
+							}else {
+								$promote = '
+										<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="javascript:;" pageSize="modal-xl" pageName="'.site_url('auth/login').'" class="text-primary small pop"><i class="fas fa-bullhorn"></i> Promote </a></span>
+									';
+							}
+						} 
+
+						$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-signal"></i></a>';
+						if($active > 0)$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Disable"><i class="far fa-signal-alt-slash"></i></a>';
+
+						$item .= '
+							<div class="listing-item">
+								<article class="geodir-category-listing fl-wrap">
+									<div class="geodir-category-img fl-wrap" style="height:250px">
+										<a href="'.site_url('home/listing/view/'.$id).'" class="geodir-category-img_item mb-3">
+											<img src="'.site_url($main).'" alt="" style="height:250px">
+											<div class="overlay"style="height:250px"></div>
+										</a>
+										<div class="geodir-category-location pt-5">
+											<a href="javascript:;" class="single-map-item"><i class="fas fa-map-marker-alt"></i> <span>'.$loca.'</span></a>
+										</div>
+										<ul class="list-single-opt_header_cat">
+											<li><a href="javascript:;" class="cat-opt blue-bg mb-3">'.$category.'</a></li>
+											<li><a href="javascript:;" class="cat-opt color-bg text-end"><b>'.$mains.'</b></a></li>
+										</ul>
+										<div class="geodir-category-listing_media-list">
+											<span><i class="fas fa-eye"></i> '.$view.'</span>
+										</div>
+									</div>
+									<div class="geodir-category-content fl-wrap">
+                                            <h4 class="title-sin_item text-start mb-3" style="font-size:14px;"><a href="'.site_url('home/listing/view/'.$id).'">'.ucwords($name).'</a></h4>
+                                            <div class="geodir-category-content_price" style="font-size:16px;">'.$prices.' '.$promote.'</div>
+
+											
+                                        </div>
+								</article>
+							</div>
+                                
+						';
+					}
+				}
+			
+			if(empty($item)) {
+				$resp['item'] = '
+					<div class="text-center text-muted mb-5">
+						<br/>
+						<i class="fal fa-clipboard-list-check" style="font-size:150px;"></i><br/><br/>No Listing Returned
+					</div>
+				';
+			} else {
+				$resp['item'] = $item;
+			}
+			$resp['count'] = $count;
+
+			$more_record = $count - ($offset + $rec_limit);
+			$resp['left'] = $more_record;
+
+			if($count > ($offset + $rec_limit)) { // for load more records
+				$resp['limit'] = $rec_limit;
+				$resp['offset'] = $offset + $limit;
+			} else {
+				$resp['limit'] = 0;
+				$resp['offset'] = 0;
+			}
+
+			echo json_encode($resp);
+			die;
+		}
+
+
+		$data['search'] = $search;
+		$data['category_ids'] = $category_ids;
+        $data['state_id'] = $state_id;
+        
+        $data['title'] = 'Profile '.app_name;
+        $data['page_active'] = 'search';
+        return view('home/profile', $data);
+    }
+
     public function listing($param1='', $param2='', $param3='') {
 		$db = \Config\Database::connect();
         

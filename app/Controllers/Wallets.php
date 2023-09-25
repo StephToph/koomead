@@ -364,24 +364,49 @@ class Wallets extends BaseController {
 				
 				//print_r($query);
 				$curr = '&#8358;';
-				$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'country_id !=', '161', 'wallet');
-				if(!empty($wal)){
-					foreach($wal as $w){
-						if($w->type == 'credit')$credit += (float)$w->amount;
-						if($w->type == 'debit')$debit += (float)$w->amount;
-						
+				if($role == 'developer' || $role == 'administrator'){
+					$wal = $this->Crud->date_range1($start_date, 'reg_date',$end_date, 'reg_date', 'country_id !=', '161', 'wallet');
+					if(!empty($wal)){
+						foreach($wal as $w){
+							if($w->type == 'credit')$credit += (float)$w->amount;
+							if($w->type == 'debit')$debit += (float)$w->amount;
+							
+						}
+						$bal = $credit - $debit;$curs = '£';
 					}
-					$bal = $credit - $debit;$curs = '£';
-				}
-				$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'country_id', '161', 'wallet');
-				if(!empty($wal)){
-					foreach($wal as $w){
-						if($w->type == 'credit')$nig_credit += (float)$w->amount;
-						if($w->type == 'debit')$nig_debit += (float)$w->amount;
-						
+					$wal = $this->Crud->date_range1($start_date, 'reg_date',$end_date, 'reg_date', 'country_id', '161', 'wallet');
+					if(!empty($wal)){
+						foreach($wal as $w){
+							if($w->type == 'credit')$nig_credit += (float)$w->amount;
+							if($w->type == 'debit')$nig_debit += (float)$w->amount;
+							
+						}
+						$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
 					}
-					$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
+
+				} else{
+
+					$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'country_id !=', '161', 'wallet');
+					if(!empty($wal)){
+						foreach($wal as $w){
+							if($w->type == 'credit')$credit += (float)$w->amount;
+							if($w->type == 'debit')$debit += (float)$w->amount;
+							
+						}
+						$bal = $credit - $debit;$curs = '£';
+					}
+					$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'country_id', '161', 'wallet');
+					if(!empty($wal)){
+						foreach($wal as $w){
+							if($w->type == 'credit')$nig_credit += (float)$w->amount;
+							if($w->type == 'debit')$nig_debit += (float)$w->amount;
+							
+						}
+						$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
+					}
+
 				}
+				
 				if(!empty($query)) {
 					foreach($query as $q) {
 						

@@ -379,7 +379,7 @@
                 type: 'post',
                 success: function (data) {
                     // window.location.replace("<?=site_url('notification/list'); ?>");
-                    load();
+                    loada();
                 }
             });
         }
@@ -389,7 +389,7 @@
                 url: site_url + 'notification/mark_all',
                 type: 'post',
                 success: function (data) {
-                    load();
+                    loada();
                 }
             });
         }

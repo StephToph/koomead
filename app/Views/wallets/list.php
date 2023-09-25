@@ -55,6 +55,17 @@
                             </div>
                             
                         </div>
+                        <?php if($role == 'developer' || $role == 'administrator'){?>
+                            <div class="col-12 col-sm-3 mb-2 mt-2">
+                                <div class="listsearch-input-item">
+                                    <select data-placeholder="All Status" id="country_id" onchange="load('', '')" class="chosen-select no-search-select" >
+                                        <option value="all">All Country</option>
+                                        <option value="161">Nigeria</option>
+                                        <option value="232">United Kingdom</option>
+                                    </select>
+                                </div>
+                            </div>
+                        <?php } ?>
                         <div class="col-12 col-sm-3 mb-2 mt-2">
                             <div class="listsearch-input-item">
                                 <select data-placeholder="All Status" id="type" onchange="load('', '')" class="chosen-select no-search-select" >
@@ -68,29 +79,107 @@
                     </div>
                 </div>
                 <div class="dasboard-opt sl-opt fl-wrap float-end">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="dashboard-stats fl-wrap">
-                                <i class="fal fa-cash-register"></i>
-                                <h4>Available Balance</h4>
-                                <div class="dashboard-stats-count" id="total">0</div>
+                    <?php if($role == 'developer' || $role == 'administrator'){?>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="dashboard-stats fl-wrap">
+                                    <i class="fal fa-cash-register"></i>
+                                    <h4>Available Balance</h4>
+                                    <div class="dashboard-stats-count" id="total">0</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="dashboard-stats fl-wrap">
+                                    <i class="fal fa-sack-dollar"></i>
+                                    <h4>Total Credited</h4>
+                                    <div class="dashboard-stats-count" id="credit">0</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="dashboard-stats fl-wrap">
+                                    <i class="fal fa-money-bill-alt"></i>
+                                    <h4>Total Debited</h4>
+                                    <div class="dashboard-stats-count" id="debit">0</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="dashboard-stats fl-wrap">
-                                <i class="fal fa-sack-dollar"></i>
-                                <h4>Total Credited</h4>
-                                <div class="dashboard-stats-count" id="credit">0</div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="dashboard-stats fl-wrap">
+                                    <i class="fal fa-cash-register"></i>
+                                    <h4>Available Balance</h4>
+                                    <div class="dashboard-stats-count" id="nig_total">0</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="dashboard-stats fl-wrap">
+                                    <i class="fal fa-sack-dollar"></i>
+                                    <h4>Total Credited</h4>
+                                    <div class="dashboard-stats-count" id="nig_credit">0</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="dashboard-stats fl-wrap">
+                                    <i class="fal fa-money-bill-alt"></i>
+                                    <h4>Total Debited</h4>
+                                    <div class="dashboard-stats-count" id="nig_debit">0</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="dashboard-stats fl-wrap">
-                                <i class="fal fa-money-bill-alt"></i>
-                                <h4>Total Debited</h4>
-                                <div class="dashboard-stats-count" id="debit">0</div>
+                    <?php } else{?>
+                        <?php if($country_id == 161){?>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="dashboard-stats fl-wrap">
+                                        <i class="fal fa-cash-register"></i>
+                                        <h4>Available Balance</h4>
+                                        <div class="dashboard-stats-count" id="nig_total">0</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="dashboard-stats fl-wrap">
+                                        <i class="fal fa-sack-dollar"></i>
+                                        <h4>Total Credited</h4>
+                                        <div class="dashboard-stats-count" id="nig_credit">0</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="dashboard-stats fl-wrap">
+                                        <i class="fal fa-money-bill-alt"></i>
+                                        <h4>Total Debited</h4>
+                                        <div class="dashboard-stats-count" id="nig_debit">0</div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        <?php }?>
+
+                        <?php if($country_id != 161){?>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="dashboard-stats fl-wrap">
+                                        <i class="fal fa-cash-register"></i>
+                                        <h4>Available Balance</h4>
+                                        <div class="dashboard-stats-count" id="total">0</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="dashboard-stats fl-wrap">
+                                        <i class="fal fa-sack-dollar"></i>
+                                        <h4>Total Credited</h4>
+                                        <div class="dashboard-stats-count" id="credit">0</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="dashboard-stats fl-wrap">
+                                        <i class="fal fa-money-bill-alt"></i>
+                                        <h4>Total Debited</h4>
+                                        <div class="dashboard-stats-count" id="debit">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php }?>
+
+                    <?php }?>
                 </div>
                 
                 
@@ -120,7 +209,21 @@
             
         </div>
     </div>
+    <style>
+        .blinking-text {
+            animation: blink 1s infinite alternate; /* Blink animation */
+        }
 
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+    </style>
     
     <!-- <script src="<?php echo site_url(); ?>assets/js/jquery.min.js"></script> -->
     <script>var site_url = '<?php echo site_url(); ?>';</script>
@@ -183,7 +286,7 @@
             $.ajax({
                 url: site_url + 'wallets/list/load' + methods,
                 type: 'post',
-                data: { start_date: start_date,end_date: end_date,type: type,search: search },
+                data: { start_date: start_date,end_date: end_date,type: type,search: search, country_id: country_id },
                 success: function (data) {
                     var dt = JSON.parse(data);
                     if (more == 'no') {
@@ -202,6 +305,9 @@
                     $('#total').html(dt.total);
                     $('#credit').html(dt.credit);
                     $('#debit').html(dt.debit);
+                    $('#nig_total').html(dt.nig_total);
+                    $('#nig_credit').html(dt.nig_credit);
+                    $('#nig_debit').html(dt.nig_debit);
                 },
                 complete: function () {
                     $.getScript(site_url + 'assets/js/jsmodal.js');

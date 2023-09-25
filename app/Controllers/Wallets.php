@@ -30,8 +30,8 @@ class Wallets extends BaseController {
 		$table = 'wallets';
 		$form_link = site_url($mod);
 		if($param1){$form_link .= '/'.$param1;}
-		if($param2){$form_link .= '/'.$param2.'/';}
-		if($param3){$form_link .= $param3;}
+		if($param2){$form_link .= '/'.$param2;}
+		if($param3){$form_link .= '/'.$param3;}
 		
 		// pass parameters to view
 		$data['param1'] = $param1;
@@ -241,6 +241,35 @@ class Wallets extends BaseController {
 		    $data['statement_id'] = $param2;
 		}
 
+		if($param1 == 'approve') {
+		    $data['approve_id'] = $param2;
+			
+			if($this->request->getMethod() == 'post'){
+				$approve_id =  $this->request->getVar('approve_id');
+				
+				$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+				$action = $by.' Approved Wallet Withdraw Request';
+				$upd_data['approved'] = 1;
+				$upd_data['approve_id'] = $log_id;
+				$upd_data['approve_date'] = date(fdate);
+				
+				$upd_rec = $this->Crud->updates('id', $approve_id, 'wallet_request', $upd_data);
+				if($upd_rec > 0) {
+					///// store activities
+					$by = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+					$action = $by.' approved Wallet Withdraw Request';
+					$this->Crud->activity('wallet', $approve_id, $action);
+
+					echo $this->Crud->msg('success', 'Request Approved');
+					echo '<script>location.reload(false);</script>';
+				} else {
+					echo $this->Crud->msg('info', 'No Changes');	
+				}
+				die;	
+				
+			}
+		}
+
 		// wallet statement
 		if($param1 == 'download') {
 			if(!empty($param2)){
@@ -309,29 +338,50 @@ class Wallets extends BaseController {
 			if(empty($offset)) {$offset = 0;}
 			
 			if (!empty($this->request->getPost('search'))) {$search = $this->request->getPost('search');} else {$search = '';}
+			if (!empty($this->request->getPost('country_id'))) {$country_id = $this->request->getPost('country_id');} else {$country_id = '';}
 			if(!empty($this->request->getPost('type'))) { $type = $this->request->getPost('type'); } else { $type = ''; }
 			if(!empty($this->request->getPost('transact'))) { $transact = $this->request->getPost('transact'); } else { $transact = ''; }
-			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
-			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
+			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = date('Y-01-01'); }
+			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = date('Y-m-d'); }
 			
 			$total = 0;
 			$credit = 0;
 			$debit = 0;
+			$nig_total = 0;
+			$nig_credit = 0;
+			$nig_debit = 0;
 			
 			$log_id = $this->session->get('km_id');
 			if(!$log_id) {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {
-				$all_rec = $this->Crud->filter_wallet('', '', $log_id, $type, $transact,$search, $start_date, $end_date);
+				$all_rec = $this->Crud->filter_wallet('', '', $log_id, $type, $transact,$search, $start_date, $end_date,$country_id);
               
 				if(!empty($all_rec)) { $counts = count($all_rec); } else { $counts = 0; }
 
-				$query = $this->Crud->filter_wallet($limit, $offset, $log_id, $type, $transact,$search, $start_date, $end_date);
+				$query = $this->Crud->filter_wallet($limit, $offset, $log_id, $type, $transact,$search, $start_date, $end_date,$country_id);
 				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
 				
 				//print_r($query);
 				$curr = '&#8358;';
-					
+				$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'country_id !=', '161', 'wallet');
+				if(!empty($wal)){
+					foreach($wal as $w){
+						if($w->type == 'credit')$credit += (float)$w->amount;
+						if($w->type == 'debit')$debit += (float)$w->amount;
+						
+					}
+					$bal = $credit - $debit;$curs = '£';
+				}
+				$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'country_id', '161', 'wallet');
+				if(!empty($wal)){
+					foreach($wal as $w){
+						if($w->type == 'credit')$nig_credit += (float)$w->amount;
+						if($w->type == 'debit')$nig_debit += (float)$w->amount;
+						
+					}
+					$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
+				}
 				if(!empty($query)) {
 					foreach($query as $q) {
 						
@@ -340,6 +390,7 @@ class Wallets extends BaseController {
 						$type = $q->type;
 						$mod = $q->item;
 						$mod_id = $q->item_id;
+						$request_id = $q->request_id;
 						$remark = $q->remark;
 						$amount = number_format((float)$q->amount, 2);
 						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
@@ -365,9 +416,18 @@ class Wallets extends BaseController {
 						}
 						
 						
-						if($type == 'credit')$credit+= (float)$q->amount;
-						if($type == 'debit')$debit+= (float)$q->amount;
-						
+						$request ='';
+						$req_sta = $this->Crud->read_field('id', $request_id, 'wallet_request', 'approved');
+						if($request_id > 0 && $req_sta == 0){
+							$request .= '<h6 class="blinking-text text-danger">Pending Approval</h6>
+							';
+							if($role_d > 0){
+								$request .= '<a href="javascript:;" class="pop btn btn-info"  pageTitle="Approve Request" pageName="'.site_url('wallets/list/approve/'.$request_id).'" pageSize="modal-md" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-check"></i> Approve Request</a>';
+							}
+						}
+
+
+					
 						// color
 						$color = 'success';
 						if($type == 'debit') { $color = 'danger';}
@@ -383,11 +443,15 @@ class Wallets extends BaseController {
 										</a>  
 										
 									</div>
-									<div class="col-10 col-md-8 mb-4">
+									<div class="col-10 col-md-5 mb-4">
 										<div class="single">
 											<b class="font-size-16 text-'.$color.'">'.strtoupper($type).'</b>
 											<div class="font-size-16 text-dark">'.strtoupper($remark).'</div>
 											<span class="tb-lead"><b>' . $curr . $amount . '</b></span>
+										</div>
+									</div>
+									<div class="col-12 col-md-3 mb-4">
+										<div class="single">'.$request.'
 										</div>
 									</div>
 								</div>
@@ -411,9 +475,12 @@ class Wallets extends BaseController {
 			}
 			$total = $credit - $debit;
 			
-			$resp['total'] = $curr.number_format($total, 2);
-			$resp['credit'] = $curr.number_format($credit, 2);
-			$resp['debit'] = $curr.number_format($debit, 2);
+			$resp['total'] = $curs.number_format($total, 2);
+			$resp['credit'] = $curs.number_format($credit, 2);
+			$resp['debit'] = $curs.number_format($debit, 2);
+			$resp['nig_total'] = $curss.number_format($nig_bal, 2);
+			$resp['nig_credit'] = $curss.number_format($nig_credit, 2);
+			$resp['nig_debit'] = $curss.number_format($nig_debit, 2);
 			$resp['count'] = $count;
 
 			$more_record = $count - ($offset + $rec_limit);
@@ -430,7 +497,7 @@ class Wallets extends BaseController {
 			die;
 		}
 
-		if($param1 == 'manage' || $param1 == 'fund' || $param1 == 'statement' || $param1 == 'withdraw' ) { // view for form data posting
+		if($param1 == 'manage' || $param1 == 'fund' || $param1 == 'statement' || $param1 == 'withdraw'|| $param1 == 'approve' ) { // view for form data posting
 			return view($mod.'_form', $data);
 		} else { // view for main page
 			
@@ -489,9 +556,11 @@ class Wallets extends BaseController {
         
 		$amount = $this->request->getPost('amount');
 		$balance = $this->request->getPost('balance');
-		$threshhold = $this->Crud->read_field('name', 'nigeria_limit', 'setting', 'value');
+		$nig_threshhold = $this->Crud->read_field('name', 'nigeria_limit', 'setting', 'value');
+		$uk_threshhold = $this->Crud->read_field('name', 'uk_limit', 'setting', 'value');
 		////// FORMAT PAYMENT
 		$status = false;
+		$request= 0;
 		$cur = '';
 		if($country_id == '161'){
 			$cur = '&#8358;';
@@ -499,8 +568,8 @@ class Wallets extends BaseController {
 				if($amount > $balance){
 					echo $this->Crud->msg('danger', 'Insufficient Funds');
 				} else{
-					if($amount > $threshhold){
-						echo $this->Crud->msg('danger', 'Threshold is '.$threshhold);
+					if($amount > $nig_threshhold){
+						echo $this->Crud->msg('danger', 'Threshold is '.$cur.$nig_threshhold);
 					} else {
 						$ref = $this->Crud->transfer_referance();
 						$rec_code = $this->Crud->read_field('user_id', $user_id, 'transfer_recipient', 'recp_id');
@@ -540,8 +609,38 @@ class Wallets extends BaseController {
 				echo $this->Crud->msg('danger', 'Amount cannot be Zero');
 			}
 		} else{
-			
+			$cur = '£';
+			if($amount > 0){
+				if($amount > $balance){
+					echo $this->Crud->msg('danger', 'Insufficient Funds');
+				} else{
+					if($amount > $uk_threshhold){
+						echo $this->Crud->msg('danger', 'Threshold is '.$cur.$uk_threshhold);
+					} else {
+						if($this->Crud->check2('user_id', $user_id, 'approved', 0, 'wallet_request') > 0){
+							echo $this->Crud->msg('danger', 'You already have a pending request.');
+						} else {
+							$req['user_id'] = $user_id;
+							$req['amount'] = $amount;
+							$req['reg_date'] = date(fdate);
+							
+							$request = $this->Crud->create('wallet_request', $req);
 
+							if($request > 0){
+								$status = true;
+								echo $this->Crud->msg('success', 'Wallet Withdraw Request Submitted. Would be approved shortly');
+							} else {
+								echo $this->Crud->msg('danger', 'Wallet Withdraw Request Failed.');
+
+							}
+						}
+
+					}
+
+				}
+			} else {
+				echo $this->Crud->msg('danger', 'Amount cannot be Zero');
+			}
 		}
 
 		if($status == true){
@@ -549,6 +648,7 @@ class Wallets extends BaseController {
 				$v_ins['user_id'] = $user_id;
 				$v_ins['type'] = 'debit';
 				$v_ins['amount'] = $amount;
+				$v_ins['request_id'] = $request;
 				$v_ins['item'] = 'withdraw';
 				$v_ins['country_id'] = $country_id;
 				$v_ins['state_id'] = $state_id;
@@ -709,6 +809,57 @@ class Wallets extends BaseController {
 	        <div class="float-start"><b>TOTAL CREDIT:</b> &#8358;'.number_format((float)$total_credit, 2).'<br/>
 	        <b>TOTAL DEBIT:</b> &#8358;'.number_format((float)$total_debit, 2).'</div>
 			<a class="float-end btn btn-danger" href="'.site_url('wallets/list/download/'.$id).'"><em class="icon ni ni-download"></em> <span>Download</span></a><div class="col-sm-12 py-2" id="export_resp"></div>
+	    ';
+	}
+
+	public function request($id=0) {
+		$request_id = $id;
+		$user_id = $this->Crud->read_field('id', $id, 'wallet_request', 'user_id');
+
+	    $items = '';
+	    
+	    $name = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
+	    $query = $this->Crud->read_single_order('user_id', $user_id, 'wallet_request', 'id', 'asc');
+	    if(!empty($query)) {
+	        foreach($query as $q) {
+	            $date = date('M d, Y h:iA', strtotime($q->reg_date));
+				$st = '<span class="text-danger">Pending</span>';
+				if($q->approved > 0){
+					$st = '<span class="text-success">Approved</span>';
+				}
+
+				$a_date = '-';
+				if(!empty($q->approve_date) && $q->approve_date != 0){
+					$a_date = date('M d, Y h:iA', strtotime($q->approve_date));
+				}
+	            $items .= '
+	                <tr>
+	                    <td>'.$date.'</td>
+	                    <td align="right">'.number_format($q->amount,2).'</td>
+	                    <td align="right">'.$st.'</td>
+	                    <td align="center">'.$a_date.'</td>
+	                </tr>
+	            ';
+	        }
+	    }
+	    
+	    echo '
+	        <h3>'.$name.' Wallet Withdraw Request History
+	            <div style="font-size:small; color:#666;">as at '.date('M d, Y h:iA').'</div>
+	        </h3>
+	        <table class="table table-striped text-start">
+	            <thead>
+	                <tr>
+	                    <td><b>DATE</b></td>
+	                    <td width="" align="right"><b>AMOUNT</b></td>
+	                    <td width="" align="right"><b>STATUS</b></td>
+	                    <td width="" align="right"><b>APPROVE DATE</b></td>
+	                </tr>
+	            </thead>
+	            <tbody>'.$items.'</tbody>
+	        </table>
+			
+	        
 	    ';
 	}
 

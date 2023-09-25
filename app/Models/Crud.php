@@ -2110,7 +2110,7 @@ class Crud extends Model {
 
 
 	//// filter wallet
-	public function filter_wallet($limit='', $offset='', $user_id, $type='', $transact='',$search='', $start_date='', $end_date='') {
+	public function filter_wallet($limit='', $offset='', $user_id, $type='', $transact='',$search='', $start_date='', $end_date='', $country_id='') {
 		$db = db_connect();
         $builder = $db->table('wallet');
 
@@ -2128,6 +2128,7 @@ class Crud extends Model {
             $builder->like('remark', $search);
 			
         }
+		if(!empty($country_id) && $country_id != 'all') { $query = $builder->where('country_id', $country_id); }
 		if(!empty($type) && $type != 'all') { $query = $builder->where('type', $type); }
 		if(!empty($transact) && $transact != 'all') { $query = $builder->where('type', $transact); }
 	

@@ -30,6 +30,32 @@ $this->Crud = new Crud();
             <div id="statement" class="col-sm-12"> </div>
         </div>
     <?php } ?>
+
+    <?php if($param1 == 'approve') { ?>
+       
+
+        <div class="row">
+            <div id="approved" class="col-sm-12"> </div><hr>
+
+            <div class="col-sm-12 mt-3 mb-3">
+                <div class="col-sm-12 text-center">
+                    <h3><b>Are you sure?</b></h3>
+                    <input type="hidden" name="approve_id" value="<?php if(!empty($approve_id)){echo $approve_id;} ?>" />
+                </div>
+                
+                <div class="col-sm-12 text-center">
+                    <button class="btn btn-success text-uppercase" type="submit">
+                        <i class="ri-delete-bin-4-line"></i> Yes - Approve
+                    </button>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12"><div id="bb_ajax_msg"></div></div>
+                </div>
+            </div>
+            
+        </div>
+    <?php } ?>
 <?php echo form_close(); ?>
     
 <?php if($param1 == 'fund'){?>
@@ -150,9 +176,11 @@ $this->Crud = new Crud();
 <script>
     $('.js-select2').select2();
     var sid = '<?php if(!empty($statement_id)) { echo $statement_id; } ?>';
+    var aid = '<?php if(!empty($approve_id)) { echo $approve_id; } ?>';
     
     $(document).ready(function(){
         if(sid != '') { statement(); }
+        if(aid != '') { approve(); }
     });
     function statement() {
         // $('#fullname').html('Verifying...');
@@ -161,6 +189,16 @@ $this->Crud = new Crud();
             url: '<?php echo base_url('wallets/account'); ?>/' + sid,
             success: function(data) {
                 $('#statement').html(data);
+            }
+      });
+    }
+    function approve() {
+        $('#approved').html('Processing...');
+        
+        $.ajax({
+            url: '<?php echo base_url('wallets/request'); ?>/' + aid,
+            success: function(data) {
+                $('#approved').html(data);
             }
       });
     }

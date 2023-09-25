@@ -891,7 +891,7 @@ class Home extends BaseController {
                                             <div class="geodir-category-content_price">'.$prices.' '.$promote.'</div>
 
 											<div class="geodir-category-footer fl-wrap">
-                                                <a href='.site_url('home/profile/'.$user_id).'" class="gcf-company"><img src="'.site_url($user_img).'" alt=""><span>'.$user.'</span></a>
+                                                <a href="'.site_url('home/profile/'.$user_id).'" class="gcf-company"><img src="'.site_url($user_img).'" alt=""><span>'.$user.'</span></a>
                                                
                                             </div>
                                         </div>

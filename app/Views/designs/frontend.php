@@ -164,7 +164,7 @@
                                 <li><a href="javascript:;" onclick="get_country('Nigeria')" <?=$sel;?>
                                         data-lantext="₦">Nigeria</a></li>
                                 <li><a href="javascript:;" onclick="get_country('United Kingdom')"
-                                        data-lantext="$">United Kingdom</a></li>
+                                        data-lantext="£">United Kingdom</a></li>
                             </ul>
                         </div>
                     </div>
@@ -631,7 +631,7 @@
                     type: 'post',
                     success: function(data) {
                         // window.location.replace("<?=site_url('notification/list'); ?>");
-                        load();
+                        loada();
                     }
                 });
             }
@@ -641,7 +641,7 @@
                     url: site_url + 'notification/mark_all',
                     type: 'post',
                     success: function(data) {
-                        load();
+                        loada();
                     }
                 });
             }

@@ -715,6 +715,7 @@ class Home extends BaseController {
 		}
 
 		$links='';
+
 		if($param1 == 'view' || $param1 == 'promote'){
 			$name = $this->Crud->read_field('id', $param2, 'listing', 'name');
 			$description = $this->Crud->read_field('id', $param2, 'listing', 'description');
@@ -1106,27 +1107,41 @@ class Home extends BaseController {
        return json_encode($data);
     }
 
-	public function promotion($param1='', $param2=''){
-		$log_id = $param1;
+	public function promotion($param1='', $param2='', $param3=''){
+		$db = \Config\Database::connect();
+        
+        $this->session->set('km_redirect', uri_string());
+        // check login
+        $log_id = $this->session->get('km_id');
+        
+		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+        $data['log_id'] = $log_id;
+        $data['log_name'] = $log_name;
+        $data['page'] = 'My Listings';
+       
 		
-		if(!empty($param1)){			
-			if(!empty($param1) && !empty($param2)){
-				$page_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'listing_id');
-				$promoter_no = $this->Crud->read_field('code', $param2, 'business_promotion', 'promoter_no');
-				$user_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'user_id');
-				$no_view = $this->Crud->read_field('code', $param2, 'business_promotion', 'no_view');
-				$expiry_date = $this->Crud->read_field('code', $param2, 'business_promotion', 'expiry_date');
-				$amount = $this->Crud->read_field('code', $param2, 'business_promotion', 'amount');
-				$is_bal = $this->Crud->read_field('code', $param2, 'business_promotion', 'is_bal');
+		$data['link_preview'] = '';
+		if($param1 == 'promo_check'){
+			$business_id = $this->request->getPost('business_id');
+			$promo_code = $this->request->getPost('promo_code');
+						
+			if(!empty($business_id) && !empty($promo_code)){
+				$page_id = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'listing_id');
+				$promoter_no = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'promoter_no');
+				$user_id = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'user_id');
+				$no_view = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'no_view');
+				$expiry_date = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'expiry_date');
+				$amount = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'amount');
+				$is_bal = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'is_bal');
 				$per_view = (int)$no_view / (int)$promoter_no;
 				$per_amount = (int)$amount / (int)$promoter_no;
-				$view = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'view');
-				$id = $this->Crud->read_field2('code', $param2, 'user_id', $log_id, 'promotion_metric', 'id');
+				$view = $this->Crud->read_field2('code', $promo_code, 'user_id', $log_id, 'promotion_metric', 'view');
+				$id = $this->Crud->read_field2('code', $promo_code, 'user_id', $log_id, 'promotion_metric', 'id');
 				$uri = 'home/listing/view/'.$page_id;
 
 				
 				if($this->Crud->check('id', $param1, 'user') > 0){
-					if($this->Crud->check2('code', $param2, 'status', 0, 'business_promotion') > 0){
+					if($this->Crud->check2('code', $promo_code, 'status', 0, 'business_promotion') > 0){
 						$ipAddress = $this->request->getIPAddress();
 						$request = service('request');
 						$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
@@ -1135,8 +1150,8 @@ class Home extends BaseController {
 						
 						if($expiry_date >= date('Y-m-d')){
 							if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
-								if($this->Crud->check2('code', $param2, 'user_id', $log_id, 'promotion_metric') == 0){
-									$i_data['code'] = $param2;
+								if($this->Crud->check2('code', $promo_code, 'user_id', $log_id, 'promotion_metric') == 0){
+									$i_data['code'] = $promo_code;
 									$i_data['user_id'] = $log_id;
 									$i_data['page'] = $uri;
 									$i_data['view'] = (int)$view + 1;
@@ -1170,7 +1185,7 @@ class Home extends BaseController {
 
 								if($expiry_date == date('Y-m-d')){
 									if($is_bal == 0){
-										$ad = $this->Crud->read_single('code', $param2, 'promotion_metric');
+										$ad = $this->Crud->read_single('code', $promo_code, 'promotion_metric');
 										if(!empty($ad)){
 											$total_view = 0;
 											foreach($ad as $a){
@@ -1184,7 +1199,7 @@ class Home extends BaseController {
 											$bal = $amount;
 										}
 			
-										$this->Crud->updates('code', $param2, 'business_promotion', array('is_bal'=>1, 'status'=>1));
+										$this->Crud->updates('code', $promo_code, 'business_promotion', array('is_bal'=>1, 'status'=>1));
 											$country_id = $this->Crud->read_field('id', $user_id, 'user', 'country_id');
 											$state_id = $this->Crud->read_field('id', $user_id, 'user', 'state_id');
 							
@@ -1213,7 +1228,7 @@ class Home extends BaseController {
 						//Check if there is blance and pay back the balance to the advertiser
 						if($expiry_date <= date('Y-m-d')){
 							if($is_bal == 0){
-								$ad = $this->Crud->read_single('code', $param2, 'promotion_metric');
+								$ad = $this->Crud->read_single('code', $promo_code, 'promotion_metric');
 								if(!empty($ad)){
 									$total_view = 0;
 									foreach($ad as $a){
@@ -1254,11 +1269,12 @@ class Home extends BaseController {
 			} else {
 				return '<script>window.location.replace("'.site_url('').'");</script>';
 			}
+			
 		}
 
 		$page_id = $this->Crud->read_field('code', $param2, 'business_promotion', 'listing_id');
 			
-        $name = $this->Crud->read_field('id', $page_id, 'listing', 'name');
+		$name = $this->Crud->read_field('id', $page_id, 'listing', 'name');
 		$description = $this->Crud->read_field('id', $page_id, 'listing', 'description');
 		$images = $this->Crud->read_field('id', $page_id, 'listing', 'images');
 		$image = json_decode($images);
@@ -1278,6 +1294,13 @@ class Home extends BaseController {
 			<meta name="twitter:image" content="'.site_url($main_img).'">
 		
 		';
+		
+		$data['title'] = $name.' | '.app_name;
+		$data['page_active'] = 'listing';
+		$data['param2'] = $page_id;	
+		$data['log_id'] = $log_id;	
+		$data['business_id'] = $param1;	
+		$data['promo_code'] = $param2;	
 		$data['link_preview'] = $links;
 		return view('home/promote', $data);
 	}

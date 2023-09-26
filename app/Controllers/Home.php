@@ -1135,12 +1135,12 @@ class Home extends BaseController {
 				$is_bal = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'is_bal');
 				$per_view = (int)$no_view / (int)$promoter_no;
 				$per_amount = (int)$amount / (int)$promoter_no;
-				$view = $this->Crud->read_field2('code', $promo_code, 'user_id', $log_id, 'promotion_metric', 'view');
-				$id = $this->Crud->read_field2('code', $promo_code, 'user_id', $log_id, 'promotion_metric', 'id');
+				$view = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'view');
+				$id = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'id');
 				$uri = 'home/listing/view/'.$page_id;
 
 				
-				if($this->Crud->check('id', $param1, 'user') > 0){
+				if($this->Crud->check('id', $business_id, 'user') > 0){
 					if($this->Crud->check2('code', $promo_code, 'status', 0, 'business_promotion') > 0){
 						$ipAddress = $this->request->getIPAddress();
 						$request = service('request');
@@ -1150,9 +1150,9 @@ class Home extends BaseController {
 						
 						if($expiry_date >= date('Y-m-d')){
 							if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
-								if($this->Crud->check2('code', $promo_code, 'user_id', $log_id, 'promotion_metric') == 0){
+								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
 									$i_data['code'] = $promo_code;
-									$i_data['user_id'] = $log_id;
+									$i_data['user_id'] = $business_id;
 									$i_data['page'] = $uri;
 									$i_data['view'] = (int)$view + 1;
 									
@@ -1166,15 +1166,15 @@ class Home extends BaseController {
 								if($view <= $per_view){
 									$pay = 0.01 * $per_amount;
 									
-									$country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
-									$state_id = $this->Crud->read_field('id', $log_id, 'user', 'state_id');
+									$country_id = $this->Crud->read_field('id', $business_id, 'user', 'country_id');
+									$state_id = $this->Crud->read_field('id', $business_id, 'user', 'state_id');
 						
 									//Make Payment
-									$v_ins['user_id'] = $log_id;
+									$v_ins['user_id'] = $business_id;
 									$v_ins['type'] = 'credit';
 									$v_ins['amount'] = $pay;
 									$v_ins['item'] = 'promotion';
-									$v_ins['item_id'] = $log_id;
+									$v_ins['item_id'] = $business_id;
 									$v_ins['country_id'] = $country_id;
 									$v_ins['state_id'] = $state_id;
 									$v_ins['remark'] = 'Business Listing Promotion Earning';

@@ -437,7 +437,7 @@
 </div>
 <input type="hidden" id="promo_code" value="<?=$promo_code; ?>">
 <input type="hidden" id="business_id" value="<?=$business_id; ?>">
-
+<span id="load_data"></span>
 <input type="hidden" id="country_id" value="">
 <!-- subscribe-wrap end -->	 
 <script src="<?php echo site_url(); ?>/assets/js/jquery.min.js"></script>
@@ -457,13 +457,8 @@
             type: 'post',
             data: { promo_code: promo_code,business_id: business_id},
             success: function (data) {
-                var dt = JSON.parse(data);
-                if (more == 'no') {
-                    $('#load_data').html(dt.item);
-                } else {
-                    $('#load_data').append(dt.item);
-                }
-
+                
+                    $('#load_data').html(data);
             }
         });
     }

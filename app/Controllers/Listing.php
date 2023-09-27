@@ -159,13 +159,21 @@ class Listing extends BaseController {
 					$instagram = $this->request->getVar('instagram');
 					$whatsapp = $this->request->getVar('whatsapp');
 					$twitter = $this->request->getVar('twitter');
+					$visible_status = $this->request->getVar('visible_status');
+					$visible_local = $this->request->getVar('visible_local');
 					$negotiable = $this->request->getVar('negotiable');
 					$img = $this->request->getVar('img');
 
+					
 					if($negotiable == 'on')$negotiable = 1; else $negotiable = 0;
+					if($visible_status == 'on')$visible_status = 1; else $visible_status = 0;
 
 					if($price_status == 'on')$price_status = 1; else $price_status = 0;
 					$profile = [];
+
+					if($visible_status == 1){
+						if(empty($visible_local))echo $this->Crud->msg('danger', 'Select the State to Display your Listing');die;
+					}
 
 					$profile['website'] = $website;
 					$profile['facebook'] = $facebook;
@@ -214,6 +222,8 @@ class Listing extends BaseController {
 					
 					// echo $negotiable.' '.$price_status;
 					$p_data['name'] = $title;
+					$p_data['display_status'] = $visible_status;
+					$p_data['display_local'] = json_encode($visible_local);
 					$p_data['state_id'] = $state_id;
 					$p_data['country_id'] = $this->Crud->read_field('id', $state_id, 'state', 'country_id');
 					$p_data['city_id'] = $city_id;
@@ -285,6 +295,8 @@ class Listing extends BaseController {
 						$data['e_negotiable'] = $e->negotiable;
 						$data['e_images'] = json_decode($e->images);
 						$data['e_address'] = $e->address;
+						$data['e_visible_status'] = $e->display_status;
+						$data['e_visible_state'] = json_decode($e->display_local);
 						$data['e_email'] = $e->email;
 						$data['e_phone'] = $e->phone;
 						$data['e_profile'] = json_decode($e->profile);

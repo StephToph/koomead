@@ -813,6 +813,8 @@ class Home extends BaseController {
 						$description = $q->description;
 						$price_status = $q->price_status;
 						$negotiable = $q->negotiable;
+						$display_status = $q->display_status;
+						$display_local = $q->display_local;
 						$user_id = $q->user_id;
 						$active = $q->active;
 						$images = $q->images;
@@ -1048,10 +1050,14 @@ class Home extends BaseController {
 
     public function get_country(){
         $country = $this->request->getPost('country');
+        $states = $this->request->getPost('states');
         if($country != 'Nigeria' && $country != 'United Kingdom')$country = 'United Kingdom';
-		$this->session->set('km_location', $country);
+		$this->session->set('km_location', $states);
+        $this->session->set('km_location_state', $country);
         if($this->Crud->check('name', $country, 'country') > 0){
-            echo $this->Crud->read_field('name', $country, 'country', 'id');
+            $resp['country_id'] =  $this->Crud->read_field('name', $country, 'country', 'id');
+			$resp['states_id'] =  $this->Crud->read_field('name', $states, 'state', 'id');
+			echo json_encode($resp);
         } else {
             echo 0;
         }

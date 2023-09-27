@@ -329,6 +329,7 @@
     if($page_active == 'home'){?>
             
         <input type="hidden" id="country_id" value="">
+        <input type="hidden" id="states_id" value="">
 
         <script>var site_url = '<?php echo site_url(); ?>';</script>
         <script>
@@ -413,12 +414,14 @@
 
             function get_country(country){
                 if(country !== ''){
+                    var state_id = $('#states_id').val();
                     $.ajax({
                         url: site_url + 'home/get_country',
                         type: 'post',
                         data: {country: country },
                         success: function (data) {
-                            $('#country_id').val(data);
+                            var dt = JSON.parse(data);
+                            $('#country_id').val(dt.country_id);
                             
                             console.log(data);
                             load('','');load_state('','');
@@ -459,7 +462,10 @@
                     .then(response => response.json())
                     .then(data => {
                         const country = data.address.country;
-                        
+                        const state = data.address.state;
+                        $('#states_id').val(state);
+                        console.log("Country: " + country);
+                        console.log("State: " + state);
                         console.log(country);
                         // Use the country information as needed.
                         if(country !== 'Nigeria' && country != 'United Kingdom'){

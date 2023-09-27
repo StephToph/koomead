@@ -24,6 +24,8 @@
             $social = json_decode($this->Crud->read_field('id', $user_id, 'user', 'social'));
             $user_img = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
             if(empty($user_img))$user_img = 'assets/images/avatar.png';
+            $back_img = $this->Crud->read_field('id', $user_id, 'user', 'back_img');
+            if(empty($back_img))$back_img = 'assets/images/all/3.jpg';
 
             $website = '';
             $socials = '';
@@ -80,7 +82,7 @@
                 <div class="col-md-8">
                     <div class="card-info smpar fl-wrap">
                        <div class="bg-wrap bg-parallax-wrap-gradien">
-                            <div class="bg"  data-bg="<?=site_url(); ?>assets/images/bg/8.jpg"></div>
+                            <div class="bg"  data-bg="<?=site_url($back_img); ?>"></div>
                         </div>
                         <div class="card-info-media">
                             <div class="bg"  data-bg="<?=site_url($user_img); ?>"></div>

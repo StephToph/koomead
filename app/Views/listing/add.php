@@ -200,7 +200,7 @@
                             <input type="text" name="whatsapp" placeholder="https://whatsapp.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->whatsapp)){echo $e_profile->whatsapp;} ?>"/>
                         </div>
                                         
-                        <div class="col-sm-5  mb-3">
+                        <div class="col-md-8  mb-3">
                             <label>Description</label>
                             <div class="listsearch-input-item">
                                 <textarea cols="40" rows="3" style="height: 250px" name="description" required placeholder="Details" spellcheck="true"><?php if(!empty($e_description)){echo $e_description;} ?></textarea>
@@ -236,6 +236,46 @@
                                     <span class="onoffswitch-switch"></span>
                                     </label>
                                 </div>
+                            </div>
+
+                            <div class="content-widget-switcher fl-wrap mb-3" style="margin-top: 20px">
+                                <span class="content-widget-switcher-title">Visible to Selected Location</span>
+                                <div class="onoffswitch">
+                                    <?php $ch ='';$vs = 'none';
+                                        if(!empty($e_visible_status)){
+                                            if($e_visible_status == 1)$ch ='checked';$vs='block';
+                                        }
+                                    ?>
+                                    <input type="checkbox" name="visible_status" class="onoffswitch-checkbox" <?=$ch; ?> id="myonoffswitchmc9231" onchange="visibles()">
+                                    <label class="onoffswitch-label" for="myonoffswitchmc9231">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9  mb-3" style="display:<?=$vs;?>;" id="visible_resp">
+                            
+                            <label>State Visible</label>
+                            <div class="listsearch-input-item">
+                                <select data-placeholder="Select State" name="visible_local[]" multiple id="visible_local" class="mb-2 chosen-select search-select">
+                                        <option value="">All State</option>
+                                        <?php
+                                            $country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
+                                            $country = $this->Crud->read_single_order('country_id', $country_id, 'state', 'name', 'asc');
+                                            if(!empty($country)){
+                                                foreach($country as $c){
+                                                    $sel ='';
+                                                    if(!empty($e_visible_state)){
+                                                        if(in_array($c->id, $e_visible_state))$sel='selected';
+                                                    }
+                                                    // if($c->name != 'Nigeria' && $c->name != 'United Kingdom')continue;
+                                                    echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
+                                                }
+                                            }
+                                        ?>
+                                    </select>
                             </div>
                         </div>
 
@@ -370,6 +410,15 @@
             
         }
         
+        function visibles(){
+            var checkbox = document.getElementById("myonoffswitchmc9231");
+
+            if (checkbox.checked) {
+                $('#visible_resp').show(500);
+            } else {
+                $('#visible_resp').hide(500);
+            }
+        }
 
 
         function deleteButtonAction(button) {

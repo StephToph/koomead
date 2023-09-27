@@ -390,6 +390,9 @@ class Dashboard extends BaseController {
 				$list_view = $this->Crud->date_check($date_from, 'reg_date',  $date_to, 'reg_date',  'listing_view');
 				$active_list = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'active', 1, 'listing');
 				$user = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'role_id', $v_id, 'user');
+				$promote_list = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'promote_status', 1, 'listing');
+				$business = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'has_business', 1, 'user');
+				$promoted = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'has_promoted', 1, 'user');
 				
 				// $list_views = 0;
 				// if(!empty($list_view)){
@@ -399,9 +402,12 @@ class Dashboard extends BaseController {
 				// }
 
 				$resp['total_list'] = number_format((float)($total_list));
+				$resp['promote_list'] = number_format((float)($promote_list));
 				$resp['list_view'] = number_format((float)($list_view));
 				$resp['active_list'] = number_format((float)($active_list));
+				$resp['promoted'] = number_format((float)($promoted));
 				$resp['user'] = number_format((float)($user));
+				$resp['business'] = number_format((float)($business));
 			}
 
 			// Admin

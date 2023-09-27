@@ -190,7 +190,7 @@ class Accounts extends BaseController {
 							$avatar = 'assets/images/avatar.png';
 						}
 						
-						if(empty($ban) && $ban == 0){
+						if($ban > 0){
 							$b = '<span class="text-success small font-weight-bold font-size-12">ACCOUNT ACTIVE</span>';
 						} else {
 							$b = '<span class="text-danger small font-weight-bold font-size-12">ACCOUNT BANNED</span>';

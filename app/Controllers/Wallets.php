@@ -654,6 +654,19 @@ class Wallets extends BaseController {
 							if($request > 0){
 								$status = true;
 								echo $this->Crud->msg('success', 'Wallet Withdraw Request Submitted. Would be approved shortly');
+								
+								$a_id = $this->Crud->read_field('name', 'Administrator', 'access_role', 'id');
+								$d_id = $this->Crud->read_field('name', 'Developer', 'access_role', 'id');
+								
+								$use = $this->Crud->read('user');
+								if(!empty($use)){
+									foreach($use as $u){
+										if($u->role_id != $a_id && $u->role_id != $d_id)continue;
+										$id = $u->id;
+										$this->Crud->notify($user_id, $id, 'Wallet Request Withdrawal Placed', 'wallet', $request);
+									}
+								}
+								
 							} else {
 								echo $this->Crud->msg('danger', 'Wallet Withdraw Request Failed.');
 
@@ -844,6 +857,8 @@ class Wallets extends BaseController {
 	    $items = '';
 	    
 	    $name = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
+		$country_id = $this->Crud->read_field('id', $user_id, 'user', 'country_id');
+	    $bank_details = json_decode($this->Crud->read_field('id', $user_id, 'user', 'bank_details'));
 	    $query = $this->Crud->read_single_order('user_id', $user_id, 'wallet_request', 'id', 'asc');
 	    if(!empty($query)) {
 	        foreach($query as $q) {
@@ -867,11 +882,20 @@ class Wallets extends BaseController {
 	            ';
 	        }
 	    }
+		$bank = '';
+		if(!empty($bank_details)){
+			if($country_id == '161'){
+				$bank .= 'Bank Account: '.$bank_details->account_number.' | Account Name:'.$bank_details->account_name;
+			} else {
+				$bank .= 'Paypal Info: '.$bank_details->paypal;
+			}
+		}
 	    
 	    echo '
 	        <h3>'.$name.' Wallet Withdraw Request History
 	            <div style="font-size:small; color:#666;">as at '.date('M d, Y h:iA').'</div>
 	        </h3>
+			<h5 class="text-danger mt-2 mb-3">'.$bank.'</h5>
 	        <table class="table table-striped text-start">
 	            <thead>
 	                <tr>

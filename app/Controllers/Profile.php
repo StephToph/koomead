@@ -44,6 +44,7 @@ class Profile extends BaseController {
 				$twitter = $this->request->getVar('twitter');
 				$tiktok = $this->request->getVar('tiktok');
 				$img = $this->request->getVar('img');
+				$back_img = $this->request->getVar('back_img');
 	
 				if(!$email || !$fullname) {
 					echo $this->Crud->msg('danger', 'Email, Fullname field(s) missing');
@@ -65,6 +66,14 @@ class Profile extends BaseController {
 					$img = $getImg->path;
 				}
 
+				 /// upload image
+				 if(file_exists($this->request->getFile('back_pics'))) {
+					$path = 'assets/images/user/';
+					$file = $this->request->getFile('back_pics');
+					$getImg = $this->Crud->img_upload($path, $file);
+					$back_img = $getImg->path;
+				}
+
 				$social = [];
 				$social['website'] = $website;
 				$social['facebook'] = $facebook;
@@ -79,6 +88,7 @@ class Profile extends BaseController {
 				$upd_data['dob'] = $dob;
 				$upd_data['address'] = $address;
 				$upd_data['img_id'] = $img;
+				$upd_data['back_img'] = $back_img;
 				$upd_data['social'] = json_encode($social);
 
 				if($this->Crud->updates('id', $log_id, 'user', $upd_data) > 0) {
@@ -222,6 +232,9 @@ class Profile extends BaseController {
 		$img = $this->Crud->read_field('id', $log_id, 'user', 'img_id');
 		if(empty($img)) $img = 'assets/images/avatar.png';
         $data['img'] = $img;
+        $back_img = $this->Crud->read_field('id', $log_id, 'user', 'back_img');
+		if(empty($back_img)) $back_img = 'assets/images/bg/3.jpg';
+        $data['back_img'] = $back_img;
         $data['social'] = json_decode($this->Crud->read_field('id', $log_id, 'user', 'social'));
 		$data['bank_details'] = json_decode($this->Crud->read_field('id', $log_id, 'user', 'bank_details'));
        

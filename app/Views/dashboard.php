@@ -81,20 +81,41 @@
                         <div class="col-md-3 col-sm-6">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-eye"></i>
+                                <h4>Promoted Listing</h4>
+                                <div class="dashboard-stats-count" id="promote_list">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="dashboard-stats fl-wrap">
+                                <i class="fal fa-eye"></i>
                                 <h4>Listing Views</h4>
                                 <div class="dashboard-stats-count" id="list_view">0</div>
                             </div>
                         </div>
                         <!-- dashboard-stats end -->
                        <?php if($role != 'user'){?>
-                        <!--dashboard-stats-->
-                        <div class="col-md-3 col-sm-6">
-                            <div class="dashboard-stats fl-wrap">
-                                <i class="fal fa-users"></i>
-                                <h4>No of User</h4>
-                                <div class="dashboard-stats-count" id="user">0</div>
+                            <!--dashboard-stats-->
+                            <div class="col-md-4 col-sm-6">
+                                <div class="dashboard-stats fl-wrap">
+                                    <i class="fal fa-users"></i>
+                                    <h4>No of User</h4>
+                                    <div class="dashboard-stats-count" id="user">0</div>
+                                </div>
                             </div>
-                        </div>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="dashboard-stats fl-wrap">
+                                    <i class="fal fa-users"></i>
+                                    <h4>No of Business</h4>
+                                    <div class="dashboard-stats-count" id="business">0</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <div class="dashboard-stats fl-wrap">
+                                    <i class="fal fa-users"></i>
+                                    <h4>No of Promoted Business</h4>
+                                    <div class="dashboard-stats-count" id="promoted">0</div>
+                                </div>
+                            </div>
                         <?php } ?>
                         <!-- dashboard-stats end -->		
                     </div>
@@ -163,7 +184,10 @@
                 $('#total_list').html(dt.total_list);
                 $('#list_view').html(dt.list_view);
                 $('#active_list').html(dt.active_list);
+                $('#promoted').html(dt.promoted);
                 $('#user').html(dt.user);
+                $('#promote_list').html(dt.promote_list);
+                $('#business').html(dt.business);
                
             }
         });

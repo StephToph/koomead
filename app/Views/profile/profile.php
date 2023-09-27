@@ -38,17 +38,27 @@
                     <?php echo form_open_multipart('profile/index/update', array('id'=>'bb_ajax_form', 'class'=>'')); ?>
                     <div class="dasboard-widget-box nopad-dash-widget-box fl-wrap">
                         <div class="edit-profile-photo">
-                            <img id="img0" style="height:80px;width:80px" src="<?=site_url($img); ?>" class="respimg" alt="">
+                            <img id="img0" style="height:80px;width:80px" src="<?=site_url($img); ?>" class="respimg m-4" alt="">
                             <input type="hidden" name="img" value="<?php if(!empty($img)){echo $img;} ?>" />
                         </div>
                         <div class="bg-wrap bg-parallax-wrap-gradien">
-                            <div class="bg"  data-bg="<?=site_url(); ?>assets/images/bg/3.jpg"></div>
+                            <img id="back_img0" style="height:100%;"  src="<?=site_url($back_img); ?>" class="respimg" alt="">
+                            <input type="hidden" name="back_img" value="<?php if(!empty($back_img)){echo $back_img;} ?>" />
                         </div>
-                        <div class="change-photo-btn cpb-2  ">
+                        <div class="change-photo-btn cpb-2  mt-3" style="left:0px;">
                             <div class="photoUpload color-bg">
                                 <span> <i class="far fa-camera"></i> Change Profile Photo </span>
                                 <input type="file" class="upload" name="pics" id="img-upload">
                             </div>
+                            
+                        </div>
+
+                        <div class="change-photo-btn cpb-2  float-start">
+                            <div class="photoUpload color-bg">
+                                <span> <i class="far fa-camera"></i> Change Profile Cover </span>
+                                <input type="file" class="upload" name="back_pics" id="back_img-upload">
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="dasboard-widget-title fl-wrap">
@@ -211,6 +221,10 @@
         
         $("#img-upload").change(function(){
             readURL(this, 'img0');
+        });
+
+        $("#back_img-upload").change(function(){
+            readURL(this, 'back_img0');
         });
     </script>
 <?php echo $this->endSection(); ?>

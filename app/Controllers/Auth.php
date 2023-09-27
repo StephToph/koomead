@@ -27,19 +27,25 @@ class Auth extends BaseController {
                 if(empty($user_id)) {
                     echo $this->Crud->msg('danger', 'Invalid Authentication!');
                 } else {
-                    ///// store activities
-					$code = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
-					$action = $code.' logged into Account ';
-					$this->Crud->activity('authentication', $user_id, $action);
-                    $this->session->set('km_location', '');
-                    echo $this->Crud->msg('success', 'Login Successful!');
-                    $this->session->set('km_id', $user_id);
-                    if($redir == ''){
-                        $redirs = 'dashboard';
+                    if($this->Crud->check2('id', $user_id, 'activate', 0, 'user') > 0){
+                        echo $this->Crud->msg('danger', 'Account not Activated! Please verify your Email to activate your account.');
                     } else {
-                        $redirs = $redir;
+                        ///// store activities
+                        $code = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
+                        $action = $code.' logged into Account ';
+                        $this->Crud->activity('authentication', $user_id, $action);
+                        $this->session->set('km_location', '');
+                        echo $this->Crud->msg('success', 'Login Successful!');
+                        $this->session->set('km_id', $user_id);
+                        if($redir == ''){
+                            $redirs = 'dashboard';
+                        } else {
+                            $redirs = $redir;
+                        }
+                        echo '<script>window.location.replace("'.site_url($redirs).'");</script>';
+
                     }
-                    echo '<script>window.location.replace("'.site_url($redirs).'");</script>';
+                    
                 }
             }
 
@@ -79,13 +85,15 @@ class Auth extends BaseController {
 			$ins_data['country_id'] = $country_id;
 			$ins_data['state_id'] = $state_id;
 			$ins_data['city_id'] = $city_id;
-			$ins_data['activate'] = 1;
 			$ins_data['password'] = md5($password);
 			$ins_data['reg_date'] = date(fdate);
 
 			$ins_id = $this->Crud->create('user', $ins_data);
 			if($ins_id > 0) {
-				echo $this->Crud->msg('success', 'Account Created, You can now Sign In');
+				echo $this->Crud->msg('success', 'Account Created, Verify your Email');
+                $body = "Dear ".$fullname.",<br><br>
+                    Thank you for choosing ".app_name."! To ensure the security of your account and access all the features of our platform, we require you to verify your email address.<br><br> Click on the following link or copy and paste it into your web browser: ".site_url('auth/verify/'.$ins_id)." <br><br>If you did not register for an account with ".app_name.", please disregard this email. Your account will not be activated until you complete the verification process.";
+                 $this->Crud->send_email($email, 'Account Verification', $body);
 				// echo '<script>location.reload(false);</script>';
 			} else {
 				echo $this->Crud->msg('danger', 'Please Try Again Later');
@@ -240,6 +248,19 @@ class Auth extends BaseController {
                     } die;
                 }
             }
+        }
+    }
+
+    Public function verify($param1){
+        if(!empty($param1)){
+            if($this->Crud->check('id', $param1, 'user')>0){
+                $this->Crud->updates('id', $param1, 'user', array('activate'=>1));
+                echo '<h3>Account Verified. You can Login Now</h3>';
+                echo '<script>window.location.replace("'.site_url('').'");</script>';
+       
+            }
+        } else{
+            echo '<script>window.location.replace("'.site_url('').'");</script>';
         }
     }
 }

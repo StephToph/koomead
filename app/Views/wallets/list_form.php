@@ -44,7 +44,7 @@ $this->Crud = new Crud();
                 </div>
                 
                 <div class="col-sm-12 text-center">
-                    <button class="btn btn-success text-uppercase" type="submit">
+                    <button class="btn btn-success text-uppercase mb-3" type="submit">
                         <i class="ri-delete-bin-4-line"></i> Yes - Approve
                     </button>
                 </div>

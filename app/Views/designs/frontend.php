@@ -414,14 +414,12 @@
 
             function get_country(country){
                 if(country !== ''){
-                    var state_id = $('#states_id').val();
                     $.ajax({
                         url: site_url + 'home/get_country',
                         type: 'post',
                         data: {country: country },
                         success: function (data) {
-                            var dt = JSON.parse(data);
-                            $('#country_id').val(dt.country_id);
+                            $('#country_id').val(data);
                             
                             console.log(data);
                             load('','');load_state('','');

@@ -105,7 +105,12 @@
                                     <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 chosen-select search-select" onchange="get_city();">
                                         <option value="">All State</option>
                                         <?php
-                                            $country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
+                                            if(!empty($e_country_id)){
+                                                $country_id = $e_country_id;
+                                            } else{
+                                                $country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
+                                           
+                                            }
                                             $country = $this->Crud->read_single_order('country_id', $country_id, 'state', 'name', 'asc');
                                             if(!empty($country)){
                                                 foreach($country as $c){
@@ -262,8 +267,12 @@
                                 <select data-placeholder="Select State" name="visible_local[]" multiple id="visible_local" class="mb-2 chosen-select search-select">
                                         <option value="">All State</option>
                                         <?php
-                                            $country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
-                                            $country = $this->Crud->read_single_order('country_id', $country_id, 'state', 'name', 'asc');
+                                            if(!empty($e_country_id)){
+                                                $country_id = $e_country_id;
+                                            } else{
+                                                $country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
+                                           
+                                            }$country = $this->Crud->read_single_order('country_id', $country_id, 'state', 'name', 'asc');
                                             if(!empty($country)){
                                                 foreach($country as $c){
                                                     $sel ='';

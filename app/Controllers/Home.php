@@ -800,7 +800,9 @@ class Home extends BaseController {
 				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
 				$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
 				$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
-				
+
+				$states_id = 0;
+				if(!empty($log_id))$states_id = $this->Crud->read_field('id', $log_id, 'user', 'state_id');
 				if(!empty($query)) {
 					foreach($query as $q) {
 						$id = $q->id;
@@ -826,6 +828,9 @@ class Home extends BaseController {
 							$main = $images[0];
 						}
 
+						if($display_status == 1 && !empty($log_id)){
+							if(!in_array($states_id, json_decode($display_local)))continue;
+						}
                         
 							$user =  ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname'));
                             $user_img = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
@@ -1050,14 +1055,10 @@ class Home extends BaseController {
 
     public function get_country(){
         $country = $this->request->getPost('country');
-        $states = $this->request->getPost('states');
         if($country != 'Nigeria' && $country != 'United Kingdom')$country = 'United Kingdom';
-		$this->session->set('km_location', $states);
-        $this->session->set('km_location_state', $country);
+		$this->session->set('km_location', $country);
         if($this->Crud->check('name', $country, 'country') > 0){
-            $resp['country_id'] =  $this->Crud->read_field('name', $country, 'country', 'id');
-			$resp['states_id'] =  $this->Crud->read_field('name', $states, 'state', 'id');
-			echo json_encode($resp);
+			echo $this->Crud->read_field('name', $country, 'country', 'id');
         } else {
             echo 0;
         }

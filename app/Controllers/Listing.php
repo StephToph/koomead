@@ -170,18 +170,20 @@ class Listing extends BaseController {
 
 					if($price_status == 'on')$price_status = 1; else $price_status = 0;
 					$profile = [];
-
+					
 					if($visible_status == 1){
-						if(empty($visible_local))echo $this->Crud->msg('danger', 'Select the State to Display your Listing');die;
+						if(empty($visible_local)){
+							echo $this->Crud->msg('danger', 'Select the State to Display your Listing');
+							die;
+						}
 					}
-
+					
 					$profile['website'] = $website;
 					$profile['facebook'] = $facebook;
 					$profile['instagram'] = $instagram;
 					$profile['whatsapp'] = $whatsapp;
 					$profile['twitter'] = $twitter;
 					
-
 					$uploadedImagePaths = [];
 					/// upload image
                     if(!empty($_FILES['pics']['name'])) {
@@ -288,6 +290,7 @@ class Listing extends BaseController {
 						$data['e_name'] = $e->name;
 						$data['e_category_id'] = $e->category_id;
 						$data['e_state_id'] = $e->state_id;
+						$data['e_country_id'] = $e->country_id;
 						$data['e_city_id'] = $e->city_id;
 						$data['e_description'] = $e->description;
 						$data['e_price'] = $e->price;

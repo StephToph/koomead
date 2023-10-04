@@ -38,11 +38,11 @@
                     <div class="row">
                         <input type="hidden" name="listing_id" value="<?php if(!empty($e_id)){echo $e_id;} ?>" />
                         <div class="col-sm-4 mb-3">		 
-                            <label>Listing Title  <span class="dec-icon"><i class="far fa-briefcase"></i></span></label>
+                            <label>Listing Title  *<span class="dec-icon"><i class="far fa-briefcase"></i></span></label>
                             <input type="text" name="title" placeholder="Name of your business" required value="<?php if(!empty($e_name)){echo $e_name;} ?>"/>
                         </div>
                         <div class="col-sm-4 mb-3">
-                            <label>Category</label>
+                            <label>Category *</label>
                             <div class="listsearch-input-item">
                                 <select data-placeholder="Main Category" id="main_id" onchange="get_category()" class="chosen-select search-select" required >
                                     <option value="">Main Category</option>
@@ -65,7 +65,7 @@
                         <?php
                             if(!empty($e_category_id)){?>
                                 <div class="col-sm-4 mb-3">
-                                    <label>Sub-Category</label><div id="category_ids">
+                                    <label>Sub-Category *</label><div id="category_ids">
                                     <div class="listsearch-input-item">
                                         <select data-placeholder="All Category" name="sub_id" id="category_id" class="chosen-select search-select" required >
                                             <option value="">Select Category</option>
@@ -88,7 +88,7 @@
                           <?php  } else {
                         ?>
                             <div class="col-sm-4 mb-3">
-                                <label>Sub-Category</label>
+                                <label>Sub-Category *</label>
                                 <div id="category_ids">
                                     <div class="listsearch-input-item">
                                         <select data-placeholder="All Category" name="category_id" id="category_id" class="chosen-select search-select" required >
@@ -99,7 +99,7 @@
                                 </div>
                             </div>
                         <?php } ?>
-                        <div class=" col-sm-4 mb-3"><label>State</label>
+                        <div class=" col-sm-4 mb-3"><label>State *</label>
                             <div id="states_id">
                                 <div class="listsearch-input-item mb-2">
                                     <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 chosen-select search-select" onchange="get_city();">
@@ -130,7 +130,7 @@
                         <?php 
                             if(!empty($e_city_id)){
                         ?>
-                            <div class=" col-sm-4 mb-3"><label>City</label><div id="citys_id">
+                            <div class=" col-sm-4 mb-3"><label>City *</label><div id="citys_id">
                                 <div class="listsearch-input-item mb-2" id="citys_id">
                                     <select data-placeholder="Select"  name="city_id" id="city_id"
                                         required class="mb-2 chosen-select search-select">
@@ -154,7 +154,7 @@
                         <?php 
                             } else {
                         ?>
-                            <div class=" col-sm-4 mb-3"><label>City</label><div id="citys_id">
+                            <div class=" col-sm-4 mb-3"><label>City *</label><div id="citys_id">
                                 <div class="listsearch-input-item mb-2" id="citys_id">
                                     <select data-placeholder="Select"  name="city_id" id="city_id"
                                         required class="mb-2 chosen-select search-select">
@@ -181,8 +181,8 @@
                             <input type="email" name="b_email" value="<?php if(!empty($e_email)){echo $e_email;} ?>" placeholder="JessieManrty@koomeli.com" />
                         </div>
                         <div class="col-sm-4 mb-3">
-                            <label>Phone <span class="dec-icon"><i class="far fa-phone"></i> </span> </label>
-                            <input type="text" name="b_phone" placeholder="+7(123)987654" value="<?php if(!empty($e_phone)){echo $e_phone;} ?>"/>
+                            <label>Phone *<span class="dec-icon"><i class="far fa-phone"></i> </span> </label>
+                            <input type="text" name="b_phone" placeholder="+7(123)987654" value="<?php if(!empty($e_phone)){echo $e_phone;} ?>" required/>
                         </div>
                         <div class="col-sm-4 mb-3">
                             <label> Website <span class="dec-icon"><i class="far fa-globe"></i> </span> </label>
@@ -206,7 +206,7 @@
                         </div>
                                         
                         <div class="col-md-8  mb-3">
-                            <label>Description</label>
+                            <label>Description *</label>
                             <div class="listsearch-input-item">
                                 <textarea cols="40" rows="3" style="height: 250px" name="description" required placeholder="Details" spellcheck="true"><?php if(!empty($e_description)){echo $e_description;} ?></textarea>
                             </div>
@@ -290,7 +290,7 @@
 
                         <div class="col-sm-3 text-center mb-5" id="original-div">
                             <div style="background-color:#f6f6f6; margin:2px; padding: 15px;" >
-                                <div class="text-muted text-center"><b>MAIN PHOTO</b></div>
+                                <div class="text-muted text-center"><b>MAIN PHOTO</b> *</div>
                                 <label for="img-upload" class="pointer text-center" style="cursor:pointer; float: none !important;">
                                         
                                     <input type="hidden" id="hiddens" name="img[]" value="<?php if(!empty($e_images)){echo $e_images[0];} ?>" />

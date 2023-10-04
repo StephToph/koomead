@@ -383,9 +383,14 @@ class Wallets extends BaseController {
 						}
 						$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
 					}
-
+					$resp['total'] = $curs.number_format($total, 2);
+					$resp['credit'] = $curs.number_format($credit, 2);
+					$resp['debit'] = $curs.number_format($debit, 2);
+					$resp['nig_total'] = $curss.number_format($nig_bal, 2);
+					$resp['nig_credit'] = $curss.number_format($nig_credit, 2);
+					$resp['nig_debit'] = $curss.number_format($nig_debit, 2);
 				} else{
-
+					$curs ='';$curss='';
 					$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'country_id !=', '161', 'wallet');
 					if(!empty($wal)){
 						foreach($wal as $w){
@@ -404,7 +409,12 @@ class Wallets extends BaseController {
 						}
 						$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
 					}
-
+					$resp['total'] = $curs.number_format($total, 2);
+					$resp['credit'] = $curs.number_format($credit, 2);
+					$resp['debit'] = $curs.number_format($debit, 2);
+					$resp['nig_total'] = $curss.number_format($nig_bal, 2);
+					$resp['nig_credit'] = $curss.number_format($nig_credit, 2);
+					$resp['nig_debit'] = $curss.number_format($nig_debit, 2);
 				}
 				
 				if(!empty($query)) {
@@ -500,12 +510,7 @@ class Wallets extends BaseController {
 			}
 			$total = $credit - $debit;
 			
-			$resp['total'] = $curs.number_format($total, 2);
-			$resp['credit'] = $curs.number_format($credit, 2);
-			$resp['debit'] = $curs.number_format($debit, 2);
-			$resp['nig_total'] = $curss.number_format($nig_bal, 2);
-			$resp['nig_credit'] = $curss.number_format($nig_credit, 2);
-			$resp['nig_debit'] = $curss.number_format($nig_debit, 2);
+			
 			$resp['count'] = $count;
 
 			$more_record = $count - ($offset + $rec_limit);

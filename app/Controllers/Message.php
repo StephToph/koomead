@@ -435,7 +435,9 @@ class Message extends BaseController {
 
 						//check if message has been initiated before between the parties
 
-						
+						if($role != 'administrator' && $role !=' developer'){
+							if($sender_id != $log_id && $receiver_id != $log_id)continue;
+						}
 						$count = $this->Crud->check3('receiver_id', $log_id, 'code', $code, 'status', 0, 'message');
 						$m_count = '';
 						if($count > 0)$m_count = '<div class="message-counter">'.$count.'</div>';
@@ -658,7 +660,7 @@ class Message extends BaseController {
 		} else { // view for main page
             
 			$data['title'] = 'Message | '.app_name;
-            $data['page_active'] = 'listing';
+            $data['page_active'] = 'message';
             return view('message/manage', $data);
         }
     }

@@ -1363,7 +1363,7 @@ class Crud extends Model {
 		 INNER JOIN (
 			 SELECT MAX(id) AS max_id
 			 FROM $table
-			 WHERE $col3 = ? AND reg_date >= ? AND reg_date <= ?
+			 WHERE $col3 = ? AND DATE_FORMAT($col1, '%Y-%m-%d') >= ? AND DATE_FORMAT($col1, '%Y-%m-%d') <= ?
 			 GROUP BY $group
 		 ) AS t2
 		 ON t1.id = t2.max_id";
@@ -1387,7 +1387,7 @@ class Crud extends Model {
 				INNER JOIN (
 					SELECT MAX(id) AS latest_id
 					FROM $table
-					WHERE reg_date >= ? AND reg_date <= ?
+					WHERE DATE_FORMAT($col1, '%Y-%m-%d') >= ? AND DATE_FORMAT($col1, '%Y-%m-%d') <= ?
 					GROUP BY $group
 				) AS t2 ON t1.id = t2.latest_id
 				ORDER BY t1.id DESC";

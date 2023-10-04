@@ -108,7 +108,6 @@
                 <a href="<?=site_url(); ?>">Home</a><a href="javascript:;"><?=$mains; ?></a><a href="javascript:;"><?=$category; ?></a><span><?=ucwords($name); ?></span>
             </div>
             
-            <div class="like-btn"><i class="fas fa-heart"></i> Save</div>
         </div>
     </div>
     <div class="gray-bg small-padding fl-wrap">

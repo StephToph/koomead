@@ -11,7 +11,7 @@ class Accounts extends BaseController {
 
 
     //// PARENTS
-    public function user($param1='', $param2='', $param3='') {
+    public function user($param1='', $param2='', $param3='', $param4='') {
         // check login
         $log_id = $this->session->get('km_id');
         if(empty($log_id)) return redirect()->to(site_url(''));
@@ -37,11 +37,13 @@ class Accounts extends BaseController {
 		if($param1){$form_link .= $param1.'/';}
 		if($param2){$form_link .= $param2.'/';}
 		if($param3){$form_link .= $param3.'/';}
+		if($param4){$form_link .= $param4.'/';}
 		
 		// pass parameters to view
 		$data['param1'] = $param1;
 		$data['param2'] = $param2;
 		$data['param3'] = $param3;
+		$data['param4'] = $param4;
 		$data['form_link'] = rtrim($form_link, '/');
 		
 		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
@@ -370,6 +372,206 @@ class Accounts extends BaseController {
             ';
         }
     }
+
+	public function user_view($param1='', $param2=''){
+		if($param1 == 'message_load'){
+			$log_id = $this->session->get('km_id');
+			$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+			$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+			$user_id = $this->request->getPost('user_id');
+			
+			if(!$log_id) {
+				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
+			} else {
+				
+				
+				$activity_query = $this->Crud->read_single_group('receiver_id', $user_id,'km_message','code');
+	
+				
+				$counts = 0;
+				$message_load = '';
+				if(!empty($activity_query)){
+					foreach($activity_query as $q){
+						$send = $this->Crud->read_field('id', $q->sender_id, 'user', 'fullname');
+						$send_img = $this->Crud->read_field('id', $q->sender_id, 'user', 'img_id');
+						$receive =  $this->Crud->read_field('id', $q->receiver_id, 'user', 'fullname');
+						
+						// //check if message has been initiated before between the parties
+	
+						// if($role != 'administrator' && $role !=' developer'){
+						// 	if($q->sender_id != $log_id && $q->receiver_id != $log_id)continue;
+						// }
+	
+						if(empty($send_img)){
+							$send_img = 'assets/images/avatar.png';
+						}
+						$count = $this->Crud->check2('code', $q->code, 'status', 0, 'message');
+						$c = '';
+						if($count > 0)$c='<div class="message-counter">'.$count.'</div>';
+						$message_load .= '
+							<a class="chat-contacts-item" href="'.site_url('message').'">
+								<div class="dashboard-message-avatar">
+									<img src="'.site_url($send_img).'" alt="">
+									'.$c.'
+								</div>
+								<div class="chat-contacts-item-text">
+									<h4>'.ucwords($send).'</h4>
+									<span>'.$this->Crud->timespan(strtotime($q->reg_date)).' </span>
+									<p>'.$q->message.'</p>
+								</div>
+							</a>
+						
+						';
+						$counts ++;
+					}
+				} else {
+					$message_load .= '
+						<a class="chat-contacts-item" href="javascript:;">
+							<div class="chat-contacts-item-text">
+								<h4>No Message</h4>
+							</div>
+						</a>
+					';
+				}
+				$resp['message_load'] = $message_load;
+			}
+			
+			echo json_encode($resp);
+			die;
+		}
+
+		if($param1 == 'list_load'){
+			$log_id = $this->session->get('km_id');
+			$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+			$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+			$user_id = $this->request->getPost('user_id');
+			
+			if(!$log_id) {
+				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
+			} else {
+				
+				
+				$activity_query = $this->Crud->read_single('user_id', $user_id,'listing');
+	
+				
+				$counts = 0;
+				$items = '';
+				if(!empty($activity_query)){
+					foreach($activity_query as $q) {
+						$id = $q->id;
+						$name = $q->name;
+						$category_id = $q->category_id;
+						$state_id = $q->state_id;
+						$address = $q->address;
+						$country_id = $q->country_id;
+						$city_id = $q->city_id;
+						$price = $q->price;
+						$description = $q->description;
+						$price_status = $q->price_status;
+						$negotiable = $q->negotiable;
+						$user_id = $q->user_id;
+						$active = $q->active;
+						$images = $q->images;
+						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
+
+						$images = json_decode($images);
+						$main = 'assets/images/file.png';
+						if(!empty($images)){
+							$main = $images[0];
+						}
+
+						$page = 'home/listing/view/'.$id;
+						$view = $this->Crud->check('page', $page, 'listing_view');
+						
+						$maina = site_url($main);
+						$users = '';
+						if($role == 'developer' || $role == 'administrator'){
+							$users = '<br><div class="geodir-category-location mb-2">
+								<a href="javascript:;"><i class="fal fa-user-secret"></i> <span>'.ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname')).'</b></span></a>
+							</div>';
+						}
+						
+						$category = $this->Crud->read_field('id', $category_id, 'category', 'name');
+						$main_id = $this->Crud->read_field('id', $category_id, 'category', 'category_id');
+						$mains = $this->Crud->read_field('id', $main_id, 'category', 'name');
+						
+						$country = $this->Crud->read_field('id', $country_id, 'country', 'name');
+						$state = $this->Crud->read_field('id', $state_id, 'state', 'name');
+						$city = $this->Crud->read_field('id', $city_id, 'city', 'name');
+						
+						$loca = '';
+						
+						if(!empty($address)) $loca .= $address.', ';
+						if(!empty($city_id)) $loca .= $city;
+						if(!empty($state_id)) $loca .= ', '.$state;
+						if(!empty($country_id)) $loca .= ', '.$country;
+
+						$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-signal"></i></a>';
+						if($active > 0)$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Disable"><i class="far fa-signal-alt-slash"></i></a>';
+						
+						$promote = $this->Crud->check('listing_id', $id, 'business_promotion');
+						$ad = '
+							<li>
+								<a href="'.site_url('listing/index/promote/'.$id).'" class="tolt"  pageTitle="Promote '.$name.'" pageName="" pageSize="modal-lg" data-microtip-position="top-left"  data-tooltip="Promote"><i class="far fa-ad"></i></a>
+							</li>
+						';
+
+						
+						$items .= '
+							<li class="list-group-item ">
+								<div class="row pt-4 align-items-center ">
+									<div class="col-md-12">
+										<div class="dashboard-listings-item fl-wrap">
+											<div class="dashboard-listings-item_img text-center">
+												<div class="bg-wrap">
+													<div class="bg  "  data-bg="'.site_url($main).'" style="background-image: url('.$maina.');"></div>
+												</div>
+												<div class="overlay"></div>
+												<a href="'.site_url('listing/index/view/'.$id).'" class="color-bg">View</a>
+											</div>
+											<div class="dashboard-listings-item_content">
+												<h4><a href="'.site_url('listing/index/view/'.$id).'">'.$name.'</a></h4>
+												<div class="geodir-category-location mb-3">
+													<a href="javascript:;"><i class="fal fa-list-alt"></i> <span>'.$category.'&#8594; <b>'.$mains.'</b></span></a>
+												</div><br>
+												<div class="geodir-category-location mb-2">
+													<a href="javascript:;"><i class="fas fa-map-marker-alt"></i> <span> '.$loca.'</span></a>
+												</div>
+												
+												'.$users.'
+												<div class="clearfix"></div>
+												<div class="dashboard-listings-item_opt text-center">
+													<span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  '.$view.' </span>
+													<span class="viewed-counter"><i class="fas fa-ad"></i> Promotion -  '.$promote.' </span>
+													<ul>
+														<li><a href="'.site_url('listing/index/edit/'.$id).'" class="tolt" data-microtip-position="top-left"  data-tooltip="Edit"><i class="far fa-edit"></i></a></li>'.$ad.'
+														<li>'.$act.'</li>
+														<li><a href="javascript:;" class="pop tolt"  pageTitle="Delete '.$name.' Record" pageName="'.site_url('listing/index/manage/delete/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Delete"><i class="far fa-trash-alt"></i></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+						';
+					}
+				} else {
+					$items .= '
+						<a class="chat-contacts-item" href="javascript:;">
+							<div class="chat-contacts-item-text">
+								<h4>No Message</h4>
+							</div>
+						</a>
+					';
+				}
+				$resp['item'] = $items;
+			}
+			
+			echo json_encode($resp);
+			die;
+		}
+	}
 
 	
 }

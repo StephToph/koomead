@@ -537,13 +537,17 @@ class Dashboard extends BaseController {
 		if(!$log_id) {
 			$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 		} else {
-			$activity_query = $this->Crud->date_range1_group($date_from, 'reg_date',  $date_to, 'reg_date', 'receiver_id', $log_id,'km_message','code',5);
-
+			
 			// Admin
 			if($role == 'administrator' || $role == 'developer') {
-				$activity_query = $this->Crud->date_range_group($date_from, 'reg_date',  $date_to, 'reg_date', 'km_message','code',5);
+				$activity_query = $this->Crud->date_range_group($date_from, 'reg_date',  $date_to, 'reg_date', 'km_message','code');
+				
+			} else {
+				$activity_query = $this->Crud->date_range1_group($date_from, 'reg_date',  $date_to, 'reg_date', 'receiver_id', $log_id,'km_message','code',5);
 
+			
 			}
+			
 			$counts = 0;
 			$message_load = '';
 			if(!empty($activity_query)){
@@ -553,6 +557,12 @@ class Dashboard extends BaseController {
 					$send_img = $this->Crud->read_field('id', $q->sender_id, 'user', 'img_id');
 					$receive =  $this->Crud->read_field('id', $q->receiver_id, 'user', 'fullname');
 					
+					// //check if message has been initiated before between the parties
+
+					// if($role != 'administrator' && $role !=' developer'){
+					// 	if($q->sender_id != $log_id && $q->receiver_id != $log_id)continue;
+					// }
+
 					if(empty($send_img)){
 						$send_img = 'assets/images/avatar.png';
 					}

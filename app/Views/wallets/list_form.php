@@ -70,10 +70,11 @@ $this->Crud = new Crud();
                     <div class="row g-6">
                         <input type="hidden" name="user_id" value="<?php if(!empty($log_id)){echo $log_id;} ?>">
                         <input type="hidden" name="country_id" value="<?php if(!empty($country_id)){echo $country_id;} ?>">
+                        <label>Amount to Fund</label>
                         <?php
                             if($country_id == '161'){?>
                             <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
-                                <input type="text" class="form-control bg-white border-0 ps-0" onchange="amo_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                                <input type="text" class="form-control bg-white border-0 ps-0" onkeyup="amo_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
                             </div>
 
                                 
@@ -81,14 +82,18 @@ $this->Crud = new Crud();
                         <?php } else {?>
 
                             <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
-                                <input type="text" class="form-control bg-white border-0 ps-0" onchange="cur_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                                <input type="text" class="form-control bg-white border-0 ps-0" onkeyup="cur_cal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
                             </div>
                             
                             <script src="https://js.stripe.com/v3/"></script>
                         <?php } ?>
                         
+                        <div class="bg-white border rounded mb-3 p-2">
+                            <p class="text-center  h4 text-warning mb-1 fw-bold"> Service Fee: <span id="t_amounts" class="text- text-warnig mb-1 fw-bold">0.00</span> </p>
+                            
+                        </div>
                         <div class="bg-white border rounded mb-3 col-md-12 col-12 mx-1">
-                            <h3 id="t_amount" class="text-center text-success mb-1 fw-bold">0.00</h3>
+                            <p class="text-center  h4 text-success mb-1 fw-bold">Total Amount: <span id="t_amount" class="text- text-waring mb-1 fw-bold">0.00</span> </p>
                             <input type="hidden" class="form-control bg-white border-0 ps-0"  name="tot_amount" id="tot_amount" readonly placeholder="0.00">
                         </div>
                     </div>
@@ -119,7 +124,7 @@ $this->Crud = new Crud();
                     <?php echo form_open_multipart('wallets/withdraw', array('id'=>'bb_ajax_form3', 'class'=>'')); ?>
                     <div class="row g-6">
                         <input type="hidden" name="user_id" value="<?php if(!empty($log_id)){echo $log_id;} ?>">
-                        <input type="hidden" name="country_id" value="<?php if(!empty($country_id)){echo $country_id;} ?>">
+                        <input type="hidden" name="country_id" id="country_id" value="<?php if(!empty($country_id)){echo $country_id;} ?>">
                         <?php 
                             $credit =0; $debit = 0; $bal=0;
                             $wal = $this->Crud->read_single('user_id', $log_id, 'wallet');
@@ -217,6 +222,7 @@ $this->Crud = new Crud();
         var amount = $('#amount').val();
         var balance = $('#balance').val();
         var country = $('#country_id').val();
+        console.log(country);
         if(balance != 0 && amount != ''){
             $('#with_bal').show(500);
             var withdraw = parseFloat(balance) - parseFloat(amount);
@@ -274,6 +280,7 @@ $this->Crud = new Crud();
         
         if (!isEmpty(amount)) {
             var amo = parseFloat(amount);
+            var rate = (0.015 * amo);
             var tota = (0.015 * amo) + amo;
             var ans = Math.ceil(tota); // Round up to the nearest unit
             tot = ans.toLocaleString('en-US', { style: 'currency', currency: 'NGN' });
@@ -281,6 +288,7 @@ $this->Crud = new Crud();
         
         $('#tot_amount').val(ans);
         $('#t_amount').html(tot);
+        $('#t_amounts').html(Math.ceil(rate));
     }
 
     function cur_cal() {
@@ -289,6 +297,7 @@ $this->Crud = new Crud();
         
         if (!isEmpty(amount)) {
             var amo = parseFloat(amount);
+            var rate = (0.029 * amo) + 0.3;
             var tota = (0.029 * amo) + amo + 0.3;
             var ans = Math.ceil(tota); // Round up to the nearest unit
             tot = ans.toLocaleString('en-US', { style: 'currency', currency: 'GBP' });
@@ -296,6 +305,7 @@ $this->Crud = new Crud();
         
         $('#tot_amount').val(ans);
         $('#t_amount').html(tot);
+        $('#t_amounts').html(rate);
     }
 
 </script>

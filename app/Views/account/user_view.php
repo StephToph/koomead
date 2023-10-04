@@ -33,7 +33,7 @@
                                     <ul class="tabs-menu fl-wrap no-list-style">
                                         <li class="current"><a href="#tab-profile"> <i class="fal fa-id-card-alt" style="font-size:24px;"></i>  Profile  </a></li>
                                         <li><a href="#tab-listing"> <i class="fal fa-user-tie" style="font-size:24px;"></i> My Listings</a></li>
-                                        <li><a href="#tab-p_listing"> <i class="fal fa-business-time" style="font-size:24px;"></i>  Listings Promoted</a></li>
+                                        <!-- <li><a href="#tab-p_listing"> <i class="fal fa-business-time" style="font-size:24px;"></i>  Listings Promoted</a></li> -->
                                         <li><a href="#tab-message"> <i class="fal fa-envelope-open-text" style="font-size:24px;"></i> Messages</a></li>
                                     </ul>
                                 </div>
@@ -178,7 +178,7 @@
                                         <div id="tab-listing" class="tab-content">
                                             <div class="list-single-main-container fl-wrap" style="margin-top: 30px;">
                                                 <!-- list-single-main-item -->
-                                                <div class="text-center text-muted mb-3">
+                                                <div class="text-center text-muted mb-3" id="load_list">
                                                     <br/><br/><br/><br/>
                                                     <i class="fal fa-user-tie" style="font-size:150px;"></i><br/><br/>No Listing Returned
                                                 </div>										
@@ -189,7 +189,7 @@
                                     <div class="tab">
                                         <div id="tab-p_listing" class="tab-content">
                                             <div class="list-single-main-container fl-wrap" style="margin-top: 30px;">
-                                                <div class="text-center text-muted mb-3">
+                                                <div class="text-center text-muted mb-3" id="load_promoted">
                                                     <br/><br/><br/><br/>
                                                     <i class="fal fa-business-time" style="font-size:150px;"></i><br/><br/>No Listing Promoted
                                                 </div>        										
@@ -200,7 +200,7 @@
                                     <div class="tab">
                                         <div id="tab-message" class="tab-content">
                                             <div class="list-single-main-container fl-wrap" style="margin-top: 30px;">
-                                                <div class="text-center text-muted mb-3">
+                                                <div class="text-center text-muted mb-3" id="message_load">
                                                     <br/><br/><br/><br/>
                                                     <i class="fal fa-envelope-open-text" style="font-size:150px;"></i><br/><br/>No Message
                                                 </div>            										
@@ -220,13 +220,13 @@
         </div>
     </div>
 
-        
+        <input type="hidden" id="user_id" value="<?=$param3; ?>">
     <!-- <script src="<?php echo site_url(); ?>/assets/js/jquery.min.js"></script> -->
     <script>var site_url = '<?php echo site_url(); ?>';</script>
    
     <script>
         $(function() {
-            load('', '');
+            load_list('', '');load_message();
         });
 
         function get_state() {
@@ -254,23 +254,8 @@
         }
 
 
-        function loads() {
-            var start_date = $('#start_date').val();
-            var end_date = $('#end_date').val();
 
-            if(!start_date || !end_date){
-                $('#date_resul').css('color', 'Red');
-                $('#date_resul').html('Enter Start and End Date!!');
-            } else if(start_date > end_date){
-                $('#date_resul').css('color', 'Red');
-                $('#date_resul').html('Start Date cannot be greater!');
-            } else {
-                load('', '');
-                $('#date_resul').html('');
-            }
-        }
-
-        function load(x, y) {
+        function load_list(x, y) {
             var more = 'no';
             var methods = '';
             if (parseInt(x) > 0 && parseInt(y) > 0) {
@@ -279,29 +264,24 @@
             }
 
             if (more == 'no') {
-                $('#load_data').html('<div class="col-sm-12 text-center"><br/><br/><br/><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
+                $('#load_list').html('<div class="col-sm-12 text-center"><br/><br/><br/><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
             } else {
                 $('#loadmore').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin"></i></div>');
             }
 
-            var country_id = $('#country_id').val();
-            var state_id = $('#state_id').val();
-            var city_id = $('#city_id').val();
-            var ban = $('#ban').val();
-            var search = $('#search').val();
-            var start_date = $('#start_date').val();
-            var end_date = $('#end_date').val();
+            var user_id = $('#user_id').val();
+            
 
             $.ajax({
-                url: site_url + 'accounts/user/load' + methods,
+                url: site_url + 'accounts/user_view/list_load' + methods,
                 type: 'post',
-                data: { ban: ban,start_date: start_date,end_date: end_date,search: search,city_id: city_id,state_id: state_id,country_id: country_id },
+                data: { user_id: user_id},
                 success: function (data) {
                     var dt = JSON.parse(data);
                     if (more == 'no') {
-                        $('#load_data').html(dt.item);
+                        $('#load_list').html(dt.item);
                     } else {
-                        $('#load_data').append(dt.item);
+                        $('#load_list').append(dt.item);
                     }
 
                     if (dt.offset > 0) {
@@ -316,6 +296,26 @@
                     $.getScript(site_url + 'assets/js/jsmodal.js');
                 }
             });
+        }
+
+        function load_message(){
+            $('#message_load').html('<div class="col-sm-12 text-center"><i class="fal fa-spinner fa-spin" style="font-size:29px;"></i>  </div>');
+            
+            var user_id = $('#user_id').val();
+            
+
+        
+            $.ajax({
+                url: site_url + 'accounts/user_view/message_load',
+                type: 'post',
+                data: { user_id: user_id},
+                success: function (data) {
+                    var dt = JSON.parse(data);
+                    $('#message_load').html(dt.message_load);
+                        
+                }
+            });
+        
         }
     </script>   
 <?php echo $this->endSection(); ?>

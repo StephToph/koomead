@@ -344,12 +344,7 @@ class Wallets extends BaseController {
 			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = date('Y-01-01'); }
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = date('Y-m-d'); }
 			
-			$total = 0;
-			$credit = 0;
-			$debit = 0;
-			$nig_total = 0;
-			$nig_credit = 0;
-			$nig_debit = 0;
+		
 			
 			$log_id = $this->session->get('km_id');
 			if(!$log_id) {
@@ -361,18 +356,26 @@ class Wallets extends BaseController {
 
 				$query = $this->Crud->filter_wallet($limit, $offset, $log_id, $type, $transact,$search, $start_date, $end_date,$country_id);
 				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
-				
+				$total = 0;
+				$credit = 0;
+				$debit = 0;
+				$nig_total = 0;
+				$nig_bal = 0;
+				$nig_credit = 0;
+				$nig_debit = 0;
 				//print_r($query);
-				$curr = '&#8358;';
+				$curr = '&#8358;';$curss = '&#8358;';
 				if($role == 'developer' || $role == 'administrator'){
 					$wal = $this->Crud->date_range1($start_date, 'reg_date',$end_date, 'reg_date', 'country_id !=', '161', 'wallet');
+					$curs = '£';
+					
 					if(!empty($wal)){
 						foreach($wal as $w){
 							if($w->type == 'credit')$credit += (float)$w->amount;
 							if($w->type == 'debit')$debit += (float)$w->amount;
 							
 						}
-						$bal = $credit - $debit;$curs = '£';
+						$bal = $credit - $debit;
 					}
 					$wal = $this->Crud->date_range1($start_date, 'reg_date',$end_date, 'reg_date', 'country_id', '161', 'wallet');
 					if(!empty($wal)){
@@ -381,7 +384,7 @@ class Wallets extends BaseController {
 							if($w->type == 'debit')$nig_debit += (float)$w->amount;
 							
 						}
-						$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
+						$nig_bal = $nig_credit - $nig_debit;
 					}
 					$resp['total'] = $curs.number_format($total, 2);
 					$resp['credit'] = $curs.number_format($credit, 2);
@@ -608,29 +611,40 @@ class Wallets extends BaseController {
 						if(empty($rec_code)){
 							echo $this->Crud->msg('danger', 'Please Provide your Bank Account Details in your Profile');
 						} else{
-							if(!empty($bank)){
-								$banks = json_decode($bank);
-								$acc_no = $banks->account_number;
-								$bank_code = $banks->bank_code;
-							}
-							$with_data = [
-								"source"=>"balance",
-								"amount"=>$amount,
-								"account_number"=>$acc_no,
-								"bank_code"=>$bank_code,
-								"reference"=>$ref,
-								"recipient"=>$rec_code,
-								"reason"=>"Wallet Withdrawal"
-
-							];
-							// print_r($with_data);
-							$withdraw = $this->Crud->withdraws($with_data);
-							$withdraws = json_decode($withdraw);
-							if($withdraws->status == 'true'){
-								$status = true;
-								echo $this->Crud->msg('success', 'Withdrawal Successful.');
+							if(empty(json_decode($bank))){
+								echo $this->Crud->msg('danger', 'Invalid Bank Account Details in your Profile');
 							} else{
-								echo $this->Crud->msg('danger', 'Withdrawal Transaction not Successful. Try Again Later.');
+								$banks = json_decode($bank);
+								if(!empty($banks->account_number) && !empty($banks->bank_code)){
+									
+									$acc_no = $banks->account_number;
+									$bank_code = $banks->bank_code;
+									$with_data = [
+										"source"=>"balance",
+										"amount"=>$amount,
+										"account_number"=>$acc_no,
+										"bank_code"=>$bank_code,
+										"reference"=>$ref,
+										"recipient"=>$rec_code,
+										"reason"=>"Wallet Withdrawal"
+	
+									];
+									// print_r($with_data);
+									$withdraw = $this->Crud->withdraws($with_data);
+									$withdraws = json_decode($withdraw);
+									if($withdraws->status == 'true'){
+										$status = true;
+										echo $this->Crud->msg('success', 'Withdrawal Successful.');
+									} else{
+										echo $this->Crud->msg('danger', 'Withdrawal Transaction not Successful. Try Again Later.');
+									}
+
+								} else {
+
+									echo $this->Crud->msg('danger', 'Invalid Bank Account Details in your Profile');
+
+								}
+								
 							}
 						}
 					}

@@ -32,19 +32,21 @@
             <!-- dasboard-widget-box  -->
             <div class="dasboard-widget-box fl-wrap">
                 
-                <?php echo form_open_multipart('listing/index/manage', array('id'=>'bb_ajax_form', 'class'=>'text-start customform')); ?>
+                <?php echo form_open_multipart('listing/index/manage', array('id'=>'bb_ajax_form', 'class'=>'text-start')); ?>
     
-                <div class="custom-form">
+                <div class="custom- orm">
                     <div class="row">
                         <input type="hidden" name="listing_id" value="<?php if(!empty($e_id)){echo $e_id;} ?>" />
-                        <div class="col-sm-4 mb-3">		 
-                            <label>Listing Title  *<span class="dec-icon"><i class="far fa-briefcase"></i></span></label>
-                            <input type="text" name="title" placeholder="Name of your business" required value="<?php if(!empty($e_name)){echo $e_name;} ?>"/>
+                        <div class="col-sm-4 mb-3">	
+                            <div class="form-group">	 
+                                <label>Listing Title  *</label>
+                                <input type="text" class="form-control mt-1" name="title" placeholder="Name of your business" required value="<?php if(!empty($e_name)){echo $e_name;} ?>"/>
+                            </div>
                         </div>
                         <div class="col-sm-4 mb-3">
-                            <label>Category *</label>
-                            <div class="listsearch-input-item">
-                                <select data-placeholder="Main Category" id="main_id" onchange="get_category()" class="chosen-select search-select" required >
+                            <div class="form-group">
+                                <label>Category *</label>
+                                <select data-placeholder="Main Category" id="main_id" onchange="get_category()" class="form-select chosen-select mt-1 search-select" required >
                                     <option value="">Main Category</option>
                                     <?php
                                         $cate = $this->Crud->read_single_order('category_id', 0, 'category', 'name', 'asc');
@@ -65,9 +67,9 @@
                         <?php
                             if(!empty($e_category_id)){?>
                                 <div class="col-sm-4 mb-3">
-                                    <label>Sub-Category *</label><div id="category_ids">
-                                    <div class="listsearch-input-item">
-                                        <select data-placeholder="All Category" name="sub_id" id="category_id" class="chosen-select search-select" required >
+                                    <div class="form-group">
+                                        <label>Sub-Category *</label><div id="category_ids">
+                                        <select data-placeholder="All Category" name="sub_id" id="category_id" class="form-select chosen-select search-select" required >
                                             <option value="">Select Category</option>
                                             <?php
                                                 $cate = $this->Crud->read_single_order('category_id', $e_main, 'category', 'name', 'asc');
@@ -83,15 +85,15 @@
                                             ?>
                                     
                                         </select>
-                                    </div></div>
+                                    </div>
                                 </div>
                           <?php  } else {
                         ?>
                             <div class="col-sm-4 mb-3">
-                                <label>Sub-Category *</label>
-                                <div id="category_ids">
-                                    <div class="listsearch-input-item">
-                                        <select data-placeholder="All Category" name="category_id" id="category_id" class="chosen-select search-select" required >
+                                <div class="form-group">
+                                    <label>Sub-Category *</label>
+                                    <div id="category_ids">
+                                        <select data-placeholder="All Category" name="category_id" id="category_id" class="form-select chosen-select search-select" required >
                                             <option value="">Select Category First</option>
                                             
                                         </select>
@@ -100,9 +102,9 @@
                             </div>
                         <?php } ?>
                         <div class=" col-sm-4 mb-3"><label>State *</label>
-                            <div id="states_id">
-                                <div class="listsearch-input-item mb-2">
-                                    <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 chosen-select search-select" onchange="get_city();">
+                            <div class="form-group">
+                                <div id="states_id">
+                                    <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 form-select chosen-select search-select" onchange="get_city();">
                                         <option value="">All State</option>
                                         <?php
                                             if(!empty($e_country_id)){
@@ -127,88 +129,111 @@
                                 </div>  
                             </div>
                         </div>
-                        <?php 
+                        <!-- <?php 
                             if(!empty($e_city_id)){
                         ?>
-                            <div class=" col-sm-4 mb-3"><label>City *</label><div id="citys_id">
-                                <div class="listsearch-input-item mb-2" id="citys_id">
-                                    <select data-placeholder="Select"  name="city_id" id="city_id"
-                                        required class="mb-2 chosen-select search-select">
-                                        <option value="">Select City</option>
-                                        <?php
-                                            $country = $this->Crud->read_single_order('state_id', $e_state_id, 'city', 'name', 'asc');
-                                            if(!empty($country)){
-                                                foreach($country as $c){
-                                                    $sel ='';
-                                                    if(!empty($e_city_id)){
-                                                        if($e_city_id == $c->id)$sel='selected';
+                            <div class=" col-sm-4 mb-3">
+                                <div class="form-group">                               
+                                    <label>City *</label>
+                                    <div id="citys_id">
+                                        <select data-placeholder="Select"  name="city_id" id="city_id" required class="mb-2 form-select chosen-select search-select">
+                                            <option value="">Select City</option>
+                                            <?php
+                                                $country = $this->Crud->read_single_order('state_id', $e_state_id, 'city', 'name', 'asc');
+                                                if(!empty($country)){
+                                                    foreach($country as $c){
+                                                        $sel ='';
+                                                        if(!empty($e_city_id)){
+                                                            if($e_city_id == $c->id)$sel='selected';
+                                                        }
+                                                        // if($c->name != 'Nigeria' && $c->name != 'United Kingdom')continue;
+                                                        echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
                                                     }
-                                                    // if($c->name != 'Nigeria' && $c->name != 'United Kingdom')continue;
-                                                    echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
                                                 }
-                                            }
-                                        ?>
-                                    </select>
-                                </div></div>
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         <?php 
                             } else {
                         ?>
-                            <div class=" col-sm-4 mb-3"><label>City *</label><div id="citys_id">
-                                <div class="listsearch-input-item mb-2" id="citys_id">
-                                    <select data-placeholder="Select"  name="city_id" id="city_id"
-                                        required class="mb-2 chosen-select search-select">
-                                        <option value="">Select State First</option>
+                            <div class=" col-sm-4 mb-3">
+                                <div class="form-group">
+                                    <label>City *</label>
+                                    <div id="citys_id">
+                                        <select data-placeholder="Select"  name="city_id" id="city_id"
+                                            required class="mb-2 form-select chosen-select search-select">
+                                            <option value="">Select State First</option>
 
-                                    </select>
-                                </div></div>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         <?php 
                             }
-                        ?>
+                        ?> -->
                         
-                        <div class="col-sm-4  mb-3">		 
-                            <label>Listing Price  <span class="dec-icon"><i class="far fa-money-bill-wave"></i></span></label>
-                            <input type="text" name="price" placeholder="Listing Price"  value="<?php if(!empty($e_price)){echo $e_price;} ?>"/>
+                        <div class="col-sm-4  mb-3">
+                            <div class="form-group">		 
+                                <label>Listing Price  </label>
+                                <input type="text" name="price" class="form-control" placeholder="Listing Price"  value="<?php if(!empty($e_price)){echo $e_price;} ?>"/>
+                            </div>
                         </div>
 
                         <div class="col-sm-8 mb-3">
-                            <label>Address <span class="dec-icon"><i class="far fa-map-marker"></i></span></label>
-                            <input type="text" name="address" placeholder="Address of your business" value="<?php if(!empty($e_address)){echo $e_address;} ?>"/>
+                            <div class="form-group">
+                                <label>Address </label>
+                                <input type="text" name="address" class="form-control" placeholder="Address of your business" value="<?php if(!empty($e_address)){echo $e_address;} ?>"/>
+                            </div>
                         </div>
                         <div class="col-sm-4 mb-3">
-                            <label>Email Address <span class="dec-icon"><i class="far fa-envelope"></i></span>  </label>
-                            <input type="email" name="b_email" value="<?php if(!empty($e_email)){echo $e_email;} ?>" placeholder="JessieManrty@koomeli.com" />
+                            <div class="form-group">
+                                <label>Email Address </label>
+                                <input type="email" name="b_email" class="form-control" value="<?php if(!empty($e_email)){echo $e_email;} ?>" placeholder="JessieManrty@koomeli.com" />
+                            </div>
                         </div>
                         <div class="col-sm-4 mb-3">
-                            <label>Phone *<span class="dec-icon"><i class="far fa-phone"></i> </span> </label>
-                            <input type="text" name="b_phone" placeholder="+7(123)987654" value="<?php if(!empty($e_phone)){echo $e_phone;} ?>" required/>
+                            <div class="form-group">
+                                <label>Phone *</label>
+                                <input type="text" name="b_phone" class="form-control" placeholder="+7(123)987654" value="<?php if(!empty($e_phone)){echo $e_phone;} ?>" required/>
+                            </div>
                         </div>
                         <div class="col-sm-4 mb-3">
-                            <label> Website <span class="dec-icon"><i class="far fa-globe"></i> </span> </label>
-                            <input type="text" name="website" placeholder="https://koomeli.net" value="<?php if(!empty($e_profile) && !empty($e_profile->website)){echo $e_profile->website;} ?>"/>
+                            <div class="form-group">
+                                <label> Website  </label>
+                                <input type="text" name="website" class="form-control" placeholder="https://koomeli.net" value="<?php if(!empty($e_profile) && !empty($e_profile->website)){echo $e_profile->website;} ?>"/>
+                            </div>
                         </div>
                         <div class="col-sm-4 mb-3">
-                            <label> Facebook <span class="dec-icon"><i class="fab fa-facebook"></i> </span> </label>
-                            <input type="text" name="facebook" placeholder="https://facebook.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->facebook)){echo $e_profile->facebook;} ?>"/>
+                            <div class="form-group">
+                                <label> Facebook  </label>
+                                <input type="text" name="facebook" class="form-control" placeholder="https://facebook.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->facebook)){echo $e_profile->facebook;} ?>"/>
+                            </div>
                         </div>
                           <div class="col-sm-4 mb-3">
-                            <label> Instagram <span class="dec-icon"><i class="fab fa-instagram"></i> </span> </label>
-                            <input type="text" name="instagram" placeholder="https://instagram.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->instagram)){echo $e_profile->instagram;} ?>"/>
+                            <div class="form-group">
+                                <label> Instagram  </label>
+                                <input type="text" name="instagram" class="form-control" placeholder="https://instagram.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->instagram)){echo $e_profile->instagram;} ?>"/>
+                            </div>
                         </div>
                           <div class="col-sm-4 mb-3">
-                            <label> Twitter <span class="dec-icon"><i class="fab fa-twitter"></i> </span> </label>
-                            <input type="text" name="twitter" placeholder="https://twitter.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->twitter)){echo $e_profile->twitter;} ?>"/>
+                            <div class="form-group">
+                                <label> Twitter  </label>
+                                <input type="text" name="twitter" class="form-control" placeholder="https://twitter.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->twitter)){echo $e_profile->twitter;} ?>"/>
+                            </div>
                         </div>
                         <div class="col-sm-4 mb-3">
-                            <label> Whatsapp <span class="dec-icon"><i class="fab fa-whatsapp"></i> </span> </label>
-                            <input type="text" name="whatsapp" placeholder="https://whatsapp.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->whatsapp)){echo $e_profile->whatsapp;} ?>"/>
+                            <div class="form-group">
+                                <label> Whatsapp </label>
+                                <input type="text" name="whatsapp"class="form-control"  placeholder="https://whatsapp.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->whatsapp)){echo $e_profile->whatsapp;} ?>"/>
+                            </div>
                         </div>
                                         
                         <div class="col-md-8  mb-3">
-                            <label>Description *</label>
-                            <div class="listsearch-input-item">
-                                <textarea cols="40" rows="3" style="height: 250px" name="description" required placeholder="Details" spellcheck="true"><?php if(!empty($e_description)){echo $e_description;} ?></textarea>
+                            <div class="form-group">
+                                <label>Description *</label>
+                                <textarea cols="40" rows="3" style="height: 250px" name="description" class="form-control" required placeholder="Details" spellcheck="true"><?php if(!empty($e_description)){echo $e_description;} ?></textarea>
                             </div>
                         </div>
                         <div class="col-md-4  mb-3">
@@ -261,10 +286,9 @@
                         </div>
 
                         <div class="col-md-9  mb-3" style="display:<?=$vs;?>;" id="visible_resp">
-                            
-                            <label>State Visible</label>
-                            <div class="listsearch-input-item">
-                                <select data-placeholder="Select State" name="visible_local[]" multiple id="visible_local" class="mb-2 chosen-select search-select">
+                            <div class="form-group">
+                                <label>State Visible</label>
+                                <select data-placeholder="Select State" name="visible_local[]" multiple id="visible_local" class="mb-2 chosen-select form-select search-select">
                                         <option value="">All State</option>
                                         <?php
                                             if(!empty($e_country_id)){
@@ -340,7 +364,7 @@
                 </div> 
                 <div class="col-sm-12 text-center">
                     <button class="btn btn-primary text-uppercase" type="submit">
-                        <i class="fal fa-save"></i> Save Changes
+                        <i class="fal fa-save"></i> Add Listing
                     </button>
                 </div>
                 </form>

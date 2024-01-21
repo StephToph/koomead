@@ -84,15 +84,7 @@
                 ?>
 
             </div>
-            <!--  add new  btn end -->
-            <!--  header-opt_btn -->
-            <div class="header-opt_btn tolt" style="display:bloc" data-microtip-position="bottom"
-                data-tooltip="Country">
-                <span><i class="fal fa-globe"></i></span>
-            </div>
-            <!--  header-opt_btn end -->
-            <!--  cart-btn   -->
-            <!--  cart-btn   -->
+           
             <?php if(!empty($log_id)){?>
             <div class="cart-btn  tolt show-header-modal" data-microtip-position="bottom"
                 data-tooltip="Your Notification">
@@ -144,32 +136,7 @@
                 </div>
             </div>
             <!--header-opt-modal-->
-            <div class="header-opt-modal novis_header-mod">
-                <div class="header-opt-modal-container hopmc_init">
-                    <div class="header-opt-modal-item lang-item fl-wrap">
-                        <?php 
-                            $cur = '₦';
-                            $sel = 'class="current-lan"';
-                            if(!empty($log_id)){
-                                $country = $this->Crud->read_field('id', $log_id, 'user', 'country_id'); 
-                                if($country != 161){
-                                    $cur = '£';
-                                    $sel = 'class="current-lan"';
-                                }
-                            }
-                        ?>
-                        <h4>Country: <span><?=$cur;?></span></h4>
-                        <div class="header-opt-modal-list fl-wrap">
-                            <ul>
-                                <li><a href="javascript:;" onclick="get_country('Nigeria')" <?=$sel;?>
-                                        data-lantext="₦">Nigeria</a></li>
-                                <li><a href="javascript:;" onclick="get_country('United Kingdom')"
-                                        data-lantext="£">United Kingdom</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
             <!--header-opt-modal end -->
         </header>
         <!-- header end  -->
@@ -328,12 +295,12 @@
 
     if($page_active == 'home'){?>
             
-        <input type="hidden" id="country_id" value="">
+        <input type="hidden" id="country_id" value="161">
         <input type="hidden" id="states_id" value="">
 
         <script>var site_url = '<?php echo site_url(); ?>';</script>
         <script>
-            
+             var country = $('#country_id').val();
             function load(x, y) {
                 var more = 'no';
                 var methods = '';
@@ -419,7 +386,7 @@
                         type: 'post',
                         data: {country: country },
                         success: function (data) {
-                            $('#country_id').val(data);
+                            // $('#country_id').val(data);
                             
                             console.log(data);
                             load('','');load_state('','');
@@ -447,65 +414,13 @@
                 $(".modal-center").modal("show");
             }
 
-            function showCountry(position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-                // Use a reverse geocoding service to get the country from the latitude and longitude.
-                // You can use an API like OpenCage Geocoder, Google Geocoding API, or others.
-                // Here, we're using the Nominatim service for simplicity.
-                const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
-
-                fetch(apiUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        const country = data.address.country;
-                        const state = data.address.state;
-                        $('#states_id').val(state);
-                        console.log("Country: " + country);
-                        console.log("State: " + state);
-                        console.log(country);
-                        // Use the country information as needed.
-                        if(country !== 'Nigeria' && country != 'United Kingdom'){
-                            modals(country);
-                            
-                        } else{
-                            get_country(country);
-                        }
-                       
-                    })
-                    .catch(error => {
-                        console.error("Error fetching country information:", error);
-                    });
-            }
-
-            function showError(error) {
-                console.error("Error getting location:", error);
-            }
+           
 
             // Check if the Geolocation API is available in the browser
 
-            <?php 
-
-            if(empty($log_id)){
-                if(!empty($location)){?>
-                    var country = '<?=$location; ?>';
-                    get_country(country);
-               <?php }else{?>
-                if ("geolocation" in navigator) {
-                    navigator.geolocation.getCurrentPosition(showCountry, showError);
-                } else {
-                    console.error("Geolocation is not available in this browser.");
-                }
-
-                <?php }?>
+           
+            get_country(country);
                
-            <?php } else {  $country = $this->Crud->read_field('id', $log_id, 'user', 'country_id'); 
-                $country =  $this->Crud->read_field('id', $country, 'country', 'name'); ?>
-                // console.log('tre'+<?=$country; ?>);
-                var country = '<?=$country; ?>';
-                get_country(country);
-            <?php } ?>
         </script>
 
 

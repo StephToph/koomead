@@ -63,15 +63,26 @@ class Auth extends BaseController {
             $user_role = 3;
             $password = $this->request->getPost('password');
             $phone = $this->request->getPost('phone');
+            $otp = $this->request->getPost('otp');
             $agree = $this->request->getPost('agree');
             $country_id = $this->request->getPost('country_id');
             $state_id = $this->request->getPost('state_ids');
             $city_id = $this->request->getPost('city_id');
 
+
             $Error = '';
 			if($this->Crud->check('email', $email, 'user') > 0) {$Error .= 'Email Taken <br/>';}
 			if($this->Crud->check('phone', $phone, 'user') > 0) {$Error .= 'Phone Number Taken <br/>';}
+
 			if(empty($agree)) {$Error .= 'You must agree to Terms and Conditions';}
+            
+			if($this->Crud->check('email', $email, 'otp') == 0) {
+                $Error .= 'OTP not Found <br/>';
+            } 
+
+            if($this->Crud->read_field('email', $email, 'otp', 'otp') != $otp ){
+                $Error .= 'Invalid OTP <br/>';
+            }
 
 			if($Error) {
 				echo $this->Crud->msg('danger', $Error);
@@ -85,15 +96,20 @@ class Auth extends BaseController {
 			$ins_data['country_id'] = $country_id;
 			$ins_data['state_id'] = $state_id;
 			$ins_data['city_id'] = $city_id;
+			$ins_data['activate'] = 1;
 			$ins_data['password'] = md5($password);
 			$ins_data['reg_date'] = date(fdate);
 
 			$ins_id = $this->Crud->create('user', $ins_data);
 			if($ins_id > 0) {
-				echo $this->Crud->msg('success', 'Account Created, Verify your Email');
-                $body = "Dear ".$fullname.",<br><br>
-                    Thank you for choosing ".app_name."! To ensure the security of your account and access all the features of our platform, we require you to verify your email address.<br><br> Click on the following link or copy and paste it into your web browser: ".site_url('auth/verify/'.$ins_id)." <br><br>If you did not register for an account with ".app_name.", please disregard this email. Your account will not be activated until you complete the verification process.";
-                 $this->Crud->send_email($email, 'Account Verification', $body);
+                $this->Crud->updates('email', $email, 'otp', array('status'=>1));
+				echo $this->Crud->msg('success', 'Account Created<br>Account Verified<br>You can Login now');
+                $body = "Dear ".$fullname.",<br>
+                    <p>Thank you for creating an account with ".app_name.". We're thrilled to have you on board!</p>
+        
+                    Thank you for choosing ".app_name." <p>Once your email is verified, you'll have full access to all the features of ".app_name.".</p>
+                    <p>Best regards</p>";
+                 $this->Crud->send_email($email, 'Welcome Message', $body);
 				// echo '<script>location.reload(false);</script>';
 			} else {
 				echo $this->Crud->msg('danger', 'Please Try Again Later');
@@ -143,11 +159,8 @@ class Auth extends BaseController {
                     $st =  '<option value="">Select State First</option>';
                 }
             }
-            echo '<div class="listsearch-input-item mb-2">
-                <select data-placeholder="Select" name="city_id" id="city_id" required class="mb-2 chosen-selec search-select" >
-                    '.$st.'
-                </select></div><script>$(".chosen-selec").niceSelect();</script>
-            ';die;
+            echo $st;
+            die;
         }
 
         if($param1 == 'get_category'){
@@ -167,6 +180,49 @@ class Auth extends BaseController {
                     '.$st.'
                 </select></div><script>$("#sub_id").niceSelect();</script>
             ';die;
+        }
+
+        if($param1 == 'verify_email'){
+            $param2 = $this->request->getPost('email');
+            if(!empty($param2)){
+                if($this->Crud->check('email', $param2, 'user') > 0){
+                    echo '<span class="text-danger">Email Already Exist.</span>
+                    <script>$("#otp_input").hide(500);</script>
+                    ';
+                } else {
+                    $datas['email'] = $param2;
+                    $code = substr(md5(time().rand()), 0, 6);
+                    $datas['otp'] = $code;
+                    $status = false;
+    
+                    if($this->Crud->check('email', $param2, 'otp') == 0){
+                        $ins = $this->Crud->create('otp', $datas);
+                        if($ins > 0){
+                            $status = true;
+                        }
+                    } else {
+                        $ins = $this->Crud->updates('email', $param2, 'otp', $datas);
+                        if($ins > 0){
+                            $status = true;
+                        }
+                    }
+    
+                    if($status == true){
+                        // email content
+                        $subject = 'Email Confirmation';
+                        $body = 'Your Email Verification Code is '.$code.'. If you do not request this action, please ignore. Thank you.';
+                        $em = $this->Crud->send_email($param2, $subject, $body);
+                        if($em > 0){
+                            echo '<span class="text-success">OTP Email Sent</span>
+                                <script>$("#otp_input").show(500);
+                                $("#register_btn").prop("disabled", false);</script>
+                            ';
+                        }
+                    }  
+
+                }
+                
+            }
         }
     }
     ///// LOGOUT

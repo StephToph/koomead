@@ -26,9 +26,9 @@ $(function () {
 		event.preventDefault();
 
 		// scroll to top for notification display
-		$('html, body').animate({
-			scrollTop: form.offset().top
-		}, 1000);
+		// $('html, body').animate({
+		// 	scrollTop: form.offset().top
+		// }, 1000);
 
 		// disable submit button
 		var formBtn = $('.bb_form_btn');
@@ -76,9 +76,9 @@ $(function () {
 		event.preventDefault();
 
 		// scroll to top for notification display
-		$('html, body').animate({
-			scrollTop: form2.offset().top
-		}, 1000);
+		// $('html, body').animate({
+		// 	scrollTop: form2.offset().top
+		// }, 1000);
 
 		// disable submit button
 		var formBtn = $('.bb_form_btn');

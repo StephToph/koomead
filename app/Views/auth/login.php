@@ -55,53 +55,88 @@
 
                             <div id="tab-2" class="tab-content"  style="display:none;">
                                 
-                                <div class="custom-form">
-                                    <?php echo form_open_multipart('auth/register', array('id'=>'bb_ajax_form2', 'class'=>'')); ?>
-                                        <label>Full Name * <span class="dec-icon"><i  class="fal fa-user"></i></span></label>
-                                        <input name="name" type="text" placeholder="Your Name" required  onClick="this.select()" value="">
-                                        <label>Email Address * <span class="dec-icon"><i  class="fal fa-envelope"></i></span></label>
-                                        <input name="email" type="email" placeholder="Your Mail" required  onClick="this.select()" value="">
-                                        <label>Country *</label>
-                                        <div class="listsearch-input-item mb-2">
+                                <div class="customform">
+                                    <?php echo form_open_multipart('auth/register', array('id'=>'bb_ajax_form2', 'class'=>'text-start')); ?>
+                                        <div class="form-group mb-3">
+                                            <label>Full Name *</label>
+                                            <input name="name" type="text" class="form-control" placeholder="Your Name" required  onClick="this.select()" value="">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label>Email Address * </label>
+                                            <input name="email" type="email" class="form-control" placeholder="Your Mail" required  onClick="this.select()" value="">
+                                        </div>
+                                        
+                                        <div class="form-group mb-3">
+                                            <label>Phone Number * </label>
+                                            <input name="phone" type="text" class="form-control" placeholder="Your Phone Number" required onClick="this.select()" value="">
+                                        </div>
+                                        
+                                        <div class="form-group mb-5">
+                                            <label>Country *</label>
                                             <select data-placeholder="Select" name="country_id" id="country_id"  required class="mb-2 chosen-select search-select"  onchange="get_state();">
-                                                <option value="">Select</option>
                                                 <?php
-                                                        $country = $this->Crud->read_order('country', 'name', 'asc');
-                                                        if(!empty($country)){
-                                                            foreach($country as $c){
-                                                                echo '<option value="'.$c->id.'">'.$c->name.'</option>';
-                                                            }
+                                                    $country = $this->Crud->read_order('country', 'name', 'asc');
+                                                    if(!empty($country)){
+                                                        foreach($country as $c){
+                                                            if($c->name != 'Nigeria')continue;
+                                                            echo '<option value="'.$c->id.'">'.$c->name.'</option>';
                                                         }
-                                                    ?>
+                                                    }
+                                                ?>
                                             </select>
                                         </div>
-                                        <label>State *</label>
-                                        <div class="listsearch-input-item mb-2" id="states_id">
+                                        
+                                        
+                                        <div class="form-group mb-5">
+                                            <label>State *</label>
                                             <select data-placeholder="Select" name="state_id" id="state_i" required class="mb-2 chosen-select search-select">
-                                                <option value="0">Select Country First</option>
-
+                                                <option value="">Select State</option>
+                                                <?php
+                                                    $country = $this->Crud->read_single_order('country_id', 161, 'state', 'name', 'asc');
+                                                    if(!empty($country)){
+                                                        foreach($country as $c){                                                            
+                                                            echo '<option value="'.$c->id.'">'.$c->name.'</option>';
+                                                        }
+                                                    }
+                                                ?>
                                             </select>
                                         </div>
-                                        <label>City *</label>
-                                        <div class="listsearch-input-item mb-2" id="citys_id">
+                                        
+                                        <div class="form-group mb-5">
+                                            <label>City *</label>
                                             <select data-placeholder="Select" name="city_id" id="city_id" required class="mb-2 chosen-select search-select">
                                                 <option value="">Select State First</option>
 
                                             </select>
                                         </div>
-                                        <label>Phone Number * <span class="dec-icon"><i   class="fal fa-phone"></i></span></label>
-                                        <input name="phone" type="text" placeholder="Your Phone Number" required onClick="this.select()" value="">
-                                        <div class="pass-input-wrap fl-wrap">
-                                            <label>Password * <span class="dec-icon"><i  class="fal fa-key"></i></span></label>
-                                            <input name="password" type="password" id="passwords" placeholder="Your Password" autocomplete="off" required onClick="this.select()" value="">
-                                            <span class="eye" id="toggle-buttons"><i class="fal fa-eye"></i> </span>
+
+                                        
+                                        <div class="form-group mb-3">
+                                            <div class="pass-input-wrap fl-wrap">
+                                                <label>Password *</label>
+                                                <input name="password" type="password" id="passwords" class="form-control"  placeholder="Your Password" autocomplete="off" required onClick="this.select()" value="">
+                                                <span class="eye" id="toggle-buttons" style="margin-bottom:-4% !important;"><i class="fal fa-eye"></i> </span>
+                                            </div>
                                         </div>
+
+
+                                        <div class="form-group mb-5">
+                                            <div class="col-sm-4 my-3">
+                                                <button type="button" onclick="verify_email()" class="btn btn-success btn-block"> Verify Email </button>
+                                                <span id="otp_response"></span>
+                                            </div>
+                                            <div class="col-sm-8 my-3" style="display:none;" id="otp_input">
+                                                <input name="password" type="password" class="form-control" id="passwords" placeholder="Your OTP" autocomplete="off" required onClick="this.select()" value="">
+                                            </div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
                                         <div class="filter-tags ft-list">
                                             <input id="check-a2" type="checkbox" name="agree">
                                             <label for="check-a2">I agree to the <a href="javascript:;">Privacy  Policy</a> and <a href="javascript:;">Terms and  Conditions</a></label>
                                         </div>
                                         <div class="clearfix"></div>
-                                        <button type="submit" class="log_btn color-bg bb_form_btn"> Register </button>
+                                        <button type="submit" class="btn btn-block btn-primary color-bg bb_form_btn" disabled> Register </button>
                                     </form>
                                 </div>
                                 <div class="row py-1">

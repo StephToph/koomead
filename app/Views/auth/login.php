@@ -71,9 +71,9 @@
                                             <input name="phone" type="text" class="form-control" placeholder="Your Phone Number" required onClick="this.select()" value="">
                                         </div>
                                         
-                                        <div class="form-group mb-5">
+                                        <div class="form-group mb-3">
                                             <label>Country *</label>
-                                            <select data-placeholder="Select" name="country_id" id="country_id"  required class="mb-2 chosen-select search-select"  onchange="get_state();">
+                                            <select data-placeholder="Select" name="country_id" id="country_id"  required class="mb-2 form-select search-select"  onchange="get_state();">
                                                 <?php
                                                     $country = $this->Crud->read_order('country', 'name', 'asc');
                                                     if(!empty($country)){
@@ -87,9 +87,9 @@
                                         </div>
                                         
                                         
-                                        <div class="form-group mb-5">
+                                        <div class="form-group mb-3">
                                             <label>State *</label>
-                                            <select data-placeholder="Select" name="state_id" id="state_i" required class="mb-2 chosen-select search-select">
+                                            <select data-placeholder="Select" name="state_id" id="state_i" required class="mb-2 form-select search-select" onchange="get_citys()">
                                                 <option value="">Select State</option>
                                                 <?php
                                                     $country = $this->Crud->read_single_order('country_id', 161, 'state', 'name', 'asc');
@@ -102,16 +102,16 @@
                                             </select>
                                         </div>
                                         
-                                        <div class="form-group mb-5">
+                                        <div class="form-group mb-3">
                                             <label>City *</label>
-                                            <select data-placeholder="Select" name="city_id" id="city_id" required class="mb-2 chosen-select search-select">
+                                            <select data-placeholder="Select" name="city_id" id="citys_id" required class="mb-2 form-select search-select">
                                                 <option value="">Select State First</option>
 
                                             </select>
                                         </div>
 
                                         
-                                        <div class="form-group mb-3">
+                                        <div class="form-group mb-5">
                                             <div class="pass-input-wrap fl-wrap">
                                                 <label>Password *</label>
                                                 <input name="password" type="password" id="passwords" class="form-control"  placeholder="Your Password" autocomplete="off" required onClick="this.select()" value="">
@@ -121,12 +121,12 @@
 
 
                                         <div class="form-group mb-5">
-                                            <div class="col-sm-4 my-3">
-                                                <button type="button" onclick="verify_email()" class="btn btn-success btn-block"> Verify Email </button>
-                                                <span id="otp_response"></span>
+                                            <div class="col-md-4 my-3">
+                                                <button type="button" onclick="verify_email()" class="btn btn-success btn-block"> Verify Email </button><br>
+                                                <span id="otp_response" class="mt-3"></span>
                                             </div>
-                                            <div class="col-sm-8 my-3" style="display:none;" id="otp_input">
-                                                <input name="password" type="password" class="form-control" id="passwords" placeholder="Your OTP" autocomplete="off" required onClick="this.select()" value="">
+                                            <div class="col-md-8 my-3" style="display:none;" id="otp_input">
+                                                <input name="otp" type="password" class="form-control" id="otp" placeholder="Your OTP" autocomplete="off" required onClick="this.select()" value="">
                                             </div>
                                         </div>
 
@@ -136,7 +136,7 @@
                                             <label for="check-a2">I agree to the <a href="javascript:;">Privacy  Policy</a> and <a href="javascript:;">Terms and  Conditions</a></label>
                                         </div>
                                         <div class="clearfix"></div>
-                                        <button type="submit" class="btn btn-block btn-primary color-bg bb_form_btn" disabled> Register </button>
+                                        <button type="submit" class="btn btn-block btn-primary color-bg bb_form_btn" id="register_btn" disabled> Register </button>
                                     </form>
                                 </div>
                                 <div class="row py-1">
@@ -205,14 +205,19 @@
 
     function verify_email(){
         var email = $('#email').val();
-        if(email === ''){
-            $('#otp_resp').html('Enter Email First for Account Verification');
+        $('#otp_input').hide(500);
+        if(email == ''){
+            $('#otp_response').html('<span class="text-danger">Enter Email First for Account Verification</span>');
+            $('#otp_input').hide(500);
         } else {
+            $('#otp_response').html('Sending OTP Code...');
             $.ajax({
-                url: site_url + 'auth/account/get_state/' + country_id,
+                url: site_url + 'auth/account/verify_email',
+                type: 'post',
+                data: {email : email},
                 type: 'post',
                 success: function(data) {
-                    $('#states_id').html(data);
+                    $('#otp_response').html(data);
                 }
             });
         }
@@ -259,9 +264,9 @@
     }
 
 
-    function get_city() {
-        var state_id = $('#state_ids').val();
-        console.log(state_id);
+    function get_citys() {
+        var state_id = $('#state_i').val();
+        // console.log(state_id);
         $.ajax({
             url: site_url + 'auth/account/get_city/' + state_id,
             type: 'post',

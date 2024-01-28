@@ -63,7 +63,7 @@
                                         </div>
                                         <div class="form-group mb-3">
                                             <label>Email Address * </label>
-                                            <input name="email" type="email" class="form-control" placeholder="Your Mail" required  onClick="this.select()" value="">
+                                            <input name="email" type="email" id="email" class="form-control" placeholder="Your Mail" required  onClick="this.select()" value="">
                                         </div>
                                         
                                         <div class="form-group mb-3">
@@ -202,6 +202,21 @@
 </script>
 <script>
     var site_url = '<?php echo site_url(); ?>';
+
+    function verify_email(){
+        var email = $('#email').val();
+        if(email === ''){
+            $('#otp_resp').html('Enter Email First for Account Verification');
+        } else {
+            $.ajax({
+                url: site_url + 'auth/account/get_state/' + country_id,
+                type: 'post',
+                success: function(data) {
+                    $('#states_id').html(data);
+                }
+            });
+        }
+    }
 
     function get_state() {
         var country_id = $('#country_id').val();

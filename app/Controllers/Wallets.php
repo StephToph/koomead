@@ -341,7 +341,7 @@ class Wallets extends BaseController {
 			if (!empty($this->request->getPost('country_id'))) {$country_id = $this->request->getPost('country_id');} else {$country_id = '';}
 			if(!empty($this->request->getPost('type'))) { $type = $this->request->getPost('type'); } else { $type = ''; }
 			if(!empty($this->request->getPost('transact'))) { $transact = $this->request->getPost('transact'); } else { $transact = ''; }
-			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = date('Y-01-01'); }
+			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = date('2023-01-01'); }
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = date('Y-m-d'); }
 			
 		
@@ -364,61 +364,30 @@ class Wallets extends BaseController {
 				$nig_credit = 0;
 				$nig_debit = 0;
 				//print_r($query);
-				$curr = '&#8358;';$curss = '&#8358;';
+				$curr = '&#8358;';
 				if($role == 'developer' || $role == 'administrator'){
-					$wal = $this->Crud->date_range1($start_date, 'reg_date',$end_date, 'reg_date', 'country_id !=', '161', 'wallet');
-					$curs = '£';
 					
-					if(!empty($wal)){
-						foreach($wal as $w){
-							if($w->type == 'credit')$credit += (float)$w->amount;
-							if($w->type == 'debit')$debit += (float)$w->amount;
-							
-						}
-						$bal = $credit - $debit;
+					$wal = $this->Crud->date_range($start_date, 'reg_date',$end_date, 'reg_date', 'wallet');
+				} else {
+					
+					$wal = $this->Crud->date_range1($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'wallet');
+
+				}$curs = '&#8358;';
+				if(!empty($wal)){
+					foreach($wal as $w){
+						if($w->type == 'credit')$nig_credit += (float)$w->amount;
+						if($w->type == 'debit')$nig_debit += (float)$w->amount;
+						
 					}
-					$wal = $this->Crud->date_range1($start_date, 'reg_date',$end_date, 'reg_date', 'country_id', '161', 'wallet');
-					if(!empty($wal)){
-						foreach($wal as $w){
-							if($w->type == 'credit')$nig_credit += (float)$w->amount;
-							if($w->type == 'debit')$nig_debit += (float)$w->amount;
-							
-						}
-						$nig_bal = $nig_credit - $nig_debit;
-					}
-					$resp['total'] = $curs.number_format($total, 2);
-					$resp['credit'] = $curs.number_format($credit, 2);
-					$resp['debit'] = $curs.number_format($debit, 2);
-					$resp['nig_total'] = $curss.number_format($nig_bal, 2);
-					$resp['nig_credit'] = $curss.number_format($nig_credit, 2);
-					$resp['nig_debit'] = $curss.number_format($nig_debit, 2);
-				} else{
-					$curs ='';$curss='';
-					$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'country_id !=', '161', 'wallet');
-					if(!empty($wal)){
-						foreach($wal as $w){
-							if($w->type == 'credit')$credit += (float)$w->amount;
-							if($w->type == 'debit')$debit += (float)$w->amount;
-							
-						}
-						$bal = $credit - $debit;$curs = '£';
-					}
-					$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'country_id', '161', 'wallet');
-					if(!empty($wal)){
-						foreach($wal as $w){
-							if($w->type == 'credit')$nig_credit += (float)$w->amount;
-							if($w->type == 'debit')$nig_debit += (float)$w->amount;
-							
-						}
-						$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
-					}
-					$resp['total'] = $curs.number_format($total, 2);
-					$resp['credit'] = $curs.number_format($credit, 2);
-					$resp['debit'] = $curs.number_format($debit, 2);
-					$resp['nig_total'] = $curss.number_format($nig_bal, 2);
-					$resp['nig_credit'] = $curss.number_format($nig_credit, 2);
-					$resp['nig_debit'] = $curss.number_format($nig_debit, 2);
+					$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
 				}
+				$resp['total'] = $curs.number_format($total, 2);
+				$resp['credit'] = $curs.number_format($credit, 2);
+				$resp['debit'] = $curs.number_format($debit, 2);
+				$resp['nig_total'] = $curss.number_format($nig_bal, 2);
+				$resp['nig_credit'] = $curss.number_format($nig_credit, 2);
+				$resp['nig_debit'] = $curss.number_format($nig_debit, 2);
+				
 				
 				if(!empty($query)) {
 					foreach($query as $q) {
@@ -435,8 +404,8 @@ class Wallets extends BaseController {
 
 						$user_email = $this->Crud->read_field('id', $user_id, 'user', 'email');
 						$country = $q->country_id;
-						$curr = '£';
-                        if($country == 161)$curr = ' ₦';
+						
+                       $curr = ' ₦';
 						// user 
 						$user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
 						$user_role_id = $this->Crud->read_field('id', $user_id, 'user', 'role_id');
@@ -455,14 +424,14 @@ class Wallets extends BaseController {
 						
 						
 						$request ='';
-						$req_sta = $this->Crud->read_field('id', $request_id, 'wallet_request', 'approved');
-						if($request_id > 0 && $req_sta == 0){
-							$request .= '<h6 class="blinking-text text-danger">Pending Approval</h6>
-							';
-							if($role_d > 0){
-								$request .= '<a href="javascript:;" class="pop btn btn-info"  pageTitle="Approve Request" pageName="'.site_url('wallets/list/approve/'.$request_id).'" pageSize="modal-md" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-check"></i> Approve Request</a>';
-							}
-						}
+						// $req_sta = $this->Crud->read_field('id', $request_id, 'wallet_request', 'approved');
+						// if($request_id > 0 && $req_sta == 0){
+						// 	$request .= '<h6 class="blinking-text text-danger">Pending Approval</h6>
+						// 	';
+						// 	if($role_d > 0){
+						// 		$request .= '<a href="javascript:;" class="pop btn btn-info"  pageTitle="Approve Request" pageName="'.site_url('wallets/list/approve/'.$request_id).'" pageSize="modal-md" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-check"></i> Approve Request</a>';
+						// 	}
+						// }
 
 
 					
@@ -473,7 +442,7 @@ class Wallets extends BaseController {
 						$item .= '
 							<li class="list-group-item">
 								<div class="row pt-3">
-									<div class="col-2 col-sm-4 mb-2">
+									<div class="col-2 col-sm-6 mb-2">
 										<div class="text-muted">'.$reg_date.'</div>
 										<a href="javascript:;" class="pop" pageTitle="Wallet Statement" pageName="'.site_url('wallets/list/statement/'.$user_id).'" pageSize="modal-lg">
 											<img alt="" src="'.site_url($user_image).'" class="p-1 rounded" height="50"/>
@@ -486,10 +455,6 @@ class Wallets extends BaseController {
 											<b class="font-size-16 text-'.$color.'">'.strtoupper($type).'</b>
 											<div class="font-size-16 text-dark">'.strtoupper($remark).'</div>
 											<span class="tb-lead"><b>' . $curr . $amount . '</b></span>
-										</div>
-									</div>
-									<div class="col-12 col-md-3 mb-4">
-										<div class="single">'.$request.'
 										</div>
 									</div>
 								</div>
@@ -557,23 +522,38 @@ class Wallets extends BaseController {
 		} else{
 			$pay_script = '';
 			if($amount > 0) {
-				$ref = 'KMD-'.time().rand(0,9).rand(1,9);
+				$wall = $this->Crud->read2('user_id', $user_id, 'remark', 'Wallet Funding', 'wallet');
+				$total = 0;
+				if(!empty($wall)){
+					foreach($wall as $w){
+						if($w->reg_date == date(fdate)){
+							$total += (float)$w->amount;
+						}
+					}
+				}
 
-				$redir = site_url('wallets/list');
+				if($total > 10000){
+					echo $this->Crud->msg('danger', 'Maximum Threshold is '.number_format('10000',2));
+				} else {
+					$ref = 'KMD-'.time().rand(0,9).rand(1,9);
 
-				$user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
-				$phone = $this->Crud->read_field('id', $user_id, 'user', 'phone');
-				$email = $this->Crud->read_field('id', $user_id, 'user', 'email');
-				$this->session->set('f_amount', $r_amount);
+					$redir = site_url('wallets/list');
+
+					$user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
+					$phone = $this->Crud->read_field('id', $user_id, 'user', 'phone');
+					$email = $this->Crud->read_field('id', $user_id, 'user', 'email');
+					$this->session->set('f_amount', $r_amount);
+					
+					$user_ids = $user_id;
+					$user = ucwords($user);
+					
+					
+					$this->session->set('km_wallet_id', $user_id);
+					$pay_script = $this->Crud->paystack($ref, $email, $amount, $redir);
+					echo $pay_script;
+					echo '<script>payWithPaystack()</script>';
+				}
 				
-				$user_ids = $user_id;
-				$user = ucwords($user);
-				
-				
-				$this->session->set('km_wallet_id', $user_id);
-				$pay_script = $this->Crud->paystack($ref, $email, $amount, $redir);
-				echo $pay_script;
-				echo '<script>payWithPaystack()</script>';
 			} else {
 				$this->session->set('is_card', '');
 			}
@@ -602,103 +582,62 @@ class Wallets extends BaseController {
 					echo $this->Crud->msg('danger', 'Insufficient Funds');
 				} else{
 					if($amount > $nig_threshhold){
-						echo $this->Crud->msg('danger', 'Threshold is '.$cur.$nig_threshhold);
+						echo $this->Crud->msg('danger', 'Maximum Threshold is '.$cur.$nig_threshhold);
 					} else {
-						$ref = $this->Crud->transfer_referance();
-						$rec_code = $this->Crud->read_field('user_id', $user_id, 'transfer_recipient', 'recp_id');
-						$bank = $this->Crud->read_field('id', $user_id, 'user', 'bank_details');
-						
-						if(empty($rec_code)){
-							echo $this->Crud->msg('danger', 'Please Provide your Bank Account Details in your Profile');
-						} else{
-							if(empty(json_decode($bank))){
-								echo $this->Crud->msg('danger', 'Invalid Bank Account Details in your Profile');
-							} else{
-								$banks = json_decode($bank);
-								if(!empty($banks->account_number) && !empty($banks->bank_code)){
-									
-									$acc_no = $banks->account_number;
-									$bank_code = $banks->bank_code;
-									$with_data = [
-										"source"=>"balance",
-										"amount"=>$amount,
-										"account_number"=>$acc_no,
-										"bank_code"=>$bank_code,
-										"reference"=>$ref,
-										"recipient"=>$rec_code,
-										"reason"=>"Wallet Withdrawal"
-	
-									];
-									// print_r($with_data);
-									$withdraw = $this->Crud->withdraws($with_data);
-									$withdraws = json_decode($withdraw);
-									if($withdraws->status == 'true'){
-										$status = true;
-										echo $this->Crud->msg('success', 'Withdrawal Successful.');
-									} else{
-										echo $this->Crud->msg('danger', 'Withdrawal Transaction not Successful. Try Again Later.');
-									}
-
-								} else {
-
-									echo $this->Crud->msg('danger', 'Invalid Bank Account Details in your Profile');
-
-								}
-								
-							}
-						}
-					}
-				}
-			} else {
-				echo $this->Crud->msg('danger', 'Amount cannot be Zero');
-			}
-		} else{
-			$cur = '£';
-			if($amount > 0){
-				if($amount > $balance){
-					echo $this->Crud->msg('danger', 'Insufficient Funds');
-				} else{
-					if($amount > $uk_threshhold){
-						echo $this->Crud->msg('danger', 'Threshold is '.$cur.$uk_threshhold);
-					} else {
-						if($this->Crud->check2('user_id', $user_id, 'approved', 0, 'wallet_request') > 0){
-							echo $this->Crud->msg('danger', 'You already have a pending request.');
+						if($amount < 1000){
+							echo $this->Crud->msg('danger', 'Minimum Threshold is '.$cur.number_format('1000', 2));
 						} else {
-							$req['user_id'] = $user_id;
-							$req['amount'] = $amount;
-							$req['reg_date'] = date(fdate);
+							$ref = $this->Crud->transfer_referance();
+							$rec_code = $this->Crud->read_field('user_id', $user_id, 'transfer_recipient', 'recp_id');
+							$bank = $this->Crud->read_field('id', $user_id, 'user', 'bank_details');
 							
-							$request = $this->Crud->create('wallet_request', $req);
+							if(empty($rec_code)){
+								echo $this->Crud->msg('danger', 'Please Provide your Bank Account Details in your Profile');
+							} else{
+								if(empty(json_decode($bank))){
+									echo $this->Crud->msg('danger', 'Invalid Bank Account Details in your Profile');
+								} else{
+									$banks = json_decode($bank);
+									if(!empty($banks->account_number) && !empty($banks->bank_code)){
+										
+										$acc_no = $banks->account_number;
+										$bank_code = $banks->bank_code;
+										$with_data = [
+											"source"=>"balance",
+											"amount"=>$amount,
+											"account_number"=>$acc_no,
+											"bank_code"=>$bank_code,
+											"reference"=>$ref,
+											"recipient"=>$rec_code,
+											"reason"=>"Wallet Withdrawal"
+		
+										];
+										// print_r($with_data);
+										$withdraw = $this->Crud->withdraws($with_data);
+										$withdraws = json_decode($withdraw);
+										if($withdraws->status == 'true'){
+											$status = true;
+											echo $this->Crud->msg('success', 'Withdrawal Successful.');
+										} else{
+											echo $this->Crud->msg('danger', 'Withdrawal Transaction not Successful. Try Again Later.');
+										}
 
-							if($request > 0){
-								$status = true;
-								echo $this->Crud->msg('success', 'Wallet Withdraw Request Submitted. Would be approved shortly');
-								
-								$a_id = $this->Crud->read_field('name', 'Administrator', 'access_role', 'id');
-								$d_id = $this->Crud->read_field('name', 'Developer', 'access_role', 'id');
-								
-								$use = $this->Crud->read('user');
-								if(!empty($use)){
-									foreach($use as $u){
-										if($u->role_id != $a_id && $u->role_id != $d_id)continue;
-										$id = $u->id;
-										$this->Crud->notify($user_id, $id, 'Wallet Request Withdrawal Placed', 'wallet', $request);
+									} else {
+
+										echo $this->Crud->msg('danger', 'Invalid Bank Account Details in your Profile');
+
 									}
+									
 								}
-								
-							} else {
-								echo $this->Crud->msg('danger', 'Wallet Withdraw Request Failed.');
-
 							}
 						}
-
+						
 					}
-
 				}
 			} else {
 				echo $this->Crud->msg('danger', 'Amount cannot be Zero');
 			}
-		}
+		} 
 
 		if($status == true){
 			if(!empty($user_id) && !empty($amount)){

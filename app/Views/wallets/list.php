@@ -33,11 +33,11 @@
                     </div>
                     
                     <a href="javascript:;" pageTitle="Add New" onclick="$('#filter_box').toggle();" class="btn btn-info float-end">Filter <i class="fal fa-filter"></i></a>	
-                   
-                    <a href="javascript:;" pageTitle="Fund Wallet" pageName="<?=site_url('wallets/list/fund'); ?>"  class="btn btn-primary mr-3 pop float-end">Fund Wallet <i class="fal fa-wallet"></i></a>	
-                   
-                    <a href="javascript:;" pageTitle="Withdraw" pageName="<?=site_url('wallets/list/withdraw'); ?>"  class="btn btn-danger mr-3 pop float-end">Withdraw <i class="fal fa-money-bill"></i></a>	
-                   
+                   <?php if($role != 'administrator'){?>
+                        <a href="javascript:;" pageTitle="Fund Wallet" pageName="<?=site_url('wallets/list/fund'); ?>"  class="btn btn-primary mr-3 pop float-end">Fund Wallet <i class="fal fa-wallet"></i></a>	
+                    
+                        <a href="javascript:;" pageTitle="Withdraw" pageName="<?=site_url('wallets/list/withdraw'); ?>"  class="btn btn-danger mr-3 pop float-end">Withdraw <i class="fal fa-money-bill"></i></a>	
+                    <?php } ?>
 
                 </div>
                 <div id="filter_box" class="row mb-3 pt-3" style="display:none;">
@@ -55,17 +55,8 @@
                             </div>
                             
                         </div>
-                        <?php if($role == 'developer' || $role == 'administrator'){?>
-                            <div class="col-12 col-sm-3 mb-2 mt-2">
-                                <div class="listsearch-input-item">
-                                    <select data-placeholder="All Status" id="country_id" onchange="load('', '')" class="chosen-select no-search-select" >
-                                        <option value="all">All Country</option>
-                                        <option value="161">Nigeria</option>
-                                        <option value="232">United Kingdom</option>
-                                    </select>
-                                </div>
-                            </div>
-                        <?php } ?>
+                       
+                        
                         <div class="col-12 col-sm-3 mb-2 mt-2">
                             <div class="listsearch-input-item">
                                 <select data-placeholder="All Status" id="type" onchange="load('', '')" class="chosen-select no-search-select" >

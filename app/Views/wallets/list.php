@@ -71,21 +71,46 @@
                 </div>
                 <div class="dasboard-opt sl-opt fl-wrap float-end">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <p>Promotion Wallet</p>
+                        <div class="col-sm-4 mb-3">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-cash-register"></i>
                                 <h4>Available Balance</h4>
                                 <div class="dashboard-stats-count" id="nig_total">0</div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-4 mb-3">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-sack-dollar"></i>
                                 <h4>Total Credited</h4>
                                 <div class="dashboard-stats-count" id="nig_credit">0</div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-4 mb-3">
+                            <div class="dashboard-stats fl-wrap">
+                                <i class="fal fa-money-bill-alt"></i>
+                                <h4>Total Debited</h4>
+                                <div class="dashboard-stats-count" id="nig_debit">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p>Business Wallet</p>
+                        <div class="col-sm-4 mb-3">
+                            <div class="dashboard-stats fl-wrap">
+                                <i class="fal fa-cash-register"></i>
+                                <h4>Available Balance</h4>
+                                <div class="dashboard-stats-count" id="nig_total">0</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <div class="dashboard-stats fl-wrap">
+                                <i class="fal fa-sack-dollar"></i>
+                                <h4>Total Credited</h4>
+                                <div class="dashboard-stats-count" id="nig_credit">0</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 mb-3">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-money-bill-alt"></i>
                                 <h4>Total Debited</h4>

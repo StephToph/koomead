@@ -601,7 +601,7 @@ class Listing extends BaseController {
 					// }
 
 					//Get Business Wallet Balance
-					$wallet = $this->Crud->read_single('user_id', $user_id, 'wallet');
+					$wallet = $this->Crud->read2('wallet_type', 'business', 'user_id', $user_id, 'wallet');
 					$bal = 0;
 					if(!empty($wallet)){
 						$credit = 0;$debit =0;
@@ -629,6 +629,7 @@ class Listing extends BaseController {
 								$v_ins['user_id'] = $user_id;
 								$v_ins['type'] = 'debit';
 								$v_ins['amount'] = $amount;
+								$v_ins['wallet_type'] = 'buusiness';
 								$v_ins['item'] = 'listing';
 								$v_ins['item_id'] = $ins_rec;
 								$v_ins['country_id'] = $country_id;

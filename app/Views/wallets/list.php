@@ -32,13 +32,28 @@
                         <button type="submit"><i class="far fa-search"></i></button>
                     </div>
                     
-                    <a href="javascript:;" pageTitle="Add New" onclick="$('#filter_box').toggle();" class="btn btn-info float-end">Filter <i class="fal fa-filter"></i></a>	
-                   <?php if($role != 'administrator'){?>
-                        <a href="javascript:;" pageTitle="Fund Wallet" pageName="<?=site_url('wallets/list/fund'); ?>"  class="btn btn-primary mr-3 pop float-end">Fund Wallet <i class="fal fa-wallet"></i></a>	
-                    
-                        <a href="javascript:;" pageTitle="Withdraw" pageName="<?=site_url('wallets/list/withdraw'); ?>"  class="btn btn-danger mr-3 pop float-end">Withdraw <i class="fal fa-money-bill"></i></a>	
-                    <?php } ?>
+                  
+                  
 
+                </div>
+                <div  class="row mb-3 pt-3">
+                    <div  class="geodir-category-content fl-wrap">
+                        <div class="row">
+                            <div class="col-sm-2 mb-3">
+                                <a href="javascript:;" pageTitle="Add New" onclick="$('#filter_box').toggle();" class="btn btn-block btn-info float-">Filter <i class="fal fa-filter"></i></a>	
+                                
+                            </div>
+                            <div class="col-sm-10 mb-3">
+                            <?php if($role != 'administrator'){?>
+                                <a href="javascript:;" pageTitle="Fund Wallet" pageName="<?=site_url('wallets/list/fund'); ?>"  class="btn btn-primary mr-3 pop float-">Fund Business Wallet <i class="fal fa-wallet"></i></a>	
+                            
+                                <a href="javascript:;" pageTitle="Withdraw" pageName="<?=site_url('wallets/list/withdraw'); ?>"  class="btn btn-danger mr-3 pop float-">Withdraw Promotion Wallet <i class="fal fa-money-bill"></i></a>	
+
+                                <a href="javascript:;" pageTitle="Transfer" pageName="<?=site_url('wallets/list/transfer'); ?>"  class="btn btn-success  mr-3 pop float-">Transfer to Business Wallet <i class="fal fa-money-bill"></i></a>	
+                            <?php } ?>
+                            </div> 
+                        </div>
+                    </div>
                 </div>
                 <div id="filter_box" class="row mb-3 pt-3" style="display:none;">
                     <div  class="geodir-category-content fl-wrap">
@@ -76,21 +91,21 @@
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-cash-register"></i>
                                 <h4>Available Balance</h4>
-                                <div class="dashboard-stats-count" id="nig_total">0</div>
+                                <div class="dashboard-stats-count" id="promotion_total">0</div>
                             </div>
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-sack-dollar"></i>
                                 <h4>Total Credited</h4>
-                                <div class="dashboard-stats-count" id="nig_credit">0</div>
+                                <div class="dashboard-stats-count" id="promotion_credit">0</div>
                             </div>
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-money-bill-alt"></i>
                                 <h4>Total Debited</h4>
-                                <div class="dashboard-stats-count" id="nig_debit">0</div>
+                                <div class="dashboard-stats-count" id="promotion_debit">0</div>
                             </div>
                         </div>
                     </div>
@@ -100,21 +115,21 @@
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-cash-register"></i>
                                 <h4>Available Balance</h4>
-                                <div class="dashboard-stats-count" id="nig_total">0</div>
+                                <div class="dashboard-stats-count" id="busi_total">0</div>
                             </div>
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-sack-dollar"></i>
                                 <h4>Total Credited</h4>
-                                <div class="dashboard-stats-count" id="nig_credit">0</div>
+                                <div class="dashboard-stats-count" id="busi_credit">0</div>
                             </div>
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-money-bill-alt"></i>
                                 <h4>Total Debited</h4>
-                                <div class="dashboard-stats-count" id="nig_debit">0</div>
+                                <div class="dashboard-stats-count" id="busi_debit">0</div>
                             </div>
                         </div>
                     </div>
@@ -240,12 +255,12 @@
                     }
 
                     $('#listCount').html(dt.count);
-                    $('#total').html(dt.total);
-                    $('#credit').html(dt.credit);
-                    $('#debit').html(dt.debit);
-                    $('#nig_total').html(dt.nig_total);
-                    $('#nig_credit').html(dt.nig_credit);
-                    $('#nig_debit').html(dt.nig_debit);
+                    $('#busi_total').html(dt.total);
+                    $('#busi_credit').html(dt.credit);
+                    $('#busi_debit').html(dt.debit);
+                    $('#promotion_total').html(dt.nig_total);
+                    $('#promotion_credit').html(dt.nig_credit);
+                    $('#promotion_debit').html(dt.nig_debit);
                 },
                 complete: function () {
                     $.getScript(site_url + 'assets/js/jsmodal.js');

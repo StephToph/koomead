@@ -58,6 +58,7 @@ class Wallets extends BaseController {
 						$v_ins['type'] = 'credit';
 						$v_ins['amount'] = $amount;
 						$v_ins['item'] = 'fund';
+						$v_ins['wallet_type'] = 'business';
 						$v_ins['country_id'] = $country_id;
 						$v_ins['state_id'] = $state_id;
 						$v_ins['item_id'] = $user_id;
@@ -364,15 +365,16 @@ class Wallets extends BaseController {
 				$nig_credit = 0;
 				$nig_debit = 0;
 				//print_r($query);
+
+				//Promotion Wallet
 				$curr = '&#8358;';
 				if($role == 'developer' || $role == 'administrator'){
-					
-					$wal = $this->Crud->date_range($start_date, 'reg_date',$end_date, 'reg_date', 'wallet');
+					$wal = $this->Crud->date_range1($start_date, 'reg_date',$end_date, 'reg_date', 'wallet_type', 'promotion', 'wallet');
 				} else {
-					
-					$wal = $this->Crud->date_range1($start_date, 'reg_date',$end_date, 'reg_date', 'user_id', $log_id, 'wallet');
+					$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'wallet_type', 'promotion', 'user_id', $log_id, 'wallet');
 
-				}$curs = '&#8358;';
+				}
+				$curs = '&#8358;';
 				if(!empty($wal)){
 					foreach($wal as $w){
 						if($w->type == 'credit')$nig_credit += (float)$w->amount;
@@ -380,6 +382,24 @@ class Wallets extends BaseController {
 						
 					}
 					$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
+				}
+
+				//Business Wallet
+				$curr = '&#8358;';
+				if($role == 'developer' || $role == 'administrator'){
+					$wal = $this->Crud->date_range1($start_date, 'reg_date',$end_date, 'reg_date', 'wallet_type', 'business', 'wallet');
+				} else {
+					$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'wallet_type', 'business', 'user_id', $log_id, 'wallet');
+
+				}
+				$curs = '&#8358;';
+				if(!empty($wal)){
+					foreach($wal as $w){
+						if($w->type == 'credit')$credit += (float)$w->amount;
+						if($w->type == 'debit')$debit += (float)$w->amount;
+						
+					}
+					$total = $credit - $debit;$curss = '&#8358;';
 				}
 				$resp['total'] = $curs.number_format($total, 2);
 				$resp['credit'] = $curs.number_format($credit, 2);
@@ -652,6 +672,7 @@ class Wallets extends BaseController {
 				$v_ins['type'] = 'debit';
 				$v_ins['amount'] = $amount;
 				$v_ins['request_id'] = $request;
+				$v_ins['wallet_type'] = 'promotion';
 				$v_ins['item'] = 'withdraw';
 				$v_ins['country_id'] = $country_id;
 				$v_ins['state_id'] = $state_id;
@@ -663,7 +684,7 @@ class Wallets extends BaseController {
 				if($w_id > 0) {
 					
 					$by = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
-					$action = $by.' Withdrawed '.$cur.number_format((float)$amount).' from Wallet';
+					$action = $by.' Withdrawed '.$cur.number_format((float)$amount).' from Promotion Wallet';
 					$this->Crud->activity('wallet', $w_id, $action);
 					$redir = 'wallets/list';
 					echo '<script>window.location.replace("'.site_url($redir).'");</script>';

@@ -398,6 +398,7 @@ class Wallets extends BaseController {
 						$mod = $q->item;
 						$mod_id = $q->item_id;
 						$request_id = $q->request_id;
+						$wallet_type = $q->wallet_type;
 						$remark = $q->remark;
 						$amount = number_format((float)$q->amount, 2);
 						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
@@ -442,7 +443,7 @@ class Wallets extends BaseController {
 						$item .= '
 							<li class="list-group-item">
 								<div class="row pt-3">
-									<div class="col-2 col-sm-6 mb-2">
+									<div class="col-2 col-sm-3 mb-2">
 										<div class="text-muted">'.$reg_date.'</div>
 										<a href="javascript:;" class="pop" pageTitle="Wallet Statement" pageName="'.site_url('wallets/list/statement/'.$user_id).'" pageSize="modal-lg">
 											<img alt="" src="'.site_url($user_image).'" class="p-1 rounded" height="50"/>
@@ -457,6 +458,12 @@ class Wallets extends BaseController {
 											<span class="tb-lead"><b>' . $curr . $amount . '</b></span>
 										</div>
 									</div>
+									<div class="col-2 col-sm-3 mb-2">
+										<div class="single">
+											<b class="font-size-16">'.strtoupper($wallet_type).' WALLET</b>
+										</div>
+									</div>
+									
 								</div>
 							</li>
 							

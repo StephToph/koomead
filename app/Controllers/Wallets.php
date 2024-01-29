@@ -522,7 +522,7 @@ class Wallets extends BaseController {
 			die;
 		}
 
-		if($param1 == 'manage' || $param1 == 'fund' || $param1 == 'statement' || $param1 == 'withdraw'|| $param1 == 'approve' ) { // view for form data posting
+		if($param1 == 'manage' || $param1 == 'fund' || $param1 == 'statement' || $param1 == 'withdraw'|| $param1 == 'transfer' ) { // view for form data posting
 			return view($mod.'_form', $data);
 		} else { // view for main page
 			
@@ -692,6 +692,78 @@ class Wallets extends BaseController {
 					echo $this->Crud->web_msg('danger', 'Failed! - Please Contact Support.');
 					
 				}
+			}
+		}
+	}
+
+	public function transfer(){
+		$user_id = $this->request->getPost('user_id');
+		$country_id = $this->request->getPost('country_id'); 
+		$state_id = $this->Crud->read_field('id', $user_id, 'user', 'state_id');
+        
+		$amount = $this->request->getPost('amount');
+		$balance = $this->request->getPost('balance');
+
+		////// FORMAT PAYMENT
+		$status = false;
+		$request= 0;
+		$cur = '';
+		$cur = '&#8358;';
+		if($amount > 0) {
+			if($amount > $balance){
+				echo $this->Crud->msg('danger', 'Insufficient Funds');
+			} else {
+				//Debit Promotion Wallet
+				$v_ins['user_id'] = $user_id;
+				$v_ins['type'] = 'debit';
+				$v_ins['amount'] = $amount;
+				$v_ins['request_id'] = $request;
+				$v_ins['wallet_type'] = 'promotion';
+				$v_ins['item'] = 'transfer';
+				$v_ins['country_id'] = $country_id;
+				$v_ins['state_id'] = $state_id;
+				$v_ins['item_id'] = $user_id;
+				$v_ins['remark'] = 'Wallet Transfer';
+				$v_ins['reg_date'] = date(fdate);
+				
+				$w_id = $this->Crud->create('wallet', $v_ins);
+
+				//Credit Wallet
+				$v_ins['user_id'] = $user_id;
+				$v_ins['type'] = 'credit';
+				$v_ins['amount'] = $amount;
+				$v_ins['request_id'] = $request;
+				$v_ins['wallet_type'] = 'business';
+				$v_ins['item'] = 'transfer';
+				$v_ins['country_id'] = $country_id;
+				$v_ins['state_id'] = $state_id;
+				$v_ins['item_id'] = $user_id;
+				$v_ins['remark'] = 'Wallet Transfer';
+				$v_ins['reg_date'] = date(fdate);
+				
+				$w_id = $this->Crud->create('wallet', $v_ins);
+
+				if($w_id > 0) {
+					
+					echo $this->Crud->msg('success', 'Transfer Successful');
+					$by = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
+					$action = $by.' Transfered '.$cur.number_format((float)$amount).' from Promotion Wallet to Business Wallet';
+					$this->Crud->activity('wallet', $w_id, $action);
+					$redir = 'wallets/list';
+					echo '<script>window.location.replace("'.site_url($redir).'");</script>';
+				} else {
+					echo $this->Crud->web_msg('danger', 'Failed! - Please Contact Support.');
+					
+				}
+			}
+		} else {
+			echo $this->Crud->msg('danger', 'Amount cannot be Zero');
+		}
+
+		if($status == true){
+			if(!empty($user_id) && !empty($amount)){
+			
+			
 			}
 		}
 	}

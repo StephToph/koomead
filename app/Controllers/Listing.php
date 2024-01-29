@@ -629,7 +629,7 @@ class Listing extends BaseController {
 								$v_ins['user_id'] = $user_id;
 								$v_ins['type'] = 'debit';
 								$v_ins['amount'] = $amount;
-								$v_ins['wallet_type'] = 'buusiness';
+								$v_ins['wallet_type'] = 'business';
 								$v_ins['item'] = 'listing';
 								$v_ins['item_id'] = $ins_rec;
 								$v_ins['country_id'] = $country_id;

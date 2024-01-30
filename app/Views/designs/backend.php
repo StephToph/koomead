@@ -58,100 +58,66 @@
     <div id="main">
          <!-- header -->
         <header class="main-header">
-                <!--  logo  -->
-                <div class="logo-holder"><a href="<?=site_url(); ?>"><img src="<?=site_url(); ?>assets/images/logo.png" alt=""></a></div>
-                
-                <div class="add-list_wrap">
-                    <a href="<?=site_url('listing/index/add'); ?>" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>
+            <!--  logo  -->
+            <div class="logo-holder"><a href="<?=site_url(); ?>"><img src="<?=site_url(); ?>assets/images/logo.png" alt=""></a></div>
+            
+            <div class="add-list_wrap">
+                <a href="<?=site_url('listing/index/add'); ?>" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>
+            </div>
+            
+            <!--  header-opt_btn end -->
+            <!--  cart-btn   -->
+            <?php if(!empty($log_id)){?>
+                <div class="cart-btn  tolt show-header-modal" data-microtip-position="bottom"  data-tooltip="Your Notification">
+                    <i class="fal fa-bell"></i>
+                    <span class="cart-btn_counter color-bg" id="notify_no">0</span>
                 </div>
-                <!--  add new  btn end -->
-                <!--  header-opt_btn -->
-                <div class="header-opt_btn tolt" data-microtip-position="bottom"  data-tooltip="Country">
-                    <span><i class="fal fa-globe"></i></span>
-                </div>
-                <!--  header-opt_btn end -->
-                <!--  cart-btn   -->
-                <?php if(!empty($log_id)){?>
-                    <div class="cart-btn  tolt show-header-modal" data-microtip-position="bottom"  data-tooltip="Your Notification">
-                        <i class="fal fa-bell"></i>
-                        <span class="cart-btn_counter color-bg" id="notify_no">0</span>
-                    </div>
-                <?php } ?>
-                <!--  cart-btn end -->
-                <!--  login btn -->
-                <div class="show-reg-form dasbdord-submenu-open"><img src="<?=site_url(); ?>assets/images/avatar.png" alt=""></div>
-                <!--  login btn  end -->
-                <!--  dashboard-submenu-->
-                <div class="dashboard-submenu">
-                    <div class="dashboard-submenu-title fl-wrap">Welcome , <span><?=$log_name; ?></span></div>
-                    <ul>
-                        <li><a href="<?=site_url('dashboard'); ?>"><i class="fal fa-chart-line"></i>Dashboard</a></li>
-                        <li><a href="<?=site_url('listing/index/add'); ?>"> <i class="fal fa-file-plus"></i>Add Listing</a></li>
-                        <li><a href="<?=site_url('profile'); ?>"><i class="fal fa-user-edit"></i>Settings</a></li>
-                    </ul>
-                    <a href="<?=site_url('auth/logout'); ?>" class="color-bg db_log-out"><i class="far fa-power-off"></i> Log Out</a>
-                </div>
-                <!--  dashboard-submenu  end -->
-                
-               
-                			
-                <!-- wishlist-wrap--> 
-                <div class="header-modal novis_wishlist tabs-act">
-                    <div class="tabs-container">
-                        <div class="tab">
-                            <!--tab -->
-                            <div id="tab-wish" class="tab-content first-tab">
-                                <!-- header-modal-container--> 
-                                <div class="header-modal-container scrollbar-inner fl-wrap" data-simplebar>
-                                    <!--widget-posts-->
-                                    <div class="widget-posts  fl-wrap">
-                                        <ul class="no-list-style" id="notify_show">
-                                            
-                                        </ul>
-                                    </div>
-                                    <!-- widget-posts end-->
+            <?php } ?>
+            <!--  cart-btn end -->
+            <!--  login btn -->
+            <div class="show-reg-form dasbdord-submenu-open"><img src="<?=site_url(); ?>assets/images/avatar.png" alt=""></div>
+            <!--  login btn  end -->
+            <!--  dashboard-submenu-->
+            <div class="dashboard-submenu">
+                <div class="dashboard-submenu-title fl-wrap">Welcome , <span><?=$log_name; ?></span></div>
+                <ul>
+                    <li><a href="<?=site_url('dashboard'); ?>"><i class="fal fa-chart-line"></i>Dashboard</a></li>
+                    <li><a href="<?=site_url('listing/index/add'); ?>"> <i class="fal fa-file-plus"></i>Add Listing</a></li>
+                    <li><a href="<?=site_url('profile'); ?>"><i class="fal fa-user-edit"></i>Settings</a></li>
+                </ul>
+                <a href="<?=site_url('auth/logout'); ?>" class="color-bg db_log-out"><i class="far fa-power-off"></i> Log Out</a>
+            </div>
+            <!--  dashboard-submenu  end -->
+            
+                        
+            <!-- wishlist-wrap--> 
+            <div class="header-modal novis_wishlist tabs-act">
+                <div class="tabs-container">
+                    <div class="tab">
+                        <!--tab -->
+                        <div id="tab-wish" class="tab-content first-tab">
+                            <!-- header-modal-container--> 
+                            <div class="header-modal-container scrollbar-inner fl-wrap" data-simplebar>
+                                <!--widget-posts-->
+                                <div class="widget-posts  fl-wrap">
+                                    <ul class="no-list-style" id="notify_show">
+                                        
+                                    </ul>
                                 </div>
-                                <!-- header-modal-container end--> 
-                                <div class="header-modal-top fl-wrap">
-                                    <div class="clear_wishlist color-bg" onclick="mark_all();"><i class="fal fa-trash-alt"></i> Clear all</div><br>
-                                    <div class="clear_wishlist color-bg"><a class="text-white" href="<?=site_url('notification'); ?>"><i class="fal fa-eye"></i>See All</a></div>
-                                </div>
+                                <!-- widget-posts end-->
                             </div>
-                            <!--tab end -->
-                            
-                        </div>
-                        <!--tabs end -->							
-                    </div>
-                </div>
-                <!--wishlist-wrap end -->                            
-                <!--header-opt-modal-->  
-                <div class="header-opt-modal novis_header-mod">
-                    <div class="header-opt-modal-container hopmc_init">
-                        <div class="header-opt-modal-item lang-item fl-wrap">
-                            <?php 
-                                $cur = '₦';
-                                $sel = 'class="current-lan"';
-                                if(!empty($log_id)){
-                                    $country = $this->Crud->read_field('id', $log_id, 'user', 'country_id'); 
-                                    if($country != 161){
-                                        $cur = '£';
-                                        $sel = 'class="current-lan"';
-                                    }
-                                }
-                            ?>
-                            <h4>Country: <span><?=$cur;?></span></h4>
-                            <div class="header-opt-modal-list fl-wrap">
-                                <ul>
-                                    <li><a href="javascript:;" onclick="get_country('Nigeria')" <?=$sel;?>
-                                            data-lantext="₦">Nigeria</a></li>
-                                    <li><a href="javascript:;" onclick="get_country('United Kingdom')"
-                                            data-lantext="$">United Kingdom</a></li>
-                                </ul>
+                            <!-- header-modal-container end--> 
+                            <div class="header-modal-top fl-wrap">
+                                <div class="clear_wishlist color-bg" onclick="mark_all();"><i class="fal fa-trash-alt"></i> Clear all</div><br>
+                                <div class="clear_wishlist color-bg"><a class="text-white" href="<?=site_url('notification'); ?>"><i class="fal fa-eye"></i>See All</a></div>
                             </div>
                         </div>
+                        <!--tab end -->
+                        
                     </div>
+                    <!--tabs end -->							
                 </div>
-                <!--header-opt-modal end -->  
+            </div>  
         </header>
             <!-- header end  -->	
         <style>

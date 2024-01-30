@@ -34,7 +34,7 @@ class Home extends BaseController {
 
 	public function search($param1='', $param2='', $param3='') {
         $db = \Config\Database::connect();
-        $this->session->set('km_redirect', uri_string());
+        // $this->session->set('km_redirect', uri_string());
         // check login
         $log_id = $this->session->get('km_id'); 
         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');

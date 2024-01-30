@@ -127,7 +127,7 @@ $this->Crud = new Crud();
                         <input type="hidden" name="country_id" id="country_id" value="<?php if(!empty($country_id)){echo $country_id;} ?>">
                         <?php 
                             $credit =0; $debit = 0; $bal=0;
-                            $wal = $this->Crud->read_single('user_id', $log_id, 'wallet');
+                            $wal = $this->Crud->read2('wallet_type', 'promotion', 'user_id', $log_id, 'wallet');
                             if(!empty($wal)){
                                 foreach($wal as $w){
                                     if($w->type == 'credit')$credit += (float)$w->amount;
@@ -142,7 +142,7 @@ $this->Crud = new Crud();
 
                         ?>
                         <div class="bg-white border rounded mb-5 col-md-12 col-12 p-3">
-                            <h3 class="text-center text-success mb-1 fw-bold">AVAILABLE BALANCE: <?=$curr.''.number_format($bal, 2) ;?></h3>
+                            <h3 class="text-center text-success mb-1 fw-bold">AVAILABLE BALANCE IN PROMOTION WALLET: <?=$curr.''.number_format($bal, 2) ;?></h3>
                         </div>
                         <input type="hidden" id="balance" name="balance" value="<?=$bal;?>">
 
@@ -150,15 +150,8 @@ $this->Crud = new Crud();
                         <div class="col-sm-12 mb-3">
                             <div class="form-group">
                                 <h4>Amount to Withdraw</label>
-                                <?php
-                                    if($country_id == '161'){?>
-                                        <input type="text" class="form-control" onkeyup="bal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                                <input type="text" class="form-control" onkeyup="bal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
                                         
-                                <?php } else {?>
-
-                                        <input type="text" class="form-control" onkeyup="bal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
-                                    
-                                <?php } ?>
                             </div>
                         </div>
                         
@@ -168,6 +161,65 @@ $this->Crud = new Crud();
                         
                     </div>
                     <button class="btn btn-lg text-white py-3 bb_form_btn px-4 text-uppercase w-100 mt-4" style="background-color:#1b2a53 !important;"  type="submit" id="btns">Withdraw <i class="bi bi-arrow-right ms-2"></i></button>
+                    
+                </form>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+<?php } ?>
+
+
+<?php if($param1 == 'transfer'){?>
+    <div class="login-opup">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="login">
+                    <div class="row">
+                        <div class="col-sm-12"><div id="bb_ajax_msg3"></div></div>
+                    </div>
+                    <?php echo form_open_multipart('wallets/transfer', array('id'=>'bb_ajax_form3', 'class'=>'')); ?>
+                    <div class="row g-6">
+                        <input type="hidden" name="user_id" value="<?php if(!empty($log_id)){echo $log_id;} ?>">
+                        <input type="hidden" name="country_id" id="country_id" value="<?php if(!empty($country_id)){echo $country_id;} ?>">
+                        <?php 
+                            $credit =0; $debit = 0; $bal=0;
+                            $wal = $this->Crud->read2('wallet_type', 'promotion', 'user_id', $log_id, 'wallet');
+                            if(!empty($wal)){
+                                foreach($wal as $w){
+                                    if($w->type == 'credit')$credit += (float)$w->amount;
+                                    if($w->type == 'debit')$debit += (float)$w->amount;
+                                    
+                                }
+                                $bal = $credit - $debit;
+                            }
+                            $curr = '£';
+                            if($country_id == 161)$curr = ' ₦';
+						
+
+                        ?>
+                        <div class="bg-white border rounded mb-5 col-md-12 col-12 p-3">
+                            <h3 class="text-center text-success mb-1 fw-bold">AVAILABLE BALANCE IN PROMOTION WALLET: <?=$curr.''.number_format($bal, 2) ;?></h3>
+                        </div>
+                        <input type="hidden" id="balance" name="balance" value="<?=$bal;?>">
+
+                        
+                        <div class="col-sm-12 mb-3">
+                            <div class="form-group">
+                                <h4>Amount to Transfer</label>
+                                <input type="text" class="form-control" onkeyup="bal();" oninput="this.value=this.value.replace(/[^\d]/,'')" name="amount" id="amount" required placeholder="5000">
+                                        
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white border rounded mb-5 col-md-12 col-12 p-3" id="with_bal" style="display:none">
+                            <h3 class="text-center text-success mb-1 fw-bold"></h3>
+                        </div>
+                        
+                    </div>
+                    <button class="btn btn-lg text-white py-3 bb_form_btn px-4 text-uppercase w-100 mt-4" style="background-color:#1b2a53 !important;"  type="submit" id="btns">Transfer <i class="bi bi-arrow-right ms-2"></i></button>
                     
                 </form>
                     
@@ -228,23 +280,14 @@ $this->Crud = new Crud();
             var withdraw = parseFloat(balance) - parseFloat(amount);
             var withdraws = withdraw.toFixed(2);
             if(withdraw < 0)withdraw = 0;
-            if(country == '161'){
-                
-                var formatter = new Intl.NumberFormat('en-US', {
-                    style: 'currency', currency: 'NGN',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-                });
-                tot = withdraws.toLocaleString('en-US', { style: 'currency', currency: 'NGN' });
-            } else {
-                
-                var formatter = new Intl.NumberFormat('en-US', {
-                    style: 'currency', currency: 'GBP',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-                });
-                tot = withdraws.toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
-            }
+            
+            var formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency', currency: 'NGN',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+            });
+            tot = withdraws.toLocaleString('en-US', { style: 'currency', currency: 'NGN' });
+            
             var tot = formatter.format(withdraw);
             $('#with_bal').find('h3').html(tot);
         } else {

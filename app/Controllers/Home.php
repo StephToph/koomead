@@ -1181,6 +1181,7 @@ class Home extends BaseController {
 									$v_ins['type'] = 'credit';
 									$v_ins['amount'] = $pay;
 									$v_ins['item'] = 'promotion';
+									$v_ins['wallet_type'] = 'promotion';
 									$v_ins['item_id'] = $business_id;
 									$v_ins['country_id'] = $country_id;
 									$v_ins['state_id'] = $state_id;
@@ -1215,6 +1216,7 @@ class Home extends BaseController {
 											$v_ins['type'] = 'credit';
 											$v_ins['amount'] = $bal;
 											$v_ins['item'] = 'promotion';
+											$v_ins['wallet_type'] = 'business';
 											$v_ins['item_id'] = $user_id;
 											$v_ins['country_id'] = $country_id;
 											$v_ins['state_id'] = $state_id;
@@ -1258,6 +1260,7 @@ class Home extends BaseController {
 									$v_ins['type'] = 'credit';
 									$v_ins['amount'] = $bal;
 									$v_ins['item'] = 'promotion';
+									$v_ins['wallet_type'] = 'promotion';
 									$v_ins['item_id'] = $user_id;
 									$v_ins['country_id'] = $country_id;
 									$v_ins['state_id'] = $state_id;

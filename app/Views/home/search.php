@@ -50,14 +50,13 @@
                         <div class="col-12 col-sm-3 mb-2">
                             <div class="listsearch-input-item">
                                 <select data-placeholder="Select" name="country_id" id="country_id" class="mb-2 chosen-select search-select"  onchange="get_states();">
-                                    <option value="all">All Country</option>
                                     <?php
                                             $country = $this->Crud->read_order('country', 'name', 'asc');
                                             if(!empty($country)){
                                                 foreach($country as $c){
                                                     $sel = '';
                                                     if($c->name == $location)$sel = 'selected';
-                                                    if($c->name != 'Nigeria' && $c->name != 'United Kingdom')continue;
+                                                    if($c->name != 'Nigeria')continue;
                                                     echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
                                                 }
                                             }
@@ -65,7 +64,7 @@
                                 </select>
                             </div>
                         </div>
-                        <?php
+                        <?php $location = 'Nigeria';
                           if(!empty($location)){
                             $country_id = $this->Crud->read_field('name', $location, 'country', 'id');
                             ?>
@@ -104,23 +103,7 @@
                             </div>
                         </div>
 
-                        <!-- listsearch-input-item -->								
-                        <!-- listsearch-input-item -->
-                        <div class="col-sm-3">
-                            <div class="listsearch-input-item">
-                                <select data-placeholder="All Cities" class="chosen-select on-radius no-search-select" >
-                                    <option>All Cities</option>
-                                    <option>New York</option>
-                                    <option>London</option>
-                                    <option>Paris</option>
-                                    <option>Kiev</option>
-                                    <option>Moscow</option>
-                                    <option>Dubai</option>
-                                    <option>Rome</option>
-                                    <option>Beijing</option>
-                                </select>
-                            </div>
-                        </div>
+                      
                         <!-- listsearch-input-item -->
                         <div class="col-sm-3">
                             <div class="listsearch-input-item">

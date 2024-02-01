@@ -79,7 +79,9 @@
                 if(empty($log_id)){
                     echo '<div class="show-reg-form "><a href="javascript:;" class="add-list pops color-bg"  " pageTitle="" pageName="'.site_url('auth/login').'" pageSize="modal-xl"><i class="fal fa-plus"></i> <span>Add Listing</span></a></div>';
                 } else {
-                    echo '<a href="'.site_url('listing/index/add').'" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>';
+                    if($role != 'administrator' && $role != 'developer'){
+                        echo '<a href="'.site_url('listing/index/add').'" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>';
+                    }
                 }
                 ?>
 

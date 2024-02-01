@@ -28,7 +28,23 @@
     <link type="text/css" rel="stylesheet" href="<?=site_url();?>assets/css/color.css">
     <link rel="stylesheet" href="<?=site_url();?>assets/css/select2.min.css" />
     <link rel="shortcut icon" href="<?=site_url();?>assets/images/favicon.ico">
+    
+    <style>
+        /* Adjust height and padding for the Select2 dropdown */
+        .select2-container--default .select2-selection--single {
+            height: 40px; /* Adjust height as needed */
+            padding: 2px 8px; /* Add padding as needed */
+            font-size:16px;
+        }
+        .select2-container--default .select2-selection--single{
+            height: 45px;
+        }
 
+        .select2-container{
+            padding:4px 0px;
+            width:100% !important;
+        }
+    </style>
 
     <script src="<?=site_url(); ?>assets/js/jquery.min.js"></script>
     <!-- Include Bootstrap JS and Popper.js -->
@@ -62,7 +78,11 @@
             <div class="logo-holder"><a href="<?=site_url(); ?>"><img src="<?=site_url(); ?>assets/images/logo.png" alt=""></a></div>
             
             <div class="add-list_wrap">
-                <a href="<?=site_url('listing/index/add'); ?>" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>
+                <?php
+                     if($role != 'administrator' && $role != 'developer'){
+                        echo '<a href="'.site_url('listing/index/add').'" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Add Listing</span></a>';
+                    }
+                ?>
             </div>
             
             <!--  header-opt_btn end -->
@@ -297,8 +317,8 @@
     <script src="<?=site_url(); ?>assets/js/dashboard.js"></script>
     <script src="<?=site_url();?>assets/js/jsform.js"></script>
     
-<script>var site_url = '<?php echo site_url(); ?>';</script>
-   
+    <script>var site_url = '<?php echo site_url(); ?>';</script>
+    
 <script>
     $(function() {
         loada('', '');

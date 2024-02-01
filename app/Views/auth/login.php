@@ -44,7 +44,7 @@
                                         <span class="eye" id="toggle-button"><i class="fal fa-eye"></i> </span>
                                     </div>
                                     <div class="lost_password">
-                                        <a href="javascript:;" onclick="forgots()">Lost Your Password?</a>
+                                        <a href="javascript:;" onclick="forgots()">Reset your Password?</a>
                                     </div>
                                     <div class="clearfix"></div>
                                     <button type="submit" class="log_btn color-bg bb_form_btn"> LogIn </button>
@@ -88,7 +88,7 @@
                                         
                                         
                                         <div class="form-group mb-3">
-                                            <label>State *</label>
+                                            <label>State of Residence *</label>
                                             <select data-placeholder="Select" name="state_id" id="state_i" required class="mb-2 form-select search-select" onchange="get_citys()">
                                                 <option value="">Select State</option>
                                                 <?php
@@ -101,15 +101,10 @@
                                                 ?>
                                             </select>
                                         </div>
-                                        
                                         <div class="form-group mb-3">
-                                            <label>City *</label>
-                                            <select data-placeholder="Select" name="city_id" id="citys_id" required class="mb-2 form-select search-select">
-                                                <option value="">Select State First</option>
-
-                                            </select>
+                                            <label>PLace of Residence * </label>
+                                            <input name="address" type="text" class="form-control" placeholder="Your Address" required onClick="this.select()" value="">
                                         </div>
-
                                         
                                         <div class="form-group mb-5">
                                             <div class="pass-input-wrap fl-wrap">
@@ -136,7 +131,7 @@
                                             <label for="check-a2">I agree to the <a href="javascript:;">Privacy  Policy</a> and <a href="javascript:;">Terms and  Conditions</a></label>
                                         </div>
                                         <div class="clearfix"></div>
-                                        <button type="submit" class="btn btn-block btn-primary color-bg bb_form_btn" id="register_btn" disabled> Register </button>
+                                        <button type="submit" class="btn btn-block btn-primary color-bg bb_form_btn" id="register_btn" > Register </button>
                                     </form>
                                 </div>
                                 <div class="row py-1">

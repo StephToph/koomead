@@ -46,7 +46,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-group">
                                 <label>Category *</label>
-                                <select data-placeholder="Main Category" id="main_id" onchange="get_category()" class="form-select chosen-select mt-1 search-select" required >
+                                <select data-placeholder="Main Category" id="main_id" onchange="get_category()" class="form-control select2 form-select select2 form-select" required >
                                     <option value="">Main Category</option>
                                     <?php
                                         $cate = $this->Crud->read_single_order('category_id', 0, 'category', 'name', 'asc');
@@ -69,7 +69,7 @@
                                 <div class="col-sm-4 mb-3">
                                     <div class="form-group">
                                         <label>Sub-Category *</label><div id="category_ids">
-                                        <select data-placeholder="All Category" name="sub_id" id="category_id" class="form-select chosen-select search-select" required >
+                                        <select data-placeholder="All Category" name="sub_id" id="category_id" class="select2 form-select form-control" required >
                                             <option value="">Select Category</option>
                                             <?php
                                                 $cate = $this->Crud->read_single_order('category_id', $e_main, 'category', 'name', 'asc');
@@ -93,7 +93,7 @@
                                 <div class="form-group">
                                     <label>Sub-Category *</label>
                                     <div id="category_ids">
-                                        <select data-placeholder="All Category" name="category_id" id="category_id" class="form-select chosen-select search-select" required >
+                                        <select data-placeholder="All Category" name="category_id" id="category_id" class="select2 form-select form-control" required >
                                             <option value="">Select Category First</option>
                                             
                                         </select>
@@ -104,7 +104,7 @@
                         <div class=" col-sm-4 mb-3"><label>State *</label>
                             <div class="form-group">
                                 <div id="states_id">
-                                    <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 form-select chosen-select search-select" onchange="get_city();">
+                                    <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 select2 form-select form-control" onchange="get_city();">
                                         <option value="">All State</option>
                                         <?php
                                             if(!empty($e_country_id)){
@@ -136,7 +136,7 @@
                                 <div class="form-group">                               
                                     <label>City *</label>
                                     <div id="citys_id">
-                                        <select data-placeholder="Select"  name="city_id" id="city_id" required class="mb-2 form-select chosen-select search-select">
+                                        <select data-placeholder="Select"  name="city_id" id="city_id" required class="mb-2 select2 form-select chosen-select search-select">
                                             <option value="">Select City</option>
                                             <?php
                                                 $country = $this->Crud->read_single_order('state_id', $e_state_id, 'city', 'name', 'asc');
@@ -163,7 +163,7 @@
                                     <label>City *</label>
                                     <div id="citys_id">
                                         <select data-placeholder="Select"  name="city_id" id="city_id"
-                                            required class="mb-2 form-select chosen-select search-select">
+                                            required class="mb-2 select2 form-select chosen-select search-select">
                                             <option value="">Select State First</option>
 
                                         </select>
@@ -288,8 +288,8 @@
                         <div class="col-md-9  mb-3" style="display:<?=$vs;?>;" id="visible_resp">
                             <div class="form-group">
                                 <label>State Visible</label>
-                                <select data-placeholder="Select State" name="visible_local[]" multiple id="visible_local" class="mb-2 chosen-select form-select search-select">
-                                        <option value="">All State</option>
+                                <select data-placeholder="Select State" name="visible_local[]"  id="visible_local" class="select2 form-select form-control">
+                                    <option value="">Select</option>
                                         <?php
                                             if(!empty($e_country_id)){
                                                 $country_id = $e_country_id;
@@ -364,7 +364,7 @@
                 </div> 
                 <div class="col-sm-12 text-center">
                     <button class="btn btn-primary text-uppercase" type="submit">
-                        <i class="fal fa-save"></i> Add Listing
+                        <i class="fal fa-save"></i> Create Listing
                     </button>
                 </div>
                 </form>
@@ -379,8 +379,11 @@
         
     <!-- <script src="<?php echo site_url(); ?>/assets/js/jquery.min.js"></script> -->
     <script>var site_url = '<?php echo site_url(); ?>';</script>
+    <!-- jQuery -->
+
    
     <script>
+         $('.select2').select2();
         $(document).ready(function () {
             let cloneCounter = 1;
 

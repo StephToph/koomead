@@ -123,7 +123,7 @@
             
             <div class="col-sm-12 text-center">
                 <button class="btn btn-primary bb_form_btn" type="submit">
-                    <i class="fal fa-save"></i> Save Record
+                    <i class="fal fa-save"></i> Save
                 </button>
             </div>
         </div>

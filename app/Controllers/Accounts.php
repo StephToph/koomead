@@ -328,9 +328,9 @@ class Accounts extends BaseController {
                 }
             }
             echo '<div class="listsearch-input-item mb-2">
-                <select data-placeholder="Select" name="state_id" id="state_id"  required onchange="get_city();" class="mb-2 chosen-select search-select" >
+                <select data-placeholder="Select" name="state_id" id="state_id"  required onchange="get_city();" class="mb-2 form-control select2" >
                     '.$st.'
-                </select></div><script>$("#state_id").niceSelect();</script>
+                </select></div>
             ';
         }
 
@@ -366,9 +366,9 @@ class Accounts extends BaseController {
                 }
             }
             echo '<div class="listsearch-input-item mb-2">
-                <select data-placeholder="Select" name="sub_id" id="sub_id" required class="mb-2 chosen-select" >
+                <select data-placeholder="Select" name="sub_id" id="sub_id" required class="mb-2 select2 form-control" >
                     '.$st.'
-                </select></div><script>$("#sub_id").niceSelect();</script>
+                </select></div>
             ';
         }
     }

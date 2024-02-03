@@ -427,10 +427,13 @@ class Home extends BaseController {
         // check login
         $log_id = $this->session->get('km_id');
         
+        $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+        $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
 		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
         $data['log_id'] = $log_id;
         $data['log_name'] = $log_name;
         $data['page'] = 'My Listings';
+        $data['role'] = $role;
        
         $table = 'listing';
 
@@ -791,8 +794,8 @@ class Home extends BaseController {
 			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
 			if(!empty($this->request->getPost('category_id'))) { $category_id = $this->request->getPost('category_id'); } else { $category_id = ''; }
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
-            $cur = '£';
-            if($country_id == '161')$cur = '&#8358;';
+            
+            $cur = '&#8358;';
 
 			
 				$query = $this->Crud->filter_listings($limit, $offset, $log_id, $search,$category_id, $active,  $country_id,$state_id,$city_id, $start_date, $end_date);
@@ -800,7 +803,7 @@ class Home extends BaseController {
 				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
 				$role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
 				$role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
-
+                
 				$states_id = 0;
 				if(!empty($log_id))$states_id = $this->Crud->read_field('id', $log_id, 'user', 'state_id');
 				if(!empty($query)) {
@@ -832,9 +835,9 @@ class Home extends BaseController {
 							if(!in_array($states_id, json_decode($display_local)))continue;
 						}
                         
-							$user =  ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname'));
-                            $user_img = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
-                            if(empty($user_img))$user_img = 'assets/images/avatar.png';
+						$user =  ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname'));
+                        $user_img = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
+                        if(empty($user_img))$user_img = 'assets/images/avatar.png';
                             
 						
 						$category = $this->Crud->read_field('id', $category_id, 'category', 'name');
@@ -914,7 +917,7 @@ class Home extends BaseController {
 				$resp['item'] = '
 					<div class="text-center text-muted mb-5">
 						<br/>
-						<i class="fal fa-clipboard-list-check" style="font-size:150px;"></i><br/><br/>No Listing Returned
+						<i class="fal fa-clipboard-list-check" style="font-size:150px;"></i><br/><br/>No Listings Returned
 					</div>
 				';
 			} else {
@@ -1120,7 +1123,13 @@ class Home extends BaseController {
         $this->session->set('km_redirect', uri_string());
         // check login
         $log_id = $this->session->get('km_id');
-        
+         $role_id = $this->Crud->read_field('id', $log_id, 'user', 'role_id');
+        $role = strtolower($this->Crud->read_field('id', $role_id, 'access_role', 'name'));
+		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
+        $data['log_id'] = $log_id;
+        $data['log_name'] = $log_name;
+        $data['page'] = 'My Listings';
+        $data['role'] = $role;
 		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
         $data['log_id'] = $log_id;
         $data['log_name'] = $log_name;

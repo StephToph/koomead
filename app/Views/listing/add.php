@@ -288,7 +288,7 @@
                         <div class="col-md-9  mb-3" style="display:<?=$vs;?>;" id="visible_resp">
                             <div class="form-group">
                                 <label>State Visible</label>
-                                <select data-placeholder="Select State" name="visible_local[]"  id="visible_local" class="select2 form-select form-control">
+                                <select data-placeholder="Select State" name="visible_local[]" multiple  id="visible_local" class="select2 form-select form-control">
                                     <option value="">Select</option>
                                         <?php
                                             if(!empty($e_country_id)){

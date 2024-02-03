@@ -102,7 +102,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group mb-3">
-                                            <label>PLace of Residence * </label>
+                                            <label>Place of Residence * </label>
                                             <input name="address" type="text" class="form-control" placeholder="Your Address" required onClick="this.select()" value="">
                                         </div>
                                         
@@ -121,7 +121,7 @@
                                                 <span id="otp_response" class="mt-3"></span>
                                             </div>
                                             <div class="col-md-8 my-3" style="display:none;" id="otp_input">
-                                                <input name="otp" type="password" class="form-control" id="otp" placeholder="Your OTP" autocomplete="off" required onClick="this.select()" value="">
+                                                <input name="otp" type="password" class="form-control" id="otp" placeholder="Your OTP" autocomplete="off"  onClick="this.select()" value="">
                                             </div>
                                         </div>
 

@@ -392,7 +392,7 @@ class Wallets extends BaseController {
 					$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'wallet_type', 'business', 'user_id', $log_id, 'wallet');
 
 				}
-				$curs = '&#8358;';
+				$curs = '&#8358;';	$curss = '&#8358;';
 				if(!empty($wal)){
 					foreach($wal as $w){
 						if($w->type == 'credit')$credit += (float)$w->amount;

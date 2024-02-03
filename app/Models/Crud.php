@@ -2014,7 +2014,7 @@ class Crud extends Model {
 		if(!empty($category_id) && $category_id != 'all')$builder->where('category_id', $category_id);
 		if(!empty($country_id) && $country_id != 'all')$builder->where('country_id', $country_id);
 		if(!empty($state_id) && $state_id != 'all')$builder->where('state_id', $state_id);
-		if(!empty($city_id) && $city_id != 'all')$builder->where('city_id', $city_id);
+		
 		$builder->where('promote_status', 1);
 		if(!empty($start_date) && !empty($end_date)){
 			$builder->where("DATE_FORMAT(reg_date,'%Y-%m-%d') >= '".$start_date."'",NULL,FALSE);

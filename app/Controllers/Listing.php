@@ -228,7 +228,7 @@ class Listing extends BaseController {
 					$p_data['display_local'] = json_encode($visible_local);
 					$p_data['state_id'] = $state_id;
 					$p_data['country_id'] = $this->Crud->read_field('id', $state_id, 'state', 'country_id');
-					$p_data['city_id'] = $city_id;
+				// 	$p_data['city_id'] = $city_id;
 					$p_data['price'] = $price;
 					$p_data['images'] = json_encode($uploadedImagePaths);
 					$p_data['description'] = $description;

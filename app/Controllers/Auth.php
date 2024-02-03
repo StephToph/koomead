@@ -66,7 +66,7 @@ class Auth extends BaseController {
             $otp = $this->request->getPost('otp');
             $agree = $this->request->getPost('agree');
             $country_id = $this->request->getPost('country_id');
-            $state_id = $this->request->getPost('state_ids');
+            $state_id = $this->request->getPost('state_id');
             $address = $this->request->getPost('address');
 
 

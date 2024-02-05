@@ -776,6 +776,14 @@ class Home extends BaseController {
         
         // record listing
 		if($param1 == 'load') {
+			$promo_status = $this->Crud->read_single('status', 0, 'business_promotion');
+			if(!empty($promo_status)){
+				foreach($promo_status as $p){
+					if(date(fdate) > $p->expiry_date){
+						$this->Crud->updates('id', $p->id, 'business_promotion', array('status'=>1));
+					}
+				}
+			}
 			$limit = $param2;
 			$offset = $param3;
 
@@ -863,6 +871,7 @@ class Home extends BaseController {
 						$promote = '';
 						if(!empty($log_id)){
 							if($this->Crud->check2('listing_id', $id, 'status', '0', 'business_promotion') > 0){
+								
 								$promote = '
 									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary small"><i class="fas fa-bullhorn"></i> Promote </a></span>
 								';

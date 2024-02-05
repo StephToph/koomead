@@ -232,14 +232,53 @@
                                                         </ul>
                                                         <?php
                                                             if(in_array($log_id, $app)){
+                                                                $links = site_url('home/promotion/'.$log_id.'/'.$p->code);
                                                                 echo '
                                                                     <div class="col-sm-12 text-center" style="padding:10px;">
                                                                         <h6>This is your unique link <br><span id="textToCopy" class="text-danger mt-3 mb-2">'.site_url('home/promotion/'.$log_id.'/'.$p->code).'</span></h6>
                                                                     </div>
-                                                                    <div class="col-sm-12 text-center">
+                                                                    <div class="col-sm-6 mb-3 text-center">
                                                                         <button class="btn btn-primary text-uppercase" id="copyButton" onclick="copyTextToClipboard();" type="button">
                                                                            Copy Link
                                                                         </button>
+                                                                    </div>
+                                                                    <div class="col-sm-6 mb-3 text-center">
+                                                                        <button class="btn btn-success text-uppercase" onclick="toggleShareDiv()" id="shareButton" type="button">
+                                                                        Share Link
+                                                                    </button>
+                                                                
+                                                                    </div>
+                                                                    <div class="col-sm-12 mb-3 text-center" id="share_btn" style="display:none;">
+                                                                        
+                                                                        <!-- Twitter Share Button -->
+                                                                        <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20awesome%20content!&url='.$links.'" class="btn btn-info" target="_blank">
+                                                                            <i class="fab fa-twitter"></i>
+                                                                        </a>
+
+                                                                        <!-- Facebook Share Button -->
+                                                                        <a href="https://www.facebook.com/sharer/sharer.php?u='.$links.'" class="btn btn-info" target="_blank">
+                                                                            <i class="fab fa-facebook"></i>
+                                                                        </a>
+
+                                                                        <!-- LinkedIn Share Button -->
+                                                                        <a href="https://www.linkedin.com/shareArticle?mini=true&url='.$links.'&title=Check%20out%20this%20awesome%20content!" class="btn btn-info" target="_blank">
+                                                                            <i class="fab fa-linkedin"></i>
+                                                                        </a>
+
+                                                                        <!-- Pinterest Share Button -->
+                                                                        <a href="https://www.pinterest.com/pin/create/button/?url='.$links.'&description=Check%20out%20this%20awesome%20content!" class="btn btn-danger" target="_blank">
+                                                                            <i class="fab fa-pinterest"></i>
+                                                                        </a>
+
+                                                                        <!-- WhatsApp Share Button -->
+                                                                        <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20content!%20'.$links.'" class="btn btn-success" target="_blank">
+                                                                            <i class="fab fa-whatsapp"></i>
+                                                                        </a>
+
+                                                                        <!-- Instagram Share Button -->
+                                                                        <a href="https://www.instagram.com/?url='.$links.'" class="btn btn-primary" target="_blank">
+                                                                            <i class="fab fa-instagram"></i>
+                                                                        </a>
                                                                     </div>
                                                                     ';
                                                             }
@@ -342,4 +381,9 @@
 
 <script src="<?=site_url();?>assets/js/jsmodal.js"></script>
     <script src="<?=site_url(); ?>assets/js/select2.min.js" ></script>
+    <script>
+        function toggleShareDiv() {
+            $('#share_btn').toggle();
+        }
+    </script>
 <?php echo $this->endSection(); ?>

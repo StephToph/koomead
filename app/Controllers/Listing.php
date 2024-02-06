@@ -600,7 +600,7 @@ class Listing extends BaseController {
 					// 	die;
 					// }
 
-					echo $user_id;
+					// echo $user_id;
 					//Get Business Wallet Balance
 					$wallet = $this->Crud->read2('wallet_type', 'business', 'user_id', $user_id, 'wallet');
 					$bal = 0;
@@ -613,7 +613,7 @@ class Listing extends BaseController {
 						}
 						$bal = $credit - $debit;
 					}
-					echo $bal;
+					// echo $bal;
 					
 					if($bal <= $amount){
 						echo $this->Crud->msg('danger', 'Insufficient Funds.<br>Please Fund Account First');
@@ -650,7 +650,7 @@ class Listing extends BaseController {
 								$v_ins['item_id'] = $ins_rec;
 								$v_ins['country_id'] = $country_id;
 								$v_ins['state_id'] = $state_id;
-								$v_ins['remark'] = 'Business Listing Promotion Earning';
+								$v_ins['remark'] = 'Admin Business Listing Promotion Earning';
 								$v_ins['reg_date'] = date(fdate);
 								$w_id = $this->Crud->create('wallet', $v_ins);
 

@@ -1159,7 +1159,8 @@ class Home extends BaseController {
 				$amount = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'amount');
 				$is_bal = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'is_bal');
 				$per_view = (int)$no_view / (int)$promoter_no;
-				$per_amount = (int)$amount / (int)$promoter_no;
+				$amounts = (int)$amount * 33.34;
+				$per_amount = (int)$amounts;
 				$view = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'view');
 				$id = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'id');
 				$uri = 'home/listing/view/'.$page_id;
@@ -1189,7 +1190,8 @@ class Home extends BaseController {
 
 								//Pay Promoters
 								if($view <= $per_view){
-									$pay = 0.01 * $per_amount;
+									
+									$pay = 0.1 * $per_amount;
 									
 									$country_id = $this->Crud->read_field('id', $business_id, 'user', 'country_id');
 									$state_id = $this->Crud->read_field('id', $business_id, 'user', 'state_id');

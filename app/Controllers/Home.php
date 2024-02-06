@@ -1173,7 +1173,7 @@ class Home extends BaseController {
 						$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
 						// Extract the original client's IP address from the list
 						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
-						
+						$from = 0;
 						if($expiry_date >= date('Y-m-d')){
 							if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
@@ -1182,11 +1182,13 @@ class Home extends BaseController {
 									$i_data['page'] = $uri;
 									$i_data['view'] = (int)$view + 1;
 									
-									$this->Crud->create('promotion_metric', $i_data);
+									$in = $this->Crud->create('promotion_metric', $i_data);
 								} else {
-									$this->Crud->updates('id', $id, 'promotion_metric', array('view'=>(int)$view + 1));
+									$in = $this->Crud->updates('id', $id, 'promotion_metric', array('view'=>(int)$view + 1));
 								}
 
+								$content = 'You have a new View for your Listing';
+								$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
 
 								//Pay Promoters
 								if($view <= $per_view){
@@ -1208,6 +1210,9 @@ class Home extends BaseController {
 									$v_ins['remark'] = 'Business Listing Promotion Earning';
 									$v_ins['reg_date'] = date(fdate);
 									$w_id = $this->Crud->create('wallet', $v_ins);
+
+									$content = 'You have a new View for your Listing';
+									$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
 
 								}
 

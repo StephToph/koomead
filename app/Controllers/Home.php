@@ -1269,7 +1269,7 @@ class Home extends BaseController {
 										$v_ins['item_id'] = $log_id;
 										$v_ins['country_id'] = $country_id;
 										$v_ins['state_id'] = $state_id;
-										$v_ins['remark'] = 'Business Listing Promotion Earning';
+										$v_ins['remark'] = 'Viewer Business Listing Promotion Earning';
 										$v_ins['reg_date'] = date(fdate);
 										$w_id = $this->Crud->create('wallet', $v_ins);
 
@@ -1314,7 +1314,7 @@ class Home extends BaseController {
 									}
 								}
 
-								return '<script>window.location.replace("'.site_url($uri).'");</script>';
+								// return '<script>window.location.replace("'.site_url($uri).'");</script>';
 							} else{
 								return '<script>window.location.replace("'.site_url($uri).'");</script>';
 							}

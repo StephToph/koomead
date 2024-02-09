@@ -67,23 +67,25 @@
                         <?php if(!empty($e_category_id)){?>
                                 <div class="col-sm-4 mb-3">
                                     <div class="form-group">
-                                        <label>Sub-Category *</label><div id="category_ids">
-                                        <select data-placeholder="All Category" name="sub_id" id="category_id" class="select2 form-select form-control" required >
-                                            <option value="">Select Category</option>
-                                            <?php
-                                                $cate = $this->Crud->read_single_order('category_id', $e_main, 'category', 'name', 'asc');
-                                                if(!empty($cate)){
-                                                    foreach($cate as $c){
-                                                        $sel = '';
-                                                        if(!empty($e_category_id)){
-                                                            if($e_category_id == $c->id)$sel ='selected';
+                                        <label>Sub-Category *</label>
+                                        <div id="category_ids">
+                                            <select data-placeholder="All Category" name="sub_id" id="category_id" class="select2 form-select form-control" required >
+                                                <option value="">Select Category</option>
+                                                <?php
+                                                    $cate = $this->Crud->read_single_order('category_id', $e_main, 'category', 'name', 'asc');
+                                                    if(!empty($cate)){
+                                                        foreach($cate as $c){
+                                                            $sel = '';
+                                                            if(!empty($e_category_id)){
+                                                                if($e_category_id == $c->id)$sel ='selected';
+                                                            }
+                                                            echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
                                                         }
-                                                        echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
                                                     }
-                                                }
-                                            ?>
-                                    
-                                        </select>
+                                                ?>
+                                        
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                           <?php  } else {

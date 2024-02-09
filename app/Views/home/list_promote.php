@@ -237,6 +237,7 @@
                                                                     <div class="col-sm-12 text-center" style="padding:10px;">
                                                                         <h6>This is your unique link <br><span id="textToCopy" class="text-danger mt-3 mb-2">'.site_url('home/promotion/'.$log_id.'/'.$p->code).'</span></h6>
                                                                     </div>
+                                                                    
                                                                     <div class="col-sm-6 mb-3 text-center">
                                                                         <button class="btn btn-primary text-uppercase" id="copyButton" onclick="copyTextToClipboard();" type="button">
                                                                            Copy Link
@@ -280,6 +281,7 @@
                                                                             <i class="fab fa-instagram"></i>
                                                                         </a>
                                                                     </div>
+                                                                   
                                                                     ';
                                                             }
                                                         ?>

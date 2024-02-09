@@ -542,6 +542,11 @@ class Home extends BaseController {
 												<i class="fab fa-instagram"></i>
 											</a>
 										</div>
+										<div class="col-sm-12 mb-3 text-center">
+											<button class="btn btn-danger text-uppercase" onclick="location.reload()" type="button">
+											Refresh
+											</button>
+										</div>
 										<script>$("#gen_view").hide(500);</script>
 									';
 									

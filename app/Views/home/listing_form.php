@@ -12,7 +12,7 @@
 
         <div class="row" id="gen_view">
             <?php 
-                if(!in_array($log_id, $applicant)){
+                if($this->Crud->check2('applicant_id', $log_id, 'code', $codes, 'application') == 0){
             ?>
             <div class="col-sm-12 text-center">
                 <h3>Generate Promotion Link?</h3>

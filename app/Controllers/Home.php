@@ -1314,7 +1314,7 @@ class Home extends BaseController {
 									}
 								}
 
-								// return '<script>window.location.replace("'.site_url($uri).'");</script>';
+								return '<script>window.location.replace("'.site_url($uri).'");</script>';
 							} else{
 								return '<script>window.location.replace("'.site_url($uri).'");</script>';
 							}

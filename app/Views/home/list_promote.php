@@ -210,7 +210,7 @@
                                                 $cur = '£';
                                                 if($this->Crud->check2('id', $p->listing_id, 'country_id', '161', 'listing') > 0)$cur = '₦';
                                                 if(date('Y-m-d') > $p->expiry_date)continue;
-                                                $app = json_decode($p->applicant);
+                                                
                                     ?>
                                             <div class="col-md-6">
                                                 <div class="pricing-column fl-wrap">
@@ -231,12 +231,13 @@
                                                             
                                                         </ul>
                                                         <?php
-                                                            if(in_array($log_id, $app)){
+                                                            if($this->Crud->check2('applicant_id', $log_id, 'code', $p->code, 'application') > 0){
                                                                 $links = site_url('home/promotion/'.$log_id.'/'.$p->code);
                                                                 echo '
                                                                     <div class="col-sm-12 text-center" style="padding:10px;">
                                                                         <h6>This is your unique link <br><span id="textToCopy" class="text-danger mt-3 mb-2">'.site_url('home/promotion/'.$log_id.'/'.$p->code).'</span></h6>
                                                                     </div>
+                                                                    
                                                                     <div class="col-sm-6 mb-3 text-center">
                                                                         <button class="btn btn-primary text-uppercase" id="copyButton" onclick="copyTextToClipboard();" type="button">
                                                                            Copy Link
@@ -280,10 +281,11 @@
                                                                             <i class="fab fa-instagram"></i>
                                                                         </a>
                                                                     </div>
+                                                                   
                                                                     ';
                                                             }
                                                         ?>
-                                                        <a href="javascript:;" class="btn btn-primary  pops " pageTitle="Promote " pageName="<?=site_url('home/listing/manage/promote/'.$p->id); ?>" pageSize="modal-md"><?php if(in_array($log_id, $app)){
+                                                        <a href="javascript:;" class="btn btn-primary  pops " pageTitle="Promote " pageName="<?=site_url('home/listing/manage/promote/'.$p->id); ?>" pageSize="modal-md"><?php if($this->Crud->check2('applicant_id', $log_id, 'code', $p->code, 'application') > 0){
                                                             
                                                             echo 'View Analytics';}else{echo 'Participate';} ?></a>  
                                                         

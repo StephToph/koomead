@@ -466,25 +466,24 @@ class Home extends BaseController {
 					if($this->request->getMethod() == 'post'){
 						$promotion_id = $this->request->getVar('promotion_id');
 
-						$applicant = json_decode($this->Crud->read_field('id',$promotion_id, 'business_promotion',  'applicant'));
-						// print_r($applicant);
 						//Get nuber of user in the category
 						$codes = $this->Crud->read_field('id',$promotion_id, 'business_promotion',  'code');
 						$prom_id = $this->Crud->read_field('id',$promotion_id, 'business_promotion',  'promotion_id');
 						$user_no = $this->Crud->read_field('id',$prom_id, 'promotion',  'promoter_no');
-						$applicants =0 ;
+						$applicants = $this->Crud->check('code', $codes,'application');
 						
-						if(is_array($applicant))$applicants = count($applicant);
+
 						if($applicants >= $user_no){
 							 $this->Crud->msg('warning', 'Number of Promoter already Reached');
 						} else {
-							if(in_array($log_id, $applicant)){
+							if($this->Crud->check2('applicant_id', $log_id, 'code', $codes, 'application') > 0){
 								echo $this->Crud->msg('warning', 'You have already Applied for this promotion');
-
 							} else{
-								$applicant[] = $log_id;
-								$p_data['applicant'] = json_encode($applicant);
-								if($this->Crud->updates('id', $promotion_id, 'business_promotion', $p_data) > 0){
+								$p_data['promotion_id'] = $promotion_id;
+								$p_data['applicant_id'] = $log_id;
+								$p_data['code'] = $codes;
+								$p_data['reg_date'] = date(fdate);
+								if($this->Crud->create('application', $p_data) > 0){
 
 									///// store activities
 									$code = $this->Crud->read_field('id', $promotion_id, 'business_promotion', 'code');
@@ -495,13 +494,57 @@ class Home extends BaseController {
 									$msg = 'Promotion Applied Successfully. Your Unique Promotion Link for this Advert is <br> <b>'.site_url('home/promotion/'.$log_id.'/'.$codes).'</b>';
 									
 									echo $this->Crud->msg('success', $msg);
+									$links = site_url('home/promotion/'.$log_id.'/'.$code);
 									echo '
 										<div class="col-sm-12 text-center">
 											<h4>This is your unique link <br><span id="textToCopy" class="text-danger mt-3 mb-2">'.site_url('home/promotion/'.$log_id.'/'.$code).'</span></h4>
 										</div>
-										<div class="col-sm-12 text-center">
+										<div class="col-sm-6 text-center">
 											<button class="btn btn-primary text-uppercase" id="copyButton" onclick="copyTextToClipboard();" type="button">
 												<i class="fal fa-paper-plane"></i> Copy Link
+											</button>
+										</div>
+										<div class="col-sm-6 mb-3 text-center">
+											<button class="btn btn-success text-uppercase" onclick="toggleShareDiv()" id="shareButton" type="button">
+											Share Link
+										</button>
+									
+										</div>
+										<div class="col-sm-12 mb-3 text-center" id="share_btn" style="display:none;">
+											
+											<!-- Twitter Share Button -->
+											<a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20awesome%20content!&url='.$links.'" class="btn btn-info" target="_blank">
+												<i class="fab fa-twitter"></i>
+											</a>
+
+											<!-- Facebook Share Button -->
+											<a href="https://www.facebook.com/sharer/sharer.php?u='.$links.'" class="btn btn-info" target="_blank">
+												<i class="fab fa-facebook"></i>
+											</a>
+
+											<!-- LinkedIn Share Button -->
+											<a href="https://www.linkedin.com/shareArticle?mini=true&url='.$links.'&title=Check%20out%20this%20awesome%20content!" class="btn btn-info" target="_blank">
+												<i class="fab fa-linkedin"></i>
+											</a>
+
+											<!-- Pinterest Share Button -->
+											<a href="https://www.pinterest.com/pin/create/button/?url='.$links.'&description=Check%20out%20this%20awesome%20content!" class="btn btn-danger" target="_blank">
+												<i class="fab fa-pinterest"></i>
+											</a>
+
+											<!-- WhatsApp Share Button -->
+											<a href="https://api.whatsapp.com/send?text=Check%20out%20this%20awesome%20content!%20'.$links.'" class="btn btn-success" target="_blank">
+												<i class="fab fa-whatsapp"></i>
+											</a>
+
+											<!-- Instagram Share Button -->
+											<a href="https://www.instagram.com/?url='.$links.'" class="btn btn-primary" target="_blank">
+												<i class="fab fa-instagram"></i>
+											</a>
+										</div>
+										<div class="col-sm-12 mb-3 text-center">
+											<button class="btn btn-danger text-uppercase" onclick="location.reload()" type="button">
+											Refresh
 											</button>
 										</div>
 										<script>$("#gen_view").hide(500);</script>
@@ -1173,7 +1216,7 @@ class Home extends BaseController {
 						$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
 						// Extract the original client's IP address from the list
 						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
-						
+						$from = 0;
 						if($expiry_date >= date('Y-m-d')){
 							if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
@@ -1182,11 +1225,13 @@ class Home extends BaseController {
 									$i_data['page'] = $uri;
 									$i_data['view'] = (int)$view + 1;
 									
-									$this->Crud->create('promotion_metric', $i_data);
+									$in = $this->Crud->create('promotion_metric', $i_data);
 								} else {
-									$this->Crud->updates('id', $id, 'promotion_metric', array('view'=>(int)$view + 1));
+									$in = $this->Crud->updates('id', $id, 'promotion_metric', array('view'=>(int)$view + 1));
 								}
 
+								$content = 'You have a new View for your Listing';
+								$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
 
 								//Pay Promoters
 								if($view <= $per_view){
@@ -1208,6 +1253,9 @@ class Home extends BaseController {
 									$v_ins['remark'] = 'Business Listing Promotion Earning';
 									$v_ins['reg_date'] = date(fdate);
 									$w_id = $this->Crud->create('wallet', $v_ins);
+
+									$content = 'You have a new View for your Listing';
+									$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
 
 								}
 

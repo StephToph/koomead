@@ -1204,6 +1204,7 @@ class Home extends BaseController {
 				$per_view = (int)$no_view / (int)$promoter_no;
 				$amounts = (int)$amount * 33.34;
 				$per_amount = (int)$amounts;
+				$per_amounts = (int)$amount * 16.67;
 				$view = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'view');
 				$id = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'id');
 				$uri = 'home/listing/view/'.$page_id;
@@ -1236,12 +1237,13 @@ class Home extends BaseController {
 								//Pay Promoters
 								if($view <= $per_view){
 									
-									$pay = 0.1 * $per_amount;
+									$pay = 0.001 * (float)$per_amount;
+									$pays = 0.001 * (float)$per_amounts;
 									
 									$country_id = $this->Crud->read_field('id', $business_id, 'user', 'country_id');
 									$state_id = $this->Crud->read_field('id', $business_id, 'user', 'state_id');
 						
-									//Make Payment
+									//Make Payment to Influencers
 									$v_ins['user_id'] = $business_id;
 									$v_ins['type'] = 'credit';
 									$v_ins['amount'] = $pay;
@@ -1250,12 +1252,30 @@ class Home extends BaseController {
 									$v_ins['item_id'] = $business_id;
 									$v_ins['country_id'] = $country_id;
 									$v_ins['state_id'] = $state_id;
-									$v_ins['remark'] = 'Business Listing Promotion Earning';
+									$v_ins['remark'] = 'Promoter Business Listing Promotion Earning';
 									$v_ins['reg_date'] = date(fdate);
 									$w_id = $this->Crud->create('wallet', $v_ins);
 
 									$content = 'You have a new View for your Listing';
 									$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
+
+									//Make Payment to Viewers if Logged In
+									if($log_id){
+										$v_ins['user_id'] = $log_id;
+										$v_ins['type'] = 'credit';
+										$v_ins['amount'] = $pays;
+										$v_ins['item'] = 'promotion';
+										$v_ins['wallet_type'] = 'promotion';
+										$v_ins['item_id'] = $log_id;
+										$v_ins['country_id'] = $country_id;
+										$v_ins['state_id'] = $state_id;
+										$v_ins['remark'] = 'Viewer Business Listing Promotion Earning';
+										$v_ins['reg_date'] = date(fdate);
+										$w_id = $this->Crud->create('wallet', $v_ins);
+
+										$content = 'You have a new View for your Listing';
+										$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
+									}
 
 								}
 

@@ -64,27 +64,28 @@
                                 </select>
                             </div>
                         </div>
-                        <?php
-                            if(!empty($e_category_id)){?>
+                        <?php if(!empty($e_category_id)){?>
                                 <div class="col-sm-4 mb-3">
                                     <div class="form-group">
-                                        <label>Sub-Category *</label><div id="category_ids">
-                                        <select data-placeholder="All Category" name="sub_id" id="category_id" class="select2 form-select form-control" required >
-                                            <option value="">Select Category</option>
-                                            <?php
-                                                $cate = $this->Crud->read_single_order('category_id', $e_main, 'category', 'name', 'asc');
-                                                if(!empty($cate)){
-                                                    foreach($cate as $c){
-                                                        $sel = '';
-                                                        if(!empty($e_category_id)){
-                                                            if($e_category_id == $c->id)$sel ='selected';
+                                        <label>Sub-Category *</label>
+                                        <div id="category_ids">
+                                            <select data-placeholder="All Category" name="sub_id" id="category_id" class="select2 form-select form-control" required >
+                                                <option value="">Select Category</option>
+                                                <?php
+                                                    $cate = $this->Crud->read_single_order('category_id', $e_main, 'category', 'name', 'asc');
+                                                    if(!empty($cate)){
+                                                        foreach($cate as $c){
+                                                            $sel = '';
+                                                            if(!empty($e_category_id)){
+                                                                if($e_category_id == $c->id)$sel ='selected';
+                                                            }
+                                                            echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
                                                         }
-                                                        echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
                                                     }
-                                                }
-                                            ?>
-                                    
-                                        </select>
+                                                ?>
+                                        
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                           <?php  } else {
@@ -101,7 +102,8 @@
                                 </div>
                             </div>
                         <?php } ?>
-                        <div class=" col-sm-4 mb-3"><label>State *</label>
+                        <div class=" col-sm-4 mb-3">
+                            <label>State *</label>
                             <div class="form-group">
                                 <div id="states_id">
                                     <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 select2 form-select form-control" onchange="get_city();">
@@ -129,50 +131,7 @@
                                 </div>  
                             </div>
                         </div>
-                        <!-- <?php 
-                            if(!empty($e_city_id)){
-                        ?>
-                            <div class=" col-sm-4 mb-3">
-                                <div class="form-group">                               
-                                    <label>City *</label>
-                                    <div id="citys_id">
-                                        <select data-placeholder="Select"  name="city_id" id="city_id" required class="mb-2 select2 form-select chosen-select search-select">
-                                            <option value="">Select City</option>
-                                            <?php
-                                                $country = $this->Crud->read_single_order('state_id', $e_state_id, 'city', 'name', 'asc');
-                                                if(!empty($country)){
-                                                    foreach($country as $c){
-                                                        $sel ='';
-                                                        if(!empty($e_city_id)){
-                                                            if($e_city_id == $c->id)$sel='selected';
-                                                        }
-                                                        // if($c->name != 'Nigeria' && $c->name != 'United Kingdom')continue;
-                                                        echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
-                                                    }
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php 
-                            } else {
-                        ?>
-                            <div class=" col-sm-4 mb-3">
-                                <div class="form-group">
-                                    <label>City *</label>
-                                    <div id="citys_id">
-                                        <select data-placeholder="Select"  name="city_id" id="city_id"
-                                            required class="mb-2 select2 form-select chosen-select search-select">
-                                            <option value="">Select State First</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php 
-                            }
-                        ?> -->
+                        
                         
                         <div class="col-sm-4  mb-3">
                             <div class="form-group">		 

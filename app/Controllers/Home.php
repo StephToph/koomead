@@ -909,16 +909,29 @@ class Home extends BaseController {
 
 						if(!empty($city_id)) $loca .= $city;
 						if(!empty($state_id)) $loca .= ', '.$state;
-						if(!empty($country_id)) $loca .= ', '.$country;
 
 						$promote = '';
+						
 						if(!empty($log_id)){
 							if($this->Crud->check2('listing_id', $id, 'status', '0', 'business_promotion') > 0){
 								
 								$promote = '
 									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary small"><i class="fas fa-bullhorn"></i> Promote </a></span>
 								';
+							} else{
+								$list_promo = $this->Crud->read_single('listing_id', $id, 'business_promotion');
+								if(!empty($list_promo)){
+									foreach($list_promo as $promo){
+										$code = $promo->code;
+										if($this->Crud->check2('applicant_id', $log_id, 'code', $code, 'application') > 0){
+											$promote = '
+												<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="View Promotion Status"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary small"><i class="fas fa-eye"></i> Promo Stat </a></span>
+											';
+										}
+									}
+								}
 							}
+
 						} else {
 							$promote = '
 									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="javascript:;" pageSize="modal-xl" pageName="'.site_url('auth/login').'" class="text-primary small pop"><i class="fas fa-bullhorn"></i> Promote </a></span>

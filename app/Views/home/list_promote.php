@@ -196,28 +196,35 @@
                                 <div class="row">
                                     <!-- pricing-column -->
                                     <?php
-                                        $prom = $this->Crud->read2('listing_id', $param2, 'status', '0', 'business_promotion');
-                                        if(!empty($prom)){$count = 1;
+                                        $prom = $this->Crud->read_single('listing_id', $param2, 'business_promotion');
+                                        if(!empty($prom)){
+                                            $count = 1;
                                             foreach($prom as $p){
-                                                
+
+                                               
                                                 if($count < 10)$count = '0'.$count;
                                                 $p_name = $this->Crud->read_field('id', $p->promotion_id, 'promotion', 'name');
                                                 $duration = $this->Crud->read_field('id', $p->promotion_id, 'promotion', 'duration');
                                                 $promoter_no = $this->Crud->read_field('id', $p->promotion_id, 'promotion', 'promoter_no');
                                                 $view = $this->Crud->read_field('id', $p->promotion_id, 'promotion', 'view');
-                                                $p_amount = $p->amount / $promoter_no;
+                                                $p_amount = (int)$p->amount * 0.336;
                                                 $p_view = $p->no_view / $promoter_no;
                                                 $cur = '£';
                                                 if($this->Crud->check2('id', $p->listing_id, 'country_id', '161', 'listing') > 0)$cur = '₦';
-                                                if(date('Y-m-d') > $p->expiry_date)continue;
                                                 
+                                                if($this->Crud->check2('applicant_id', $log_id, 'code', $p->code, 'application') == 0){
+                                                    if($p->status ==1)continue;
+                                                    if(date('Y-m-d') > $p->expiry_date)continue;
+                                                    if($this->Crud->check('code', $p->code, 'application') > $promoter_no)continue;
+                                                
+                                                }
                                     ?>
                                             <div class="col-md-6">
                                                 <div class="pricing-column fl-wrap">
                                                     <div class="pricing-header">
                                                         <h3><span><?=$count; ?>.</span><?=$p_name; ?></h3>
                                                         <div class="price-num price-item fl-wrap">
-                                                            <div class="price-num-item"><span class="mouth-cont"><span class="curen"><?=$cur; ?></span><?=$p_amount; ?></span><span class="year-cont"><span class="curen">£</span></span></div>
+                                                            <div class="price-num-item"><span class="mouth-cont"><span class="curen"><?=$cur; ?></span><?=(int)$p_amount; ?></span><span class="year-cont"><span class="curen">£</span></span></div>
                                                             <div class="price-num-desc"><span class="mouth-cont">For  <?=$p_view; ?> Views</span></div>
                                                         </div>
                                                         <p>Promote Business Listing on your Social Platforms and Earn  </p>

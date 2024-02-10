@@ -212,10 +212,11 @@
                                                 $cur = '£';
                                                 if($this->Crud->check2('id', $p->listing_id, 'country_id', '161', 'listing') > 0)$cur = '₦';
                                                 
-                                                
                                                 if($this->Crud->check2('applicant_id', $log_id, 'code', $p->code, 'application') == 0){
                                                     if($p->status ==1)continue;
                                                     if(date('Y-m-d') > $p->expiry_date)continue;
+                                                    if($this->Crud->check('code', $p->code, 'application') > $promoter_no)continue;
+                                                
                                                 }
                                     ?>
                                             <div class="col-md-6">

@@ -1231,7 +1231,7 @@ class Home extends BaseController {
 						// Extract the original client's IP address from the list
 						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
 						$from = 0;
-						if($expiry_date >= date('Y-m-d')){
+						if($expiry_date > date('Y-m-d')){
 							if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
 									$i_data['code'] = $promo_code;

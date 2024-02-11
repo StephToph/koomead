@@ -1236,7 +1236,7 @@ class Home extends BaseController {
         $data['log_name'] = $log_name;
         $data['page'] = 'My Listings';
        
-		$this->save_promo();
+		if(!empty($param2))$this->save_promo();
 		$data['link_preview'] = '';
 		if($param1 == 'promo_check'){
 			$business_id = $this->request->getPost('business_id');

@@ -800,8 +800,6 @@ class Home extends BaseController {
 
 			return view('home/listing_form', $data);
 		} else {
-			
-			
 
 			$data['title'] = 'View Listing | '.app_name;
 			$data['page_active'] = 'listing';
@@ -1182,6 +1180,44 @@ class Home extends BaseController {
        return json_encode($data);
     }
 
+	public function save_promo(){
+        // Get user agent information (browser, OS, etc.)
+        $userAgent = $this->request->getUserAgent();
+
+        // Get the IP address of the device
+        $ipAddress = $this->request->getIPAddress();
+		$uri = $this->request->uri->getPath();
+
+		$request = service('request');
+		$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
+        
+		// Extract the original client's IP address from the list
+		$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
+        // Create a timestamp for the current visit
+        $timestamp = date('Y-m-d H:i:s');
+		
+
+		// Split the path by slashes
+		$parts = explode('/', $uri);
+
+		// Get the last item
+		$code = end($parts);
+		// echo $uri;
+        // Prepare data to insert into the database
+        $data = [
+            'user_agent' => $userAgent,
+            'ip_address' => $ipAddress,
+            'page' => $uri,
+            'code' => $code,
+            'reg_date' => $timestamp,
+        ];
+
+		if($this->Crud->check3('ip_address', $ipAddress, 'page', $uri, 'code', $code, 'listing_view') == 0){
+			$this->Crud->create('listing_view', $data);
+		}
+       return json_encode($data);
+    }
+
 	public function promotion($param1='', $param2='', $param3=''){
 		$db = \Config\Database::connect();
         
@@ -1200,7 +1236,7 @@ class Home extends BaseController {
         $data['log_name'] = $log_name;
         $data['page'] = 'My Listings';
        
-		
+		$this->save_promo();
 		$data['link_preview'] = '';
 		if($param1 == 'promo_check'){
 			$business_id = $this->request->getPost('business_id');

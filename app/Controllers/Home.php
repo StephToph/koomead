@@ -1257,6 +1257,7 @@ class Home extends BaseController {
 				$view = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'view');
 				$id = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'id');
 				$uri = 'home/listing/view/'.$page_id;
+				$promo_uri = 'home/promotion/'.$business_id.'/'.$promo_code;
 
 				
 				if($this->Crud->check('id', $business_id, 'user') > 0){
@@ -1268,7 +1269,7 @@ class Home extends BaseController {
 						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
 						$from = 0;
 						if($expiry_date > date('Y-m-d')){
-							if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
+							if($this->Crud->check2('ip_address', $ipAddress, 'page', $promo_uri, 'listing_view') == 0){
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
 									$i_data['code'] = $promo_code;
 									$i_data['user_id'] = $business_id;
@@ -1359,7 +1360,7 @@ class Home extends BaseController {
 											$v_ins['state_id'] = $state_id;
 											$v_ins['remark'] = 'Business Listing Promotion Balance After Promotion Ended';
 											$v_ins['reg_date'] = date(fdate);
-											$w_id = $this->Crud->create('wallet', $v_ins);
+											// $w_id = $this->Crud->create('wallet', $v_ins);
 									}
 								}
 

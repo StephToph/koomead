@@ -1279,7 +1279,7 @@ class Home extends BaseController {
 						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
 						$from = 0;
 						if($expiry_date > date('Y-m-d')){
-							if($this->Crud->check3('ip_address', $ipAddress, 'page', $promo_uri, 'code', $promo_code, 'listing_view') == 0){
+							if($this->Crud->check2('ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
 									$i_data['code'] = $promo_code;
 									$i_data['user_id'] = $business_id;

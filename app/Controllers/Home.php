@@ -1246,7 +1246,7 @@ class Home extends BaseController {
 				$this->save_promo();
 			}
 		}
-		if($param1 == 'promo_check' && !empty($param2)){
+		if($param1 == 'promo_check'){
 			$business_id = $this->request->getPost('business_id');
 			$promo_code = $this->request->getPost('promo_code');
 			
@@ -1278,7 +1278,7 @@ class Home extends BaseController {
 						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
 						$from = 0;
 						if($expiry_date > date('Y-m-d')){
-							if($this->Crud->check2('ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
+							if($this->Crud->check3('page', $promo_uri, 'ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
 									$i_data['code'] = $promo_code;
 									$i_data['user_id'] = $business_id;

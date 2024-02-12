@@ -1241,14 +1241,15 @@ class Home extends BaseController {
        
 		
 		$data['link_preview'] = '';
+		if(!empty($param2)){
+			if($this->Crud->check('code', $param2, 'business_promotion') > 0){
+				$this->save_promo();
+			}
+		}
 		if($param1 == 'promo_check'){
 			$business_id = $this->request->getPost('business_id');
 			$promo_code = $this->request->getPost('promo_code');
-			if(!empty($promo_code)){
-				if($this->Crud->check('code', $promo_code, 'business_promotion') > 0){
-					$this->save_promo();
-				}
-			}
+			
 			if(!empty($business_id) && !empty($promo_code)){
 				
 				$page_id = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'listing_id');

@@ -914,11 +914,11 @@ class Home extends BaseController {
 						
 						if(!empty($log_id)){
 							if($this->Crud->check2('listing_id', $id, 'status', '0', 'business_promotion') > 0){
-								if($this->Crud->check('listing_id', $id, 'application') == 0){
+								// if($this->Crud->check('listing_id', $id, 'application') == 0){
 									$promote = '
 										<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary small"><i class="fas fa-bullhorn"></i> Promote </a></span>
 									';
-								}
+								
 							} else{
 								$list_promo = $this->Crud->read_single('listing_id', $id, 'business_promotion');
 								if(!empty($list_promo)){
@@ -1278,7 +1278,7 @@ class Home extends BaseController {
 						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
 						$from = 0;
 						if($expiry_date > date('Y-m-d')){
-							if($this->Crud->check3('ip_address', $ipAddress, 'page', $promo_uri, 'code', $promo_code, 'listing_view') == 0){
+							if($this->Crud->check2('ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
 									$i_data['code'] = $promo_code;
 									$i_data['user_id'] = $business_id;

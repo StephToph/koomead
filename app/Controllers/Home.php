@@ -1278,7 +1278,7 @@ class Home extends BaseController {
 						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
 						$from = 0;
 						if($expiry_date > date('Y-m-d')){
-							if($this->Crud->check2('ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
+							if($this->Crud->check3('ip_address', $ipAddress, 'page', $promo_uri, 'code', $promo_code, 'listing_view') == 0){
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
 									$i_data['code'] = $promo_code;
 									$i_data['user_id'] = $business_id;
@@ -1334,7 +1334,7 @@ class Home extends BaseController {
 											$w_id = $this->Crud->create('wallet', $v_ins);
 
 											$content = 'You have a new View for your Listing';
-											$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
+											$this->Crud->notify($from, $log_id, $content, 'Listing', $in);
 										}
 									}
 

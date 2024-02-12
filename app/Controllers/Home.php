@@ -469,6 +469,7 @@ class Home extends BaseController {
 						//Get nuber of user in the category
 						$codes = $this->Crud->read_field('id',$promotion_id, 'business_promotion',  'code');
 						$prom_id = $this->Crud->read_field('id',$promotion_id, 'business_promotion',  'promotion_id');
+						$listing_id = $this->Crud->read_field('id',$promotion_id, 'business_promotion',  'listing_id');
 						$user_no = $this->Crud->read_field('id',$prom_id, 'promotion',  'promoter_no');
 						$applicants = $this->Crud->check('code', $codes,'application');
 						
@@ -481,6 +482,7 @@ class Home extends BaseController {
 							} else{
 								$p_data['promotion_id'] = $promotion_id;
 								$p_data['applicant_id'] = $log_id;
+								$p_data['listing_id'] = $listing_id;
 								$p_data['code'] = $codes;
 								$p_data['reg_date'] = date(fdate);
 								if($this->Crud->create('application', $p_data) > 0){
@@ -912,10 +914,11 @@ class Home extends BaseController {
 						
 						if(!empty($log_id)){
 							if($this->Crud->check2('listing_id', $id, 'status', '0', 'business_promotion') > 0){
-								
-								$promote = '
-									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary small"><i class="fas fa-bullhorn"></i> Promote </a></span>
-								';
+								if($this->Crud->check('listing_id', $id, 'application') == 0){
+									$promote = '
+										<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="'.site_url('home/listing/promote/'.$id).'" class="text-primary small"><i class="fas fa-bullhorn"></i> Promote </a></span>
+									';
+								}
 							} else{
 								$list_promo = $this->Crud->read_single('listing_id', $id, 'business_promotion');
 								if(!empty($list_promo)){
@@ -1236,9 +1239,10 @@ class Home extends BaseController {
         $data['log_name'] = $log_name;
         $data['page'] = 'My Listings';
        
-		if(!empty($param2))$this->save_promo();
+		
 		$data['link_preview'] = '';
 		if($param1 == 'promo_check'){
+			if(!empty($param2))$this->save_promo();
 			$business_id = $this->request->getPost('business_id');
 			$promo_code = $this->request->getPost('promo_code');
 						
@@ -1310,7 +1314,7 @@ class Home extends BaseController {
 									$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
 
 									//Make Payment to Viewers if Logged In
-									if($log_id){
+									if($log_id != $business_id){
 										$v_ins['user_id'] = $log_id;
 										$v_ins['type'] = 'credit';
 										$v_ins['amount'] = $pays;

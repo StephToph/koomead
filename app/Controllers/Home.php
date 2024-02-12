@@ -1242,7 +1242,7 @@ class Home extends BaseController {
 		
 		$data['link_preview'] = '';
 		if($param1 == 'promo_check'){
-			if(!empty($param2))$this->save_promo();
+			if(!empty($param2))if($this->Crud->check('code', $param2, 'business_promotion') > 0)$this->save_promo();
 			$business_id = $this->request->getPost('business_id');
 			$promo_code = $this->request->getPost('promo_code');
 						
@@ -1314,21 +1314,23 @@ class Home extends BaseController {
 									$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
 
 									//Make Payment to Viewers if Logged In
-									if($log_id != $business_id){
-										$v_ins['user_id'] = $log_id;
-										$v_ins['type'] = 'credit';
-										$v_ins['amount'] = $pays;
-										$v_ins['item'] = 'promotion';
-										$v_ins['wallet_type'] = 'promotion';
-										$v_ins['item_id'] = $log_id;
-										$v_ins['country_id'] = $country_id;
-										$v_ins['state_id'] = $state_id;
-										$v_ins['remark'] = 'Viewer Business Listing Promotion Earning';
-										$v_ins['reg_date'] = date(fdate);
-										$w_id = $this->Crud->create('wallet', $v_ins);
+									if(!empty($log_id)){
+										if($log_id != $business_id){
+											$v_ins['user_id'] = $log_id;
+											$v_ins['type'] = 'credit';
+											$v_ins['amount'] = $pays;
+											$v_ins['item'] = 'promotion';
+											$v_ins['wallet_type'] = 'promotion';
+											$v_ins['item_id'] = $log_id;
+											$v_ins['country_id'] = $country_id;
+											$v_ins['state_id'] = $state_id;
+											$v_ins['remark'] = 'Viewer Business Listing Promotion Earning';
+											$v_ins['reg_date'] = date(fdate);
+											$w_id = $this->Crud->create('wallet', $v_ins);
 
-										$content = 'You have a new View for your Listing';
-										$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
+											$content = 'You have a new View for your Listing';
+											$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
+										}
 									}
 
 								}

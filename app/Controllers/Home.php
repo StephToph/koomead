@@ -1246,8 +1246,9 @@ class Home extends BaseController {
 			$promo_code = $this->request->getPost('promo_code');
 						
 			if(!empty($business_id) && !empty($promo_code)){
-				if(!empty($param2))if($this->Crud->check('code', $param2, 'business_promotion') > 0)$this->save_promo();
-			
+				if(!empty($param2)){
+					if($this->Crud->check('code', $promo_code, 'business_promotion') > 0)$this->save_promo();
+				}
 				$page_id = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'listing_id');
 				$promoter_no = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'promoter_no');
 				$user_id = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'user_id');

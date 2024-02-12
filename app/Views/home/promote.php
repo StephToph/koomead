@@ -453,7 +453,7 @@
         var business_id = $('#business_id').val();
        
         $.ajax({
-            url: site_url + 'home/promotion/promo_check',
+            url: site_url + 'home/promotion/promo_check/'+promo_code,
             type: 'post',
             data: { promo_code: promo_code,business_id: business_id},
             success: function (data) {

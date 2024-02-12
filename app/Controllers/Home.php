@@ -1246,7 +1246,7 @@ class Home extends BaseController {
 				$this->save_promo();
 			}
 		}
-		if($param1 == 'promo_check'){
+		if($param1 == 'promo_check' && !empty($param2)){
 			$business_id = $this->request->getPost('business_id');
 			$promo_code = $this->request->getPost('promo_code');
 			

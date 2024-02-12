@@ -1268,7 +1268,7 @@ class Home extends BaseController {
 				$uri = 'home/listing/view/'.$page_id;
 				$promo_uri = 'home/promotion/'.$business_id.'/'.$promo_code;
 
-				
+				echo $promo_code;die;
 				if($this->Crud->check('id', $business_id, 'user') > 0){
 					if($this->Crud->check2('code', $promo_code, 'status', 0, 'business_promotion') > 0){
 						$ipAddress = $this->request->getIPAddress();

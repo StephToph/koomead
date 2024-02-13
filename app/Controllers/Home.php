@@ -1241,18 +1241,19 @@ class Home extends BaseController {
        
 		
 		$data['link_preview'] = '';
-		if(!empty($param2)){
-			if($this->Crud->check('code', $param2, 'business_promotion') > 0){
-				$this->save_promo();
-			}
-		}
+		
 		if($param1 == 'promo_check'){
 			$business_id = $this->request->getPost('business_id');
 			$promo_code = $this->request->getPost('promo_code');
-			
+			if(!empty($param2)){
+				if($this->Crud->check('code', $param2, 'business_promotion') > 0){
+					$this->save_promo();
+				}
+			}
 			if(!empty($business_id) && !empty($promo_code)){
 				
 				$page_id = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'listing_id');
+				$owner_id = $this->Crud->read_field('id', $page_id, 'listing', 'user_id');
 				$promoter_no = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'promoter_no');
 				$user_id = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'user_id');
 				$no_view = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'no_view');
@@ -1279,7 +1280,7 @@ class Home extends BaseController {
 						$user_agent = $_SERVER['HTTP_USER_AGENT'];
 						$from = 0;
 						if($expiry_date > date('Y-m-d')){
-							if($this->Crud->check3('page', $promo_uri, 'ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
+							if($this->Crud->check2('ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
 									$i_data['code'] = $promo_code;
 									$i_data['user_id'] = $business_id;
@@ -1291,8 +1292,11 @@ class Home extends BaseController {
 									$in = $this->Crud->updates('id', $id, 'promotion_metric', array('view'=>(int)$view + 1));
 								}
 
+								$content = 'You have a new Click for the Listing you Promoted';
+								$this->Crud->notify($from, $business_id, $content, 'Listing Promotion', $in);
+
 								$content = 'You have a new View for your Listing';
-								$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
+								$this->Crud->notify($from, $owner_id, $content, 'Business Listing ', $page_id);
 
 								//Pay Promoters
 								if($view <= $per_view){
@@ -1316,12 +1320,12 @@ class Home extends BaseController {
 									$v_ins['reg_date'] = date(fdate);
 									$w_id = $this->Crud->create('wallet', $v_ins);
 
-									$content = 'You have a new View for your Listing';
-									$this->Crud->notify($from, $business_id, $content, 'Listing', $in);
+									$content = 'You have an earning on the business listing you promoted';
+									$this->Crud->notify($from, $business_id, $content, 'Listing', $w_id);
 
 									//Make Payment to Viewers if Logged In
 									if(!empty($log_id)){
-										if($log_id != $business_id){
+										if($log_id != $business_id && $log_id != $owner_id){
 											$v_ins['user_id'] = $log_id;
 											$v_ins['type'] = 'credit';
 											$v_ins['amount'] = $pays;
@@ -1334,8 +1338,8 @@ class Home extends BaseController {
 											$v_ins['reg_date'] = date(fdate);
 											$w_id = $this->Crud->create('wallet', $v_ins);
 
-											$content = 'You have a new View for your Listing';
-											$this->Crud->notify($from, $log_id, $content, 'Listing', $in);
+											$content = 'You have an earning for Viewing a Promoted Listing';
+											$this->Crud->notify($from, $log_id, $content, 'Listing', $w_id);
 										}
 									}
 
@@ -1375,7 +1379,7 @@ class Home extends BaseController {
 											// $w_id = $this->Crud->create('wallet', $v_ins);
 									}
 								}
-
+								// die;
 								return '<script>window.location.replace("'.site_url($uri).'");</script>';
 							} else{
 								return '<script>window.location.replace("'.site_url($uri).'");</script>';

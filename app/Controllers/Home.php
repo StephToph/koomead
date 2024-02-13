@@ -1212,7 +1212,7 @@ class Home extends BaseController {
         ];
 
 		if($this->Crud->check3('ip_address', $ipAddress, 'page', $uri, 'code', $code, 'listing_view') == 0){
-			// $this->Crud->create('listing_view', $data);
+			$this->Crud->create('listing_view', $data);
 		}
        return json_encode($data);
     }
@@ -1238,14 +1238,10 @@ class Home extends BaseController {
 		
 		$data['link_preview'] = '';
 		
-		if($param1 == 'promo_check'){
-			$business_id = $this->request->getPost('business_id');
-			$promo_code = $this->request->getPost('promo_code');
-			if(!empty($param2)){
-				if($this->Crud->check('code', $param2, 'business_promotion') > 0){
-					$this->save_promo();
-				}
-			}
+		if(!empty($param1) && !empty($param2)){
+			$business_id = $param1;
+			$promo_code = $param2;
+			
 			if(!empty($business_id) && !empty($promo_code)){
 				
 				$page_id = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'listing_id');
@@ -1263,7 +1259,7 @@ class Home extends BaseController {
 				$view = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'view');
 				$id = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'id');
 				$uri = 'home/listing/view/'.$page_id;
-				$promo_uri = 'home/promotion/promo_check/'.$promo_code;
+				$promo_uri = 'home/promotion/'.$business_id.'/'.$promo_code;
 				$ipAddress = $this->request->getIPAddress();
 				$request = service('request');
 				$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
@@ -1319,11 +1315,14 @@ class Home extends BaseController {
 									$v_ins['state_id'] = $state_id;
 									$v_ins['remark'] = 'Promoter Business Listing Promotion Earning';
 									$v_ins['reg_date'] = date(fdate);
-									$w_id = $this->Crud->create('wallet', $v_ins);
+									$wa_id = $this->Crud->create('wallet', $v_ins);
+									
+									if($wa_id > 0){
+										$content = 'You have an earning on the business listing you promoted';
+										$this->Crud->notify($from, $business_id, $content, 'Listing', $wa_id);
 
-									$content = 'You have an earning on the business listing you promoted';
-									$this->Crud->notify($from, $business_id, $content, 'Listing', $w_id);
-
+									}
+									
 									//Make Payment to Viewers if Logged In
 									if(!empty($log_id)){
 										if($log_id != $business_id && $log_id != $owner_id){
@@ -1380,14 +1379,21 @@ class Home extends BaseController {
 											// $w_id = $this->Crud->create('wallet', $v_ins);
 									}
 								}
+
+								if(!empty($promo_code)){
+									if($this->Crud->check('code', $promo_code, 'business_promotion') > 0){
+										if($this->Crud->check('id', $business_id, 'user') > 0)$this->save_promo();
+									}
+								}
 								// die;
-								// return '<script>window.location.replace("'.site_url($uri).'");</script>';
+								return '<script>window.location.replace("'.site_url($uri).'");</script>';
 							} else{
-								// return '<script>window.location.replace("'.site_url($uri).'");</script>';
+								
+								return '<script>window.location.replace("'.site_url($uri).'");</script>';
 							}
 
 						} else{
-							// return '<script>window.location.replace("'.site_url($uri).'");</script>';
+							return '<script>window.location.replace("'.site_url($uri).'");</script>';
 						}
 						//Check if there is blance and pay back the balance to the advertiser
 						if($expiry_date <= date('Y-m-d')){
@@ -1425,7 +1431,7 @@ class Home extends BaseController {
 							}
 						}
 					} else {
-						// return '<script>window.location.replace("'.site_url($uri).'");</script>';
+						return '<script>window.location.replace("'.site_url($uri).'");</script>';
 					}
 				} else {
 					return '<script>window.location.replace("'.site_url($uri).'");</script>';

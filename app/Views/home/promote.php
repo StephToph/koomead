@@ -445,7 +445,7 @@
    
 <script>
     $(function() {
-        load();
+        // load();
     });
     function load() {
         

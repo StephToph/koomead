@@ -445,7 +445,7 @@
    
 <script>
     $(function() {
-        load();
+        // load();
     });
     function load() {
         
@@ -458,7 +458,7 @@
             data: { promo_code: promo_code,business_id: business_id},
             success: function (data) {
                 
-                    $('#load_data').html(data);
+                $('#load_data').html(data);
             }
         });
     }

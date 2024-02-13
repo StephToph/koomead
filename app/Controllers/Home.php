@@ -1238,14 +1238,10 @@ class Home extends BaseController {
 		
 		$data['link_preview'] = '';
 		
-		if($param1 == 'promo_check'){
-			$business_id = $this->request->getPost('business_id');
-			$promo_code = $this->request->getPost('promo_code');
-			if(!empty($param2)){
-				if($this->Crud->check('code', $param2, 'business_promotion') > 0){
-					$this->save_promo();
-				}
-			}
+		if(!empty($param1) && !empty($param2)){
+			$business_id = $param1;
+			$promo_code = $param2;
+			
 			if(!empty($business_id) && !empty($promo_code)){
 				
 				$page_id = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'listing_id');
@@ -1264,21 +1260,24 @@ class Home extends BaseController {
 				$id = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'id');
 				$uri = 'home/listing/view/'.$page_id;
 				$promo_uri = 'home/promotion/'.$business_id.'/'.$promo_code;
-
+				$ipAddress = $this->request->getIPAddress();
+				$request = service('request');
+				$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
 				
+				// Extract the original client's IP address from the list
+				$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
+				$user_agent = $_SERVER['HTTP_USER_AGENT'];
+				
+
 				if($this->Crud->check('id', $business_id, 'user') > 0){
+					
 					if($this->Crud->check2('code', $promo_code, 'status', 0, 'business_promotion') > 0){
-						$ipAddress = $this->request->getIPAddress();
-						$request = service('request');
-						$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
-						
-						// Extract the original client's IP address from the list
-						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
-						$user_agent = $_SERVER['HTTP_USER_AGENT'];
 						
 						$from = 0;
 						if($expiry_date > date('Y-m-d')){
-							if($this->Crud->check2('ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
+							
+							if($this->Crud->check3('page', $promo_uri, 'ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
+								
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
 									$i_data['code'] = $promo_code;
 									$i_data['user_id'] = $business_id;
@@ -1295,7 +1294,7 @@ class Home extends BaseController {
 
 								$content = 'You have a new View for your Listing';
 								$this->Crud->notify($from, $owner_id, $content, 'Business Listing ', $page_id);
-
+								
 								//Pay Promoters
 								if($view <= $per_view){
 									
@@ -1316,11 +1315,14 @@ class Home extends BaseController {
 									$v_ins['state_id'] = $state_id;
 									$v_ins['remark'] = 'Promoter Business Listing Promotion Earning';
 									$v_ins['reg_date'] = date(fdate);
-									$w_id = $this->Crud->create('wallet', $v_ins);
+									$wa_id = $this->Crud->create('wallet', $v_ins);
+									
+									if($wa_id > 0){
+										$content = 'You have an earning on the business listing you promoted';
+										$this->Crud->notify($from, $business_id, $content, 'Listing', $wa_id);
 
-									$content = 'You have an earning on the business listing you promoted';
-									$this->Crud->notify($from, $business_id, $content, 'Listing', $w_id);
-
+									}
+									
 									//Make Payment to Viewers if Logged In
 									if(!empty($log_id)){
 										if($log_id != $business_id && $log_id != $owner_id){
@@ -1377,9 +1379,16 @@ class Home extends BaseController {
 											// $w_id = $this->Crud->create('wallet', $v_ins);
 									}
 								}
+
+								if(!empty($promo_code)){
+									if($this->Crud->check('code', $promo_code, 'business_promotion') > 0){
+										if($this->Crud->check('id', $business_id, 'user') > 0)$this->save_promo();
+									}
+								}
 								// die;
 								return '<script>window.location.replace("'.site_url($uri).'");</script>';
 							} else{
+								
 								return '<script>window.location.replace("'.site_url($uri).'");</script>';
 							}
 

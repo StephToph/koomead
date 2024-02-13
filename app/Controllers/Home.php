@@ -1275,11 +1275,11 @@ class Home extends BaseController {
 						$request = service('request');
 						$xForwardedFor = $request->getHeader('HTTP_X_FORWARDED_FOR');
 						// Extract the original client's IP address from the list
-						$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
+						$ipAddress = $_SERVER['REMOTE_ADDR'];
 						$user_agent = $_SERVER['HTTP_USER_AGENT'];
 						$from = 0;
 						if($expiry_date > date('Y-m-d')){
-							if($this->Crud->check3('user_agent', $user_agent, 'ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
+							if($this->Crud->check3('page', $promo_uri, 'ip_address', $ipAddress, 'code', $promo_code, 'listing_view') == 0){
 								if($this->Crud->check2('code', $promo_code, 'user_id', $business_id, 'promotion_metric') == 0){
 									$i_data['code'] = $promo_code;
 									$i_data['user_id'] = $business_id;

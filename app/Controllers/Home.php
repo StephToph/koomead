@@ -933,11 +933,7 @@ class Home extends BaseController {
 								}
 							}
 
-						} else {
-							$promote = '
-									<span class="float-end tolt" style="float:right" data-microtip-position="top-left"  data-tooltip="Promote"><a href="javascript:;" pageSize="modal-xl" pageName="'.site_url('auth/login').'" class="text-primary small pop"><i class="fas fa-bullhorn"></i> Promote </a></span>
-								';
-						}
+						} 
 
 						$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-signal"></i></a>';
 						if($active > 0)$act = '<a href="javascript:;" class="pop tolt"  pageTitle="Disable '.$name.' Record" pageName="'.site_url('listing/index/manage/disable/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Disable"><i class="far fa-signal-alt-slash"></i></a>';

@@ -417,20 +417,22 @@ class Listing extends BaseController {
 												<div class="geodir-category-location mb-3">
 													<a href="javascript:;"><i class="fal fa-list-alt"></i> <span>'.$category.'&#8594; <b>'.$mains.'</b></span></a>
 												</div><br>
-												<div class="geodir-category-location mb-2">
+												<div class="geodir-category-location mb-1">
 													<a href="javascript:;"><i class="fas fa-map-marker-alt"></i> <span> '.$loca.'</span></a>
 												</div>
 												
 												'.$users.'
-												<div class="clearfix"></div>
-												<div class="dashboard-listings-item_opt text-center">
+												<div class="clearfix"></div><div style="height:70px">
+												<div class="dashboard-listings-item_opt text-center my-3" style="bottom:35px;">
 													<span class="viewed-counter"><i class="fas fa-eye"></i> Viewed -  '.$view.' </span>
-													<span class="viewed-counter"><i class="fas fa-ad"></i> Promotion -  '.$promote.' </span>
+													<span class="viewed-counter mb-2"><i class="fas fa-ad"></i> Promotion -  '.$promote.' </span>
+													<br>
 													<ul>
 														<li><a href="'.site_url('listing/index/edit/'.$id).'" class="tolt" data-microtip-position="top-left"  data-tooltip="Edit"><i class="far fa-edit"></i></a></li>'.$ad.'
 														<li>'.$act.'</li>
 														<li><a href="javascript:;" class="pop tolt"  pageTitle="Delete '.$name.' Record" pageName="'.site_url('listing/index/manage/delete/'.$id).'" pageSize="modal-sm" data-microtip-position="top-left"  data-tooltip="Delete"><i class="far fa-trash-alt"></i></a></li>
 													</ul>
+												</div>
 												</div>
 											</div>
 										</div>

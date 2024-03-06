@@ -28,7 +28,9 @@
                 
                 <div class="dasboard-opt sl-opt fl-wrap float-end">
                     <span class="font-weight-bold float-start p-3 font-size-14">You have <span id="listCount"> 0</span> listing(s)</span>
-                    <a href="<?=site_url('listing/index/add');?>" class="btn btn-primary float-end">Add New <i class="fal fa-plus"></i></a>	
+                    <?php if($role != 'administrator'){?>
+                        <a href="<?=site_url('listing/index/add');?>" class="btn btn-primary float-end">Add New <i class="fal fa-plus"></i></a>	
+                    <?php } ?>
                 </div>
                 <div class="dasboard-opt sl-opt fl-wrap">
                     <div class="dashboard-search-listing">

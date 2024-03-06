@@ -29,7 +29,7 @@
                 
                 <div class="dasboard-opt sl-opt fl-wrap float-end">
                     <span class="font-weight-bold float-start p-3 font-size-14">You have <span id="listCount"> 0</span> promotion(s)</span>
-                    <a href="javascript:;" pageName="<?=site_url('listing/index/manage/promote/'.$param2);?>" pageTitle="Add" class="btn btn-primary pop float-end" pageSize="modal-lg">Add New <i class="fal fa-plus"></i></a>	
+                    <a href="javascript:;" pageName="<?=site_url('listing/index/manage/promote/'.$param2);?>" pageTitle="Promote" class="btn btn-primary pop float-end" pageSize="modal-lg">Promote <i class="fal fa-plus"></i></a>	
                 </div>
                 <div class="dasboard-opt sl-opt fl-wrap">
                     <div class="dashboard-search-listing">

@@ -136,7 +136,7 @@ $this->Crud = new Crud();
                                 }
                                 $bal = $credit - $debit;
                             }
-                            $curr = '£';
+                            $curr = '&#8358;';
                             if($country_id == 161)$curr = ' ₦';
 						
 
@@ -195,7 +195,7 @@ $this->Crud = new Crud();
                                 }
                                 $bal = $credit - $debit;
                             }
-                            $curr = '£';
+                            $curr = '&#8358;';
                             if($country_id == 161)$curr = ' ₦';
 						
 

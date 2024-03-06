@@ -37,11 +37,8 @@ class Auth extends BaseController {
                         $this->session->set('km_location', '');
                         echo $this->Crud->msg('success', 'Login Successful!');
                         $this->session->set('km_id', $user_id);
-                        if($redir == ''){
-                            $redirs = 'dashboard';
-                        } else {
-                            $redirs = $redir;
-                        }
+                        $redirs = 'dashboard';
+                        
                         echo '<script>window.location.replace("'.site_url($redirs).'");</script>';
 
                     }

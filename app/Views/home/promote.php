@@ -57,7 +57,7 @@
             if(!empty($state_id)) $loca .= ', '.$state;
             if(!empty($country_id)) $loca .= ', '.$country;
             $main_img = $image[0];
-            $cur = '£';
+            $cur = '&#8358;';
             if($country_id == '161')$cur = '&#8358;';
 
             $prices = '<span>'.$cur.'</span>'.number_format($price,2);

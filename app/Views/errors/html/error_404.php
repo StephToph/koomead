@@ -150,7 +150,7 @@
                             if(!empty($log_id)){
                                 $country = $this->Crud->read_field('id', $log_id, 'user', 'country_id'); 
                                 if($country != 161){
-                                    $cur = '£';
+                                    $cur = '&#8358;';
                                     $sel = 'class="current-lan"';
                                 }
                             }

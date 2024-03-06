@@ -48,7 +48,7 @@
             </div>
             <div class="col-sm-12 text-center">
                 <button class="btn btn-danger text-uppercase" type="submit">
-                    <i class="fal fa-trash"></i> Yes - Delete
+                    <i class="fal fa-trash"></i> Yes - Disable
                 </button>
             </div>
         </div>

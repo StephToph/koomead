@@ -26,16 +26,7 @@
         </div>
         <div class="dasboard-wrapper fl-wrap">
             <div class="dasboard-listing-box fl-wrap">
-                <div class="dasboard-opt sl-opt fl-wrap">
-                    <div class="dashboard-search-listing">
-                        <input type="text" onclick="this.select()" id="search" oninput="load()" placeholder="Search" value="">
-                        <button type="submit"><i class="far fa-search"></i></button>
-                    </div>
-                    
-                  
-                  
-
-                </div>
+                
                 <div  class="row mb-3 pt-3">
                     <div  class="geodir-category-content fl-wrap">
                         <div class="row">

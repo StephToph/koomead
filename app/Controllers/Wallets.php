@@ -116,7 +116,7 @@ class Wallets extends BaseController {
 							$this->session->set('km_wallet_id', '');
 							///// store activities
 							$by = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
-							$action = $by.' Funded Wallet with £'.number_format((float)$amount).' ';
+							$action = $by.' Funded Wallet with &#8358;'.number_format((float)$amount).' ';
 							$this->Crud->activity('wallet', $w_id, $action);
 							$redir = 'wallets/list';
 							echo '<script>window.location.replace("'.site_url($redir).'");</script>';

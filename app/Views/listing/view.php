@@ -94,7 +94,7 @@
                                     </div>
                                     <?php
                                          $country = $this->Crud->read_field('id', $param2, 'listing', 'country_id');
-                                         $cur = '£';
+                                         $cur = '&#8358;';
                                          if($country == 161)$cur = ' ₦';
                                     ?>
                                     <div class="list-single-header-footer fl-wrap">

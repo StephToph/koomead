@@ -57,7 +57,7 @@
             if(!empty($city_id)) $loca .= $city;
             if(!empty($state_id)) $loca .= ', '.$state;
             if(!empty($country_id)) $loca .= ', '.$country;
-            $cur = '£';
+            $cur = '&#8358;';
             if($country_id == '161')$cur = '&#8358;';
 
             $prices = '<span>'.$cur.'</span>'.number_format($price,2);
@@ -209,7 +209,7 @@
                                                 $view = $this->Crud->read_field('id', $p->promotion_id, 'promotion', 'view');
                                                 $p_amount = (int)$p->amount * 0.336;
                                                 $p_view = $p->no_view / $promoter_no;
-                                                $cur = '£';
+                                                $cur = '&#8358;';
                                                 if($this->Crud->check2('id', $p->listing_id, 'country_id', '161', 'listing') > 0)$cur = '₦';
                                                 
                                                 if($this->Crud->check2('applicant_id', $log_id, 'code', $p->code, 'application') == 0){
@@ -224,7 +224,7 @@
                                                     <div class="pricing-header">
                                                         <h3><span><?=$count; ?>.</span><?=$p_name; ?></h3>
                                                         <div class="price-num price-item fl-wrap">
-                                                            <div class="price-num-item"><span class="mouth-cont"><span class="curen"><?=$cur; ?></span><?=(int)$p_amount; ?></span><span class="year-cont"><span class="curen">£</span></span></div>
+                                                            <div class="price-num-item"><span class="mouth-cont"><span class="curen"><?=$cur; ?></span><?=(int)$p_amount; ?></span><span class="year-cont"><span class="curen">&#8358;</span></span></div>
                                                             <div class="price-num-desc"><span class="mouth-cont">For  <?=$p_view; ?> Views</span></div>
                                                         </div>
                                                         <p>Promote Business Listing on your Social Platforms and Earn  </p>

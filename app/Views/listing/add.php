@@ -102,8 +102,8 @@
                                 </div>
                             </div>
                         <?php } ?>
-                        <div class=" col-sm-4 mb-3">
-                            <label>State *</label>
+                        <div class=" col-sm-6 mb-3">
+                            <label>Listing State *</label>
                             <div class="form-group">
                                 <div id="states_id">
                                     <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 select2 form-select form-control" onchange="get_city();">
@@ -133,7 +133,7 @@
                         </div>
                         
                         
-                        <div class="col-sm-4  mb-3">
+                        <div class="col-sm-6  mb-3">
                             <div class="form-group">		 
                                 <label>Listing Price  </label>
                                 <input type="text" name="price" class="form-control" placeholder="Listing Price"  value="<?php if(!empty($e_price)){echo $e_price;} ?>"/>

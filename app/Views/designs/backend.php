@@ -99,7 +99,7 @@
             <!--  login btn  end -->
             <!--  dashboard-submenu-->
             <div class="dashboard-submenu">
-                <div class="dashboard-submenu-title fl-wrap">Welcome , <span><?=$log_name; ?></span></div>
+                <div class="dashboard-submenu-title fl-wrap" >Welcome , <span><?=$log_name; ?></span></div>
                 <ul>
                     <li><a href="<?=site_url('dashboard'); ?>"><i class="fal fa-chart-line"></i>Dashboard</a></li>
                     <li><a href="<?=site_url('listing/index/add'); ?>"> <i class="fal fa-file-plus"></i>Add Listing</a></li>

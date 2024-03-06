@@ -81,7 +81,7 @@ class Home extends BaseController {
 			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = ''; }
 			if(!empty($this->request->getPost('sub_id'))) { $sub_id = $this->request->getPost('sub_id'); } else { $sub_id = ''; }
 			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = ''; }
-            $cur = '£';
+            $cur = '&#8358;';
             if($country_id == '161')$cur = '&#8358;';
 
 			
@@ -299,7 +299,7 @@ class Home extends BaseController {
 						$active = $q->active;
 						$images = $q->images;
 						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
-						$cur = '£';
+						$cur = '&#8358;';
             			if($country_id == '161')$cur = '&#8358;';
 
 						$images = json_decode($images);
@@ -1022,7 +1022,7 @@ class Home extends BaseController {
 			
 			if(!empty($this->request->getPost('country_id'))) { $country_id = $this->request->getPost('country_id'); } else { $country_id = ''; }
 			
-			$cur = '£';
+			$cur = '&#8358;';
             if($country_id == '161')$cur = '&#8358;';
 
 			

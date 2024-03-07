@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-md-7">
                     <div class="dasboard-widget-title fl-wrap">
-                        <h5><i class="fas fa-user-circle"></i>Change Avatar</h5>
+                        <h5><i class="fas fa-user-circle"></i>Profile Picture</h5>
                     </div>
                     
                     <?php echo form_open_multipart('profile/index/update', array('id'=>'bb_ajax_form', 'class'=>'')); ?>
@@ -47,7 +47,7 @@
                         </div>
                         <div class="change-photo-btn cpb-2  mt-3" style="left:0px;">
                             <div class="photoUpload color-bg">
-                                <span> <i class="far fa-camera"></i> Change Profile Photo </span>
+                                <span> <i class="far fa-camera"></i> Profile Photo </span>
                                 <input type="file" class="upload" name="pics" id="img-upload">
                             </div>
                             
@@ -55,7 +55,7 @@
 
                         <div class="change-photo-btn cpb-2  float-start">
                             <div class="photoUpload color-bg">
-                                <span> <i class="far fa-camera"></i> Change Profile Cover </span>
+                                <span> <i class="far fa-camera"></i> Profile Cover </span>
                                 <input type="file" class="upload" name="back_pics" id="back_img-upload">
                             </div>
                             

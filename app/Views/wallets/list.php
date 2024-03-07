@@ -31,7 +31,6 @@
                     <div  class="geodir-category-content fl-wrap">
                         <div class="row">
                             <div class="col-sm-2 mb-3">
-                                <a href="javascript:;" pageTitle="Add New" onclick="$('#filter_box').toggle();" class="btn btn-block btn-info float-">Filter <i class="fal fa-filter"></i></a>	
                                 
                             </div>
                             <div class="col-sm-10 mb-3">
@@ -46,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="filter_box" class="row mb-3 pt-3" style="display:none;">
+                <div id="filter_box" class="row mb-3 pt-3" style="display:block;">
                     <div  class="geodir-category-content fl-wrap">
                         <div class="col-12 col-sm-6 mb-2">
                             <div class="row">

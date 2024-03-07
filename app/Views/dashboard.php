@@ -22,11 +22,16 @@
                         <h4>Welcome, <span><?=$log_name;?></span></h4>
                     </div>
                     <a href="<?=site_url('auth/logout');?>" class="log-out-btn   tolt" data-microtip-position="bottom"  data-tooltip="Log Out"><i class="far fa-power-off"></i></a>
+                    
                 </div>
                 
                 				
             </div>
+           
             <div class="row">
+                <div class="col-sm-12 py-2 d-sm-none" style="text-align:right;">
+                    <h5>Welcome, <span><?=$log_name;?></span></h5>
+                </div>
                 <div class="col-sm-12" style="text-align:right;">
                     <input type="hidden" id="date_type">
 

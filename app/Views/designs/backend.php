@@ -390,7 +390,7 @@
         $notify = $this->Crud->read2('to_id', $log_id, 'new', 1, 'notify');
         if(!empty($notify)){?>
             $(function() {
-                plays();
+                // plays();
             });
         <?php }?>
     </script>

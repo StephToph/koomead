@@ -1253,9 +1253,11 @@ class Home extends BaseController {
 				$amount = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'amount');
 				$is_bal = $this->Crud->read_field('code', $promo_code, 'business_promotion', 'is_bal');
 				$per_view = (int)$no_view / (int)$promoter_no;
-				$amounts = (int)$amount * 33.34;
-				$per_amount = (int)$amounts;
-				$per_amounts = (int)$amount * 16.67;
+				$promote_share = (float)$this->Crud->read_field('name', 'promoter_share', 'setting', 'value') / 100;
+				$viewer_share = (float)$this->Crud->read_field('name', 'viewer_share', 'setting', 'value') / 100;
+				// $amounts = (int)$amount * 33.34;
+				$per_amount = (float)$amount * (float)$promote_share;  //Promoter Sharre
+				$per_amounts = (float)$amount * (float)$viewer_share; //Viewer Share
 				$view = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'view');
 				$id = $this->Crud->read_field2('code', $promo_code, 'user_id', $business_id, 'promotion_metric', 'id');
 				$uri = 'home/listing/view/'.$page_id;

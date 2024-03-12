@@ -646,7 +646,9 @@ class Listing extends BaseController {
 								$admin_id = $this->Crud->read_field('email', 'admin@mail.com', 'user', 'id');
 								$v_ins['user_id'] = $admin_id;
 								$v_ins['type'] = 'credit';
-								$v_ins['amount'] = ((float)$amount * 50)/100;
+								$admin_share = $this->Crud->read_field('name', 'admin_share', 'setting', 'value');
+								$admin_pay = ((float)$admin_share / 100);
+								$v_ins['amount'] = (float)$amount * (float)$admin_pay;
 								$v_ins['wallet_type'] = 'promotion';
 								$v_ins['item'] = 'listing';
 								$v_ins['item_id'] = $ins_rec;

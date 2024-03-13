@@ -255,12 +255,14 @@
                                     </li>
                                 </ul>
                             </li>
-
-                            <li class="<?php if($page_active=='app') {echo 'user-profile-act';} ?>">
-                                <a href="<?php echo site_url('settings/app'); ?>"><i class="fas fa-user-cog"></i> App Settings
-                                </a>
-                            </li>
                             <?php } ?>
+                            <?php if($log_role == 'developer' || $log_role == 'administrator') { ?> 
+                                <li class="<?php if($page_active=='app') {echo 'user-profile-act';} ?>">
+                                    <a href="<?php echo site_url('settings/app'); ?>"><i class="fas fa-user-cog"></i> App Settings
+                                    </a>
+                                </li>
+                            <?php } ?>
+                           
                             
                             <li><a href="<?php echo site_url(); ?>"><i class="fal fa-home-lg-alt"></i> Web View</a></li>
                         </ul>

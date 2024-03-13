@@ -41,9 +41,14 @@
                                 <?php 
                                     if(!empty($settings)) {
                                         foreach($settings as $s) {
+                                            if($role != 'developer'){
+                                                if($s->name != 'Admin_share' && $s->name != 'Promoter_share' && $s->name != 'Viewer_share'  && $s->name != 'Sandbox'){
+                                                    continue;
+                                                }
+                                            }
                                             echo '
                                                 <tr>
-                                                    <td>'.ucwords($s->name).'</td>
+                                                    <td>'.ucwords(str_replace('_',' ',$s->name)).'</td>
                                                     <td>
                                                         <input id="value'.$s->id.'" type="text" value="'.$s->value.'" class="form-control" oninput="update_app('.$s->id.');" />
                                                     </td>

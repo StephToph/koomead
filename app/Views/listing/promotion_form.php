@@ -49,6 +49,14 @@
                             
                             ';
                         }
+                    } else{
+                        echo '
+                                <tr>
+                                    <td colspan="2" class="text-center">No View</td>
+                                        
+                                </tr>
+                            
+                            ';
                     }
 
                 ?>
@@ -73,12 +81,6 @@
                 </div>
             </div>
 
-            <div class="col-sm-6 mb-3">
-                <div class="form-group">
-                    <label for="commission">UK Price <span class="dec-icon"><i class="far fa-location"></i></span></label>
-                    <input class="form-control" type="text" id="price" name="price" value="<?php if(!empty($e_price)) { echo $e_price; } ?>" required>
-                </div>
-            </div>
 
             <div class="col-sm-6 mb-3">
                 <div class="form-group">

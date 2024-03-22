@@ -753,7 +753,7 @@ class Home extends BaseController {
 					$item = 'message';$items = 'message';
 					$this->Crud->notify($log_id, $business_id, $content, $item, $listing_id);
 					$this->Crud->activity($items, $ins_rec, $action);
-					echo $this->Crud->msg('success', 'Message Sent!<br><a href="'.site_url('message').'">Click to view Message Board</a>');
+					echo $this->Crud->msg('success', 'Message Sent!<br><a class="text-white fw-bold" href="'.site_url('message').'">Click to view Message Board</a>');
 					echo '<script>$("#message").val(" ");</script>';
 				} else {
 					echo $this->Crud->msg('warning', 'Message Not Sent.<br>Try Again.');

@@ -41,8 +41,8 @@
                                 <?php 
                                     if(!empty($settings)) {
                                         foreach($settings as $s) {
-                                            if($role != 'developer' && $role != 'administrator'){
-                                                if($s->name != 'Admin_share' && $s->name != 'Promoter_share' && $s->name != 'Viewer_share'  && $s->name != 'Sandbox'){
+                                            if($role != 'developer'){
+                                                if($s->name != 'admin_share' && $s->name != 'promoter_share' && $s->name != 'viewer_share'  && $s->name != 'sandbox'){
                                                     continue;
                                                 }
                                             }

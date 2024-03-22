@@ -490,7 +490,7 @@ class Message extends BaseController {
 				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
 			} else {
 				$code = $this->request->getPost('code');
-
+				// $ite = '';
 				$query = $this->Crud->read_single_order('code', $code, 'km_message', 'id', 'asc');
 				$counts = count($query);
 				$count = 0;
@@ -520,24 +520,12 @@ class Message extends BaseController {
 						$receiver = $this->Crud->read_field('id', $receiver_id, 'user', 'fullname');
 						$receiver_img = $this->Crud->read_field('id', $receiver_id, 'user', 'img_id');
 						if(empty($receiver_img))$receiver_img = 'assets/images/avatar.png';
-
-						if($sender_id == $log_id){
-							$ite = '
-							<div class="chat-message chat-message_user fl-wrap" id="chats_'.$i.'">
-								<div class="dashboard-message-avatar">
-									<img src="'.site_url($sender_img).'" alt="">
-									<span class="chat-message-user-name cmun_sm">'.ucwords($sender).'</span>
-								</div>
-								<span class="massage-date">'.date('d F Y', strtotime($q->reg_date)).'  <span>'.date('h:i A', strtotime($q->reg_date)).' </span></span>
-								<p>'.$message.'</p>
-							</div>
-							
-							';
-						}
-
-						if($receiver_id == $log_id){
-							$ite = '
-								<div class="chat-message   fl-wrap" id="chats_'.$i.'">
+					
+						$ite = '';
+						if($role == 'developer' || $role == 'administrator'){
+							if($sender_id == $log_id){
+								$ite = '
+								<div class="chat-message chat-message_user fl-wrap" id="chats_'.$i.'">
 									<div class="dashboard-message-avatar">
 										<img src="'.site_url($sender_img).'" alt="">
 										<span class="chat-message-user-name cmun_sm">'.ucwords($sender).'</span>
@@ -545,8 +533,65 @@ class Message extends BaseController {
 									<span class="massage-date">'.date('d F Y', strtotime($q->reg_date)).'  <span>'.date('h:i A', strtotime($q->reg_date)).' </span></span>
 									<p>'.$message.'</p>
 								</div>
-							
-							';
+								
+								';
+							} else {
+								if($sender_id){
+									$ite = '
+									<div class="chat-message chat-message_user fl-wrap" id="chats_'.$i.'">
+										<div class="dashboard-message-avatar">
+											<img src="'.site_url($sender_img).'" alt="">
+											<span class="chat-message-user-name cmun_sm">'.ucwords($sender).'</span>
+										</div>
+										<span class="massage-date">'.date('d F Y', strtotime($q->reg_date)).'  <span>'.date('h:i A', strtotime($q->reg_date)).' </span></span>
+										<p>'.$message.'</p>
+									</div>
+									
+									';
+								}
+							}
+	
+							if($receiver_id){
+								$ite = '
+									<div class="chat-message   fl-wrap" id="chats_'.$i.'">
+										<div class="dashboard-message-avatar">
+											<img src="'.site_url($sender_img).'" alt="">
+											<span class="chat-message-user-name cmun_sm">'.ucwords($sender).'</span>
+										</div>
+										<span class="massage-date">'.date('d F Y', strtotime($q->reg_date)).'  <span>'.date('h:i A', strtotime($q->reg_date)).' </span></span>
+										<p>'.$message.'</p>
+									</div>
+								
+								';
+							}
+						} else {
+							if($sender_id == $log_id){
+								$ite = '
+								<div class="chat-message chat-message_user fl-wrap" id="chats_'.$i.'">
+									<div class="dashboard-message-avatar">
+										<img src="'.site_url($sender_img).'" alt="">
+										<span class="chat-message-user-name cmun_sm">'.ucwords($sender).'</span>
+									</div>
+									<span class="massage-date">'.date('d F Y', strtotime($q->reg_date)).'  <span>'.date('h:i A', strtotime($q->reg_date)).' </span></span>
+									<p>'.$message.'</p>
+								</div>
+								
+								';
+							}
+	
+							if($receiver_id == $log_id){
+								$ite = '
+									<div class="chat-message   fl-wrap" id="chats_'.$i.'">
+										<div class="dashboard-message-avatar">
+											<img src="'.site_url($sender_img).'" alt="">
+											<span class="chat-message-user-name cmun_sm">'.ucwords($sender).'</span>
+										</div>
+										<span class="massage-date">'.date('d F Y', strtotime($q->reg_date)).'  <span>'.date('h:i A', strtotime($q->reg_date)).' </span></span>
+										<p>'.$message.'</p>
+									</div>
+								
+								';
+							}
 						}
 
 						$item .= $ite.'

@@ -55,13 +55,6 @@
 
             <div class="col-sm-6 mb-3">
                 <div class="form-group">
-                    <label for="commission">UK Price <span class="dec-icon"><i class="far fa-location"></i></span></label>
-                    <input class="form-control" type="text" id="price" name="price" value="<?php if(!empty($e_price)) { echo $e_price; } ?>" required>
-                </div>
-            </div>
-
-            <div class="col-sm-6 mb-3">
-                <div class="form-group">
                     <label for="commission">Nigeria Price <span class="dec-icon"><i class="far fa-location"></i></span></label>
                     <input class="form-control" type="text" id="nig_price" name="nig_price" value="<?php if(!empty($e_nig_price)) { echo $e_nig_price; } ?>" required>
                 </div>

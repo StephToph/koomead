@@ -521,15 +521,9 @@ class Listing extends BaseController {
 					$resp['no_view'] = $p->view;
 					$resp['duration'] = $p->duration;
 					$resp['expiry_date'] = date("Y-m-d H:i:s", strtotime("+$p->duration days", strtotime(date("Y-m-d H:i:s"))));
-					if($country == 161){
-						$resp['amount'] = $p->nig_amount;
-						$resp['currs'] = '&#8358;';
-
-					} else {
-						$resp['amount'] = $p->amount;
-						$resp['currs'] = '<i class="fal fa-pound-sign"></i>';
-					}
+					$resp['amount'] = $p->nig_amount;
 					
+					$resp['currs'] = '&#8358;';
 				}
 	
 				echo json_encode($resp);

@@ -26,10 +26,40 @@
         </div>
         <div class="dasboard-wrapper fl-wrap">
             <div class="dasboard-listing-box fl-wrap">
-                <?php if($role != 'administrator'){?>
-                    <div  class="row mb-3 pt-3">
-                        <div  class="geodir-category-content fl-wrap">
+                
+                <div class="row mb-3 pt-3" >
+                    <div  class="geodir-category-content fl-wrap">
+                        <div class="col-12 col-sm-6 mb-2">
                             <div class="row">
+                                <div class="col-6 col-sm-6 mb-3"> 
+                                    <input type="date" class="form-control" name="start_date" id="start_date" oninput="loads()" style="border:1px solid #ddd;">
+                                    <label for="name" class="small text-muted">START DATE</label>
+                                </div>
+                                <div class="col-6 col-sm-6 mb-3">
+                                    
+                                    <input type="date" class="form-control" name="end_date" id="end_date" oninput="loads()" style="border:1px solid #ddd;">
+                                    <label for="name" class="small text-muted">END DATE</label>
+                                </div> 
+                            </div>
+                            
+                        </div>
+                       
+                        
+                        <div class="col-12 col-sm-4 mb-2">
+                            <div class="listsearch-input-item">
+                                <select data-placeholder="All Status" id="type" onchange="load('', '')" class="chosen-select no-search-select" >
+                                    <option value="all">All Type</option>
+                                    <option value="credit">Credit</option>
+                                    <option value="debit">Debit</option>
+                                </select>
+                            </div>
+                        </div>
+                        <?php if($role != 'administrator'){?>
+                            <div class="col-12 col-sm-2 mb-2" >
+                                <a href="javascript:;" pageTitle="Add New" style="margin-top:0px;" onclick="$('#filter_box').toggle();" class="btn btn-info btn-block float-e">Filter<i class="fal fa-filter"></i></a>	
+                            </div>
+                            <div class="col-12 row mb-2" id="filter_box" style="display:none;">
+                                
                                 <div class="col-sm-2 mb-3">
                                     
                                 </div>
@@ -42,37 +72,9 @@
                                     <a href="javascript:;" pageTitle="Transfer" pageName="<?=site_url('wallets/list/transfer'); ?>"  class="btn btn-success  mr-3 pop float-">Transfer to Business Wallet <i class="fal fa-money-bill"></i></a>	
                                 
                                 </div> 
+                                
                             </div>
-                        </div>
-                    </div>
-                <?php } ?>
-                <div id="filter_box" class="row mb-3 pt-3" style="display:block;">
-                    <div  class="geodir-category-content fl-wrap">
-                        <div class="col-12 col-sm-6 mb-2">
-                            <div class="row">
-                                <div class="col-6 col-sm-6 mb-3"> <label for="name" class="small text-muted">START DATE</label>
-                                    <input type="date" class="form-control" name="start_date" id="start_date" oninput="loads()" style="border:1px solid #ddd;">
-                                    
-                                </div>
-                                <div class="col-6 col-sm-6 mb-3"><label for="name" class="small text-muted">END DATE</label>
-                                    
-                                    <input type="date" class="form-control" name="end_date" id="end_date" oninput="loads()" style="border:1px solid #ddd;">
-                                </div> 
-                            </div>
-                            
-                        </div>
-                       
-                        
-                        <div class="col-12 col-sm-3 mb-2 mt-2">
-                            <div class="listsearch-input-item">
-                                <select data-placeholder="All Status" id="type" onchange="load('', '')" class="chosen-select no-search-select" >
-                                    <option value="all">All Type</option>
-                                    <option value="credit">Credit</option>
-                                    <option value="debit">Debit</option>
-                                </select>
-                            </div>
-                        </div>
-                        
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="dasboard-opt sl-opt fl-wrap float-end">

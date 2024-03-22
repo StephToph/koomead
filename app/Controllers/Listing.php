@@ -225,10 +225,11 @@ class Listing extends BaseController {
 					// die;
 					
 					// echo $negotiable.' '.$price_status;
+					$state_id = $this->Crud->read_field('id', $log_id, 'user', 'state_id');
 					$p_data['name'] = $title;
 					$p_data['display_status'] = $visible_status;
 					$p_data['display_local'] = json_encode($visible_local);
-					$p_data['state_id'] = $this->Crud->read_field('id', $log_id, 'user', 'state_id');
+					$p_data['state_id'] = $state_id;
 					$p_data['country_id'] = $this->Crud->read_field('id', $state_id, 'state', 'country_id');
 				// 	$p_data['city_id'] = $city_id;
 					$p_data['price'] = $price;

@@ -49,6 +49,14 @@
                             
                             ';
                         }
+                    } else{
+                        echo '
+                                <tr>
+                                    <td colspan="2" class="text-center">No View</td>
+                                        
+                                </tr>
+                            
+                            ';
                     }
 
                 ?>

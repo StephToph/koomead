@@ -419,6 +419,7 @@ class Dashboard extends BaseController {
 				
 				$total_list = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'listing');
 				$list_view = $this->Crud->date_range1($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'listing');
+				$promote_list = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'promote_status', 1, 'user_id', $log_id,  'listing');
 				$active_list = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'active', 1, 'user_id', $log_id, 'listing');
 				$user = 0;
 				
@@ -430,7 +431,8 @@ class Dashboard extends BaseController {
 						$list_views += $view;
 					}
 				}
-
+				$resp['promote_list'] = number_format((float)($promote_list));
+				
 				$resp['total_list'] = number_format((float)($total_list));
 				$resp['list_view'] = number_format((float)($list_view));
 				$resp['active_list'] = number_format((float)($active_list));

@@ -760,12 +760,12 @@ class Listing extends BaseController {
 
 		if($param1 == 'view') {
 			if($param2) {
-				$edit = $this->Crud->read_single('id', $param2, 'business_promotion');
+				$edit = $this->Crud->read_single('promotion_id', $param2, 'application');
 				if(!empty($edit)) {
 					foreach($edit as $e) {
 						$data['d_id'] = $e->id;
 						$data['code'] = $e->code;
-						$data['applicant'] = json_decode($e->applicant);
+						$data['applicant'] = $e->applicant_id;
 					}
 					
 					

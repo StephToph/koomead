@@ -36,7 +36,7 @@
                 <?php
                     // $prom = $this->Crud->read_single('code', $code, 'promotion_metric');
                     if(!empty($applicant)){
-                        foreach($applicant as $p => $val){
+                        $val = $applicant;
                             $user = $this->Crud->read_field('id', $val, 'user', 'fullname');
                             $view = $this->Crud->read_field2('user_id', $val, 'code', $code, 'promotion_metric', 'view');
                             if(empty($view))$view = 0;
@@ -48,7 +48,7 @@
                                 </tr>
                             
                             ';
-                        }
+                        
                     } else{
                         echo '
                                 <tr>

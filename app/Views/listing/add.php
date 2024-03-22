@@ -102,45 +102,15 @@
                                 </div>
                             </div>
                         <?php } ?>
-                        <div class=" col-sm-6 mb-3">
-                            <label>Listing State *</label>
-                            <div class="form-group">
-                                <div id="states_id">
-                                    <select data-placeholder="Select" name="state_id" id="state_id" required  class="mb-2 select2 form-select form-control" onchange="get_city();">
-                                        <option value="">All State</option>
-                                        <?php
-                                            if(!empty($e_country_id)){
-                                                $country_id = $e_country_id;
-                                            } else{
-                                                $country_id = $this->Crud->read_field('id', $log_id, 'user', 'country_id');
-                                           
-                                            }
-                                            $country = $this->Crud->read_single_order('country_id', $country_id, 'state', 'name', 'asc');
-                                            if(!empty($country)){
-                                                foreach($country as $c){
-                                                    $sel ='';
-                                                    if(!empty($e_state_id)){
-                                                        if($e_state_id == $c->id)$sel='selected';
-                                                    }
-                                                    // if($c->name != 'Nigeria' && $c->name != 'United Kingdom')continue;
-                                                    echo '<option value="'.$c->id.'" '.$sel.'>'.$c->name.'</option>';
-                                                }
-                                            }
-                                        ?>
-                                    </select>
-                                </div>  
-                            </div>
-                        </div>
                         
-                        
-                        <div class="col-sm-6  mb-3">
+                        <div class="col-sm-3  mb-3">
                             <div class="form-group">		 
                                 <label>Listing Price  </label>
                                 <input type="text" name="price" class="form-control" placeholder="Listing Price"  value="<?php if(!empty($e_price)){echo $e_price;} ?>"/>
                             </div>
                         </div>
 
-                        <div class="col-sm-8 mb-3">
+                        <div class="col-sm-5 mb-3">
                             <div class="form-group">
                                 <label>Address </label>
                                 <input type="text" name="address" class="form-control" placeholder="Address of your business" value="<?php if(!empty($e_address)){echo $e_address;} ?>"/>
@@ -186,6 +156,12 @@
                             <div class="form-group">
                                 <label> Whatsapp </label>
                                 <input type="text" name="whatsapp"class="form-control"  placeholder="https://whatsapp.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->whatsapp)){echo $e_profile->whatsapp;} ?>"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-group">
+                                <label> Tiktok </label>
+                                <input type="text" name="tiktok"class="form-control"  placeholder="https://whatsapp.com/koomeli" value="<?php if(!empty($e_profile) && !empty($e_profile->tiktok)){echo $e_profile->tiktok;} ?>"/>
                             </div>
                         </div>
                                         

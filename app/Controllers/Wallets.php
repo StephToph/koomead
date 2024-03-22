@@ -401,6 +401,9 @@ class Wallets extends BaseController {
 					}
 					$total = $credit - $debit;$curss = '&#8358;';
 				}
+				
+				if($total <= 0)$total = 0;
+				if($nig_bal <= 0)$nig_bal = 0;
 				$resp['total'] = $curs.number_format($total, 2);
 				$resp['credit'] = $curs.number_format($credit, 2);
 				$resp['debit'] = $curs.number_format($debit, 2);
@@ -504,7 +507,6 @@ class Wallets extends BaseController {
 				$resp['item'] = $item;
 			}
 			$total = $credit - $debit;
-			
 			
 			$resp['count'] = $count;
 

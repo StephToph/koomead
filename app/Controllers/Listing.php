@@ -158,6 +158,7 @@ class Listing extends BaseController {
 					$facebook = $this->request->getVar('facebook');
 					$instagram = $this->request->getVar('instagram');
 					$whatsapp = $this->request->getVar('whatsapp');
+					$tiktok = $this->request->getVar('tiktok');
 					$twitter = $this->request->getVar('twitter');
 					$visible_status = $this->request->getVar('visible_status');
 					$visible_local = $this->request->getVar('visible_local');
@@ -178,6 +179,7 @@ class Listing extends BaseController {
 						}
 					}
 					
+					$profile['tiktok'] = $tiktok;
 					$profile['website'] = $website;
 					$profile['facebook'] = $facebook;
 					$profile['instagram'] = $instagram;
@@ -226,7 +228,7 @@ class Listing extends BaseController {
 					$p_data['name'] = $title;
 					$p_data['display_status'] = $visible_status;
 					$p_data['display_local'] = json_encode($visible_local);
-					$p_data['state_id'] = $state_id;
+					$p_data['state_id'] = $this->Crud->read_field('id', $log_id, 'user', 'state_id');
 					$p_data['country_id'] = $this->Crud->read_field('id', $state_id, 'state', 'country_id');
 				// 	$p_data['city_id'] = $city_id;
 					$p_data['price'] = $price;

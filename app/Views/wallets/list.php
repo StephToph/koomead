@@ -26,25 +26,26 @@
         </div>
         <div class="dasboard-wrapper fl-wrap">
             <div class="dasboard-listing-box fl-wrap">
-                
-                <div  class="row mb-3 pt-3">
-                    <div  class="geodir-category-content fl-wrap">
-                        <div class="row">
-                            <div class="col-sm-2 mb-3">
-                                
-                            </div>
-                            <div class="col-sm-10 mb-3">
-                            <?php if($role != 'administrator'){?>
-                                <a href="javascript:;" pageTitle="Fund Wallet" pageName="<?=site_url('wallets/list/fund'); ?>"  class="btn btn-primary mr-3 pop float-">Fund Business Wallet <i class="fal fa-wallet"></i></a>	
+                <?php if($role != 'administrator'){?>
+                    <div  class="row mb-3 pt-3">
+                        <div  class="geodir-category-content fl-wrap">
+                            <div class="row">
+                                <div class="col-sm-2 mb-3">
+                                    
+                                </div>
+                                <div class="col-sm-10 mb-3">
                             
-                                <a href="javascript:;" pageTitle="Withdraw" pageName="<?=site_url('wallets/list/withdraw'); ?>"  class="btn btn-danger mr-3 pop float-">Withdraw Promotion Wallet <i class="fal fa-money-bill"></i></a>	
+                                    <a href="javascript:;" pageTitle="Fund Wallet" pageName="<?=site_url('wallets/list/fund'); ?>"  class="btn btn-primary mr-3 pop float-">Fund Business Wallet <i class="fal fa-wallet"></i></a>	
+                                
+                                    <a href="javascript:;" pageTitle="Withdraw" pageName="<?=site_url('wallets/list/withdraw'); ?>"  class="btn btn-danger mr-3 pop float-">Withdraw Promotion Wallet <i class="fal fa-money-bill"></i></a>	
 
-                                <a href="javascript:;" pageTitle="Transfer" pageName="<?=site_url('wallets/list/transfer'); ?>"  class="btn btn-success  mr-3 pop float-">Transfer to Business Wallet <i class="fal fa-money-bill"></i></a>	
-                            <?php } ?>
-                            </div> 
+                                    <a href="javascript:;" pageTitle="Transfer" pageName="<?=site_url('wallets/list/transfer'); ?>"  class="btn btn-success  mr-3 pop float-">Transfer to Business Wallet <i class="fal fa-money-bill"></i></a>	
+                                
+                                </div> 
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
                 <div id="filter_box" class="row mb-3 pt-3" style="display:block;">
                     <div  class="geodir-category-content fl-wrap">
                         <div class="col-12 col-sm-6 mb-2">

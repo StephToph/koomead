@@ -101,10 +101,6 @@
                                                 ?>
                                             </select>
                                         </div>
-                                        <div class="form-group mb-3">
-                                            <label>Place of Residence * </label>
-                                            <input name="address" type="text" class="form-control" placeholder="Your Address" required onClick="this.select()" value="">
-                                        </div>
                                         
                                         <div class="form-group mb-5">
                                             <div class="pass-input-wrap fl-wrap">
@@ -115,18 +111,15 @@
                                         </div>
 
 
-                                        <div class="form-group mb-5">
-                                            <div class="col-md-4 my-3">
-                                                <button type="button" onclick="verify_email()" class="btn btn-success btn-block"> Verify Email </button><br>
-                                                <span id="otp_response" class="mt-3"></span>
-                                            </div>
+                                        <div class="form-group mt-3 mb-5">
+                                           
                                             <div class="col-md-8 my-3" style="display:none;" id="otp_input">
                                                 <input name="otp" type="password" class="form-control" id="otp" placeholder="Your OTP" autocomplete="off"  onClick="this.select()" value="">
                                             </div>
                                         </div>
 
                                         <div class="clearfix"></div>
-                                        <div class="filter-tags ft-list">
+                                        <div class="filter-tags ft-list my-5">
                                             <input id="check-a2" type="checkbox" name="agree">
                                             <label for="check-a2">I agree to the <a href="javascript:;">Privacy  Policy</a> and <a href="javascript:;">Terms and  Conditions</a></label>
                                         </div>

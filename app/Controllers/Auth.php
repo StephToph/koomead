@@ -73,13 +73,6 @@ class Auth extends BaseController {
 
 			if(empty($agree)) {$Error .= 'You must agree to Terms and Conditions';}
             
-			if($this->Crud->check('email', $email, 'otp') == 0) {
-                $Error .= 'OTP not Found <br/>';
-            } 
-
-            if($this->Crud->read_field('email', $email, 'otp', 'otp') != $otp ){
-                // $Error .= 'Invalid OTP <br/>';
-            }
 
 			if($Error) {
 				echo $this->Crud->msg('danger', $Error);
@@ -93,20 +86,27 @@ class Auth extends BaseController {
 			$ins_data['country_id'] = $country_id;
 			$ins_data['state_id'] = $state_id;
 			$ins_data['address'] = $address;
-			$ins_data['activate'] = 1;
+			$ins_data['activate'] = 0;
 			$ins_data['password'] = md5($password);
 			$ins_data['reg_date'] = date(fdate);
 
 			$ins_id = $this->Crud->create('user', $ins_data);
 			if($ins_id > 0) {
-                $this->Crud->updates('email', $email, 'otp', array('status'=>1));
-				echo $this->Crud->msg('success', 'Account Created<br>Account Verified<br>You can Login now');
+                echo $this->Crud->msg('success', 'Account Created<br>Account Verified<br>You can Login now');
                 $body = "Dear ".$fullname.",<br>
                     <p>Thank you for creating an account with ".app_name.". We're thrilled to have you on board!</p>
-        
+                    <p>A verification Email has been Sent to your email.</p>
                     Thank you for choosing ".app_name." <p>Once your email is verified, you'll have full access to all the features of ".app_name.".</p>
                     <p>Best regards</p>";
                  $this->Crud->send_email($email, 'Welcome Message', $body);
+
+                 $body = "Dear ".$fullname.",<br>
+                 <p>Welcome ".$fullname.", Thank you for creating an account with ".app_name.".</p>
+                 <p><a href='".site_url('auth/verify/'.$ins_id)."'>Click this link to Verify Account</a></p>
+               
+                 <p>Best regards</p>";
+                $this->Crud->send_email($email, 'Verification Email', $body);
+
 				// echo '<script>location.reload(false);</script>';
 			} else {
 				echo $this->Crud->msg('danger', 'Please Try Again Later');
@@ -307,7 +307,7 @@ class Auth extends BaseController {
     Public function verify($param1){
         if(!empty($param1)){
             if($this->Crud->check('id', $param1, 'user')>0){
-                $this->Crud->updates('id', $param1, 'user', array('activate'=>1));
+                $this->Crud->updates('id', $param1, 'user', array('activate'=>1, 'email_verify'=>1));
                 echo '<h3>Account Verified. You can Login Now</h3>';
                 echo '<script>window.location.replace("'.site_url('').'");</script>';
        

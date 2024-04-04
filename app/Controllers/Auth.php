@@ -308,8 +308,11 @@ class Auth extends BaseController {
         if(!empty($param1)){
             if($this->Crud->check('id', $param1, 'user')>0){
                 $this->Crud->updates('id', $param1, 'user', array('activate'=>1, 'email_verify'=>1));
-                echo '<h3>Account Verified. You can Login Now</h3>';
-                echo '<script>window.location.replace("'.site_url('').'");</script>';
+                echo '<h3>Account Verified. Logging in Now</h3>';
+                $this->session->set('km_id', $param1);
+                $redirs = 'dashboard';
+                
+                echo '<script>window.location.replace("'.site_url($redirs).'");</script>';
        
             }
         } else{

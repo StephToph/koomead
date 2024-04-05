@@ -1300,8 +1300,8 @@ class Home extends BaseController {
 								//Pay Promoters
 								if($view <= $per_view){
 									
-									$pay = 0.001 * (float)$per_amount;
-									$pays = 0.001 * (float)$per_amounts;
+									$pay = 0.1 * (float)$per_amount;
+									$pays = 0.1 * (float)$per_amounts;
 									
 									$country_id = $this->Crud->read_field('id', $business_id, 'user', 'country_id');
 									$state_id = $this->Crud->read_field('id', $business_id, 'user', 'state_id');

@@ -43,9 +43,7 @@
                             </div>
                             
                         </div>
-                       
-                        
-                        <div class="col-12 col-sm-4 mb-2">
+                        <div class="col-12 col-sm-6 mb-2">
                             <div class="listsearch-input-item">
                                 <select data-placeholder="All Status" id="type" onchange="load('', '')" class="chosen-select no-search-select" >
                                     <option value="all">All Type</option>
@@ -54,32 +52,23 @@
                                 </select>
                             </div>
                         </div>
-                        <?php if($role != 'administrator'){?>
-                            <div class="col-12 col-sm-2 mb-2" >
-                                <a href="javascript:;" pageTitle="Add New" style="margin-top:0px;" onclick="$('#filter_box').toggle();" class="btn btn-info btn-block float-e">Filter<i class="fal fa-filter"></i></a>	
-                            </div>
-                            <div class="col-12 row mb-2" id="filter_box" style="display:none;">
-                                
-                                <div class="col-sm-2 mb-3">
-                                    
-                                </div>
-                                <div class="col-sm-10 mb-3">
+                        <?php if($role_c == 1){?>
                             
-                                    <a href="javascript:;" pageTitle="Fund Wallet" pageName="<?=site_url('wallets/list/fund'); ?>"  class="btn btn-primary mr-3 pop float-">Fund Business Wallet <i class="fal fa-wallet"></i></a>	
-                                
-                                    <a href="javascript:;" pageTitle="Withdraw" pageName="<?=site_url('wallets/list/withdraw'); ?>"  class="btn btn-danger mr-3 pop float-">Withdraw Promotion Wallet <i class="fal fa-money-bill"></i></a>	
+                            <div class="col-sm-12 mb-3">
+                            
+                                <a href="javascript:;" pageTitle="Fund Wallet" pageName="<?=site_url('wallets/list/fund'); ?>"  class="btn btn-primary mr-3 pop float-">Fund Business Wallet <i class="fal fa-wallet"></i></a>	
+                            
+                                <a href="javascript:;" pageTitle="Withdraw" pageName="<?=site_url('wallets/list/withdraw'); ?>"  class="btn btn-danger mr-3 pop float-">Withdraw Promotion Wallet <i class="fal fa-money-bill"></i></a>	
 
-                                    <a href="javascript:;" pageTitle="Transfer" pageName="<?=site_url('wallets/list/transfer'); ?>"  class="btn btn-success  mr-3 pop float-">Transfer to Business Wallet <i class="fal fa-money-bill"></i></a>	
-                                
-                                </div> 
-                                
-                            </div>
+                                <a href="javascript:;" pageTitle="Transfer" pageName="<?=site_url('wallets/list/transfer'); ?>"  class="btn btn-success  mr-3 pop float-">Transfer to Business Wallet <i class="fal fa-money-bill"></i></a>	
+                            
+                            </div> 
                         <?php } ?>
                     </div>
                 </div>
                 <div class="dasboard-opt sl-opt fl-wrap float-end">
                     <div class="row">
-                        <p>Promotion Wallet</p>
+                        <span class="text-start mb-2">Promotion Wallet <span class="text-danger small">(This Wallet Contains your earnings from a Promotion)</span></span>
                         <div class="col-sm-4 mb-3">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-cash-register"></i>
@@ -102,8 +91,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <p>Business Wallet</p>
+                    <div class="row mt-3">
+                        <span class="text-start mb-2">Business Wallet <span class="text-danger small">(This Wallet is used for creating a promotion after Funding)</span></span>
                         <div class="col-sm-4 mb-3">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-cash-register"></i>

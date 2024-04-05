@@ -34,20 +34,27 @@
                                         <div id="bb_ajax_msg"></div>
                                     </div>
                                 </div>
-                                <div class="custom-form">
-                                    <?php echo form_open_multipart('auth/login', array('id'=>'bb_ajax_form', 'class'=>'')); ?>
-                                    <label>Email Address * <span class="dec-icon"><i class="fal fa-user"></i></span></label>
-                                    <input name="email" type="text" placeholder="Your Email" onClick="this.select()" value="">
-                                    <div class="pass-input-wrap fl-wrap">
-                                        <label>Password * <span class="dec-icon"><i class="fal fa-key"></i></span></label>
-                                        <input name="password" id="password" placeholder="Your Password" type="password"  autocomplete="off" onClick="this.select()" value="">
-                                        <span class="eye" id="toggle-button"><i class="fal fa-eye"></i> </span>
+                                <div class="customform">
+                                    <?php echo form_open_multipart('auth/login', array('id'=>'bb_ajax_form', 'class'=>'text-start')); ?>
+                                    <div class="form-group mb-3">
+                                        <label>Email Address *</label>
+                                        <input name="email" type="text" class="form-control" placeholder="Your Email" required  onClick="this.select()" value="">
                                     </div>
+                                    <div class="form-group mb-3" style="position:relative">
+                                        <label>Password *</label>
+                                        <input name="password" class="form-control" id="password" placeholder="Your Password" type="password"  autocomplete="off" onClick="this.select()" value="">
+                                        <span class="eye" id="toggle-button" style="position: absolute;
+                                            top: 50%;
+                                            right: 10px; /* Adjust as needed */
+                                            transform: translateY(-50%);
+                                            cursor: pointer;"><i class="fal fa-eye"></i> </span>
+                                    </div>
+                                    
                                     <div class="lost_password">
                                         <a href="javascript:;" onclick="forgots()">Reset your Password?</a>
                                     </div>
                                     <div class="clearfix"></div>
-                                    <button type="submit" class="log_btn color-bg bb_form_btn"> LogIn </button>
+                                    <button type="submit" class="btn btn-primary color-bg bb_form_btn"> LogIn </button>
                                     </form>
                                 </div>
                             </div>
@@ -119,7 +126,7 @@
                                         </div>
 
                                         <div class="clearfix"></div>
-                                        <div class="filter-tags ft-list my-5">
+                                        <div class="filter-tags ft-list my-3">
                                             <input id="check-a2" type="checkbox" name="agree">
                                             <label for="check-a2">I agree to the <a href="javascript:;">Privacy  Policy</a> and <a href="javascript:;">Terms and  Conditions</a></label>
                                         </div>

@@ -174,13 +174,19 @@ class Notification extends BaseController {
 						if($itema == 'message'){
 							$link = 'message';
 						}
+						if($itema == 'wallet'){
+							$link = 'wallets/list';
+						}
+						if($itema == 'listing'){
+							$link = 'listing';
+						}
 						
 						
 						$item .= '
 							<li>
 								<div class="widget-posts-descr">
 									<h4> <a href="'.site_url($link).'">New Notification</a></h4>
-									<div class="geodir-category-location fl-wrap"><a href="'.site_url($link).'"><i class="fas fa-user-ninja"></i>'.$content.'</a></div>
+									<div class="geodir-category-location fl-wrap"><a onclick="mark_read('.$id.')" href="'.site_url($link).'"><i class="fas fa-user-ninja"></i>'.$content.'</a></div>
 									<div class="clear-wishlist tolt" data-microtip-position="left"  data-tooltip="Mark as Read"><i class="fal fa-envelope-open" onclick="mark_read('.$id.')"></i></div>
 								</div>
 							</li>  

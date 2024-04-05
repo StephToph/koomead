@@ -37,6 +37,11 @@
                             <i class="fal fa-comment-alt-lines" style="font-size:150px;"></i><br/><br/>Select Chat to View Messages<br>
                         </div>
                     </div>
+
+                    <div class="chat-widget_input" id="textareas" style="display:none;">
+						<textarea id="chat_msg" placeholder="Type Message" ></textarea>
+						<button type="button" onclick="send_chat()" class="color-bg"><i class="fal fa-paper-plane"></i></button>
+					</div>
                     <!-- chat-box end-->
                     <!-- chat-contacts-->
                     <div class="chat-contacts" id="load_chats">
@@ -107,6 +112,9 @@
                 complete: function () {
                     $.getScript(site_url + 'assets/js/jsmodal.js');
                     $('#chat_'+code).addClass('chat-contacts-item_active');
+                    setInterval(function() {
+                        load_message();
+                    }, 5000);
                 }
             });
         }
@@ -153,13 +161,13 @@
                   success: function (data) {
                       var dt = JSON.parse(data);
                       $('#load_message').html(dt.item);
+                      $('#textareas').show(500);
+                      
                   }
               });
           }
 
-        //   setInterval(function() {
-        //     load_message();
-        //     }, 5000); 
+           
         function send_chat(){
             var code = $('#chat_code').val();
             var msg = $('#chat_msg').val();
@@ -173,7 +181,7 @@
                         
                     },
                     complete: function () {
-                        load_chat();load_message();$('#codes').val(code);
+                        load_chat();load_message();$('#codes').val(code);$('#chat_msg').val('');
                     }
                 });
             }

@@ -617,10 +617,7 @@ class Message extends BaseController {
 						</div>
 					</div>
 					<input type="hidden" id="chat_code" value="'.$code.'">
-					<div class="chat-widget_input">
-						<textarea id="chat_msg" placeholder="Type Message" ></textarea>
-						<button type="button" onclick="send_chat()" class="color-bg"><i class="fal fa-paper-plane"></i></button>
-					</div>
+					
 					<script>
 						// Get the scrollable div and the last element
 						var scrollableDiv = document.getElementById("chatBoxs");

@@ -39,8 +39,9 @@
                     </div>
 
                     <div class="chat-widget_input" id="textareas" style="display:none;">
+                        <div id="typingIndicator"></div>
 						<textarea id="chat_msg" placeholder="Type Message" ></textarea>
-						<button type="button" onclick="send_chat()" class="color-bg"><i class="fal fa-paper-plane"></i></button>
+						<button type="button" id="send_btn" onclick="send_chat()" class="color-bg"><i class="fal fa-paper-plane"></i></button>
 					</div>
                     <!-- chat-box end-->
                     <!-- chat-contacts-->
@@ -84,7 +85,7 @@
             load_chat();
         });
 
-        
+        var chatId = $('#codes').val();
         function last_msg(elementId){
             var element = $('#chats_'+elementId);
             console.log(element);
@@ -112,12 +113,18 @@
                 complete: function () {
                     $.getScript(site_url + 'assets/js/jsmodal.js');
                     $('#chat_'+code).addClass('chat-contacts-item_active');
+
                     setInterval(function() {
                         load_message();
                     }, 5000);
                 }
             });
         }
+         // Set a timeout for 10 minutes
+         setTimeout(function() {
+            load_message(); // Stop the interval after 10 minutes
+            }, 10 * 60 * 1000); // 10 minutes in milliseconds
+
 
         function get_chats(link){
             var id = link.id;
@@ -137,47 +144,58 @@
 
         function update_message() {
            
-        //    $('#load_message').html('<div class="col-sm-12 text-center"><br/><br/><br/><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
-           var code = $('#codes').val();
-           
-           $.ajax({
-               url: site_url + 'message/index/update_message',
-               type: 'post',
-               data: {code:code},
-               success: function (data) {load_chat();
-               }
-           });
-       }
+            //    $('#load_message').html('<div class="col-sm-12 text-center"><br/><br/><br/><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
+            var code = $('#codes').val();
+            
+            $.ajax({
+                url: site_url + 'message/index/update_message',
+                type: 'post',
+                data: {code:code},
+                success: function (data) {load_chat();
+                }
+            });
+        }
 
        function load_message() {
            
-           //    $('#load_message').html('<div class="col-sm-12 text-center"><br/><br/><br/><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
-              var code = $('#codes').val();
-              
-              $.ajax({
-                  url: site_url + 'message/index/load_message',
-                  type: 'post',
-                  data: {code:code},
-                  success: function (data) {
-                      var dt = JSON.parse(data);
-                      $('#load_message').html(dt.item);
-                      $('#textareas').show(500);
-                      
-                  }
-              });
-          }
+            //    $('#load_message').html('<div class="col-sm-12 text-center"><br/><br/><br/><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i></div>');
+            var code = $('#codes').val();
+            
+            $.ajax({
+                url: site_url + 'message/index/load_message',
+                type: 'post',
+                data: {code:code},
+                success: function (data) {
+                    var dt = JSON.parse(data);
+                    $('#load_message').html(dt.item);
+                    $('#textareas').show(500);
+                }
+            });
+        }
 
-           
+        $('#chat_msg').keypress(function(event){
+            // Check if Enter key is pressed (keyCode 13)
+            if(event.which === 13){
+                // Prevent default behavior of Enter key (form submission)
+                event.preventDefault();
+                // Call function to send chat message
+                send_chat();
+            }
+        });
+
         function send_chat(){
             var code = $('#chat_code').val();
             var msg = $('#chat_msg').val();
+            $('#send_btn').prop('disabled',true);
             if(msg !== ''){
                 $.ajax({
                     url: site_url + 'message/index/send_message',
                     type: 'post',
                     data: {code:code,msg:msg},
                     success: function (data) {
-                    //    $('#msg_rep').html(data);
+                        $('#chat_msg').val('');
+                        //    $('#msg_rep').html(data);
+                        $('#send_btn').prop('disabled',false);
                         
                     },
                     complete: function () {
@@ -188,6 +206,53 @@
            
         }
 
-       
+        $(document).ready(function(){
+             // Function to send typing status
+            function sendTypingStatus(isTyping, chatId) {
+                $.ajax({
+                    url: '<?= site_url('message/updateTypingStatus') ?>',
+                    type: 'POST',
+                    data: {is_typing: isTyping, chat_id: chatId},
+                    success: function() {}
+                });
+            }
+            
+            
+            // Check for typing status periodically
+            function checkTypingStatus() {
+                var chatId = $('#codes').val();
+                $.ajax({
+                    url: '<?= site_url('message/checkTypingStatus') ?>',
+                    type: 'POST',
+                    data: {chat_id: chatId},
+                    success: function(data) {
+                        $('#typingIndicator').text(data.is_typing ? 'Typing...' : '');
+                    }
+                });
+            }
+
+           // Set a timeout for 10 minutes
+            setTimeout(function() {
+                clearInterval(typingStatusInterval); // Stop the interval after 10 minutes
+            }, 10 * 60 * 1000); // 10 minutes in milliseconds
+
+            // Start the interval for checking typing status
+            var typingStatusInterval = setInterval(checkTypingStatus,6000); // Check every 3 seconds initially
+
+            // Send typing status when user starts typing
+            $('#chat_msg').on('input', function() {
+                var chatId = $('#codes').val();
+                sendTypingStatus(true, chatId);
+            });
+
+            // Send typing status when user stops typing
+            $('#chat_msg').on('blur', function() {
+                var chatId = $('#codes').val();
+                sendTypingStatus(false, chatId);
+            });
+
+        });
+
+        
     </script>   
 <?php echo $this->endSection(); ?>

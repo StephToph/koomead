@@ -739,15 +739,17 @@ class Message extends BaseController {
 		$chatId = $this->request->getGet('chat_id');
 		// Fetch typing status from the database
 		$typingUsers = $this->Crud->getTypingUsers($chatId);
+		print_r($typingUsers);
 		// Remove the current user from the typing users array
 		$key = array_search($userId, $typingUsers);
 		if ($key !== false) {
 			unset($typingUsers[$key]);
 		}
-
+		
 		// Check if any other users are typing
 		if (!empty($typingUsers)) {
 			// Echo the usernames of other users who are typing
+			
 			echo implode(', ', array_map(function($userId) {
 				return $this->getUserUsername($userId);
 			}, $typingUsers)) . ' are typing...';

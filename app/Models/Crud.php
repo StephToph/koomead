@@ -2726,4 +2726,22 @@ class Crud extends Model {
             'file'    => $dir . $save_name,
         ];
     }
+
+	public function getTypingUsers($chatId) {
+		// Fetch user IDs of those who are typing in the specified chat
+		$typingUsers = [];
+		$typingStatuses = '';
+		if(!empty($chatId)){
+			$typingStatuses = $this->db->table('typing')->where('chat_code', $chatId)->where('is_typing', 1)->get()->getResult();
+
+			foreach ($typingStatuses as $status) {
+				$typingUsers[] = $status->user_id;
+			}
+		}
+
+		
+
+		return $typingUsers;
+	}
+
 }

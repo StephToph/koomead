@@ -706,5 +706,60 @@ class Message extends BaseController {
             return view('message/manage', $data);
         }
     }
+	
+	public function updateTypingStatus() {
+        // Get user ID from session
+        $userId = session()->get('km_id');
+        $chatId = $this->request->getPost('chat_id');
 
+        // Update typing status
+        $isTyping = $this->request->getPost('is_typing');
+		
+		if($isTyping == 'true'){$typing = 1;}else{$typing = 0;}
+
+
+		$in['is_typing'] = $typing;
+		// echo $typing;
+		if($this->Crud->check2('user_id', $userId, 'chat_code', $chatId, 'typing') > 0){
+			$id = $this->Crud->read_field2('user_id', $userId, 'chat_code', $chatId, 'typing', 'id');
+			$this->Crud->updates('id', $id, 'typing', $in);
+		} else {
+			$in['user_id'] = $userId;
+			$in['chat_code'] = $chatId;
+			$this->Crud->create('typing', $in);
+		}
+        
+        // Return success response
+        return $this->response->setJSON(['success' => $isTyping]);
+    }
+
+    public function checkTypingStatus() {
+       // Get user ID from session
+		$userId = session()->get('km_id');
+		$chatId = $this->request->getGet('chat_id');
+		// Fetch typing status from the database
+		$typingUsers = $this->Crud->getTypingUsers($chatId);
+		// Remove the current user from the typing users array
+		$key = array_search($userId, $typingUsers);
+		if ($key !== false) {
+			unset($typingUsers[$key]);
+		}
+
+		// Check if any other users are typing
+		if (!empty($typingUsers)) {
+			// Echo the usernames of other users who are typing
+			echo implode(', ', array_map(function($userId) {
+				return $this->getUserUsername($userId);
+			}, $typingUsers)) . ' are typing...';
+		} else {
+			// No other users are typing
+			echo '';
+		}
+	}
+
+		// Helper method to get the username of a user
+	private function getUserUsername($userId) {
+		
+		return $this->Crud->read_field('id', $userId, 'user', 'fullname');
+	}
 }

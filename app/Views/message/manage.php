@@ -237,7 +237,7 @@
             }, 10 * 60 * 1000); // 10 minutes in milliseconds
 
             // Start the interval for checking typing status
-            var typingStatusInterval = setInterval(checkTypingStatus,6000); // Check every 3 seconds initially
+            var typingStatusInterval = setInterval(checkTypingStatus,10000); // Check every 3 seconds initially
 
             // Send typing status when user starts typing
             $('#chat_msg').on('input', function() {

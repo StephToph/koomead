@@ -65,7 +65,8 @@
                 <div class="dashboard-stats-contaner fl-wrap">
                     <div class="row">
                         <!--dashboard-stats-->
-                       <div class="col-md-3 col-sm-6">
+                        <span class="text-start h5 mb-2">Business Listing</span>
+                       <div class="mb-3 col-md-3 col-sm-6">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-chart-bar"></i>
                                 <h4>Total Listing</h4>
@@ -74,7 +75,7 @@
                         </div>
                         <!-- dashboard-stats end -->
                        <!--dashboard-stats-->
-                        <div class="col-md-3 col-sm-6">
+                        <div class="mb-3 col-md-3 col-sm-6">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-map-marked"></i>
                                 <h4>Active Listings</h4>
@@ -83,18 +84,51 @@
                         </div>
                         <!-- dashboard-stats end -->
                         <!--dashboard-stats-->
-                        <div class="col-md-3 col-sm-6">
+                        <div class="mb-3 col-md-3 col-sm-6">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-eye"></i>
                                 <h4>Promoted Listing</h4>
                                 <div class="dashboard-stats-count" id="promote_list">0</div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6">
+                        <div class="mb-3 col-md-3 col-sm-6">
                             <div class="dashboard-stats fl-wrap">
                                 <i class="fal fa-eye"></i>
                                 <h4>Listing Views</h4>
                                 <div class="dashboard-stats-count" id="list_view">0</div>
+                            </div>
+                        </div>
+                        <span class="text-start h5 mt-2 mb-2">Promotion Listing</span>
+                       <div class="mb-3 col-md-3 col-sm-6">
+                            <div class="dashboard-stats fl-wrap">
+                                <i class="fal fa-chart-bar"></i>
+                                <h4>Total Listing</h4>
+                                <div class="dashboard-stats-count" id="total_promo">0</div>
+                            </div>
+                        </div>
+                        <!-- dashboard-stats end -->
+                       <!--dashboard-stats-->
+                        <div class="mb-3 col-md-3 col-sm-6">
+                            <div class="dashboard-stats fl-wrap">
+                                <i class="fal fa-map-marked"></i>
+                                <h4>Active Promotion</h4>
+                                <div class="dashboard-stats-count" id="active_promo">0</div>
+                            </div>
+                        </div>
+                        <!-- dashboard-stats end -->
+                        <!--dashboard-stats-->
+                        <div class="mb-3 col-md-3 col-sm-6">
+                            <div class="dashboard-stats fl-wrap">
+                                <i class="fal fa-eye"></i>
+                                <h4>Unactive Promotion</h4>
+                                <div class="dashboard-stats-count" id="unactive_promo">0</div>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-3 col-sm-6">
+                            <div class="dashboard-stats fl-wrap">
+                                <i class="fal fa-eye"></i>
+                                <h4>Promotion Views</h4>
+                                <div class="dashboard-stats-count" id="promo_view">0</div>
                             </div>
                         </div>
                         <!-- dashboard-stats end -->
@@ -189,6 +223,10 @@
                 $('#total_list').html(dt.total_list);
                 $('#list_view').html(dt.list_view);
                 $('#active_list').html(dt.active_list);
+                $('#total_promo').html(dt.total_promo);
+                $('#active_promo').html(dt.active_promo);
+                $('#unactive_promo').html(dt.unactive_promo);
+                $('#promo_view').html(dt.promo_view);
                 $('#promoted').html(dt.promoted);
                 $('#user').html(dt.user);
                 $('#promote_list').html(dt.promote_list);

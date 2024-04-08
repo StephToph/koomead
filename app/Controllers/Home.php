@@ -907,8 +907,8 @@ class Home extends BaseController {
 						$prices = '<span>'.$cur.'</span>'.number_format($price,2);
 						if($price_status == 1)$prices = 'Contact for Price';
 
-						if(!empty($city_id)) $loca .= $city;
-						if(!empty($state_id)) $loca .= ', '.$state;
+						if(!empty($city_id)) $loca .= $city.', ';
+						if(!empty($state_id)) $loca .= $state;
 
 						$promote = '';
 						

@@ -907,8 +907,8 @@ class Home extends BaseController {
 						$prices = '<span>'.$cur.'</span>'.number_format($price,2);
 						if($price_status == 1)$prices = 'Contact for Price';
 
-						if(!empty($city_id)) $loca .= $city;
-						if(!empty($state_id)) $loca .= ', '.$state;
+						if(!empty($city_id)) $loca .= $city.', ';
+						if(!empty($state_id)) $loca .= $state;
 
 						$promote = '';
 						
@@ -1163,7 +1163,12 @@ class Home extends BaseController {
 		$ipAddress = isset($xForwardedFor) ? explode(',', $xForwardedFor)[0] : $request->getIPAddress();
         // Create a timestamp for the current visit
         $timestamp = date('Y-m-d H:i:s');
-	
+		
+		// Split the path by slashes
+		$parts = explode('/', $uri);
+
+		// Get the last item
+		$code = end($parts);
 
         // Prepare data to insert into the database
         $data = [
@@ -1171,6 +1176,7 @@ class Home extends BaseController {
             'ip_address' => $ipAddress,
             'page' => $uri,
             'reg_date' => $timestamp,
+            'code' => $code,
         ];
 
 		if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){

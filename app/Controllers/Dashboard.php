@@ -388,7 +388,7 @@ class Dashboard extends BaseController {
 				$total_promo = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'applicant_id', $log_id, 'application');
 				$active_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'status', '0', 'business_promotion');
 				$unactive_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id,'status', '1',  'business_promotion');
-				$promo_view = $this->Crud->read('promotion_metric');
+				$promo_view = $this->Crud->date_range($date_from, 'reg_date',  $date_to, 'reg_date', 'promotion_metric');
 				$pV = 0;
 				if(!empty($promo_view)){
 					foreach($promo_view as $p){
@@ -434,7 +434,7 @@ class Dashboard extends BaseController {
 				$total_promo = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'applicant_id', $log_id, 'application');
 				$active_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'status', '0', 'business_promotion');
 				$unactive_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id,'status', '1',  'business_promotion');
-				$promo_view = $this->Crud->read_single('user_id', $log_id, 'promotion_metric');
+				$promo_view = $this->Crud->date_range1($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'promotion_metric');
 				$pV = 0;
 				if(!empty($promo_view)){
 					foreach($promo_view as $p){

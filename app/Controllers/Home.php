@@ -1284,6 +1284,7 @@ class Home extends BaseController {
 									$i_data['code'] = $promo_code;
 									$i_data['user_id'] = $business_id;
 									$i_data['page'] = $uri;
+									$i_data['reg_date'] = date(fdate);
 									$i_data['view'] = (int)$view + 1;
 									
 									$in = $this->Crud->create('promotion_metric', $i_data);

@@ -385,9 +385,9 @@ class Dashboard extends BaseController {
 				$v_id = $this->Crud->read_field('name', 'User', 'access_role', 'id');
 				
 
-				$total_promo = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'applicant_id', $log_id, 'application');
-				$active_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'status', '0', 'business_promotion');
-				$unactive_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id,'status', '1',  'business_promotion');
+				$total_promo = $this->Crud->date_check($date_from, 'reg_date',  $date_to, 'reg_date',  'application');
+				$active_promo = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date',  'status', '0', 'business_promotion');
+				$unactive_promo = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'status', '1',  'business_promotion');
 				$promo_view = $this->Crud->date_check($date_from, 'reg_date',  $date_to, 'reg_date', 'listing_view');
 				
 				$total_list = $this->Crud->date_check($date_from, 'reg_date',  $date_to, 'reg_date', 'listing');
@@ -424,7 +424,6 @@ class Dashboard extends BaseController {
 				
 				$v_id = $this->Crud->read_field('name', 'User', 'access_role', 'id');
 				
-
 				
 				$total_promo = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'applicant_id', $log_id, 'application');
 				$active_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'status', '0', 'business_promotion');

@@ -31,7 +31,7 @@
             $images = $this->Crud->read_field('id', $param2, 'listing', 'images');
             $reg_date = $this->Crud->read_field('id', $param2, 'listing', 'reg_date');
             $uri = 'home/listing/view/'.$param2;
-			$view = $this->Crud->check('page', $uri, 'listing_view');
+			$view = $this->Crud->check('page_uri', $uri, 'listing_view');
 						
             $user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
             $user_mail = $this->Crud->read_field('id', $user_id, 'user', 'email');

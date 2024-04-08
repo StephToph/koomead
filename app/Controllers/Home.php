@@ -116,9 +116,9 @@ class Home extends BaseController {
 						}
 
                         
-							$user =  ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname'));
-                            $user_img = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
-                            if(empty($user_img))$user_img = 'assets/images/avatar.png';
+						$user =  ucwords($this->Crud->read_field('id', $user_id, 'user', 'fullname'));
+						$user_img = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
+						if(empty($user_img))$user_img = 'assets/images/avatar.png';
                             
 						
 						$category = $this->Crud->read_field('id', $category_id, 'category', 'name');
@@ -132,7 +132,7 @@ class Home extends BaseController {
 						$loca = '';
 
 						$uri = 'home/listing/view/'.$id;
-						$view = $this->Crud->check('page', $uri, 'listing_view');
+						$view = $this->Crud->check('page_uri', $uri, 'listing_view');
 						
 						$prices = '<span>'.$cur.'</span>'.number_format($price,2);
 						if($price_status == 1)$prices = 'Contact for Price';
@@ -325,7 +325,7 @@ class Home extends BaseController {
 						$loca = '';
 
 						$uri = 'home/listing/view/'.$id;
-						$view = $this->Crud->check('page', $uri, 'listing_view');
+						$view = $this->Crud->check('page_uri', $uri, 'listing_view');
 						
 						$prices = '<span>'.$cur.'</span>'.number_format($price,2);
 						if($price_status == 1)$prices = 'Contact for Price';
@@ -902,7 +902,7 @@ class Home extends BaseController {
 						$loca = '';
 
 						$uri = 'home/listing/view/'.$id;
-						$view = $this->Crud->check('page', $uri, 'listing_view');
+						$view = $this->Crud->check('page_uri', $uri, 'listing_view');
 						
 						$prices = '<span>'.$cur.'</span>'.number_format($price,2);
 						if($price_status == 1)$prices = 'Contact for Price';
@@ -1176,17 +1176,21 @@ class Home extends BaseController {
 		// Get the last item
 		$code = end($parts);
 		// echo $uri;
-		// Prepare data to insert into the database
-		$data = [
-			'user_agent' => $userAgent,
-			'user_id' => $value_after_promotion,
-			'ip_address' => $ipAddress,
-			'page' => $uri,
-			'code' => $code,
-			'reg_date' => $timestamp,
-		];
+		$page_id = $this->Crud->read_field('code', $code, 'business_promotion', 'listing_id');
+		
+		$page_uri = 'home/listing/view/'.$page_id;
+        // Prepare data to insert into the database
+        $data = [
+            'user_agent' => $userAgent,
+            'user_id' => $value_after_promotion,
+            'ip_address' => $ipAddress,
+            'page' => $uri,
+            'page_uri' => $page_uri,
+            'code' => $code,
+            'reg_date' => $timestamp,
+        ];
 
-		if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
+		if($this->Crud->check2('ip_address', $ipAddress, 'page_uri', $uri, 'listing_view') == 0){
 			$this->Crud->create('listing_view', $data);
 		}
        return json_encode($data);
@@ -1212,7 +1216,7 @@ class Home extends BaseController {
 		// Split the path by slashes
 		$parts = explode('/', $uri);
 
-		
+				
 		// Find the index of "promotion" segment
 		$promotion_index = array_search('promotion', $parts);
 
@@ -1222,17 +1226,21 @@ class Home extends BaseController {
 		// Get the last item
 		$code = end($parts);
 		// echo $uri;
+		$page_id = $this->Crud->read_field('code', $code, 'business_promotion', 'listing_id');
+		
+		$page_uri = 'home/listing/view/'.$page_id;
         // Prepare data to insert into the database
         $data = [
             'user_agent' => $userAgent,
             'user_id' => $value_after_promotion,
             'ip_address' => $ipAddress,
             'page' => $uri,
+            'page_uri' => $page_uri,
             'code' => $code,
             'reg_date' => $timestamp,
         ];
 
-		if($this->Crud->check3('ip_address', $ipAddress, 'page', $uri, 'code', $code, 'listing_view') == 0){
+		if($this->Crud->check3('ip_address', $ipAddress, 'page_uri', $page_uri, 'code', $code, 'listing_view') == 0){
 			$this->Crud->create('listing_view', $data);
 		}
        return json_encode($data);
@@ -1314,10 +1322,10 @@ class Home extends BaseController {
 								}
 
 								$content = 'You have a new Click for the Listing you Promoted';
-								$this->Crud->notify($from, $business_id, $content, 'Listing Promotion', $in);
+								$this->Crud->notify($from, $business_id, $content, 'listing', $in);
 
 								$content = 'You have a new View for your Listing';
-								$this->Crud->notify($from, $owner_id, $content, 'Business Listing ', $page_id);
+								$this->Crud->notify($from, $owner_id, $content, 'listing ', $page_id);
 								
 								//Pay Promoters
 								if($view <= $per_view){
@@ -1343,7 +1351,7 @@ class Home extends BaseController {
 									
 									if($wa_id > 0){
 										$content = 'You have an earning on the business listing you promoted';
-										$this->Crud->notify($from, $business_id, $content, 'Listing', $wa_id);
+										$this->Crud->notify($from, $business_id, $content, 'wallet', $wa_id);
 
 									}
 									
@@ -1363,7 +1371,7 @@ class Home extends BaseController {
 											$w_id = $this->Crud->create('wallet', $v_ins);
 
 											$content = 'You have an earning for Viewing a Promoted Listing';
-											$this->Crud->notify($from, $log_id, $content, 'Listing', $w_id);
+											$this->Crud->notify($from, $log_id, $content, 'wallet', $w_id);
 										}
 									}
 

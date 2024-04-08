@@ -388,13 +388,8 @@ class Dashboard extends BaseController {
 				$total_promo = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'applicant_id', $log_id, 'application');
 				$active_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'status', '0', 'business_promotion');
 				$unactive_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id,'status', '1',  'business_promotion');
-				$promo_view = $this->Crud->date_range($date_from, 'reg_date',  $date_to, 'reg_date', 'promotion_metric');
-				$pV = 0;
-				if(!empty($promo_view)){
-					foreach($promo_view as $p){
-						$pV += (float)$p->view;
-					}
-				}
+				$promo_view = $this->Crud->date_check($date_from, 'reg_date',  $date_to, 'reg_date', 'listing_view');
+				
 				$total_list = $this->Crud->date_check($date_from, 'reg_date',  $date_to, 'reg_date', 'listing');
 				$list_view = $this->Crud->date_check($date_from, 'reg_date',  $date_to, 'reg_date',  'listing_view');
 				$active_list = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'active', 1, 'listing');
@@ -412,7 +407,7 @@ class Dashboard extends BaseController {
 				$resp['total_promo'] = number_format((float)($total_promo));
 				$resp['active_promo'] = number_format((float)($active_promo));
 				$resp['unactive_promo'] = number_format((float)($unactive_promo));
-				$resp['promo_view'] = number_format((float)($pV));
+				$resp['promo_view'] = number_format((float)($promo_view));
 				
 			
 				$resp['total_list'] = number_format((float)($total_list));
@@ -434,13 +429,8 @@ class Dashboard extends BaseController {
 				$total_promo = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'applicant_id', $log_id, 'application');
 				$active_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'status', '0', 'business_promotion');
 				$unactive_promo = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id,'status', '1',  'business_promotion');
-				$promo_view = $this->Crud->date_range1($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'promotion_metric');
-				$pV = 0;
-				if(!empty($promo_view)){
-					foreach($promo_view as $p){
-						$pV += (float)$p->view;
-					}
-				}
+				$promo_view = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'listing_view');
+				
 				$total_list = $this->Crud->date_check1($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'listing');
 				$list_view = $this->Crud->date_range1($date_from, 'reg_date',  $date_to, 'reg_date', 'user_id', $log_id, 'listing');
 				$promote_list = $this->Crud->date_check2($date_from, 'reg_date',  $date_to, 'reg_date', 'promote_status', 1, 'user_id', $log_id,  'listing');
@@ -459,7 +449,7 @@ class Dashboard extends BaseController {
 				$resp['total_promo'] = number_format((float)($total_promo));
 				$resp['active_promo'] = number_format((float)($active_promo));
 				$resp['unactive_promo'] = number_format((float)($unactive_promo));
-				$resp['promo_view'] = number_format((float)($pV));
+				$resp['promo_view'] = number_format((float)($promo_view));
 				
 				$resp['total_list'] = number_format((float)($total_list));
 				$resp['list_view'] = number_format((float)($list_view));

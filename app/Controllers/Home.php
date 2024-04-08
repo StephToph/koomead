@@ -1166,18 +1166,25 @@ class Home extends BaseController {
 		
 		// Split the path by slashes
 		$parts = explode('/', $uri);
+		
+		// Find the index of "promotion" segment
+		$promotion_index = array_search('promotion', $parts);
+
+		// Get the value after "promotion" segment
+		$value_after_promotion = isset($parts[$promotion_index + 1]) ? $parts[$promotion_index + 1] : null;
 
 		// Get the last item
 		$code = end($parts);
-
-        // Prepare data to insert into the database
-        $data = [
-            'user_agent' => $userAgent,
-            'ip_address' => $ipAddress,
-            'page' => $uri,
-            'reg_date' => $timestamp,
-            'code' => $code,
-        ];
+		// echo $uri;
+		// Prepare data to insert into the database
+		$data = [
+			'user_agent' => $userAgent,
+			'user_id' => $value_after_promotion,
+			'ip_address' => $ipAddress,
+			'page' => $uri,
+			'code' => $code,
+			'reg_date' => $timestamp,
+		];
 
 		if($this->Crud->check2('ip_address', $ipAddress, 'page', $uri, 'listing_view') == 0){
 			$this->Crud->create('listing_view', $data);
@@ -1205,12 +1212,20 @@ class Home extends BaseController {
 		// Split the path by slashes
 		$parts = explode('/', $uri);
 
+		
+		// Find the index of "promotion" segment
+		$promotion_index = array_search('promotion', $parts);
+
+		// Get the value after "promotion" segment
+		$value_after_promotion = isset($parts[$promotion_index + 1]) ? $parts[$promotion_index + 1] : null;
+
 		// Get the last item
 		$code = end($parts);
 		// echo $uri;
         // Prepare data to insert into the database
         $data = [
             'user_agent' => $userAgent,
+            'user_id' => $value_after_promotion,
             'ip_address' => $ipAddress,
             'page' => $uri,
             'code' => $code,

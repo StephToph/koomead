@@ -177,7 +177,7 @@ class Notification extends BaseController {
 						if($itema == 'wallet'){
 							$link = 'wallets/list';
 						}
-						if($itema == 'listing'){
+						if($itema == 'Listing'){
 							$link = 'listing';
 						}
 						

@@ -31,7 +31,7 @@
             $images = $this->Crud->read_field('id', $param2, 'listing', 'images');
             $reg_date = $this->Crud->read_field('id', $param2, 'listing', 'reg_date');
             $uri = 'home/listing/view/'.$param2;
-			$view = $this->Crud->check('page', $uri, 'listing_view');
+			$view = $this->Crud->check('page_uri', $uri, 'listing_view');
 						
             $user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
             $user_mail = $this->Crud->read_field('id', $user_id, 'user', 'email');
@@ -54,9 +54,9 @@
             if($active == 0)$active = 'Disabled'; else $active = 'Active';
             
             if(!empty($address)) $loca .= $address.', ';
-            if(!empty($city_id)) $loca .= $city;
-            if(!empty($state_id)) $loca .= ', '.$state;
-            if(!empty($country_id)) $loca .= ', '.$country;
+            if(!empty($city_id)) $loca .= $city.', ';
+            if(!empty($state_id)) $loca .= $state.', ';
+            if(!empty($country_id)) $loca .= $country;
             $cur = '&#8358;';
             if($country_id == '161')$cur = '&#8358;';
 
@@ -196,7 +196,7 @@
                                 <div class="row">
                                     <!-- pricing-column -->
                                     <?php
-                                        $prom = $this->Crud->read_single('listing_id', $param2, 'business_promotion');
+                                        $prom = $this->Crud->read2('status', 0, 'listing_id', $param2, 'business_promotion');
                                         if(!empty($prom)){
                                             $count = 1;
                                             foreach($prom as $p){

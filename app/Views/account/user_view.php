@@ -35,6 +35,7 @@
                                         <li><a href="#tab-listing"> <i class="fal fa-user-tie" style="font-size:24px;"></i> My Listings</a></li>
                                         <!-- <li><a href="#tab-p_listing"> <i class="fal fa-business-time" style="font-size:24px;"></i>  Listings Promoted</a></li> -->
                                         <li><a href="#tab-message"> <i class="fal fa-envelope-open-text" style="font-size:24px;"></i> Messages</a></li>
+                                        <li><a href="#tab-wallet"> <i class="fal fa-wallet" style="font-size:24px;"></i> Wallet</a></li>
                                     </ul>
                                 </div>
                                 <!--tabs -->                       
@@ -207,6 +208,64 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="tab">
+                                        <div id="tab-wallet" class="tab-content">
+                                            <div class="list-single-main-container fl-wrap p-3" style="margin-top: 30px;">
+                                                <div class="row">
+                                                    <span class="text-start mb-2">Promotion Wallet <span class="text-danger small">(This Wallet Contains your earnings from a Promotion)</span></span>
+                                                    <div class="col-sm-4 mb-3">
+                                                        <div class="dashboard-stats fl-wrap">
+                                                            <i class="fal fa-cash-register"></i>
+                                                            <h4>Available Balance</h4>
+                                                            <div class="dashboard-stats-count" id="promotion_total">0</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 mb-3">
+                                                        <div class="dashboard-stats fl-wrap">
+                                                            <i class="fal fa-sack-dollar"></i>
+                                                            <h4>Total Credited</h4>
+                                                            <div class="dashboard-stats-count" id="promotion_credit">0</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 mb-3">
+                                                        <div class="dashboard-stats fl-wrap">
+                                                            <i class="fal fa-money-bill-alt"></i>
+                                                            <h4>Total Debited</h4>
+                                                            <div class="dashboard-stats-count" id="promotion_debit">0</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <span class="text-start mb-2">Business Wallet <span class="text-danger small">(This Wallet is used for creating a promotion after Funding)</span></span>
+                                                    <div class="col-sm-4 mb-3">
+                                                        <div class="dashboard-stats fl-wrap">
+                                                            <i class="fal fa-cash-register"></i>
+                                                            <h4>Available Balance</h4>
+                                                            <div class="dashboard-stats-count" id="busi_total">0</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 mb-3">
+                                                        <div class="dashboard-stats fl-wrap">
+                                                            <i class="fal fa-sack-dollar"></i>
+                                                            <h4>Total Credited</h4>
+                                                            <div class="dashboard-stats-count" id="busi_credit">0</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4 mb-3">
+                                                        <div class="dashboard-stats fl-wrap">
+                                                            <i class="fal fa-money-bill-alt"></i>
+                                                            <h4>Total Debited</h4>
+                                                            <div class="dashboard-stats-count" id="busi_debit">0</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-center text-muted mb-3" id="wallet_load">
+                                                    <br/><br/><br/><br/>
+                                                    <i class="fal fa-wallet" style="font-size:150px;"></i><br/><br/>No Wallet
+                                                </div>            										
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!--tab end-->							
                                 </div>
                                 <!--tabs end-->  
@@ -226,7 +285,7 @@
    
     <script>
         $(function() {
-            load_list('', '');load_message();
+            load_list('', '');load_message();wallet_load();
         });
 
         function get_state() {
@@ -316,6 +375,29 @@
                 }
             });
         
+        }
+
+        function wallet_load(x, y) {
+
+            $('#wallet_load').html('<div class="col-sm-12 text-center"><br/><br/><br/><br/><i class="fal fa-spinner fa-spin" style="font-size:48px;"></i> Loading.. Please Wait..</div>');
+            var user_id = $('#user_id').val();
+            $.ajax({
+                url: site_url + 'accounts/user_view/wallet_load',
+                type: 'post',
+                data: { user_id: user_id},
+                success: function (data) {
+                    var dt = JSON.parse(data);
+                    $('#wallet_load').html(dt.item);
+
+                    $('#listCount').html(dt.count);
+                    $('#busi_total').html(dt.total);
+                    $('#busi_credit').html(dt.credit);
+                    $('#busi_debit').html(dt.debit);
+                    $('#promotion_total').html(dt.nig_total);
+                    $('#promotion_credit').html(dt.nig_credit);
+                    $('#promotion_debit').html(dt.nig_debit);
+                }
+            });
         }
     </script>   
 <?php echo $this->endSection(); ?>

@@ -226,6 +226,7 @@ class Settings extends BaseController {
         $data['log_id'] = $log_id;
 		$log_name = $this->Crud->read_field('id', $log_id, 'user', 'fullname');
         $data['log_name'] = $log_name;
+        $data['role'] = $role;
         $data['page'] = 'User Role';
 		$table = 'access_role';
 

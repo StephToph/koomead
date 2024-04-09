@@ -380,7 +380,7 @@ class Dashboard extends BaseController {
 		} else {
 			
 			// Admin
-			if($role == 'administrator' || $role == 'developer') {
+			if($role == 'administrator' || $role == 'developer' || $role == 'manager') {
 				
 				$v_id = $this->Crud->read_field('name', 'User', 'access_role', 'id');
 				
@@ -420,7 +420,7 @@ class Dashboard extends BaseController {
 			}
 
 			// Admin
-			if($role != 'administrator' && $role != 'developer') {
+			if($role != 'administrator' && $role != 'developer'&& $role != 'manager') {
 				
 				$v_id = $this->Crud->read_field('name', 'User', 'access_role', 'id');
 				
@@ -497,7 +497,7 @@ class Dashboard extends BaseController {
 			$activity_query = $this->Crud->date_range2($date_from, 'reg_date',  $date_to, 'reg_date', 'item', 'authentication','item_id', $log_id, 'activity',5);
 
 			// Admin
-			if($role == 'administrator' || $role == 'developer') {
+			if($role == 'administrator' || $role == 'developer'|| $role == 'manager') {
 				$activity_query = $this->Crud->date_range($date_from, 'reg_date',  $date_to, 'reg_date', 'activity',5);
 
 			}
@@ -558,7 +558,7 @@ class Dashboard extends BaseController {
 		} else {
 			
 			// Admin
-			if($role == 'administrator' || $role == 'developer') {
+			if($role == 'administrator' || $role == 'developer'|| $role == 'manager') {
 				$activity_query = $this->Crud->date_range_group($date_from, 'reg_date',  $date_to, 'reg_date', 'km_message','code');
 				
 			} else {
@@ -582,7 +582,7 @@ class Dashboard extends BaseController {
 					// 	if($q->sender_id != $log_id && $q->receiver_id != $log_id)continue;
 					// }
 
-					if(empty($send_img)){
+					if(empty($send_img) || !file_exists($send_img)){
 						$send_img = 'assets/images/avatar.png';
 					}
 					$count = $this->Crud->check2('code', $q->code, 'status', 0, 'message');

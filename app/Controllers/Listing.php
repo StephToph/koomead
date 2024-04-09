@@ -640,7 +640,7 @@ class Listing extends BaseController {
 								$w_id = $this->Crud->create('wallet', $v_ins);
 
 								//Credit Admin wallet
-								$admin_id = $this->Crud->read_field('email', 'admin@mail.com', 'user', 'id');
+								$admin_id = $this->Crud->read_field('email', 'admin@koomeli.com', 'user', 'id');
 								$v_ins['user_id'] = $admin_id;
 								$v_ins['type'] = 'credit';
 								$admin_share = $this->Crud->read_field('name', 'admin_share', 'setting', 'value');

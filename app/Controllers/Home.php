@@ -1396,9 +1396,10 @@ class Home extends BaseController {
 										$this->Crud->updates('code', $promo_code, 'business_promotion', array('is_bal'=>1, 'status'=>1));
 											$country_id = $this->Crud->read_field('id', $user_id, 'user', 'country_id');
 											$state_id = $this->Crud->read_field('id', $user_id, 'user', 'state_id');
-							
+
+											$admin_id = $this->Crud->read_field('email', 'admin@koomeli.com', 'user', 'id');
 											//Make Payment
-											$v_ins['user_id'] = $user_id;
+											$v_ins['user_id'] = $admin_id;
 											$v_ins['type'] = 'credit';
 											$v_ins['amount'] = $bal;
 											$v_ins['item'] = 'promotion';

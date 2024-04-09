@@ -571,6 +571,189 @@ class Accounts extends BaseController {
 			echo json_encode($resp);
 			die;
 		}
+
+		
+        // record listing
+		if($param1 == 'wallet_load') {
+			$rec_limit = 80;
+			$item = '';
+			$counts = 0;
+
+			if(empty($limit)) {$limit = $rec_limit;}
+			if(empty($offset)) {$offset = 0;}
+			
+			if(!empty($this->request->getPost('start_date'))) { $start_date = $this->request->getPost('start_date'); } else { $start_date = date('2023-01-01'); }
+			if(!empty($this->request->getPost('end_date'))) { $end_date = $this->request->getPost('end_date'); } else { $end_date = date('Y-m-d'); }
+			
+		
+			
+			$log_id = $this->session->get('km_id');
+			if(!$log_id) {
+				$item = '<div class="text-center text-muted">Session Timeout! - Please login again</div>';
+			} else {
+				$user_id = $this->request->getPost('user_id');
+				$query = $this->Crud->read_single('user_id', $user_id, 'wallet');
+				if(!empty($all_rec)) { $count = count($all_rec); } else { $count = 0; }
+				$total = 0;
+				$credit = 0;
+				$debit = 0;
+				$nig_total = 0;
+				$nig_bal = 0;
+				$nig_credit = 0;
+				$nig_debit = 0;
+				//print_r($query);
+
+				//Promotion Wallet
+				$curr = '&#8358;';
+				
+					$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'wallet_type', 'promotion', 'user_id', $user_id, 'wallet');
+				
+				$curs = '&#8358;';
+				if(!empty($wal)){
+					foreach($wal as $w){
+						if($w->type == 'credit')$nig_credit += (float)$w->amount;
+						if($w->type == 'debit')$nig_debit += (float)$w->amount;
+						
+					}
+					$nig_bal = $nig_credit - $nig_debit;$curss = '&#8358;';
+				}
+
+				//Business Wallet
+				$curr = '&#8358;';
+				
+					$wal = $this->Crud->date_range2($start_date, 'reg_date',$end_date, 'reg_date', 'wallet_type', 'business',  'user_id', $user_id,'wallet');
+				
+				$curs = '&#8358;';	$curss = '&#8358;';
+				if(!empty($wal)){
+					foreach($wal as $w){
+						if($w->type == 'credit')$credit += (float)$w->amount;
+						if($w->type == 'debit')$debit += (float)$w->amount;
+						
+					}
+					$total = $credit - $debit;$curss = '&#8358;';
+				}
+				
+				if($total <= 0)$total = 0;
+				if($nig_bal <= 0)$nig_bal = 0;
+				$resp['total'] = $curs.number_format($total, 2);
+				$resp['credit'] = $curs.number_format($credit, 2);
+				$resp['debit'] = $curs.number_format($debit, 2);
+				$resp['nig_total'] = $curss.number_format($nig_bal, 2);
+				$resp['nig_credit'] = $curss.number_format($nig_credit, 2);
+				$resp['nig_debit'] = $curss.number_format($nig_debit, 2);
+				
+				
+				if(!empty($query)) {
+					foreach($query as $q) {
+						
+						$id = $q->id;
+						$user_id = $q->user_id;
+						$type = $q->type;
+						$mod = $q->item;
+						$mod_id = $q->item_id;
+						$request_id = $q->request_id;
+						$wallet_type = $q->wallet_type;
+						$remark = $q->remark;
+						$amount = number_format((float)$q->amount, 2);
+						$reg_date = date('M d, Y h:i A', strtotime($q->reg_date));
+
+						$user_email = $this->Crud->read_field('id', $user_id, 'user', 'email');
+						$country = $q->country_id;
+						
+                       $curr = ' ₦';
+						// user 
+						$user = $this->Crud->read_field('id', $user_id, 'user', 'fullname');
+						$user_role_id = $this->Crud->read_field('id', $user_id, 'user', 'role_id');
+						$user_role = strtoupper($this->Crud->read_field('id', $user_role_id, 'access_role', 'name'));
+						$user_image_id = $this->Crud->read_field('id', $user_id, 'user', 'img_id');
+						$user_image = $this->Crud->image($user_image_id, 'big');
+
+						// module
+						if($mod == 'order') {
+							$remark = '
+								<a href="javascript:;" class="text-success pop" pageTitle="Order Statement" pageName="'.site_url('order/list/manage/edit/'.$mod_id).'" pageSize="modal-lg">
+									<span class="m-l-3 m-r-10"><b>'.$remark.'</b></span>
+								</a>
+							';
+						}
+						
+						
+						$request ='';
+						// $req_sta = $this->Crud->read_field('id', $request_id, 'wallet_request', 'approved');
+						// if($request_id > 0 && $req_sta == 0){
+						// 	$request .= '<h6 class="blinking-text text-danger">Pending Approval</h6>
+						// 	';
+						// 	if($role_d > 0){
+						// 		$request .= '<a href="javascript:;" class="pop btn btn-info"  pageTitle="Approve Request" pageName="'.site_url('wallets/list/approve/'.$request_id).'" pageSize="modal-md" data-microtip-position="top-left"  data-tooltip="Enable"><i class="far fa-check"></i> Approve Request</a>';
+						// 	}
+						// }
+
+
+					
+						// color
+						$color = 'success';
+						if($type == 'debit') { $color = 'danger';}
+
+						$item .= '
+							<li class="list-group-item">
+								<div class="row pt-3">
+									<div class="col-2 col-sm-3 mb-2">
+										<div class="text-muted">'.$reg_date.'</div>
+										<a href="javascript:;" class="pop" pageTitle="Wallet Statement" pageName="'.site_url('wallets/list/statement/'.$user_id).'" pageSize="modal-lg">
+											<img alt="" src="'.site_url($user_image).'" class="p-1 rounded" height="50"/>
+											<span class="text-primary font-weight-bold">'.strtoupper($user).'</span>
+										</a>  
+										
+									</div>
+									<div class="col-10 col-md-5 mb-4">
+										<div class="single">
+											<b class="font-size-16 text-'.$color.'">'.strtoupper($type).'</b>
+											<div class="font-size-16 text-dark">'.strtoupper($remark).'</div>
+											<span class="tb-lead"><b>' . $curr . $amount . '</b></span>
+										</div>
+									</div>
+									<div class="col-2 col-sm-3 mb-2">
+										<div class="single">
+											<b class="font-size-16">'.strtoupper($wallet_type).' WALLET</b>
+										</div>
+									</div>
+									
+								</div>
+							</li>
+							
+							
+						';
+					}
+				}
+			}
+
+			if(empty($item)) {
+				$resp['item'] = '
+					<div class="text-center text-muted">
+						<br/><br/><br/><br/>
+						<i class="fal fa-wallet" style="font-size:150px;"></i><br/><br/>No Wallet Returned<br/><br/><br/>
+					</div>
+				';
+			} else {
+				$resp['item'] = $item;
+			}
+			$total = $credit - $debit;
+			
+			$resp['count'] = $count;
+
+			$more_record = $count - ($offset + $rec_limit);
+			$resp['left'] = $more_record;
+
+			if($count > ($offset + $rec_limit)) { // for load more records
+				$resp['limit'] = $rec_limit;
+				$resp['offset'] = $offset + $limit;
+			} else {
+				$resp['limit'] = 0;
+				$resp['offset'] = 0;
+			}
+			echo json_encode($resp);
+			die;
+		}
 	}
 
 	

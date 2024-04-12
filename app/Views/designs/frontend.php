@@ -28,11 +28,6 @@
     <link rel="shortcut icon" href="<?=site_url();?>assets/images/favicon.ico">
 
     <?=$link_preview; ?>
-
-
-   
-
-
     <script src="<?=site_url(); ?>assets/js/jquery.min.js"></script>
     <!-- Include Bootstrap JS and Popper.js -->
     <script src="<?=site_url(); ?>assets/js/popper.min.js" ></script>
@@ -65,19 +60,15 @@
         <!-- header -->
         <header class="main-header">
             <!--  logo  -->
-            <div class="logo-holder"><a href="<?=site_url(); ?>"><img src="<?=site_url();?>assets/images/logo.png"
-                        alt=""></a></div>
-            <!-- logo end  -->
-
-            <!-- nav-button-wrap end-->
-
-            <!-- header-search button end  -->
-            <!--  add new  btn -->
+            <div class="logo-holder">
+                <a href="<?=site_url(); ?>"><img src="<?=site_url();?>assets/images/logo.png" alt=""></a>
+            </div>
+            
             <div class="add-list_wrap">
                 <?php
 
                 if(empty($log_id)){
-                    echo '<div class="show-reg-form "><a href="javascript:;" class="add-list pops color-bg"  " pageTitle="" pageName="'.site_url('auth/login').'" pageSize="modal-xl"><i class="fal fa-plus"></i> <span>Add Listing</span></a></div>';
+                    echo '<div class="show-reg-form "><a href="'.site_url('auth/login').'" class="add-list color-bg"  " pageTitle="" pageName="" pageSize="modal-xl"><i class="fal fa-plus"></i> <span>Add Listing</span></a></div>';
                 } else {
                     if(!empty($log_id)){
                         if($role != 'administrator' && $role != 'developer'){
@@ -101,7 +92,7 @@
 
 
                 if(empty($log_id)){
-                    echo '<div class="show-reg-form"><a href="javascript:;" class="pops"  " pageTitle="" pageName="'.site_url('auth/login').'" pageSize="modal-xl"><i class="fas fa-user"></i><span>Sign In</span></a></div>';
+                    echo '<div class="show-reg-form"><a href="'.site_url('auth/login').'" class=""  pageTitle="" pageName="'.site_url('auth/login').'" pageSize="modal-xl"><i class="fas fa-user"></i><span>Sign In</span></a></div>';
                 } else {
                     echo '<div class="show-reg-form"><a href="'.site_url('dashboard').'"><i class="fas fa-user"></i><span>User Dashboard</span></a></div>';
                 }
@@ -152,7 +143,7 @@
             <!-- footer -->
             <footer class="main-footer fl-wrap">
                 <div class="footer-inner fl-wrap">
-                    <div class="container">
+                    <div class="container-fluid">
                         <div class="row">
                             <!-- footer widget-->
                             <div class="col-md-3">

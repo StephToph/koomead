@@ -74,7 +74,7 @@
     <!-- breadcrumbs end -->
     <!-- section -->
     <section class="gray-bg small-padding">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4">
                     <div class="section-title fl-wrap">
@@ -138,7 +138,7 @@
 <!-- content end -->	
 <!-- subscribe-wrap -->	
 <div class="subscribe-wrap fl-wrap">
-    <div class="container">
+    <div class="container-fluid">
         <div class="subscribe-container fl-wrap color-bg">
             <div class="pwh_bg"></div>
             <div class="mrb_dec mrb_dec3"></div>

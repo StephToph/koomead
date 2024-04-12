@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?php echo $this->renderSection('title'); ?></title>
+    <title>Login</title>
 
     <meta name="robots" content="index, follow" />
     <meta name="keywords" content="" />
